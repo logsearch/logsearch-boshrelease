@@ -1,0 +1,4 @@
+---
+name: jre
+files:
+- java/jre-1.6.0_24-x86_64.tar.gz

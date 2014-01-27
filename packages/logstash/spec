@@ -1,0 +1,5 @@
+---
+name: logstash
+dependencies: []
+files: 
+  - logstash/logstash-1.3.0.jar
