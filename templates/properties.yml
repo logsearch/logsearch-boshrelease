@@ -1,0 +1,5 @@
+properties:
+  networks:
+    apps: logsearch1
+
+  logsearch: {}
