@@ -1,7 +1,6 @@
 ---
 name: elasticsearch
-dependencies:
-  - jre
+dependencies: [] # no compile dependencies
 files: 
   - elasticsearch/elasticsearch-0.90.5.tar.gz
   - elasticsearch/jetty-0.90.0.tar.gz

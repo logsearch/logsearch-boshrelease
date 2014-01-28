@@ -109,4 +109,6 @@ jobs:
     - dns
     - gateway
 
-properties: {}
+properties: 
+  elasticsearch:
+    cluster_name: bosh-lite-es-cluster

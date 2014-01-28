@@ -2,9 +2,31 @@
 name: elasticsearch
 packages: 
   - elasticsearch
+  - jre
 templates:
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
+  config/default.json.erb: config/default.json
+  config/logging.yml.erb: config/logging.yml
+  config/templates/logstash_default.json.erb: config/templates/logstash_default.json
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+
+properties:
+  elasticsearch.cluster_name:
+    description: The name of the elastic search cluster
+  elasticsearch.node.is_master:
+    description: Is this node a master node? (true / false)
+    default: false
+  elasticsearch.node.has_data:
+    description: Does this node store data? (true / false)
+    default: true
+  elasticsearch.minimum_master_nodes:
+    description: The minimum number of elasticsearch master nodes in the cluster
+    default: 1
+  elasticsearch.aws.region:
+    description: The AWS region the cluster is running in
+  elasticsearch.aws.security_group:
+    description: The security group containing elasticsearch nodes
+       

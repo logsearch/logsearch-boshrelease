@@ -1,0 +1,34 @@
+rootLogger: INFO, console, file
+logger:
+    # log action execution errors for easier debugging
+    action: DEBUG
+    gateway: DEBUG
+    cluster: DEBUG
+    indices: DEBUG
+    request: INFO, request_log_file
+
+additivity:
+    request: false
+
+appender:
+    console:
+        type: console
+        layout:
+            type: consolePattern
+            conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+    file:
+        type: dailyRollingFile
+        file: ${path.logs}/${cluster.name}.log
+        datePattern: "'.'yyyy-MM-dd"
+        layout:
+            type: pattern
+            conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+    request_log_file:
+        type: dailyRollingFile
+        file: ${path.logs}/${cluster.name}_requests.log
+        datePattern: "'.'yyyy-MM-dd"
+        layout:
+            type: pattern
+            conversionPattern: "%m%n"
