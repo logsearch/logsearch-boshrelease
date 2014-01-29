@@ -1,0 +1,5 @@
+check process api_nginx
+  with pidfile /var/vcap/sys/run/api/nginx.pid
+  start program "/var/vcap/jobs/api/bin/monit_debugger nginx_ctl '/var/vcap/jobs/api/bin/nginx_ctl start'"
+  stop program "/var/vcap/jobs/api/bin/monit_debugger nginx_ctl '/var/vcap/jobs/api/bin/nginx_ctl stop'"
+  group vcap
