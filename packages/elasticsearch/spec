@@ -5,3 +5,4 @@ files:
   - elasticsearch/elasticsearch-0.90.5.tar.gz
   - elasticsearch/jetty-0.90.0.tar.gz
   - elasticsearch/cloud-aws-1.14.0.tar.gz
+  - elasticsearch/elasticsearch-HQ-1.1.0.tar.gz

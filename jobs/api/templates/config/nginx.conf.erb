@@ -99,5 +99,22 @@ http {
             proxy_pass http://elasticsearch;
         }
 
+        location ~ ^/_plugin/ {
+            proxy_pass http://elasticsearch;
+        }
+
+        location ~ ^/$ {
+            limit_except GET {
+                deny all;
+            }
+            proxy_pass http://elasticsearch;
+        }
+
+        location ~ {
+            limit_except GET {
+                deny all;
+            }
+            proxy_pass http://elasticsearch;
+        }
     }
 }
