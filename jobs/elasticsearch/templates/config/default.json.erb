@@ -10,12 +10,16 @@
         "master" : <%= p("elasticsearch.node.is_master") %>,
         "data" : <%= p("elasticsearch.node.has_data") %>
     },
-<% if_p("elasticsearch.aws.region", "elasticsearch.aws.security_group") do %> 
-    "cloud.aws.region" : "<%= p("elasticsearch.aws.region") %>",
+    "discovery.zen.ping.multicast.enabled": false,
+<% if_p("elasticsearch.discovery.aws_region", "elasticsearch.discovery.aws_security_group") do %> 
+    "cloud.aws.region" : "<%= p("elasticsearch.discovery.aws_region") %>",
     "discovery.type" : "ec2",
-    "discovery.ec2.groups" : "<%= p("elasticsearch.aws.security_group") %>",
-    "discovery.zen.minimum_master_nodes" : <%= p("elasticsearch.minimum_master_nodes") %>,
+    "discovery.ec2.groups" : "<%= p("elasticsearch.discovery.aws_security_group") %>",
 <% end %>
+<% if_p("elasticsearch.discovery.ping_unicast_hosts") do %>
+    "discovery.zen.ping.unicast.hosts" : "<%= p("elasticsearch.discovery.ping_unicast_hosts") %>",
+<% end %>
+    "discovery.zen.minimum_master_nodes" : <%= p("elasticsearch.discovery.minimum_master_nodes") %>,
     "path.conf" : "/var/vcap/jobs/elasticsearch/config/",
     "path.logs" : "/var/vcap/sys/log/elasticsearch",
     "path.data" : "/var/vcap/store/elasticsearch",

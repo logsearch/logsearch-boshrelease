@@ -22,11 +22,13 @@ properties:
   elasticsearch.node.has_data:
     description: Does this node store data? (true / false)
     default: true
-  elasticsearch.minimum_master_nodes:
-    description: The minimum number of elasticsearch master nodes in the cluster
+  elasticsearch.discovery.minimum_master_nodes:
+    description: The minimum number of master eligible nodes a node should "see" in order to operate within the cluster. Recommended to set it to a higher value than 1 when running more than 2 nodes in the cluster.
     default: 1
-  elasticsearch.aws.region:
+  elasticsearch.discovery.aws_region:
     description: The AWS region the cluster is running in
-  elasticsearch.aws.security_group:
+  elasticsearch.discovery.aws_security_group:
     description: The security group containing elasticsearch nodes
+  elasticsearch.discovery.ping_unicast_hosts:
+    description: NOT for use on AWS. Comma separated list of nodes in cluster (Seem to have to list all nodes).  
        
