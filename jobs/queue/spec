@@ -1,0 +1,15 @@
+---
+name: queue
+packages: 
+  - redis
+templates:
+  bin/redis_ctl: bin/redis_ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/redis.conf.erb: config/redis.conf
+properties:
+  redis.port:
+    description: Port to listen for requests to redis server
+    default: 6379

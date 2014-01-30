@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/queue/helpers/ctl_setup.sh 'queue'
+
+export PORT=${PORT:-5000}
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    exec /var/vcap/packages/redis/bin/redis-server $JOB_DIR/config/redis.conf \
+         >>$LOG_DIR/$JOB_NAME.stdout.log \
+         2>>$LOG_DIR/$JOB_NAME.stderr.log
+
+    # store pid in $PIDFILE
+    echo $! > $PIDFILE
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: queue_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

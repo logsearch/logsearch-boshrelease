@@ -1,0 +1,5 @@
+check process queue_redis
+  with pidfile /var/vcap/sys/run/queue/redis.pid
+  start program "/var/vcap/jobs/queue/bin/monit_debugger queue_ctl '/var/vcap/jobs/queue/bin/redis_ctl start'"
+  stop program "/var/vcap/jobs/queue/bin/monit_debugger queue_ctl '/var/vcap/jobs/queue/bin/redis_ctl stop'"
+  group vcap
