@@ -1,0 +1,5 @@
+check process ingestor_syslog
+  with pidfile /var/vcap/sys/run/ingestor_syslog/ingestor_syslog.pid
+  start program "/var/vcap/jobs/ingestor_syslog/bin/monit_debugger ingestor_syslog_ctl '/var/vcap/jobs/ingestor_syslog/bin/ingestor_syslog_ctl start'"
+  stop program "/var/vcap/jobs/ingestor_syslog/bin/monit_debugger ingestor_syslog_ctl '/var/vcap/jobs/ingestor_syslog/bin/ingestor_syslog_ctl stop'"
+  group vcap

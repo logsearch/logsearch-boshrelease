@@ -1,0 +1,25 @@
+---
+name: ingestor_syslog
+packages: 
+  - logstash
+  - jre
+templates:
+  bin/ingestor_syslog_ctl: bin/ingestor_syslog_ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/syslog_to_redis.conf.erb: config/syslog_to_redis.conf
+  
+properties:
+  ingestor.syslog.debug:
+    description: Debug level logging
+    default: false
+  ingestor.syslog.queue_endpoint: 
+    description: host:port of queue
+  ingestor.syslog.queue_name: 
+    description: Name of queue to put messages onto
+    default: logstash
+  ingestor.syslog.endpoint_port: 
+    description: Port to listen for syslog messages
+    default: 5514

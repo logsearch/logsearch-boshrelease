@@ -68,6 +68,11 @@ if [[ -d /var/vcap/packages/jre ]]
 then
   export JAVA_HOME="/var/vcap/packages/jre"
 fi
+#override JAVA_HOME is java7 found
+if [[ -d /var/vcap/packages/java7 ]]
+then
+  export JAVA_HOME="/var/vcap/packages/java7"
+fi
 
 # setup CLASSPATH for all jars/ folders within packages
 export CLASSPATH=${CLASSPATH:-''} # default to empty

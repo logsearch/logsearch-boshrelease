@@ -1,35 +1,30 @@
 ---
-name: ingestor
+name: ingestor_lumberjack
 packages: 
   - logstash
   - jre
 templates:
   bin/ingestor_lumberjack_ctl: bin/ingestor_lumberjack_ctl
-  bin/ingestor_syslog_ctl: bin/ingestor_syslog_ctl
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/lumberjack_to_redis.conf.erb: config/lumberjack_to_redis.conf
-  config/syslog_to_redis.conf.erb: config/syslog_to_redis.conf
   config/lumberjack.crt.erb: config/lumberjack.crt
   config/lumberjack.key.erb: config/lumberjack.key
-  
+
 properties:
-  ingestor.debug:
+  ingestor.lumberjack.debug:
     description: Debug level logging
     default: false
-  ingestor.queue_endpoint: 
+  ingestor.lumberjack.queue_endpoint: 
     description: host:port of queue
-  ingestor.queue_name: 
+  ingestor.lumberjack.queue_name: 
     description: Name of queue to put messages onto
     default: logstash
-  ingestor.endpoint.lumberjack_port: 
+  ingestor.lumberjack.endpoint_port: 
     description: Port to listen for lumberjack messages
     default: 5043
-  ingestor.endpoint.syslog_port: 
-    description: Port to listen for syslog messages
-    default: 5514
   ingestor.lumberjack.ssl_certificate:
     description: Lumberjack SSL certificate
   ingestor.lumberjack.ssl_key:

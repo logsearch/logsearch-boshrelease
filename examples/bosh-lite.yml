@@ -122,7 +122,8 @@ jobs:
 
 - name: ingestor
   template: 
-  - ingestor
+  - ingestor_lumberjack
+  - ingestor_syslog
   instances: 1
   resource_pool: warden
   networks:
@@ -176,10 +177,16 @@ properties:
     cluster_name: bosh-lite-es-cluster
     discovery:
       ping_unicast_hosts: "10.244.2.2,10.244.2.6" # Seem to have to list all master nodes?
+  queue:
+    endpoint:
+      port: 6379
   ingestor:
-    queue_endpoint: 10.244.2.10:6379
-    debug: true
+    syslog:
+      debug: true
+      queue_endpoint: 10.244.2.10:6379
     lumberjack:
+      debug: true
+      queue_endpoint: 10.244.2.10:6379
       ssl_certificate: |
           -----BEGIN CERTIFICATE-----
           MIIDtTCCAp2gAwIBAgIJALfb51kZrob4MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
@@ -231,6 +238,4 @@ properties:
           TZ4pxCBbr20WJhV4AfIkP1H2ng/vZVTTkGalGfzAaDy68iHx3lzVTB2jGgPh0io5
           eQSIQMkokjB6eyo3P26r0Tnd/Z8fFko86k51mB3nWvVwGt9xvKWGjhU=
           -----END RSA PRIVATE KEY-----
-  queue:
-    endpoint:
-      port: 6379
+

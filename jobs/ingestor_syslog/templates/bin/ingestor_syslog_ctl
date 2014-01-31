@@ -4,13 +4,12 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/ingestor/helpers/ctl_setup.sh 'ingestor'
+source /var/vcap/jobs/ingestor_syslog/helpers/ctl_setup.sh 'ingestor_syslog'
 
+export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
-export TMP=${TMPDIR}
 # 1 logstash worker / CPU core
 export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
-export PIDFILE=$RUN_DIR/ingestor_syslog.pid
 
 case $1 in
 
