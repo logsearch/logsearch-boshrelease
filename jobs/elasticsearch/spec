@@ -16,6 +16,11 @@ templates:
 properties:
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
+  elasticsearch.endpoint.host:
+    description: IP / DNS of elasticsearch http endpoint
+  elasticsearch.endpoint.port:
+    description: Port of elasticsearch http endpoint
+    default: 9200
   elasticsearch.node.is_master:
     description: Is this node a master node? (true / false)
     default: false

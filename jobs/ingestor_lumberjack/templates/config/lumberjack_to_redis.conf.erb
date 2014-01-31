@@ -2,7 +2,7 @@ input {
 	lumberjack {
 		add_field => [ "_logstash_input", "lumberjack" ]
 		host => "0.0.0.0"
-		port => "<%= p("ingestor.lumberjack.endpoint_port") %>"
+		port => "<%= p("ingestor.lumberjack.endpoint.port") %>"
 		ssl_certificate => "/var/vcap/jobs/ingestor_lumberjack/config/lumberjack.crt"
 		ssl_key => "/var/vcap/jobs/ingestor_lumberjack/config/lumberjack.key"
 	}
@@ -21,13 +21,13 @@ filter {
 				
 output {
 	<% if_p("ingestor.lumberjack.debug") do %>
-	stdout { debug => true debug_format => "json"}
+	stdout { debug => true codec => "json"}
 	<% end %>
 
 	redis {
-		host => "<%= p("ingestor.lumberjack.queue_endpoint")  %>"
+		host => "<%= p("queue.endpoint.host") %>:<%= p("queue.endpoint.port") %>"
 		data_type => "list"
-		key => "<%= p("ingestor.lumberjack.queue_name")  %>"
+		key => "<%= p("queue.name") %>"
 		batch => true
 		batch_events => 50
 	}

@@ -1,0 +1,111 @@
+input {
+
+    redis {
+        host => "<%= p("queue.endpoint.host") %>"
+        port => "<%= p("queue.endpoint.port") %>"
+        type => "redis-input"
+        data_type => "list"
+        key => "<%= p("queue.name") %>"
+        threads => 8
+    }
+}
+
+filter {
+    #
+    # rewrite our defined globals
+    #
+
+    if [type] == 'redis' or [type] == 'redis-input' {
+        mutate {
+            remove_field => [ 'type' ]
+        }
+    }
+
+    if [type] != '' {
+        mutate {
+            rename => [ "type", "@type" ]
+        }
+    }
+
+    if [message] != '' {
+        mutate {
+            rename => [ "message", "@message" ]
+        }
+    } else if [message] == '' and [@message] !~ /^.+$/ {
+        drop { }
+    }
+
+    #
+    # ignore particularly useless lines
+    #
+
+    if [@message] =~ /^\s*$/ or [@message] =~ /^#.*$/ {
+        drop { }
+    }
+
+    #
+    # trim excessively long messages
+    #
+
+    ruby {
+        code => "(event['@message'] = event['@message'][0,<%= p("log_parser.message_max_size") %>] and (event['tags'] ||= []) << '_groktrimmed') if event['@message'] and event['@message'].length > <%= p("log_parser.message_max_size") %>"
+    }
+
+    #
+    # trim excess whitespace
+    #
+
+    mutate {
+        strip => [ "@message" ]
+    }
+
+    #
+    # the various log types that we're interested in
+    #
+
+    #TODO
+    <%# Dir.glob("#{ENV['APP_APP_DIR']}/srv/logstash/config/filter.d/*.conf.erb") do |filter_erb_file| %>
+      <%#= ERB.new(File.read(filter_erb_file), nil, nil, '_filter_sub_template').result(binding) %>
+    <%# end %>
+
+    #
+    # type-casting for more advanced searches
+    #
+
+    if "nginx" in [tags] {
+        mutate {
+            convert => [ "status", "integer" ]
+            convert => [ "body_bytes_sent", "integer" ]
+        }
+    }
+
+    if "iis" in [tags] {
+        mutate {
+            convert => [ "s_port", "integer" ]
+            convert => [ "sc_status", "integer" ]
+            convert => [ "sc_substatus", "integer" ]
+            convert => [ "win32_status", "integer" ]
+            convert => [ "sc_bytes", "integer" ]
+            convert => [ "cs_bytes", "integer" ]
+            convert => [ "time_taken", "integer" ]
+            gsub => [ "cs_referer", "\\+", " " ]
+        }
+    }
+}
+
+output {
+    <% if_p("log_parser.debug") do %>
+    stdout { debug => true codec => "json"}
+    <% end %>
+
+    elasticsearch_http {
+        host => "<%= p("elasticsearch.endpoint.host") %>:<%= p("elasticsearch.endpoint.port") %>"
+        flush_size => <%= p("log_parser.flush_size") %>
+        index_type => "%{@type}"
+        manage_template => false
+    }
+}
+
+
+
+    

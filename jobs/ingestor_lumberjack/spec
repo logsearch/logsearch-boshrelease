@@ -17,12 +17,13 @@ properties:
   ingestor.lumberjack.debug:
     description: Debug level logging
     default: false
-  ingestor.lumberjack.queue_endpoint: 
-    description: host:port of queue
-  ingestor.lumberjack.queue_name: 
-    description: Name of queue to put messages onto
-    default: logstash
-  ingestor.lumberjack.endpoint_port: 
+  queue.endpoint.host: 
+    description: host of queue
+  queue.endpoint.port: 
+    description: port of queue
+  queue.name: 
+    description: Name of queue to push messages to
+  ingestor.lumberjack.endpoint.port: 
     description: Port to listen for lumberjack messages
     default: 5043
   ingestor.lumberjack.ssl_certificate:

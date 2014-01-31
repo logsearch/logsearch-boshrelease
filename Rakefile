@@ -24,4 +24,8 @@ namespace :lumberjack do
 		sh "openssl req -x509 -batch -nodes -newkey rsa:2048 -keyout lumberjack.key -out lumberjack.crt"
 	end
 
+	desc "Forwards logs pasted into stdin to bosh-lite cluster"
+	task :forward_stdin_to_bosh_lite do 
+		sh "logstash-forwarder -config=spec/smoke/stdin_to_bosh-lite.json"
+	end	
 end

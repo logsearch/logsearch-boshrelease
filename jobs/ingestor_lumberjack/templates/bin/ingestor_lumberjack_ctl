@@ -22,8 +22,8 @@ case $1 in
 
     exec /var/vcap/packages/jre/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
          -f ${JOB_DIR}/config/lumberjack_to_redis.conf -w ${LOGSTASH_WORKERS} \
-         >>$LOG_DIR/$JOB_NAME.lumberjack.stdout.log \
-         2>>$LOG_DIR/$JOB_NAME.lumberjack.stderr.log
+         >>$LOG_DIR/$JOB_NAME.stdout.log \
+         2>>$LOG_DIR/$JOB_NAME.stderr.log
 
     ;;
 

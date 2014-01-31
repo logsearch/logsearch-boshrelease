@@ -19,83 +19,10 @@ update:
   max_in_flight: 4
   max_errors: 1
 
-networks:
-- name: default
-  # Assumes up to 5 VMs, including 4 static and 1 dynamic.
-  # Plus 5 (double the size) unused IPs, due to BOSH bug/quirk.
-  subnets:
-  - cloud_properties:
-      name: random
-    range: 10.244.2.0/30
-    reserved:
-    - 10.244.2.1
-    static:
-    - 10.244.2.2
-  - cloud_properties:
-      name: random
-    range: 10.244.2.4/30
-    reserved:
-    - 10.244.2.5
-    static:
-    - 10.244.2.6
-  - cloud_properties:
-      name: random
-    range: 10.244.2.8/30
-    reserved:
-    - 10.244.2.9
-    static: 
-    - 10.244.2.10
-  - cloud_properties:
-      name: random
-    range: 10.244.2.12/30
-    reserved:
-    - 10.244.2.13
-    static: 
-    - 10.244.2.14
-
-  - cloud_properties:
-      name: random
-    range: 10.244.2.16/30
-    reserved:
-    - 10.244.2.17
-    static: []
-
-  # Bonus double-sized network required due to BOSH oddity
-  - cloud_properties:
-      name: random
-    range: 10.244.2.20/30
-    reserved:
-    - 10.244.2.21
-    static: []
-  - cloud_properties:
-      name: random
-    range: 10.244.2.24/30
-    reserved:
-    - 10.244.2.25
-    static: []
-  - cloud_properties:
-      name: random
-    range: 10.244.2.28/30
-    reserved:
-    - 10.244.2.29
-    static: []
-  - cloud_properties:
-      name: random
-    range: 10.244.2.32/30
-    reserved:
-    - 10.244.2.33
-    static: []
-  - cloud_properties:
-      name: random
-    range: 10.244.2.36/30
-    reserved:
-    - 10.244.2.37
-    static: []
-
 resource_pools:
 - name: warden
   network: default
-  size: 5
+  size: 6
   stemcell:
     name: bosh-warden-boshlite-ubuntu
     version: latest
@@ -113,8 +40,6 @@ jobs:
     static_ips:
     - 10.244.2.2
   properties:
-    api:
-      elasticsearch_host: 127.0.0.1:9200
     elasticsearch:
       node:
         is_master: true
@@ -141,7 +66,18 @@ jobs:
     static_ips:
     - 10.244.2.10
 
-- name: elasticsearch-persistent
+- name: log_parser
+  template: 
+  - log_parser
+  instances: 1
+  resource_pool: warden
+  networks:
+  - name: default
+    default:
+    - dns
+    - gateway
+
+- name: elasticsearch_persistent
   template: 
   - elasticsearch
   instances: 1
@@ -156,7 +92,7 @@ jobs:
         is_master: true
         has_data: true
 
-- name: elasticsearch-autoscale
+- name: elasticsearch_autoscale
   template: 
   - elasticsearch
   instances: 1
@@ -174,19 +110,25 @@ jobs:
 
 properties: 
   elasticsearch:
-    cluster_name: bosh-lite-es-cluster
+    cluster_name: logsearch
+    endpoint:
+      host: 10.244.2.2
+      port: 9200
     discovery:
       ping_unicast_hosts: "10.244.2.2,10.244.2.6" # Seem to have to list all master nodes?
+
   queue:
+    name: logs_to_be_parsed
     endpoint:
+      host: 10.244.2.10
       port: 6379
+  log_parser:
+    debug: true
   ingestor:
     syslog:
       debug: true
-      queue_endpoint: 10.244.2.10:6379
     lumberjack:
       debug: true
-      queue_endpoint: 10.244.2.10:6379
       ssl_certificate: |
           -----BEGIN CERTIFICATE-----
           MIIDtTCCAp2gAwIBAgIJALfb51kZrob4MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
@@ -239,3 +181,100 @@ properties:
           eQSIQMkokjB6eyo3P26r0Tnd/Z8fFko86k51mB3nWvVwGt9xvKWGjhU=
           -----END RSA PRIVATE KEY-----
 
+# Warden CPI requires crappy network settings; so "hide" them away here
+networks:
+- name: default
+  # Assumes up to 7 VMs, including 4 static and 3 dynamic.
+  # Plus 7 (double the size) unused IPs, due to BOSH bug/quirk.
+  subnets:
+  - cloud_properties:
+      name: random
+    range: 10.244.2.0/30
+    reserved:
+    - 10.244.2.1
+    static:
+    - 10.244.2.2
+  - cloud_properties:
+      name: random
+    range: 10.244.2.4/30
+    reserved:
+    - 10.244.2.5
+    static:
+    - 10.244.2.6
+  - cloud_properties:
+      name: random
+    range: 10.244.2.8/30
+    reserved:
+    - 10.244.2.9
+    static: 
+    - 10.244.2.10
+  - cloud_properties:
+      name: random
+    range: 10.244.2.12/30
+    reserved:
+    - 10.244.2.13
+    static: 
+    - 10.244.2.14
+
+  - cloud_properties:
+      name: random
+    range: 10.244.2.16/30
+    reserved:
+    - 10.244.2.17
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.20/30
+    reserved:
+    - 10.244.2.21
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.24/30
+    reserved:
+    - 10.244.2.25
+    static: []
+
+  # Bonus double-sized network required due to BOSH oddity
+  - cloud_properties:
+      name: random
+    range: 10.244.2.28/30
+    reserved:
+    - 10.244.2.29
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.32/30
+    reserved:
+    - 10.244.2.33
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.36/30
+    reserved:
+    - 10.244.2.37
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.40/30
+    reserved:
+    - 10.244.2.41
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.44/30
+    reserved:
+    - 10.244.2.45
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.48/30
+    reserved:
+    - 10.244.2.49
+    static: []
+  - cloud_properties:
+      name: random
+    range: 10.244.2.52/30
+    reserved:
+    - 10.244.2.53
+    static: []

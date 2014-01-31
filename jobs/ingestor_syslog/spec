@@ -15,11 +15,12 @@ properties:
   ingestor.syslog.debug:
     description: Debug level logging
     default: false
-  ingestor.syslog.queue_endpoint: 
-    description: host:port of queue
-  ingestor.syslog.queue_name: 
-    description: Name of queue to put messages onto
-    default: logstash
-  ingestor.syslog.endpoint_port: 
+  queue.endpoint.host: 
+    description: host of queue
+  queue.endpoint.port: 
+    description: port of queue
+  queue.name: 
+    description: Name of queue to push messages to
+  ingestor.syslog.endpoint.port: 
     description: Port to listen for syslog messages
     default: 5514
