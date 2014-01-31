@@ -10,6 +10,6 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/redis.conf.erb: config/redis.conf
 properties:
-  redis.port:
+  queue.endpoint.port:
     description: Port to listen for requests to redis server
     default: 6379

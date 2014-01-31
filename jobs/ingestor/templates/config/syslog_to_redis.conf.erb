@@ -1,0 +1,21 @@
+input {
+	syslog {
+		add_field => [ "type", "syslog" ]
+		host => "0.0.0.0"
+		port => "<%= p("ingestor.endpoint.syslog_port") %>"
+	}
+}
+
+output {
+	<% if_p("ingestor.debug") do %>
+	stdout { debug => true debug_format => "json"}
+	<% end %>
+	
+	redis {
+		host => "<%= p("ingestor.queue_endpoint")  %>"
+		data_type => "list"
+		key => "<%= p("ingestor.queue_name")  %>"
+		batch => true
+		batch_events => 50
+	}
+}

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/ingestor/helpers/ctl_setup.sh 'ingestor'
+
+export LANG=en_US.UTF-8
+export TMP=${TMPDIR}
+# 1 logstash worker / CPU core
+export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
+export PIDFILE=$RUN_DIR/ingestor_syslog.pid
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME
+
+    # store this processes pid in $PIDFILE, since the exec below doesn't daemonize
+    echo $$ > $PIDFILE
+
+    exec /var/vcap/packages/jre/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
+         -f ${JOB_DIR}/config/syslog_to_redis.conf -w ${LOGSTASH_WORKERS} \
+         >>$LOG_DIR/$JOB_NAME.syslog.stdout.log \
+         2>>$LOG_DIR/$JOB_NAME.syslog.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: ingestor_syslog_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

@@ -1,0 +1,11 @@
+check process ingestor_lumberjack
+  with pidfile /var/vcap/sys/run/ingestor/ingestor_lumberjack.pid
+  start program "/var/vcap/jobs/ingestor/bin/monit_debugger ingestor_lumberjack_ctl '/var/vcap/jobs/ingestor/bin/ingestor_lumberjack_ctl start'"
+  stop program "/var/vcap/jobs/ingestor/bin/monit_debugger ingestor_lumberjack_ctl '/var/vcap/jobs/ingestor/bin/ingestor_lumberjack_ctl stop'"
+  group vcap
+
+check process ingestor_syslog
+  with pidfile /var/vcap/sys/run/ingestor/ingestor_syslog.pid
+  start program "/var/vcap/jobs/ingestor/bin/monit_debugger ingestor_syslog_ctl '/var/vcap/jobs/ingestor/bin/ingestor_syslog_ctl start'"
+  stop program "/var/vcap/jobs/ingestor/bin/monit_debugger ingestor_syslog_ctl '/var/vcap/jobs/ingestor/bin/ingestor_syslog_ctl stop'"
+  group vcap
