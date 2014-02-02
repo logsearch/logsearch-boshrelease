@@ -116,7 +116,8 @@ properties:
       port: 9200
     discovery:
       ping_unicast_hosts: "10.244.2.2,10.244.2.6" # Seem to have to list all master nodes?
-
+    indices:
+      ttl_interval: "60s"  # We want documents from test runs to be cleaned up frequently
   queue:
     name: logs_to_be_parsed
     endpoint:

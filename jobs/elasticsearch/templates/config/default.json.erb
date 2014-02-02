@@ -1,6 +1,7 @@
 {
     "bootstrap.mlockall" : true,
     "indices.memory.index_buffer_size" : "50%",
+    "indices.ttl.interval": "<%= p("elasticsearch.indices.ttl_interval") %>",
     "index.cache.field.type" : "soft",
     "index.cache.field.expire" : "15m",
     "index.translog.flush_threshold_ops" : 64000,

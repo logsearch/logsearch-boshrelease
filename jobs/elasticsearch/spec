@@ -36,4 +36,9 @@ properties:
     description: The security group containing elasticsearch nodes
   elasticsearch.discovery.ping_unicast_hosts:
     description: NOT for use on AWS. Comma separated list of nodes in cluster (Seem to have to list all nodes).  
-       
+  elasticsearch.indices.ttl_interval:
+    description: "Interval at which to deleted expired documents (based on their _ttl field). Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
+    default: 1d
+  elasticsearch.indices.ttl_default:
+    description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
+    default: 30d 
