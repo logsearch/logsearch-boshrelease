@@ -63,7 +63,19 @@ filter {
     # the various log types that we're interested in
     #
 
-    #TODO
+    if [@type] == "nginx_combined" {
+        grok {
+            match => [ "@message", "%{IPORHOST:remote_addr} - (?:%{USER:remote_user}|-) \[%{HTTPDATE:time_local}\] \"(?:%{WORD:request_method} %{URIPATHPARAM:request_uri}(?: HTTP/%{NUMBER:request_httpversion})?|-)\" %{INT:status} (?:%{NONNEGINT:body_bytes_sent}|-) \"(?:%{URI:http_referer}|-)\" %{QS:http_user_agent} (?:%{NONNEGINT:request_time}|-)" ]
+            match => [ "@message", "%{IPORHOST:remote_addr} - (?:%{USER:remote_user}|-) \[%{HTTPDATE:time_local}\] \"(?:%{WORD:request_method} %{URIPATHPARAM:request_uri}(?: HTTP/%{NUMBER:request_httpversion})?|-)\" %{INT:status} (?:%{NONNEGINT:body_bytes_sent}|-) \"(?:%{URI:http_referer}|-)\" %{QS:http_user_agent}" ]
+            add_tag => "nginx"
+        }
+
+        date {
+            match => [ "time_local", "dd/MMM/YYYY:HH:mm:ss Z" ]
+        }
+    }
+
+    #TODO - Pull in other filter types
     <%# Dir.glob("#{ENV['APP_APP_DIR']}/srv/logstash/config/filter.d/*.conf.erb") do |filter_erb_file| %>
       <%#= ERB.new(File.read(filter_erb_file), nil, nil, '_filter_sub_template').result(binding) %>
     <%# end %>
@@ -76,19 +88,6 @@ filter {
         mutate {
             convert => [ "status", "integer" ]
             convert => [ "body_bytes_sent", "integer" ]
-        }
-    }
-
-    if "iis" in [tags] {
-        mutate {
-            convert => [ "s_port", "integer" ]
-            convert => [ "sc_status", "integer" ]
-            convert => [ "sc_substatus", "integer" ]
-            convert => [ "win32_status", "integer" ]
-            convert => [ "sc_bytes", "integer" ]
-            convert => [ "cs_bytes", "integer" ]
-            convert => [ "time_taken", "integer" ]
-            gsub => [ "cs_referer", "\\+", " " ]
         }
     }
 }

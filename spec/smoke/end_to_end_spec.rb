@@ -14,8 +14,8 @@ describe "elasticsearch cluster", :focus=>true do
       if exception
         puts "Search #{retries} failed.  Waiting 2s to allow logs to be processed, then trying again"
       end
-      result = search "test_run_id:#{test_run_id}"
-      result['hits']['total'].should eq(5)
+      result = search "test_run_id:#{test_run_id}", "logstash-2013.06.06"
+      result['hits']['total'].should eq(4)
     end
 
   end
