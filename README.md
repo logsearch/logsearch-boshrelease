@@ -60,5 +60,5 @@ bosh -n deploy
 ## TESTING
 
 ```
-API_URL="http://10.244.2.2" bundle exec rspec
+RESTCLIENT_LOG=stdout API_URL="http://10.244.2.2" INGESTOR_HOST="10.244.2.14" bundle exec rspec
 ```

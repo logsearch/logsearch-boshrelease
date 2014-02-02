@@ -5,4 +5,5 @@ group :development, :test do
   gem 'json', '~>1.8.1'
   gem 'rspec'
   gem 'rspec_api_test'
+  gem 'retryable'
 end
