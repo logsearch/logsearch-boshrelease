@@ -86,6 +86,7 @@ jobs:
   - name: default
     static_ips:
     - 10.244.2.6
+  persistent_disk: 1024
   properties:
     elasticsearch:
       node:
