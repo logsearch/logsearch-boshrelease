@@ -19,7 +19,7 @@ case $1 in
     # store this processes pid in $PIDFILE, since the exec below doesn't daemonize
     echo $$ > $PIDFILE
 
-    exec /var/vcap/packages/jre/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
+    exec /var/vcap/packages/java7/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
          -f ${JOB_DIR}/config/syslog_to_redis.conf -w ${LOGSTASH_WORKERS} \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log

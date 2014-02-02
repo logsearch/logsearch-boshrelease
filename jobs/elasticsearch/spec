@@ -2,7 +2,7 @@
 name: elasticsearch
 packages: 
   - elasticsearch
-  - jre
+  - java7
 templates:
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger

@@ -64,11 +64,6 @@ then
   export PYTHONPATH=$WEBAPP_DIR/vendor/lib/python
 fi
 
-if [[ -d /var/vcap/packages/jre ]]
-then
-  export JAVA_HOME="/var/vcap/packages/jre"
-fi
-#override JAVA_HOME is java7 found
 if [[ -d /var/vcap/packages/java7 ]]
 then
   export JAVA_HOME="/var/vcap/packages/java7"
