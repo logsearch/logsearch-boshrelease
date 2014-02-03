@@ -1,0 +1,56 @@
+---
+packages:
+- name: elasticsearch
+  version: 1
+  sha1: d7b344ef05b7c702fe180261a818635f9e360806
+  fingerprint: aaf10d34de139c6c90f544f73ac49ff8b455e768
+  dependencies: []
+- name: java7
+  version: 1
+  sha1: a8ab8d3c0df6b3e3254f0cae9606e1e7732c40dc
+  fingerprint: fbade6988160bd8576d4c1c44a0eb049d700858f
+  dependencies: []
+- name: logstash
+  version: 1
+  sha1: 31570e4f6c40795f66bad1644d82769a1d8877be
+  fingerprint: b4ca5e79b0441b8847f8238568ecf811b84a290b
+  dependencies: []
+- name: nginx
+  version: 1
+  sha1: 61fe69d263a4d15da2e74c448359e031f9de7338
+  fingerprint: 26d885e63185483dd70859bed5a0f14232f23e18
+  dependencies: []
+- name: redis
+  version: 1
+  sha1: 9af9f613fddccf158db3dfa63af8b1b1ca2b30f7
+  fingerprint: e2a4ec718365fd8ff2a2df1efbb13e6f82f94855
+  dependencies: []
+jobs:
+- name: api
+  version: 1
+  fingerprint: c65aef2bd7e49c6204dd7590b7a7d21ac6df4957
+  sha1: 0d18c33d16205b953bad03f6f7e999eb723e3acf
+- name: elasticsearch
+  version: 1
+  fingerprint: 6450a2982c90abcc3ed5b447bbf181843cedb93a
+  sha1: e4153fcf6666ea4a6ffc76df5b08dd7838986895
+- name: ingestor_lumberjack
+  version: 1
+  fingerprint: 993c58bd80f0c74b1da50a8e83385fba32eafc7f
+  sha1: ff1f97bab0351ad9ca48f6514b78bee2ee273012
+- name: ingestor_syslog
+  version: 1
+  fingerprint: bf7ce2c9a476ec848455d5d90371f0f33e4dbce3
+  sha1: effd352ed46651f182cc60d75493a3fab9abd1b0
+- name: log_parser
+  version: 1
+  fingerprint: f1b90170171632c238b44810404a87c186677859
+  sha1: e35da967cdc7f191dc81725dc97e74a0fe603888
+- name: queue
+  version: 1
+  fingerprint: dcf3a92b2a85171b3d26d4040c45d26883600458
+  sha1: dc75871c9cb63bdadeb54d36a8218aaf26394664
+commit_hash: 2ec24291
+uncommitted_changes: true
+name: logsearch
+version: 1

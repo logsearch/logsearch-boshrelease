@@ -3,6 +3,7 @@ blobstore:
   provider: s3
   options:
     bucket_name: logsearch-boshrelease
-    access_key_id: AKIAIISVJZNKHAZZX3JQ # CityIndex Labs AWS account, user logsearch-boshrelease-public
+    access_key_id: AKIAIISVJZNKHAZZX3JQ
     secret_access_key: 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
     encryption_key: SHkpJ5MFx2PASpp0LhVh7e1O2V0Bv2
+final_name: logsearch
