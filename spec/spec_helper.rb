@@ -60,10 +60,28 @@ def process_erb(template, erb_variables = {})
 end
 
 def ship_logs(logstash_forwarder_config_path) 
-  `rm -rf .logstash-forwarder*`
-  run_until "logstash-forwarder -config=#{logstash_forwarder_config_path} -idle-flush-time=10ms -from-beginning=true",\
-            /.*Registrar\ received.*/
-  `rm -rf .logstash-forwarder*`
+
+  host_os = RbConfig::CONFIG['host_os']
+  case host_os
+  when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
+    `del /s .logstash-forwarder*`
+    run_until "spec/bin/windows/logstash-forwarder.exe -config=#{logstash_forwarder_config_path} -idle-flush-time=10ms -from-beginning=true",\
+              /.*Registrar\ received.*/
+    `del /s  .logstash-forwarder*`
+  when /darwin|mac os/
+    `rm -rf .logstash-forwarder*`
+    run_until "spec/bin/mac/logstash-forwarder -config=#{logstash_forwarder_config_path} -idle-flush-time=10ms -from-beginning=true",\
+              /.*Registrar\ received.*/
+    `rm -rf .logstash-forwarder*`
+  when /linux/
+    `rm -rf .logstash-forwarder*`
+    run_until "spec/bin/linux/logstash-forwarder -config=#{logstash_forwarder_config_path} -idle-flush-time=10ms -from-beginning=true",\
+              /.*Registrar\ received.*/
+    `rm -rf .logstash-forwarder*`
+  else
+    raise "Don't have a logstash-forwarder for os: #{host_os.inspect}"
+  end
+
 end
 
 def search(query, index = "logstash-#{Time.now.strftime("%Y.%m.%d")}")
