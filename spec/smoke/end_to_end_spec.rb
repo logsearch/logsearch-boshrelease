@@ -1,4 +1,4 @@
-describe "elasticsearch cluster", :focus=>true do
+describe "elasticsearch cluster" do
 
   it "messages shipped via logstash-forwarder ( lumberjack protocol ) should end up in elasticsearch" do    
 
