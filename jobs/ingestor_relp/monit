@@ -1,0 +1,5 @@
+check process ingestor_relp
+  with pidfile /var/vcap/sys/run/ingestor_relp/ingestor_relp.pid
+  start program "/var/vcap/jobs/ingestor_relp/bin/monit_debugger ingestor_relp_ctl '/var/vcap/jobs/ingestor_relp/bin/ingestor_relp_ctl start'"
+  stop program "/var/vcap/jobs/ingestor_relp/bin/monit_debugger ingestor_relp_ctl '/var/vcap/jobs/ingestor_relp/bin/ingestor_relp_ctl stop'"
+  group vcap

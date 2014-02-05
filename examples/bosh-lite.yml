@@ -49,6 +49,7 @@ jobs:
   template: 
   - ingestor_lumberjack
   - ingestor_syslog
+  - ingestor_relp
   instances: 1
   resource_pool: warden
   networks:
@@ -127,6 +128,10 @@ properties:
   log_parser:
     debug: true
   ingestor:
+    relp:
+      debug: true
+      endpoint:
+        port: 5514
     syslog:
       debug: true
     lumberjack:

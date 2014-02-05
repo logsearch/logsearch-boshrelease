@@ -1,0 +1,24 @@
+input {
+	relp {
+		add_field => [ "_logstash_input", "relp" ]
+		host => "0.0.0.0"
+		port => "<%= p("ingestor.relp.endpoint.port") %>"
+		<% if_p("ingestor.relp.debug") do %>
+		debug => true
+		<% end %>
+	}
+}
+			
+output {
+	<% if_p("ingestor.relp.debug") do %>
+	stdout { debug => true codec => "json"}
+	<% end %>
+
+	redis {
+		host => "<%= p("queue.endpoint.host") %>:<%= p("queue.endpoint.port") %>"
+		data_type => "list"
+		key => "<%= p("queue.name") %>"
+		batch => true
+		batch_events => 50
+	}
+}

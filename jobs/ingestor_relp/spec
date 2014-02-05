@@ -1,0 +1,24 @@
+---
+name: ingestor_relp
+packages: 
+  - logstash
+  - java7
+templates:
+  bin/ingestor_relp_ctl: bin/ingestor_relp_ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/relp_to_redis.conf.erb: config/relp_to_redis.conf
+properties:
+  ingestor.relp.debug:
+    description: Debug level logging
+    default: false
+  ingestor.relp.endpoint.port: 
+    description: Port to listen for RELP messages
+  queue.endpoint.host: 
+    description: host of queue
+  queue.endpoint.port: 
+    description: port of queue
+  queue.name: 
+    description: Name of queue to push messages to
