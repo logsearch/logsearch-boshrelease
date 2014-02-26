@@ -8,6 +8,8 @@ describe "elasticsearch cluster" do
      :ingestor_host => RSpec.configuration.logsearch['ingestor_host']
     }
 
+    `touch #{config_path}` #ensure this file is considered "new"
+
     ship_logs(config_path)
 
     retryable(:tries => 10, :sleep => 2) do |retries, exception|
