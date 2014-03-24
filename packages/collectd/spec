@@ -1,0 +1,6 @@
+---
+name: collectd
+dependencies: []
+files:
+  - collectd/collectd-librato.py
+  - collectd/collectd-5.4.1.tar.gz

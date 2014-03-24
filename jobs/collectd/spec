@@ -1,0 +1,32 @@
+---
+name: collectd
+packages:
+  - collectd
+templates:
+  bin/collectd_ctl: bin/collectd_ctl
+  bin/monit_debugger: bin/monit_debugger
+  config/collectd.conf.erb: config/collectd.conf
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+properties:
+  collectd.librato.email:
+    description: "The email address associated with your Librato Metrics account."
+  collectd.librato.api_token:
+    description: "The API token for you Librato Metrics account."
+  collectd.librato.floor_time_secs:
+    description: "Set the time interval (in seconds) to floor all measurement times to."
+  collectd.librato.flush_interval_secs:
+    description: "This value determines how frequently metrics are posted to the Librato Metrics API. "
+  collectd.librato.include_regex:
+    description: "This option can be used to control the metrics that are sent to Librato Metrics."
+  collectd.librato.include_single_value_names:
+    description: "Normally, any metric type listed in types.db that only has a single value will not have the name of the value suffixed onto the metric name."
+  collectd.librato.lowercase_metric_names:
+    description: "If preset, all metric names will be converted to lower-case."
+  collectd.librato.metric_prefix:
+    description: "If present, all metric names will contain this string prefix."
+  collectd.librato.metric_separator:
+    description: "String to separate the components of a metric name when combining the plugin name, type, and instance name."
+  collectd.librato.source:
+    description: "By default the source name is taken from the configured collectd hostname."
