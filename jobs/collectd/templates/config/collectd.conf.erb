@@ -10,7 +10,7 @@
 # Global settings for the daemon.                                            #
 ##############################################################################
 
-#Hostname    "localhost"
+Hostname    "<%= p("collectd.hostname_prefix") %><%= name %>.<%= index %>"
 #FQDNLookup   true
 #BaseDir     "${prefix}/var/lib/collectd"
 #PIDFile     "${prefix}/var/run/collectd.pid"
@@ -822,43 +822,43 @@ LoadPlugin network
   LogTraces true
   Interactive false
 
-  <% if_p("collectd.librato.api_token") do %>
+  <% if_p("collectd.python_librato.api_token") do %>
     Import "collectd-librato"
     <Module "collectd-librato">
       TypesDB "/var/vcap/packages/collectd/share/collectd/types.db"
-      Email "<%= p("collectd.librato.email") %>"
-      APIToken "<%= p("collectd.librato.api_token") %>"
+      Email "<%= p("collectd.python_librato.email") %>"
+      APIToken "<%= p("collectd.python_librato.api_token") %>"
 
-      <% if_p("collectd.librato.floor_time_secs") do %>
-          FloorTimeSecs "<%= p("collectd.librato.floor_time_secs") %>"
+      <% if_p("collectd.python_librato.floor_time_secs") do %>
+          FloorTimeSecs "<%= p("collectd.python_librato.floor_time_secs") %>"
       <% end %>
 
-      <% if_p("collectd.librato.flush_interval_secs") do %>
-          FlushIntervalSecs "<%= p("collectd.librato.flush_interval_secs") %>"
+      <% if_p("collectd.python_librato.flush_interval_secs") do %>
+          FlushIntervalSecs "<%= p("collectd.python_librato.flush_interval_secs") %>"
       <% end %>
 
-      <% if_p("collectd.librato.include_regex") do %>
-          IncludeRegex "<%= p("collectd.librato.include_regex") %>"
+      <% if_p("collectd.python_librato.include_regex") do %>
+          IncludeRegex "<%= p("collectd.python_librato.include_regex") %>"
       <% end %>
 
-      <% if_p("collectd.librato.include_single_value_names") do %>
-          IncludeSingleValueNames "<%= p("collectd.librato.include_single_value_names") %>"
+      <% if_p("collectd.python_librato.include_single_value_names") do %>
+          IncludeSingleValueNames "<%= p("collectd.python_librato.include_single_value_names") %>"
       <% end %>
 
-      <% if_p("collectd.librato.lowercase_metric_names") do %>
-          LowercaseMetricNames "<%= p("collectd.librato.lowercase_metric_names") %>"
+      <% if_p("collectd.python_librato.lowercase_metric_names") do %>
+          LowercaseMetricNames "<%= p("collectd.python_librato.lowercase_metric_names") %>"
       <% end %>
 
-      <% if_p("collectd.librato.metric_prefix") do %>
-          MetricPrefix "<%= p("collectd.librato.metric_prefix") %>"
+      <% if_p("collectd.python_librato.metric_prefix") do %>
+          MetricPrefix "<%= p("collectd.python_librato.metric_prefix") %>"
       <% end %>
 
-      <% if_p("collectd.librato.metric_separator") do %>
-          MetricSeparator "<%= p("collectd.librato.metric_separator") %>"
+      <% if_p("collectd.python_librato.metric_separator") do %>
+          MetricSeparator "<%= p("collectd.python_librato.metric_separator") %>"
       <% end %>
 
-      <% if_p("collectd.librato.source") do %>
-          Source "<%= p("collectd.librato.source") %>"
+      <% if_p("collectd.python_librato.source") do %>
+          Source "<%= p("collectd.python_librato.source") %>"
       <% end %>
     </Module>
   <% end %>
