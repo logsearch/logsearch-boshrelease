@@ -1,98 +1,98 @@
 {
-    "bootstrap.mlockall" : true,
-    "indices.memory.index_buffer_size" : "50%",
-    "indices.ttl.interval": "<%= p("elasticsearch.indices.ttl_interval") %>",
-    "index.cache.field.type" : "soft",
-    "index.cache.field.expire" : "15m",
-    "index.translog.flush_threshold_ops" : 64000,
-    "node.max_local_storage_nodes" : 1,
-    "cluster.name" : "<%= p("elasticsearch.cluster_name") %>",
-    "node" : {
-        "master" : <%= p("elasticsearch.node.is_master") %>,
-        "data" : <%= p("elasticsearch.node.has_data") %>
-    },
-    "discovery.zen.ping.multicast.enabled": false,
+  "bootstrap.mlockall" : true,
+  "indices.memory.index_buffer_size" : "50%",
+  "indices.ttl.interval": "<%= p("elasticsearch.indices.ttl_interval") %>",
+  "index.cache.field.type" : "soft",
+  "index.cache.field.expire" : "15m",
+  "index.translog.flush_threshold_ops" : 64000,
+  "node.max_local_storage_nodes" : 1,
+  "cluster.name" : "<%= p("elasticsearch.cluster_name") %>",
+  "node" : {
+    "master" : <%= p("elasticsearch.node.allow_master") %>,
+    "data" : <%= p("elasticsearch.node.allow_data") %>
+  },
+  "discovery.zen.ping.multicast.enabled": false,
 <% if_p("elasticsearch.discovery.aws_region", "elasticsearch.discovery.aws_security_group") do %> 
-    "cloud.aws.region" : "<%= p("elasticsearch.discovery.aws_region") %>",
-    "discovery.type" : "ec2",
-    "discovery.ec2.groups" : "<%= p("elasticsearch.discovery.aws_security_group") %>",
+  "cloud.aws.region" : "<%= p("elasticsearch.discovery.aws_region") %>",
+  "discovery.type" : "ec2",
+  "discovery.ec2.groups" : "<%= p("elasticsearch.discovery.aws_security_group") %>",
 <% end %>
 <% if_p("elasticsearch.discovery.ping_unicast_hosts") do %>
-    "discovery.zen.ping.unicast.hosts" : "<%= p("elasticsearch.discovery.ping_unicast_hosts") %>",
+  "discovery.zen.ping.unicast.hosts" : "<%= p("elasticsearch.discovery.ping_unicast_hosts") %>",
 <% end %>
-    "discovery.zen.minimum_master_nodes" : <%= p("elasticsearch.discovery.minimum_master_nodes") %>,
-    "path.conf" : "/var/vcap/jobs/elasticsearch/config/",
-    "path.logs" : "/var/vcap/sys/log/elasticsearch",
-    "path.data" : "/var/vcap/store/elasticsearch",
-    "network.host" : "0.0.0.0",
-    "http.type" : "com.sonian.elasticsearch.http.filter.FilterHttpServerTransportModule",
-    "threadpool.search.type" : "fixed",
-    "threadpool.search.size" : 32,
-    "threadpool.search.queue_size" : 128,
-    "threadpool.index.type" : "fixed",
-    "threadpool.index.size" : 64,
-    "threadpool.index.queue_size" : 256,
+  "discovery.zen.minimum_master_nodes" : <%= p("elasticsearch.discovery.minimum_master_nodes") %>,
+  "path.conf" : "/var/vcap/jobs/elasticsearch/config",
+  "path.logs" : "/var/vcap/sys/log/elasticsearch",
+  "path.data" : "/var/vcap/store/elasticsearch",
+  "network.host" : "0.0.0.0",
+  "http.type" : "com.sonian.elasticsearch.http.filter.FilterHttpServerTransportModule",
+  "threadpool.search.type" : "fixed",
+  "threadpool.search.size" : 32,
+  "threadpool.search.queue_size" : 128,
+  "threadpool.index.type" : "fixed",
+  "threadpool.index.size" : 64,
+  "threadpool.index.queue_size" : 256,
 
-    "sonian" : {
-        "elasticsearch" : {
-            "http" : {
-                "filter" : {
-                    "http_filter_chain" : [
-                        "logging"
-                    ],
-                    "http_filter" : {
-                        "logging" : {
-                            "type" : "com.sonian.elasticsearch.http.filter.logging.LoggingFilterHttpServerAdapter",
-                            "logger" : "request",
-                            "format" : "json",
-                            "level" : "INFO",
-                            "log_body" : false,
-                            "loggers" : {
-                                "stats" : {
-                                    "path" : [
-                                        "/_cluster/health",
-                                        "/_cluster/nodes",
-                                        "/_cluster/state",
-                                        "/_cluster/nodes/{node}/stats"
-                                    ],
-                                    "method" : [
-                                        "GET"
-                                    ],
-                                    "level" : "TRACE"
-                                },
-                                "searches" : {
-                                    "path" : [
-                                        "/_search",
-                                        "/_search/scroll",
-                                        "/_search/scroll/{scroll_id}",
-                                        "/{index}/_search",
-                                        "/{index}/{type}/_search",
-                                        "/{index}/{type}/{id}/_mlt"
-                                    ],
-                                    "method" : [
-                                        "GET",
-                                        "POST"
-                                    ],
-                                    "log_body": true
-                                },
-                                "count" : {
-                                    path: [
-                                        "/_count",
-                                        "/{index}/_count",
-                                        "/{index}/{type}/_count"
-                                    ],
-                                    "method" : [
-                                        "GET",
-                                        "POST"
-                                    ],
-                                    "log_body" : true
-                                }
-                            }
-                        }
-                    }
+  "sonian" : {
+    "elasticsearch" : {
+      "http" : {
+        "filter" : {
+          "http_filter_chain" : [
+            "logging"
+          ],
+          "http_filter" : {
+            "logging" : {
+              "type" : "com.sonian.elasticsearch.http.filter.logging.LoggingFilterHttpServerAdapter",
+              "logger" : "request",
+              "format" : "json",
+              "level" : "INFO",
+              "log_body" : false,
+              "loggers" : {
+                "stats" : {
+                  "path" : [
+                    "/_cluster/health",
+                    "/_cluster/nodes",
+                    "/_cluster/state",
+                    "/_cluster/nodes/{node}/stats"
+                  ],
+                  "method" : [
+                    "GET"
+                  ],
+                  "level" : "TRACE"
+                },
+                "searches" : {
+                  "path" : [
+                    "/_search",
+                    "/_search/scroll",
+                    "/_search/scroll/{scroll_id}",
+                    "/{index}/_search",
+                    "/{index}/{type}/_search",
+                    "/{index}/{type}/{id}/_mlt"
+                  ],
+                  "method" : [
+                    "GET",
+                    "POST"
+                  ],
+                  "log_body": true
+                },
+                "count" : {
+                  path: [
+                    "/_count",
+                    "/{index}/_count",
+                    "/{index}/{type}/_count"
+                  ],
+                  "method" : [
+                    "GET",
+                    "POST"
+                  ],
+                  "log_body" : true
                 }
+              }
             }
+          }
         }
+      }
     }
+  }
 }
 

@@ -2,19 +2,19 @@ input {
 	syslog {
 		add_field => [ "type", "syslog" ]
 		host => "0.0.0.0"
-		port => "<%= p("ingestor.syslog.endpoint.port") %>"
+		port => "<%= p("logstash.input.syslog.port") %>"
 	}
 }
 
 output {
-	<% if_p("ingestor.syslog.debug") do %>
+	<% if_p("logstash.debug") do %>
 	stdout { debug => true codec => "json"}
 	<% end %>
 	
 	redis {
-		host => "<%= p("queue.endpoint.host") %>:<%= p("queue.endpoint.port") %>"
+		host => "<%= p("logstash.queue.redis.host") %>:<%= p("logstash.queue.redis.port") %>"
 		data_type => "list"
-		key => "<%= p("queue.name") %>"
+		key => "<%= p("logstash.queue.redis.key") %>"
 		batch => true
 		batch_events => 50
 	}

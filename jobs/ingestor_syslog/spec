@@ -10,17 +10,7 @@ templates:
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/syslog_to_redis.conf.erb: config/syslog_to_redis.conf
-  
 properties:
-  ingestor.syslog.debug:
-    description: Debug level logging
-    default: false
-  queue.endpoint.host: 
-    description: host of queue
-  queue.endpoint.port: 
-    description: port of queue
-  queue.name: 
-    description: Name of queue to push messages to
-  ingestor.syslog.endpoint.port: 
+  logstash.input.syslog.port: 
     description: Port to listen for syslog messages
     default: 5514

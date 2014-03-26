@@ -10,5 +10,11 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/redis.conf.erb: config/redis.conf
 properties:
-  queue.endpoint.port: 
-    description: Port to listen for requests to redis server (eg, 6379)
+  logstash.queue.redis.host: 
+    description: Redis host of queue
+  logstash.queue.redis.port: 
+    description: Redis port of queue
+    default: 6379
+  logstash.queue.redis.key: 
+    description: Name of queue to pull messages from
+    default: logstash

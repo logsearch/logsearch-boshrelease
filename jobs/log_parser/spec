@@ -12,24 +12,10 @@ templates:
   config/redis_to_elasticsearch.conf.erb: config/redis_to_elasticsearch.conf
 
 properties:
-  log_parser.debug:
+  logstash.debug:
     description: Debug level logging
     default: false
-  queue.endpoint.host: 
-    description: host of queue
-  queue.endpoint.port: 
-    description: port of queue
-  queue.name: 
-    description: Name of queue to pull messages from
-  elasticsearch.endpoint.host:
-    description: IP / DNS of elasticsearch http endpoint
-  elasticsearch.endpoint.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
-  log_parser.flush_size:
-    description: Redis queue flush size
-    default: 100
-  log_parser.message_max_size:
+  logstash.message_max_size:
     description: "Maximum log message length.  Anything larger is truncated (TODO: move this to ingestor?)"
     default: 1048576
    

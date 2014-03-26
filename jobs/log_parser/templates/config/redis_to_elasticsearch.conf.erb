@@ -1,11 +1,11 @@
 input {
 
     redis {
-        host => "<%= p("queue.endpoint.host") %>"
-        port => "<%= p("queue.endpoint.port") %>"
+        host => "<%= p("log_parser.input.redis.host") %>"
+        port => "<%= p("log_parser.input.redis.port") %>"
         type => "redis-input"
         data_type => "list"
-        key => "<%= p("queue.name") %>"
+        key => "<%= p("log_parser.input.redis.queue_name") %>"
         threads => 8
     }
 }
@@ -98,8 +98,8 @@ output {
     <% end %>
 
     elasticsearch_http {
-        host => "<%= p("elasticsearch.endpoint.host") %>:<%= p("elasticsearch.endpoint.port") %>"
-        flush_size => <%= p("log_parser.flush_size") %>
+        host => "<%= p("log_parser.output.elasticsearch.host") %>:<%= p("log_parser.output.elasticsearch.port") %>"
+        flush_size => <%= p("log_parser.output.elasticsearch.flush_size") %>
         index_type => "%{@type}"
         manage_template => false
     }
