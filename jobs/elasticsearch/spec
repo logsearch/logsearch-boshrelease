@@ -33,14 +33,9 @@ properties:
   elasticsearch.indices.ttl_interval:
     description: "Interval at which to deleted expired documents (based on their _ttl field). Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
     default: 1d
+  elasticsearch.marvel.agent.enabled:
+    description: Whether to enable the marvel agent
+    default: false
   elasticsearch.indices.ttl_default:
     description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
     default: 30d
-  logstash.output.elasticsearch.host:
-    description: IP / DNS of elasticsearch http endpoint
-  logstash.output.elasticsearch.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
-  logstash.output.elasticsearch.flush_size:
-    description: Redis queue flush size
-    default: 100

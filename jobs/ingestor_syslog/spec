@@ -14,3 +14,19 @@ properties:
   logstash.input.syslog.port: 
     description: Port to listen for syslog messages
     default: 5514
+  logstash.output.elasticsearch.host:
+    description: IP / DNS of elasticsearch http endpoint
+  logstash.output.elasticsearch.port:
+    description: Port of elasticsearch http endpoint
+    default: 9200
+  logstash.output.elasticsearch.flush_size:
+    description: Redis queue flush size
+    default: 100
+  logstash.queue.redis.host: 
+    description: Redis host of queue
+  logstash.queue.redis.port: 
+    description: Redis port of queue
+    default: 6379
+  logstash.queue.redis.key: 
+    description: Name of queue to pull messages from
+    default: logstash

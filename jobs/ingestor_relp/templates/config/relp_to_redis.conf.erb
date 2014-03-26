@@ -15,7 +15,8 @@ output {
 	<% end %>
 
 	redis {
-		host => "<%= p("logstash.queue.redis.host") %>:<%= p("logstash.queue.redis.port") %>"
+		host => "<%= p("logstash.queue.redis.host") %>"
+		port => "<%= p("logstash.queue.redis.port") %>"
 		data_type => "list"
 		key => "<%= p("logstash.queue.redis.key") %>"
 		batch => true

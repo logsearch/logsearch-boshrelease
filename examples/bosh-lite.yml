@@ -32,6 +32,7 @@ jobs:
 - name: api
   template: 
   - api
+  - collectd
   - elasticsearch
   instances: 1
   resource_pool: warden
@@ -42,14 +43,14 @@ jobs:
   properties:
     elasticsearch:
       node:
-        is_master: true
-        has_data: false
+        allow_data: false
 
 - name: ingestor
   template: 
+  - collectd
   - ingestor_lumberjack
-  - ingestor_syslog
   - ingestor_relp
+  - ingestor_syslog
   instances: 1
   resource_pool: warden
   networks:
@@ -59,6 +60,7 @@ jobs:
 
 - name: queue
   template: 
+  - collectd
   - queue
   instances: 1
   resource_pool: warden
@@ -69,6 +71,7 @@ jobs:
 
 - name: log_parser
   template: 
+  - collectd
   - log_parser
   instances: 1
   resource_pool: warden
@@ -80,6 +83,7 @@ jobs:
 
 - name: elasticsearch_persistent
   template: 
+  - collectd
   - elasticsearch
   instances: 1
   resource_pool: warden
@@ -91,11 +95,11 @@ jobs:
   properties:
     elasticsearch:
       node:
-        is_master: true
-        has_data: true
+        allow_master: false
 
 - name: elasticsearch_autoscale
   template: 
+  - collectd
   - elasticsearch
   instances: 1
   resource_pool: warden
@@ -107,86 +111,88 @@ jobs:
   properties:
     elasticsearch:
       node:
-        is_master: false
-        has_data: true
+        allow_master: false
 
 properties: 
+  collectd:
+    hostname_prefix: "dev.logsearch.repo-dpb587-test1."
+    python_librato:
+      email: "sudobot@labs.cityindex.com"
+      api_token: "708180d3eee0d4c553ee1e86fce66e4cf07469c9b35504d2e1ec4e330d08b079"
+      include_regex: "collectd\\.cpu\\..*,collectd\\.df\\..*,collectd\\.disk\\..*,collectd\\.elasticsearch\\..*,collectd\\.entropy\\..*,collectd\\.interface\\..*,collectd\\.load\\..*,collectd\\.memory\\..*,collectd\\.processes\\..*,collectd\\.redis_.*,collectd\\.users\\..*"
   elasticsearch:
     cluster_name: logsearch
-    endpoint:
-      host: 10.244.2.2
-      port: 9200
     discovery:
       ping_unicast_hosts: "10.244.2.2,10.244.2.6" # Seem to have to list all master nodes?
     indices:
       ttl_interval: "60s"  # We want documents from test runs to be cleaned up frequently
-  queue:
-    name: logs_to_be_parsed
-    endpoint:
-      host: 10.244.2.10
-      port: 6379
-  log_parser:
+  logstash:
     debug: true
-  ingestor:
-    relp:
-      debug: true
-      endpoint:
+    queue:
+      redis:
+        host: 10.244.2.10
+    output:
+      elasticsearch:
+        host: 10.244.2.2
+    input:
+      relp:
+        debug: true
         port: 5514
-    syslog:
-      debug: true
-    lumberjack:
-      debug: true
-      ssl_certificate: |
-          -----BEGIN CERTIFICATE-----
-          MIIDtTCCAp2gAwIBAgIJALfb51kZrob4MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
-          BAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
-          aWRnaXRzIFB0eSBMdGQwHhcNMTQwMTMxMDcxODE3WhcNMTQwMzAyMDcxODE3WjBF
-          MQswCQYDVQQGEwJBVTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50
-          ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
-          CgKCAQEAvxWkAQk9NtV7DIbqFubSBPw7twd0DvYDaQAErokTVWHYGHhIFAxW0+Tl
-          1nAVLVUUJK92ARW+sLJ81A30DMuyAeA7tVBZW4TYD+XPleame081rcGbC0rOEbej
-          yEm7ZlqnTmZb8twG8fRjQ0DkworMLNWRCNWLFGb9P07b/eY3+hux8xsQOyRogtHJ
-          xLjpqQROYrSJ+Ldzgs8TSJ6NkieeBCMx+KrYGqohej3DeD4qHeqWTF8ieFs6+JT4
-          1ZEdv4MbLNXoXnxihsXPRKaUps1tXPw43c2mDIXsacxjWB2UyzPZ7+DPdzb0becr
-          9xHVCkO6BCz93bK/8HTuAwW7qJn50wIDAQABo4GnMIGkMB0GA1UdDgQWBBTN+5+G
-          CCwjJx1qlS686oxo/qcigjB1BgNVHSMEbjBsgBTN+5+GCCwjJx1qlS686oxo/qci
-          gqFJpEcwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgTClNvbWUtU3RhdGUxITAfBgNV
-          BAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJALfb51kZrob4MAwGA1UdEwQF
-          MAMBAf8wDQYJKoZIhvcNAQEFBQADggEBACEfgFDGd+JbKrDPbnH6blJuprCFPwZQ
-          JDprPAXscFSbvtKPMLOjkoJ+v+X3MIYIsmeVEXoYXwGE/QAUXYTddJXW4BQYQMi9
-          tI7qscOjN9532oiNCvDEt1ERReYfTQAXby2PP9rPMAXZAB6GdqlztFfks8tzjJ8C
-          ZkUQUGQKHTQXk7rGkrutwuPFrhhEmE2+BGPQcNTZrFswZbx3bkfznOPMDMCTCDN0
-          H/ir11J9xS1XazdyHBWTNQU5dBbmyrd0FmcCZI+dLO+iuLox7JyviVqj+ic+SeRR
-          23UffFuq8sIwkc6t+a4RuPd8uF4g0sVmdiDaa4rZp0wIO4Q0QM62kV8=
-          -----END CERTIFICATE-----
-      ssl_key: |
-          -----BEGIN RSA PRIVATE KEY-----
-          MIIEpQIBAAKCAQEAvxWkAQk9NtV7DIbqFubSBPw7twd0DvYDaQAErokTVWHYGHhI
-          FAxW0+Tl1nAVLVUUJK92ARW+sLJ81A30DMuyAeA7tVBZW4TYD+XPleame081rcGb
-          C0rOEbejyEm7ZlqnTmZb8twG8fRjQ0DkworMLNWRCNWLFGb9P07b/eY3+hux8xsQ
-          OyRogtHJxLjpqQROYrSJ+Ldzgs8TSJ6NkieeBCMx+KrYGqohej3DeD4qHeqWTF8i
-          eFs6+JT41ZEdv4MbLNXoXnxihsXPRKaUps1tXPw43c2mDIXsacxjWB2UyzPZ7+DP
-          dzb0becr9xHVCkO6BCz93bK/8HTuAwW7qJn50wIDAQABAoIBAQCeG7bnUJDBFWVK
-          WTvKlVTD4T071cP3OSJbODOngy5nIJ2gqa3iQM97ZtOyWm17ZAFV1YULosV1CUr2
-          X1FHYSg6GyLshL5bVpE8nkfkXcP1FfZxflfewRe/Wzb+29te9rWmzlVYnyxz+WZE
-          2KYwPo5wroniSGdbC1iSkJrA/EPnAp/eOchwmy3RAdE/6unFOBugNjn4fIi0fXEz
-          r+jD+bDW7jhkdEvAZDil4uzKLE8ICquoYwmEQ6WWoosTVszCTT9RtoL/NT3EZMPf
-          VWcjDYh9OjVUKTkOUAKERE83yP0l37Eum2yc0vGE6it0HdlM6FTqJBw7LBUC8Lub
-          BXGIUHqRAoGBAP52RwSP0+GHF3UZJ+6II3fEtZ9s1IWfjxcNj6myUjXNfq5woOWy
-          LD9Qqx6Qs5XqpnfxI3ZeaUwzwpkSupaUrkMlzJsvk6zMp45hldfr/ht4Vj6KeEWx
-          r5j+PLI4L9CYJb15E5bAvhvVwQXeroS4uXwQozyJses95wVnSteRf+NrAoGBAMA9
-          TQUl1nduirDjsASCGw6iQTTGQNJ+Anf/b/zEpzzTUvt+4IeOkN2w8k9Wd73XdJzv
-          /qLifh2btPWkAG9XKR0W84Z/CSDdYEO1qJPwZMCn65Dguy0/pQC0PE8kX/hLj+I0
-          8ToNZmZgrhIzNyI17xcx/GofVxXg93ccFhPCHcU5AoGBAO0tF2K0IHx8ayvVB7g4
-          Ij73FYaEbM4je760ACzerevCHwq+pemSmdVl/ileHFVmwkTXeQNSWnkRYZdFsq65
-          5Hdn2v7maJHOq3p1kLISH+ZA0ro2XIYxaQeEKNTAtCiMN9kT6mNAQbI2GVS8SxQg
-          DZsK8utxOGmYaCVMMqEc2AQDAoGALEuzvJTsZxaslHfSbieAjo2qkrt/4kCw1u+f
-          4VF665QSEes5V2LtVHfaTZex/adwslzGgsfHoZDoUJWamA0wZwiL0pjhBJaeANwR
-          3QzOWmoW6Iov9wwsPA5Luzy5dGAM5mWmk+bUipCKa50rfhGJZwHYlKdmDJ+KxgJN
-          v/3BmFkCgYEA3EjcbIpTO7/sLYT1Cz71nYriwYpndAnVmleoVLcapf2PRHaH1qg9
-          TZ4pxCBbr20WJhV4AfIkP1H2ng/vZVTTkGalGfzAaDy68iHx3lzVTB2jGgPh0io5
-          eQSIQMkokjB6eyo3P26r0Tnd/Z8fFko86k51mB3nWvVwGt9xvKWGjhU=
-          -----END RSA PRIVATE KEY-----
+      syslog:
+        debug: true
+      lumberjack:
+        debug: true
+        ssl_certificate: |
+            -----BEGIN CERTIFICATE-----
+            MIIDtTCCAp2gAwIBAgIJALfb51kZrob4MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
+            BAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
+            aWRnaXRzIFB0eSBMdGQwHhcNMTQwMTMxMDcxODE3WhcNMTQwMzAyMDcxODE3WjBF
+            MQswCQYDVQQGEwJBVTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50
+            ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+            CgKCAQEAvxWkAQk9NtV7DIbqFubSBPw7twd0DvYDaQAErokTVWHYGHhIFAxW0+Tl
+            1nAVLVUUJK92ARW+sLJ81A30DMuyAeA7tVBZW4TYD+XPleame081rcGbC0rOEbej
+            yEm7ZlqnTmZb8twG8fRjQ0DkworMLNWRCNWLFGb9P07b/eY3+hux8xsQOyRogtHJ
+            xLjpqQROYrSJ+Ldzgs8TSJ6NkieeBCMx+KrYGqohej3DeD4qHeqWTF8ieFs6+JT4
+            1ZEdv4MbLNXoXnxihsXPRKaUps1tXPw43c2mDIXsacxjWB2UyzPZ7+DPdzb0becr
+            9xHVCkO6BCz93bK/8HTuAwW7qJn50wIDAQABo4GnMIGkMB0GA1UdDgQWBBTN+5+G
+            CCwjJx1qlS686oxo/qcigjB1BgNVHSMEbjBsgBTN+5+GCCwjJx1qlS686oxo/qci
+            gqFJpEcwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgTClNvbWUtU3RhdGUxITAfBgNV
+            BAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJALfb51kZrob4MAwGA1UdEwQF
+            MAMBAf8wDQYJKoZIhvcNAQEFBQADggEBACEfgFDGd+JbKrDPbnH6blJuprCFPwZQ
+            JDprPAXscFSbvtKPMLOjkoJ+v+X3MIYIsmeVEXoYXwGE/QAUXYTddJXW4BQYQMi9
+            tI7qscOjN9532oiNCvDEt1ERReYfTQAXby2PP9rPMAXZAB6GdqlztFfks8tzjJ8C
+            ZkUQUGQKHTQXk7rGkrutwuPFrhhEmE2+BGPQcNTZrFswZbx3bkfznOPMDMCTCDN0
+            H/ir11J9xS1XazdyHBWTNQU5dBbmyrd0FmcCZI+dLO+iuLox7JyviVqj+ic+SeRR
+            23UffFuq8sIwkc6t+a4RuPd8uF4g0sVmdiDaa4rZp0wIO4Q0QM62kV8=
+            -----END CERTIFICATE-----
+        ssl_key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEpQIBAAKCAQEAvxWkAQk9NtV7DIbqFubSBPw7twd0DvYDaQAErokTVWHYGHhI
+            FAxW0+Tl1nAVLVUUJK92ARW+sLJ81A30DMuyAeA7tVBZW4TYD+XPleame081rcGb
+            C0rOEbejyEm7ZlqnTmZb8twG8fRjQ0DkworMLNWRCNWLFGb9P07b/eY3+hux8xsQ
+            OyRogtHJxLjpqQROYrSJ+Ldzgs8TSJ6NkieeBCMx+KrYGqohej3DeD4qHeqWTF8i
+            eFs6+JT41ZEdv4MbLNXoXnxihsXPRKaUps1tXPw43c2mDIXsacxjWB2UyzPZ7+DP
+            dzb0becr9xHVCkO6BCz93bK/8HTuAwW7qJn50wIDAQABAoIBAQCeG7bnUJDBFWVK
+            WTvKlVTD4T071cP3OSJbODOngy5nIJ2gqa3iQM97ZtOyWm17ZAFV1YULosV1CUr2
+            X1FHYSg6GyLshL5bVpE8nkfkXcP1FfZxflfewRe/Wzb+29te9rWmzlVYnyxz+WZE
+            2KYwPo5wroniSGdbC1iSkJrA/EPnAp/eOchwmy3RAdE/6unFOBugNjn4fIi0fXEz
+            r+jD+bDW7jhkdEvAZDil4uzKLE8ICquoYwmEQ6WWoosTVszCTT9RtoL/NT3EZMPf
+            VWcjDYh9OjVUKTkOUAKERE83yP0l37Eum2yc0vGE6it0HdlM6FTqJBw7LBUC8Lub
+            BXGIUHqRAoGBAP52RwSP0+GHF3UZJ+6II3fEtZ9s1IWfjxcNj6myUjXNfq5woOWy
+            LD9Qqx6Qs5XqpnfxI3ZeaUwzwpkSupaUrkMlzJsvk6zMp45hldfr/ht4Vj6KeEWx
+            r5j+PLI4L9CYJb15E5bAvhvVwQXeroS4uXwQozyJses95wVnSteRf+NrAoGBAMA9
+            TQUl1nduirDjsASCGw6iQTTGQNJ+Anf/b/zEpzzTUvt+4IeOkN2w8k9Wd73XdJzv
+            /qLifh2btPWkAG9XKR0W84Z/CSDdYEO1qJPwZMCn65Dguy0/pQC0PE8kX/hLj+I0
+            8ToNZmZgrhIzNyI17xcx/GofVxXg93ccFhPCHcU5AoGBAO0tF2K0IHx8ayvVB7g4
+            Ij73FYaEbM4je760ACzerevCHwq+pemSmdVl/ileHFVmwkTXeQNSWnkRYZdFsq65
+            5Hdn2v7maJHOq3p1kLISH+ZA0ro2XIYxaQeEKNTAtCiMN9kT6mNAQbI2GVS8SxQg
+            DZsK8utxOGmYaCVMMqEc2AQDAoGALEuzvJTsZxaslHfSbieAjo2qkrt/4kCw1u+f
+            4VF665QSEes5V2LtVHfaTZex/adwslzGgsfHoZDoUJWamA0wZwiL0pjhBJaeANwR
+            3QzOWmoW6Iov9wwsPA5Luzy5dGAM5mWmk+bUipCKa50rfhGJZwHYlKdmDJ+KxgJN
+            v/3BmFkCgYEA3EjcbIpTO7/sLYT1Cz71nYriwYpndAnVmleoVLcapf2PRHaH1qg9
+            TZ4pxCBbr20WJhV4AfIkP1H2ng/vZVTTkGalGfzAaDy68iHx3lzVTB2jGgPh0io5
+            eQSIQMkokjB6eyo3P26r0Tnd/Z8fFko86k51mB3nWvVwGt9xvKWGjhU=
+            -----END RSA PRIVATE KEY-----
 
 # Warden CPI requires crappy network settings; so "hide" them away here
 networks:
@@ -285,3 +291,11 @@ networks:
     reserved:
     - 10.244.2.53
     static: []
+
+apply_spec:
+  properties:
+    ntp:
+      - 0.europe.pool.ntp.org
+      - 1.europe.pool.ntp.org
+      - 2.europe.pool.ntp.org
+      - 3.europe.pool.ntp.org
