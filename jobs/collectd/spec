@@ -10,7 +10,11 @@ templates:
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 properties:
+  collectd.interval:
+    default: 60
+    description: "Interval at which to query values."
   collectd.hostname_prefix:
+    default: ""
     description: "A prefix used in the hostname (suffixed by `job.index`)."
   collectd.python_librato.email:
     description: "The email address associated with your Librato Metrics account."

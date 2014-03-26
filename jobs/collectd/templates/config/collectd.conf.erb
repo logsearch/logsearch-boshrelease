@@ -24,7 +24,7 @@ Hostname    "<%= p("collectd.hostname_prefix") %><%= name %>.<%= index %>"
 #       Interval 60                                                          #
 #   </LoadPlugin>                                                            #
 #----------------------------------------------------------------------------#
-#Interval     10
+Interval <%= p("collectd.interval") %>
 
 #Timeout      2
 #ReadThreads  5
