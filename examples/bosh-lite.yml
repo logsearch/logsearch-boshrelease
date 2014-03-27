@@ -115,10 +115,8 @@ jobs:
 
 properties: 
   collectd:
-    hostname_prefix: "dev.logsearch.repo-dpb587-test1."
+    hostname_prefix: "dev.logsearch.repo-test1."
     python_librato:
-      email: "sudobot@labs.cityindex.com"
-      api_token: "708180d3eee0d4c553ee1e86fce66e4cf07469c9b35504d2e1ec4e330d08b079"
       include_regex: "collectd\\.cpu\\..*,collectd\\.df\\..*,collectd\\.disk\\..*,collectd\\.elasticsearch\\..*,collectd\\.entropy\\..*,collectd\\.interface\\..*,collectd\\.load\\..*,collectd\\.memory\\..*,collectd\\.processes\\..*,collectd\\.redis_.*,collectd\\.users\\..*"
   elasticsearch:
     cluster_name: logsearch
