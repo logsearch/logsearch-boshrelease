@@ -1,9 +1,11 @@
 ---
 name: logsearch
-director_uuid: 51abcb52-334e-44a8-8f3d-00d2c271919e
+director_uuid: f0588560-08a8-4ae2-914a-b9e8b12d9303 
 
-release:
-  name: logsearch
+releases:
+- name: logsearch
+  version: latest
+- name: logsearch-cf_parsers
   version: latest
 
 compilation:
@@ -30,10 +32,13 @@ resource_pools:
 
 jobs:
 - name: api
-  template: 
-  - api
-  - collectd
-  - elasticsearch
+  templates: 
+  - name: api
+    release: logsearch
+  - name: collectd
+    release: logsearch
+  - name: elasticsearch
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -46,11 +51,15 @@ jobs:
         allow_data: false
 
 - name: ingestor
-  template: 
-  - collectd
-  - ingestor_lumberjack
-  - ingestor_relp
-  - ingestor_syslog
+  templates:
+  - name: collectd
+    release: logsearch 
+  - name: ingestor_lumberjack
+    release: logsearch
+  - name: ingestor_syslog
+    release: logsearch
+  - name: ingestor_relp
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -59,9 +68,11 @@ jobs:
     - 10.244.2.14
 
 - name: queue
-  template: 
-  - collectd
-  - queue
+  templates:
+  - name: collectd
+    release: logsearch
+  - name: queue
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -70,9 +81,13 @@ jobs:
     - 10.244.2.10
 
 - name: log_parser
-  template: 
-  - collectd
-  - log_parser
+  templates:
+  - name: collectd
+    release: logsearch
+  - name: log_parser
+    release: logsearch
+  - name: logstash-filters-cf
+    release: logsearch-cf_parsers
   instances: 1
   resource_pool: warden
   networks:
@@ -82,9 +97,11 @@ jobs:
     - gateway
 
 - name: elasticsearch_persistent
-  template: 
-  - collectd
-  - elasticsearch
+  templates:
+  - name: collectd
+    release: logsearch
+  - name: elasticsearch
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -98,9 +115,11 @@ jobs:
         allow_master: false
 
 - name: elasticsearch_autoscale
-  template: 
-  - collectd
-  - elasticsearch
+  templates:
+  - name: collectd
+    release: logsearch
+  - name: elasticsearch
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
