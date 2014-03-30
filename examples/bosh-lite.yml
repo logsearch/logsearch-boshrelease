@@ -5,8 +5,6 @@ director_uuid: f0588560-08a8-4ae2-914a-b9e8b12d9303
 releases:
 - name: logsearch
   version: latest
-- name: logsearch-cf_parsers
-  version: latest
 
 compilation:
   workers: 3
@@ -32,13 +30,11 @@ resource_pools:
 
 jobs:
 - name: api
+  release: logsearch
   templates: 
   - name: api
-    release: logsearch
   - name: collectd
-    release: logsearch
   - name: elasticsearch
-    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -51,15 +47,12 @@ jobs:
         allow_data: false
 
 - name: ingestor
+  release: logsearch
   templates:
   - name: collectd
-    release: logsearch 
   - name: ingestor_lumberjack
-    release: logsearch
   - name: ingestor_syslog
-    release: logsearch
   - name: ingestor_relp
-    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -68,11 +61,10 @@ jobs:
     - 10.244.2.14
 
 - name: queue
+  release: logsearch
   templates:
   - name: collectd
-    release: logsearch
   - name: queue
-    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -81,13 +73,10 @@ jobs:
     - 10.244.2.10
 
 - name: log_parser
+  release: logsearch
   templates:
   - name: collectd
-    release: logsearch
   - name: log_parser
-    release: logsearch
-  - name: logstash-filters-cf
-    release: logsearch-cf_parsers
   instances: 1
   resource_pool: warden
   networks:
@@ -97,11 +86,10 @@ jobs:
     - gateway
 
 - name: elasticsearch_persistent
+  release: logsearch
   templates:
   - name: collectd
-    release: logsearch
   - name: elasticsearch
-    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -115,11 +103,10 @@ jobs:
         allow_master: false
 
 - name: elasticsearch_autoscale
+  release: logsearch
   templates:
   - name: collectd
-    release: logsearch
   - name: elasticsearch
-    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
