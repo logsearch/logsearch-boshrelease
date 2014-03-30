@@ -75,10 +75,13 @@ filter {
         }
     }
 
-    #TODO - Pull in other filter types
-    <%# Dir.glob("#{ENV['APP_APP_DIR']}/srv/logstash/config/filter.d/*.conf.erb") do |filter_erb_file| %>
-      <%#= ERB.new(File.read(filter_erb_file), nil, nil, '_filter_sub_template').result(binding) %>
-    <%# end %>
+    #
+    # Additional filter types from /var/vcap/packages/logstash-filters-*/*.conf
+    #
+
+    <% Dir.glob("/var/vcap/packages/logstash-filters-*/*.conf") do |filter_erb_file| %>
+      <%= ERB.new(File.read(filter_erb_file), nil, nil, '_filter_sub_template').result(binding) %>
+    <% end %>
 
     #
     # type-casting for more advanced searches
