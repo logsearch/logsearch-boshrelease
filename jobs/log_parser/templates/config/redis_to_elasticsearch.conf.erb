@@ -11,6 +11,17 @@ input {
 }
 
 filter {
+
+    #
+    # Default type to _logstash_input 
+    #
+
+    alter {
+        coalesce => [
+            "type", "%{_logstash_input}", "%{_type}"
+        ]
+    }
+
     #
     # rewrite our defined globals
     #
