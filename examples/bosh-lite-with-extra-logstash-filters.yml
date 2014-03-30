@@ -15,6 +15,7 @@ compilation:
   cloud_properties: {}
 
 update:
+  serial: false #Deploy jobs in parallel
   canaries: 1
   canary_watch_time: 30000
   update_watch_time: 30000
