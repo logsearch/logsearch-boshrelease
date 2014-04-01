@@ -42,6 +42,9 @@ jobs:
     static_ips:
     - 10.244.2.2
   properties:
+    collectd:
+      python_elasticsearch:
+        enabled: true
     elasticsearch:
       node:
         allow_data: false
@@ -71,6 +74,10 @@ jobs:
   - name: default
     static_ips:
     - 10.244.2.10
+  properties:
+    collectd:
+      python_redis:
+        enabled: true
 
 - name: log_parser
   release: logsearch
@@ -98,6 +105,9 @@ jobs:
     - 10.244.2.6
   persistent_disk: 1024
   properties:
+    collectd:
+      python_elasticsearch:
+        enabled: true
     elasticsearch:
       node:
         allow_master: false
@@ -115,6 +125,9 @@ jobs:
     - dns
     - gateway
   properties:
+    collectd:
+      python_elasticsearch:
+        enabled: true
     elasticsearch:
       node:
         allow_master: false

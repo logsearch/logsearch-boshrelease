@@ -16,4 +16,8 @@ make -j${CPUS} install
 
 cd ../
 mkdir $BOSH_INSTALL_TARGET/python
+cp collectd/collectd-elasticsearch.py $BOSH_INSTALL_TARGET/python/collectd-elasticsearch.py
+cp collectd/collectd-elasticsearch-logstash.py $BOSH_INSTALL_TARGET/python/collectd-elasticsearch-logstash.py
 cp collectd/collectd-librato.py $BOSH_INSTALL_TARGET/python/collectd-librato.py
+cp collectd/collectd-redis.py $BOSH_INSTALL_TARGET/python/collectd-redis.py
+cp collectd/collectd-redis-logstash.py $BOSH_INSTALL_TARGET/python/collectd-redis-logstash.py
