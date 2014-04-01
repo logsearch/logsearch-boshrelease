@@ -17,8 +17,8 @@
   "discovery.type" : "ec2",
   "discovery.ec2.groups" : "<%= p("elasticsearch.discovery.aws_security_group") %>",
 <% end %>
-<% if_p("elasticsearch.discovery.ping_unicast_hosts") do %>
-  "discovery.zen.ping.unicast.hosts" : "<%= p("elasticsearch.discovery.ping_unicast_hosts") %>",
+<% if_p("elasticsearch.host") do %>
+  "discovery.zen.ping.unicast.hosts" : "<%= p("elasticsearch.host") %>",
 <% end %>
   "discovery.zen.minimum_master_nodes" : <%= p("elasticsearch.discovery.minimum_master_nodes") %>,
   "path.conf" : "/var/vcap/jobs/elasticsearch/config",
