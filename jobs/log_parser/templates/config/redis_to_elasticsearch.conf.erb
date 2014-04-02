@@ -1,11 +1,11 @@
 input {
 
     redis {
-        host => "<%= p("queue.endpoint.host") %>"
-        port => "<%= p("queue.endpoint.port") %>"
+        host => "<%= p("redis.host") %>"
+        port => "<%= p("redis.port") %>"
         type => "redis-input"
         data_type => "list"
-        key => "<%= p("queue.name") %>"
+        key => "<%= p("redis.key") %>"
         threads => 8
     }
 }
@@ -48,7 +48,7 @@ filter {
     #
 
     ruby {
-        code => "(event['@message'] = event['@message'][0,<%= p("log_parser.message_max_size") %>] and (event['tags'] ||= []) << '_groktrimmed') if event['@message'] and event['@message'].length > <%= p("log_parser.message_max_size") %>"
+        code => "(event['@message'] = event['@message'][0,<%= p("logstash_parser.message_max_size") %>] and (event['tags'] ||= []) << '_groktrimmed') if event['@message'] and event['@message'].length > <%= p("logstash_parser.message_max_size") %>"
     }
 
     #
@@ -93,13 +93,13 @@ filter {
 }
 
 output {
-    <% if_p("log_parser.debug") do %>
+    <% if_p("logstash_parser.debug") do %>
     stdout { debug => true codec => "json"}
     <% end %>
 
     elasticsearch_http {
-        host => "<%= p("elasticsearch.endpoint.host") %>:<%= p("elasticsearch.endpoint.port") %>"
-        flush_size => <%= p("log_parser.flush_size") %>
+        host => "<%= p("elasticsearch.host") %>:<%= p("elasticsearch.port") %>"
+        flush_size => <%= p("elasticsearch.flush_size") %>
         index_type => "%{@type}"
         manage_template => false
     }

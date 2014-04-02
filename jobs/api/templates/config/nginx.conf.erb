@@ -1,11 +1,13 @@
-user  vcap vcap;
+# see: https://github.com/elasticsearch/kibana/blob/master/sample/nginx.conf
+# see: https://github.com/elasticsearch/cookbook-elasticsearch/blob/master/templates/default/elasticsearch_proxy.conf.erb
 
+daemon off;
 error_log /var/vcap/sys/log/api/nginx.error.log;
-pid       /var/vcap/sys/run/api/nginx.pid;
+pid /var/vcap/sys/run/api/nginx.pid;
 
 events {
-  worker_connections  8192;
-  use epoll;
+    worker_connections 8192;
+    use epoll;
 }
 
 http {
@@ -23,6 +25,7 @@ http {
     gzip_proxied expired no-cache no-store private auth;
     gzip_types application/json;
 
+    proxy_redirect off;
     proxy_read_timeout 90;
     proxy_temp_path /var/vcap/sys/tmp/api/nginx-proxy-temp;
 
@@ -32,24 +35,46 @@ http {
 
     server {
         listen *:80;
-        server_name logsearch.api;
+        server_name logsearch;
 
-        location ~ ^/_all/_search {
+
+        # update: proxy headers
+        # reason: common practice, better logging
+
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+
+
+        # update: cors headers
+        # reason: support running kibana from other hosts
+
+        proxy_pass_header Access-Control-Allow-Origin;
+        proxy_pass_header Access-Control-Allow-Methods;
+        proxy_hide_header Access-Control-Allow-Headers;
+        add_header Access-Control-Allow-Headers 'X-Requested-With, Content-Type';
+        add_header Access-Control-Allow-Credentials true;
+
+
+        # deny: searches against all indices
+        # reason: causes us performance issues
+
+        location ~ ^/_all/_m?search {
             deny all;
         }
 
-        location ~ ^/[^\/\*]+/_search$ {
+
+        # read: index searches
+        # reason: we like searching
+
+        location ~ ^/[^\/\*]+(/[^\/\*]+)?/_m?search$ {
             rewrite ^(.*)$ $1?timeout=15s break;
             proxy_pass http://elasticsearch;
         }
 
-        location ~ ^/kibana-int/dashboard/.*$ {
-            proxy_pass http://elasticsearch;
-        }
 
-        location ~ ^/kibana-int/temp.*$ {
-            proxy_pass http://elasticsearch;
-        }
+        # read: scrolled searches
+        # reason: occasionally used by some of our batch scripts
 
         location ~ ^/_search/scroll$ {
             limit_except GET {
@@ -59,7 +84,19 @@ http {
             proxy_pass http://elasticsearch;
         }
 
-        location ~ ^/_cluster/(state|health) {
+
+        # read|write: kibana dashboard storage
+        # reason: so users can save and share their dashboards
+
+        location ~ ^/(kibana-int|\.marvel-kibana)/(dashboard/.*|temp.*)$ {
+            proxy_pass http://elasticsearch;
+        }
+
+
+        # read: index metadata
+        # reason: for kibana and so we can easily use elastichq
+
+        location ~ ^/([^/]+/)?_(aliases|mapping|nodes|stats|status)$ {
             limit_except GET {
                 deny all;
             }
@@ -67,7 +104,11 @@ http {
             proxy_pass http://elasticsearch;
         }
 
-        location ~ ^/_cluster/nodes {
+
+        # read: cluster + node metadata
+        # reason: so we can easily use elastichq
+
+        location ~ ^/(_cluster|_nodes) {
             limit_except GET {
                 deny all;
             }
@@ -75,7 +116,11 @@ http {
             proxy_pass http://elasticsearch;
         }
 
-        location ~ ^/_nodes/stats {
+
+        # plugin: marvel, elastichq
+        # reason: it's mostly read-only
+
+        location ~ ^/_plugin/(marvel|HQ) {
             limit_except GET {
                 deny all;
             }
@@ -83,7 +128,11 @@ http {
             proxy_pass http://elasticsearch;
         }
 
-        location ~ ^/_(aliases|mapping|nodes|stats|status)$ {
+
+        # read: elasticsearch hello
+        # reason: easy health check
+
+        location ~ ^/$ {
             limit_except GET {
                 deny all;
             }
@@ -91,23 +140,12 @@ http {
             proxy_pass http://elasticsearch;
         }
 
-        location ~ ^/.*/(_aliases|_mapping|_stats|_status)$ {
-            limit_except GET {
-                deny all;
-            }
 
-            proxy_pass http://elasticsearch;
-        }
+        # deny: everything else
+        # reason: we're secure like that
 
-        location ~ ^/_plugin/ {
-            proxy_pass http://elasticsearch;
-        }
-
-        location ~ ^/*$ {
-            limit_except GET {
-                deny all;
-            }
-            proxy_pass http://elasticsearch;
+        location / {
+            deny all;
         }
     }
 }

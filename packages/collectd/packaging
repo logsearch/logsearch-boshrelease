@@ -1,0 +1,23 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Detect # of CPUs so make jobs can be parallelized
+CPUS=$(grep -c ^processor /proc/cpuinfo)
+ # Available variables
+# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+
+apt-get update && apt-get install -y python-dev
+
+tar xzf collectd/collectd-5.4.1.tar.gz
+cd collectd-5.4.1
+./configure --prefix=${BOSH_INSTALL_TARGET} --enable-python --with-python
+make -j${CPUS} install
+
+cd ../
+mkdir $BOSH_INSTALL_TARGET/python
+cp collectd/collectd-elasticsearch.py $BOSH_INSTALL_TARGET/python/collectd-elasticsearch.py
+cp collectd/collectd-elasticsearch-logstash.py $BOSH_INSTALL_TARGET/python/collectd-elasticsearch-logstash.py
+cp collectd/collectd-librato.py $BOSH_INSTALL_TARGET/python/collectd-librato.py
+cp collectd/collectd-redis.py $BOSH_INSTALL_TARGET/python/collectd-redis.py
+cp collectd/collectd-redis-logstash.py $BOSH_INSTALL_TARGET/python/collectd-redis-logstash.py

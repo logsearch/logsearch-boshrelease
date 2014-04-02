@@ -1,0 +1,5 @@
+check process collectd
+  with pidfile /var/vcap/sys/run/collectd/collectd.pid
+  start program "/var/vcap/jobs/collectd/bin/monit_debugger collectd_ctl '/var/vcap/jobs/collectd/bin/collectd_ctl start'"
+  stop program "/var/vcap/jobs/collectd/bin/monit_debugger collectd_ctl '/var/vcap/jobs/collectd/bin/collectd_ctl stop'"
+  group vcap

@@ -15,7 +15,7 @@ case $1 in
     pid_guard $PIDFILE $JOB_NAME
 
     exec /var/vcap/packages/elasticsearch/bin/elasticsearch -Des.config=${JOB_DIR}/config/default.json \
-         -f -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+PrintCommandLineFlags -XX:+PrintFlagsFinal -XX:+PrintPromotionFailure -XX:+PrintReferenceGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:PermSize=256m  -XX:MaxPermSize=256m -XX:+AggressiveOpts -XX:+UseCompressedOops \
+         -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+PrintCommandLineFlags -XX:+PrintFlagsFinal -XX:+PrintPromotionFailure -XX:+PrintReferenceGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:PermSize=256m  -XX:MaxPermSize=256m -XX:+AggressiveOpts -XX:+UseCompressedOops \
          -XX:HeapDumpPath=${TMPDIR}/heap-dump/ -Des.pidfile=${PIDFILE}
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log

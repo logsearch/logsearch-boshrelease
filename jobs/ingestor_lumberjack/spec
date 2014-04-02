@@ -12,21 +12,33 @@ templates:
   config/lumberjack_to_redis.conf.erb: config/lumberjack_to_redis.conf
   config/lumberjack.crt.erb: config/lumberjack.crt
   config/lumberjack.key.erb: config/lumberjack.key
-
 properties:
-  ingestor.lumberjack.debug:
+  logstash_ingestor.debug:
     description: Debug level logging
     default: false
-  queue.endpoint.host: 
-    description: host of queue
-  queue.endpoint.port: 
-    description: port of queue
-  queue.name: 
-    description: Name of queue to push messages to
-  ingestor.lumberjack.endpoint.port: 
+
+  logstash_ingestor.lumberjack.port: 
     description: Port to listen for lumberjack messages
     default: 5043
-  ingestor.lumberjack.ssl_certificate:
-    description: Lumberjack SSL certificate
-  ingestor.lumberjack.ssl_key:
-    description: Lumberjack SSL key
+  logstash_ingestor.lumberjack.ssl_certificate:
+    description: Lumberjack SSL certificate (file contents, not a path)
+  logstash_ingestor.lumberjack.ssl_key:
+    description: Lumberjack SSL key (file contents, not a path)
+
+  elasticsearch.host:
+    description: IP / DNS of elasticsearch http endpoint
+  elasticsearch.port:
+    description: Port of elasticsearch http endpoint
+    default: 9200
+  elasticsearch.flush_size:
+    description: Redis queue flush size
+    default: 100
+
+  redis.host: 
+    description: Redis host of queue
+  redis.port: 
+    description: Redis port of queue
+    default: 6379
+  redis.key: 
+    description: Name of queue to pull messages from
+    default: logstash

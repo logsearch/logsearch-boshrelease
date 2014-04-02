@@ -35,3 +35,39 @@ redis/redis-2.8.4.tar.gz:
   object_id: 1fe6f749-3432-4658-9f66-9c511668bc4f
   sha: 79b156cc9d8bff5a022fdc6d28d5c42999ddcb4f
   size: 1048914
+collectd/collectd-5.4.1.tar.gz:
+  object_id: 4196b251-c78f-4057-a25b-afecf00bbf03
+  sha: faaccac4daf48449bcefc9d6f9236f98a5dd5b4b
+  size: 1894132
+collectd/collectd-elasticsearch-logstash.py:
+  object_id: 3f3a7fd3-ef99-4af8-ba3b-9e805ecca4b3
+  sha: ab029abdc55bcc3320c12673132733eabff8bec4
+  size: 1856
+collectd/collectd-elasticsearch.py:
+  object_id: 39860b1c-f619-415a-8921-ed056d7b126d
+  sha: 803ceedabe3b46f708b541c76f672ba0d88971d7
+  size: 10430
+collectd/collectd-librato.py:
+  object_id: 037824f6-9239-4209-a424-6435a1462a91
+  sha: 67cfab428216e83f5cfc4af139608e159873455b
+  size: 9945
+collectd/collectd-redis-logstash.py:
+  object_id: cb7c149e-1281-49c0-8606-55d9d8e9095c
+  sha: d680a38c920ec51c8d511f60c77ad2b2c6434a15
+  size: 1173
+collectd/collectd-redis.py:
+  object_id: c46b4c94-c453-4900-abbc-6cc0f1604f3c
+  sha: b80e5ad81dccf4f685af73bcf41359e1422b783a
+  size: 5409
+elasticsearch/elasticsearch-1.0.1.tar.gz:
+  object_id: 9669365f-0a08-4763-a350-84513eee9f3c
+  sha: 26bcf8e36576b2f3809ab84432ea005f893836b9
+  size: 19244140
+elasticsearch/jetty-1.0.1-beta.zip:
+  object_id: fba1aa3d-30c5-4e3f-a322-146746a2532c
+  sha: c8e7abf95929b5f2a11393670ecf32130a8896e0
+  size: 1167955
+elasticsearch/marvel-1.1.0.zip:
+  object_id: 44dbdc36-ff9d-4435-bdad-f5bc8d662854
+  sha: d05f5f03493d0c49aba175bb26511d4e4c411000
+  size: 1862272
