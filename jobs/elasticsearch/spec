@@ -12,33 +12,26 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
-
 properties:
+  elasticsearch.host:
+    description: The frontend elasticsearch node services should use.
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
-  elasticsearch.endpoint.host:
-    description: IP / DNS of elasticsearch http endpoint
-  elasticsearch.endpoint.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
-  elasticsearch.node.is_master:
-    description: Is this node a master node? (true / false)
-    default: false
-  elasticsearch.node.has_data:
-    description: Does this node store data? (true / false)
+  elasticsearch.node.allow_master:
+    description: Allow node to become master? (true / false)
+    default: true
+  elasticsearch.node.allow_data:
+    description: Allow node to store data? (true / false)
     default: true
   elasticsearch.discovery.minimum_master_nodes:
     description: The minimum number of master eligible nodes a node should "see" in order to operate within the cluster. Recommended to set it to a higher value than 1 when running more than 2 nodes in the cluster.
     default: 1
-  elasticsearch.discovery.aws_region:
-    description: The AWS region the cluster is running in
-  elasticsearch.discovery.aws_security_group:
-    description: The security group containing elasticsearch nodes
-  elasticsearch.discovery.ping_unicast_hosts:
-    description: NOT for use on AWS. Comma separated list of nodes in cluster (Seem to have to list all nodes).  
   elasticsearch.indices.ttl_interval:
     description: "Interval at which to deleted expired documents (based on their _ttl field). Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
     default: 1d
+  elasticsearch.marvel.agent.enabled:
+    description: Whether to enable the marvel agent
+    default: false
   elasticsearch.indices.ttl_default:
     description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
-    default: 30d 
+    default: 30d

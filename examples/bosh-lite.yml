@@ -1,9 +1,9 @@
 ---
 name: logsearch
-director_uuid: 51abcb52-334e-44a8-8f3d-00d2c271919e
+director_uuid: f0588560-08a8-4ae2-914a-b9e8b12d9303 
 
-release:
-  name: logsearch
+releases:
+- name: logsearch
   version: latest
 
 compilation:
@@ -30,9 +30,11 @@ resource_pools:
 
 jobs:
 - name: api
-  template: 
-  - api
-  - elasticsearch
+  release: logsearch
+  templates: 
+  - name: api
+  - name: collectd
+  - name: elasticsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -40,16 +42,20 @@ jobs:
     static_ips:
     - 10.244.2.2
   properties:
+    collectd:
+      python_elasticsearch:
+        enabled: true
     elasticsearch:
       node:
-        is_master: true
-        has_data: false
+        allow_data: false
 
 - name: ingestor
-  template: 
-  - ingestor_lumberjack
-  - ingestor_syslog
-  - ingestor_relp
+  release: logsearch
+  templates:
+  - name: collectd
+  - name: ingestor_lumberjack
+  - name: ingestor_syslog
+  - name: ingestor_relp
   instances: 1
   resource_pool: warden
   networks:
@@ -58,18 +64,26 @@ jobs:
     - 10.244.2.14
 
 - name: queue
-  template: 
-  - queue
+  release: logsearch
+  templates:
+  - name: collectd
+  - name: queue
   instances: 1
   resource_pool: warden
   networks:
   - name: default
     static_ips:
     - 10.244.2.10
+  properties:
+    collectd:
+      python_redis:
+        enabled: true
 
 - name: log_parser
-  template: 
-  - log_parser
+  release: logsearch
+  templates:
+  - name: collectd
+  - name: log_parser
   instances: 1
   resource_pool: warden
   networks:
@@ -79,8 +93,10 @@ jobs:
     - gateway
 
 - name: elasticsearch_persistent
-  template: 
-  - elasticsearch
+  release: logsearch
+  templates:
+  - name: collectd
+  - name: elasticsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -89,14 +105,18 @@ jobs:
     - 10.244.2.6
   persistent_disk: 1024
   properties:
+    collectd:
+      python_elasticsearch:
+        enabled: true
     elasticsearch:
       node:
-        is_master: true
-        has_data: true
+        allow_master: false
 
 - name: elasticsearch_autoscale
-  template: 
-  - elasticsearch
+  release: logsearch
+  templates:
+  - name: collectd
+  - name: elasticsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -105,33 +125,31 @@ jobs:
     - dns
     - gateway
   properties:
+    collectd:
+      python_elasticsearch:
+        enabled: true
     elasticsearch:
       node:
-        is_master: false
-        has_data: true
+        allow_master: false
 
 properties: 
+  collectd:
+    hostname_prefix: "dev.logsearch.repo-test1."
+    python_librato:
+      include_regex: "collectd\\.cpu\\..*,collectd\\.df\\..*,collectd\\.disk\\..*,collectd\\.elasticsearch\\..*,collectd\\.entropy\\..*,collectd\\.interface\\..*,collectd\\.load\\..*,collectd\\.memory\\..*,collectd\\.processes\\..*,collectd\\.redis_.*,collectd\\.users\\..*"
   elasticsearch:
+    host: 10.244.2.2
     cluster_name: logsearch
-    endpoint:
-      host: 10.244.2.2
-      port: 9200
-    discovery:
-      ping_unicast_hosts: "10.244.2.2,10.244.2.6" # Seem to have to list all master nodes?
     indices:
-      ttl_interval: "60s"  # We want documents from test runs to be cleaned up frequently
-  queue:
-    name: logs_to_be_parsed
-    endpoint:
-      host: 10.244.2.10
-      port: 6379
-  log_parser:
+      ttl_interval: "5m"  # We want documents from test runs to be cleaned up frequently
+  redis:
+    host: 10.244.2.10
+  logstash_parser:
     debug: true
-  ingestor:
+  logstash_ingestor:
     relp:
       debug: true
-      endpoint:
-        port: 5514
+      port: 5514
     syslog:
       debug: true
     lumberjack:
@@ -285,3 +303,11 @@ networks:
     reserved:
     - 10.244.2.53
     static: []
+
+apply_spec:
+  properties:
+    ntp:
+      - 0.europe.pool.ntp.org
+      - 1.europe.pool.ntp.org
+      - 2.europe.pool.ntp.org
+      - 3.europe.pool.ntp.org
