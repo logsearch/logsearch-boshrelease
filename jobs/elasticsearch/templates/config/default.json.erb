@@ -12,11 +12,6 @@
     "data" : <%= p("elasticsearch.node.allow_data") %>
   },
   "discovery.zen.ping.multicast.enabled": false,
-<% if_p("elasticsearch.discovery.aws_region", "elasticsearch.discovery.aws_security_group") do %> 
-  "cloud.aws.region" : "<%= p("elasticsearch.discovery.aws_region") %>",
-  "discovery.type" : "ec2",
-  "discovery.ec2.groups" : "<%= p("elasticsearch.discovery.aws_security_group") %>",
-<% end %>
 <% if_p("elasticsearch.host") do %>
   "discovery.zen.ping.unicast.hosts" : "<%= p("elasticsearch.host") %>",
 <% end %>
