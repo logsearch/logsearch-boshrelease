@@ -2,6 +2,7 @@
 name: log_parser
 packages: 
   - logstash
+  - logstash-filters-common
   - java7
 templates:
   bin/log_parser_ctl: bin/log_parser_ctl
