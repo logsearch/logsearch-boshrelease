@@ -71,3 +71,13 @@ elasticsearch/marvel-1.1.0.zip:
   object_id: 44dbdc36-ff9d-4435-bdad-f5bc8d662854
   sha: d05f5f03493d0c49aba175bb26511d4e4c411000
   size: 1862272
+logstash-filters-common/logstash-filters-common-1.tgz:
+  object_id: e8c4e961-c914-4f3e-ab02-cc2f4cb31a03
+  sha: !binary |-
+    OWMyMmE2NWZkZWUxNmIzMzE0OGYyYjYxOGQ4NDczNzU4NjIzOWQwMw==
+  size: 604
+nginx/nginx-1.4.7.tar.gz:
+  object_id: 8fe26543-029c-45ed-a682-6c96c523dcec
+  sha: !binary |-
+    ZTEzYjViMjNmOWJlOTA4YjY5NjUyYjBjMzk0YTk1ZTkwMjk2ODdlMw==
+  size: 769153
