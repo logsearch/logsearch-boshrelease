@@ -11,22 +11,28 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/syslog_to_redis.conf.erb: config/syslog_to_redis.conf
 properties:
-  logstash.input.syslog.port: 
+  logstash_ingestor.debug:
+    description: Debug level logging
+    default: false
+
+  logstash_ingestor.syslog.port: 
     description: Port to listen for syslog messages
     default: 5514
-  logstash.output.elasticsearch.host:
+
+  elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
-  logstash.output.elasticsearch.port:
+  elasticsearch.port:
     description: Port of elasticsearch http endpoint
     default: 9200
-  logstash.output.elasticsearch.flush_size:
+  elasticsearch.flush_size:
     description: Redis queue flush size
     default: 100
-  logstash.queue.redis.host: 
+
+  redis.host: 
     description: Redis host of queue
-  logstash.queue.redis.port: 
+  redis.port: 
     description: Redis port of queue
     default: 6379
-  logstash.queue.redis.key: 
+  redis.key: 
     description: Name of queue to pull messages from
     default: logstash

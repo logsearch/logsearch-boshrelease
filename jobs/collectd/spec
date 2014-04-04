@@ -16,6 +16,18 @@ properties:
   collectd.hostname_prefix:
     default: ""
     description: "A prefix used in the hostname (suffixed by `job.index`)."
+
+  collectd.python_elasticsearch.enabled:
+    description: "Whether to enable the elasticsearch plugins."
+    default: false
+  collectd.python_elasticsearch.host:
+    description: "The elasticsearch host to connect to."
+  collectd.python_elasticsearch.port:
+    description: "The elasticsearch port to connect to."
+
+  collectd.python_librato.enabled:
+    description: "Whether to enable the librato plugin."
+    default: false
   collectd.python_librato.email:
     description: "The email address associated with your Librato Metrics account."
   collectd.python_librato.api_token:
@@ -36,3 +48,11 @@ properties:
     description: "String to separate the components of a metric name when combining the plugin name, type, and instance name."
   collectd.python_librato.source:
     description: "By default the source name is taken from the configured collectd hostname."
+
+  collectd.python_redis.enabled:
+    description: "Whether to enable the redis plugins."
+    default: false
+  collectd.python_redis.host:
+    description: "The redis host to connect to."
+  collectd.python_redis.port:
+    description: "The redis port to connect to."

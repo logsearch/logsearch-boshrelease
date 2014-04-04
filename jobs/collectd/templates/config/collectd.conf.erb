@@ -822,7 +822,31 @@ LoadPlugin network
   LogTraces true
   Interactive false
 
-  <% if_p("collectd.python_librato.api_token") do %>
+  <% if p("collectd.python_elasticsearch.enabled") %>
+    Import "collectd-elasticsearch"
+    <Module "collectd-elasticsearch">
+      <% if_p("collectd.python_elasticsearch.host") do %>
+          Host "<%= p("collectd.python_elasticsearch.host") %>"
+      <% end %>
+
+      <% if_p("collectd.python_elasticsearch.port") do %>
+          Port "<%= p("collectd.python_elasticsearch.port") %>"
+      <% end %>
+    </Module>
+
+    Import "collectd-elasticsearch-logstash"
+    <Module "collectd-elasticsearch-logstash">
+      <% if_p("collectd.python_elasticsearch.host") do %>
+          Host "<%= p("collectd.python_elasticsearch.host") %>"
+      <% end %>
+
+      <% if_p("collectd.python_elasticsearch.port") do %>
+          Port "<%= p("collectd.python_elasticsearch.port") %>"
+      <% end %>
+    </Module>
+  <% end %>
+
+  <% if p("collectd.python_librato.enabled") %>
     Import "collectd-librato"
     <Module "collectd-librato">
       TypesDB "/var/vcap/packages/collectd/share/collectd/types.db"
@@ -859,6 +883,30 @@ LoadPlugin network
 
       <% if_p("collectd.python_librato.source") do %>
           Source "<%= p("collectd.python_librato.source") %>"
+      <% end %>
+    </Module>
+  <% end %>
+
+  <% if p("collectd.python_redis.enabled") %>
+    Import "collectd-redis"
+    <Module "collectd-redis">
+      <% if_p("collectd.python_redis.host") do %>
+          Host "<%= p("collectd.python_redis.host") %>"
+      <% end %>
+
+      <% if_p("collectd.python_redis.port") do %>
+          Port "<%= p("collectd.python_redis.port") %>"
+      <% end %>
+    </Module>
+
+    Import "collectd-redis-logstash"
+    <Module "collectd-redis-logstash">
+      <% if_p("collectd.python_redis.host") do %>
+          Host "<%= p("collectd.python_redis.host") %>"
+      <% end %>
+
+      <% if_p("collectd.python_redis.port") do %>
+          Port "<%= p("collectd.python_redis.port") %>"
       <% end %>
     </Module>
   <% end %>
