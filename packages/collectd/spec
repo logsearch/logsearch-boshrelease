@@ -2,5 +2,9 @@
 name: collectd
 dependencies: []
 files:
-  - collectd/collectd-librato.py
   - collectd/collectd-5.4.1.tar.gz
+  - collectd/collectd-elasticsearch.py
+  - collectd/collectd-elasticsearch-logstash.py
+  - collectd/collectd-librato.py
+  - collectd/collectd-redis.py
+  - collectd/collectd-redis-logstash.py
