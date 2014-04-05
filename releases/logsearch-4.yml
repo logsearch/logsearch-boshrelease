@@ -1,0 +1,104 @@
+---
+packages:
+- name: collectd
+  version: 1
+  sha1: !binary |-
+    MTFlNzFkYTkwNTQxYzI5MGVlYWU2YTg3MWUzODJmYmFkM2VlYmRiMA==
+  fingerprint: !binary |-
+    NTRjZDYyZWU3NWIyYTRkOGI2NzA2MmY0NDE1ODYyNjBmYmVlZTIwZg==
+  dependencies: []
+- name: elasticsearch
+  version: 2
+  sha1: !binary |-
+    MWQ5YzI2Mjg3ZmQwNDU5MDQ3MjFhN2MzZmM3MzU4NTEwN2JmYTI5ZA==
+  fingerprint: !binary |-
+    MDEyODIzMTkzNTRiZmRmOTU1ZjQ2MjRhMTQ3N2UxMDM4MWNkYjMyZQ==
+  dependencies: []
+- name: java7
+  version: 1
+  sha1: !binary |-
+    YThhYjhkM2MwZGY2YjNlMzI1NGYwY2FlOTYwNmUxZTc3MzJjNDBkYw==
+  fingerprint: !binary |-
+    ZmJhZGU2OTg4MTYwYmQ4NTc2ZDRjMWM0NGEwZWIwNDlkNzAwODU4Zg==
+  dependencies: []
+- name: logstash
+  version: 1
+  sha1: !binary |-
+    MzE1NzBlNGY2YzQwNzk1ZjY2YmFkMTY0NGQ4Mjc2OWExZDg4NzdiZQ==
+  fingerprint: !binary |-
+    YjRjYTVlNzliMDQ0MWI4ODQ3ZjgyMzg1NjhlY2Y4MTFiODRhMjkwYg==
+  dependencies: []
+- name: logstash-filters-common
+  version: 1
+  sha1: !binary |-
+    ZjIyOTg1OWM3OGMzNzIwYjFmMjg4MzcyYjBlNzU0NzhlNzM4MDFmYw==
+  fingerprint: !binary |-
+    MmJjZWEzMTA3MjY5NWIxNTYzNmYzMDZlYzZkZWIyODY1MDg3NmVkNQ==
+  dependencies: []
+- name: nginx
+  version: 2
+  sha1: !binary |-
+    YjIzODA0MjU4OGQyNDJlZTVjZWE2ZThmMzBiNDliZTBlN2ZjZjFkNw==
+  fingerprint: !binary |-
+    MGE0NzQ5NjI1MTA3NzJiMmI3ZTU5MjJjNWRjNjFlN2Q4ZTg2YzRiNg==
+  dependencies: []
+- name: redis
+  version: 1
+  sha1: !binary |-
+    OWFmOWY2MTNmZGRjY2YxNThkYjNkZmE2M2FmOGIxYjFjYTJiMzBmNw==
+  fingerprint: !binary |-
+    ZTJhNGVjNzE4MzY1ZmQ4ZmYyYTJkZjFlZmJiMTNlNmY4MmY5NDg1NQ==
+  dependencies: []
+jobs:
+- name: api
+  version: 2
+  fingerprint: !binary |-
+    Y2ZhZmVjYjI1Y2FjNjk0ZWYzNjQ2MGM3Yjg3ODVhYmU3ZmYwNmYwYQ==
+  sha1: !binary |-
+    ZjM0MDljZjYyMjk3ODdkMDQ5MjRhNmMwNjMyMWRkZjEwY2RlMzA0ZQ==
+- name: collectd
+  version: 1
+  fingerprint: !binary |-
+    ZWM1N2RkMmFkMDE5OWM5ODlkYzE3YzM3NzcxODdlODhjNTFmMjQ2NA==
+  sha1: !binary |-
+    NGVmMzM2YzYzMDE1OTkxZTMxZDAzYmRlZjM4MGRiMGU1MmM2OTFjYQ==
+- name: elasticsearch
+  version: 2
+  fingerprint: !binary |-
+    YWFiNjRlNWNkZDI1NmZlMWVlZmZkZmU0ZDcwNzNlZmI1NGExODc2Ng==
+  sha1: !binary |-
+    Zjg1MDYwNDA1YTBkN2Q0YzBiY2RjNDYzZGQwZDg4ODIxNmFhMGI0ZQ==
+- name: ingestor_lumberjack
+  version: 2
+  fingerprint: !binary |-
+    MjczOTgxZTBkNTM2MzcxMDQyNGI4ODg2YWM3MDgxOTkxMGE2MjliMA==
+  sha1: !binary |-
+    MDRiZWEwZDllMGFlYWRiYTg3NmE1MGRlNjc0ODhiYzRkYjEzNTEyNQ==
+- name: ingestor_relp
+  version: 2
+  fingerprint: !binary |-
+    MzYxMzkzYjJjZDUxYmM3NzYyNDY3ZWM2Y2VhNmU0Yzk1Zjk2MDZkOQ==
+  sha1: !binary |-
+    NTA5MGRlM2QzNWZiMWM1YjMxNzFlNDk1NTZiMjRlMTVmMTIxZWU4Nw==
+- name: ingestor_syslog
+  version: 2
+  fingerprint: !binary |-
+    ODJlNmYwZjY0MzI1YTliMDhkZGFiNGUyODFhOGFiNjU1NmJjODUwZA==
+  sha1: !binary |-
+    YjdjODIwMmIxYzQ1NTFlMTQ5MzMxNmFhMmM5YmJiYjc0ODQyYTc2Yw==
+- name: log_parser
+  version: 3
+  fingerprint: !binary |-
+    YWZiODhiNzMwOWUzYTFjYWE3ZTU2MmM2NzY3ZDI4OGM3YTYzMDM0Ng==
+  sha1: !binary |-
+    NjY4Yjg3NzNjZGQyZWEyMzcxMWM2ZmQ4YWEyMDc0ZGI2MTNjMTRhNw==
+- name: queue
+  version: 2
+  fingerprint: !binary |-
+    MGEyZmUyZjNlY2JhYzkwMTRkNWU1ZDE5MGI0ZjMzMWY3OTc2MTkzMA==
+  sha1: !binary |-
+    ZDEzZTdkNWU0NWJlY2MxZGIwNGI5N2FiNzAwYzQ1NmFlZjcyYWU4YQ==
+commit_hash: 3de35cd6
+uncommitted_changes: true
+name: logsearch
+version: 4

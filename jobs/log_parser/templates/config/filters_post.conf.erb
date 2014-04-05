@@ -1,0 +1,12 @@
+
+    #
+    # type-casting for more advanced searches
+    #
+
+    if "nginx" in [tags] {
+        mutate {
+            convert => [ "status", "integer" ]
+            convert => [ "body_bytes_sent", "integer" ]
+        }
+    }
+}

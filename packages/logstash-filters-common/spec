@@ -1,0 +1,5 @@
+---
+name: logstash-filters-common
+dependencies: []
+files:
+  - logstash-filters-common/logstash-filters-common-1.tgz
