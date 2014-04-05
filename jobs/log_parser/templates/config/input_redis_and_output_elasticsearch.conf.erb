@@ -1,0 +1,25 @@
+input {
+
+    redis {
+        host => "<%= p("redis.host") %>"
+        port => "<%= p("redis.port") %>"
+        type => "redis-input"
+        data_type => "list"
+        key => "<%= p("redis.key") %>"
+        threads => 8
+    }
+}
+
+output {
+    <% if_p("logstash_parser.debug") do %>
+    stdout { debug => true codec => "json"}
+    <% end %>
+
+    elasticsearch_http {
+        host => "<%= p("elasticsearch.host") %>:<%= p("elasticsearch.port") %>"
+        flush_size => <%= p("elasticsearch.flush_size") %>
+        index_type => "%{@type}"
+        manage_template => false
+    }
+}
+    
