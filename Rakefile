@@ -19,9 +19,9 @@ end
 
 namespace :lumberjack do
 	
-	desc "Generate new lumberjack keys to lumberjack.key & lumberjack.crt"
+	desc "Generate new development lumberjack keys to lumberjack.key & lumberjack.crt"
 	task :generate_keys do 
-		sh "openssl req -x509 -batch -nodes -newkey rsa:2048 -keyout lumberjack.key -out lumberjack.crt"
+		sh "openssl req -days 3650 -x509 -batch -nodes -newkey rsa:1024 -keyout lumberjack.key -out lumberjack.crt"
 	end
 
 	desc "Forwards logs pasted into stdin to bosh-lite cluster"
