@@ -1,6 +1,7 @@
 # see: https://github.com/elasticsearch/kibana/blob/master/sample/nginx.conf
 # see: https://github.com/elasticsearch/cookbook-elasticsearch/blob/master/templates/default/elasticsearch_proxy.conf.erb
 
+user vcap vcap;
 daemon off;
 error_log /var/vcap/sys/log/api/nginx.error.log;
 pid /var/vcap/sys/run/api/nginx.pid;
