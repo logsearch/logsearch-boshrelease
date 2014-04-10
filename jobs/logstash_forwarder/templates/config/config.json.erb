@@ -11,29 +11,14 @@
     "timeout": 15
   },
   "files": [
-    {
-      "paths": [
-        "/var/vcap/sys/log/elasticsearch/requests.log"
-      ],
-      "fields": {
-        "@type": "elasticsearch_request"
+    <% prefix = '' %>
+    <% p('logstash_forwarder.files').each do | file | %><%= prefix %><% prefix = ',' %>
+      {
+        "paths" : [ "<%= file['path'] %>" ],
+        "fields" : {
+          "@type" : "<%= file['type'] %>"
+        }
       }
-    },
-    {
-      "paths": [
-        "/var/vcap/sys/log/api/nginx.access.log"
-      ],
-      "fields": {
-        "@type": "nginx_access"
-      }
-    },
-    {
-      "paths": [
-        "/var/vcap/sys/log/api/nginx.error.log"
-      ],
-      "fields": {
-        "@type": "nginx_error"
-      }
-    }
+    <% end %>
   ]
 }

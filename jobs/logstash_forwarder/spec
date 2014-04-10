@@ -26,3 +26,5 @@ properties:
     description: "The contents to your client ssl key (optional)."
   logstash_forwarder.ssl_ca_crt:
     description: "The path to your trusted ssl CA file. This is used to authenticate your downstream server."
+  logstash_forwarder.files:
+    description: "Log files for forwarding (path should be the key, and the sub-object with a `type` key-value should be specified)."
