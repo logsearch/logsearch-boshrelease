@@ -1,0 +1,39 @@
+{
+  "network": {
+    "servers": [<% p('logstash_forwarder.servers').each_with_index do | v, i | %><% if 0 < i %>,<% end %>"<%= v %>"<% end %>],
+    <% if '' != p('logstash_forwarder.ssl_crt') %>
+      "ssl certificate": "/var/vcap/jobs/logstash_forwarder/config/ssl.crt",
+    <% end %>
+    <% if '' != p('logstash_forwarder.ssl_key') %>
+      "ssl key": "/var/vcap/jobs/logstash_forwarder/config/ssl.key",
+    <% end %>
+    "ssl ca": "/var/vcap/jobs/logstash_forwarder/config/ssl-ca.crt",
+    "timeout": 15
+  },
+  "files": [
+    {
+      "paths": [
+        "/var/vcap/sys/log/elasticsearch/requests.log"
+      ],
+      "fields": {
+        "@type": "elasticsearch_request"
+      }
+    },
+    {
+      "paths": [
+        "/var/vcap/sys/log/api/nginx.access.log"
+      ],
+      "fields": {
+        "@type": "nginx_access"
+      }
+    },
+    {
+      "paths": [
+        "/var/vcap/sys/log/api/nginx.error.log"
+      ],
+      "fields": {
+        "@type": "nginx_error"
+      }
+    }
+  ]
+}

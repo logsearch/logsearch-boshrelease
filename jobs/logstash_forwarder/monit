@@ -1,0 +1,5 @@
+check process logstash_forwarder
+  with pidfile /var/vcap/sys/run/logstash_forwarder/logstash_forwarder.pid
+  start program "/var/vcap/jobs/logstash_forwarder/bin/monit_debugger logstash_forwarder_ctl '/var/vcap/jobs/logstash_forwarder/bin/logstash_forwarder_ctl start'"
+  stop program "/var/vcap/jobs/logstash_forwarder/bin/monit_debugger logstash_forwarder_ctl '/var/vcap/jobs/logstash_forwarder/bin/logstash_forwarder_ctl stop'"
+  group vcap
