@@ -20,7 +20,7 @@ appender:
 
   request_log_file:
     type: dailyRollingFile
-    file: ${path.logs}/${cluster.name}_requests.log
+    file: ${path.logs}/requests.log
     datePattern: "'.'yyyy-MM-dd"
     layout:
       type: pattern
