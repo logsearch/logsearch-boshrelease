@@ -49,6 +49,14 @@ jobs:
     elasticsearch:
       node:
         allow_data: false
+    logstash_forwarder:
+      files:
+      - path: /var/vcap/sys/log/elasticsearch/requests.log
+        type: elasticsearch_request
+      - path: /var/vcap/sys/log/api/nginx.access.log
+        type: nginx_access
+      - path: /var/vcap/sys/log/api/nginx.error.log
+        type: nginx_error
 
 - name: ingestor
   release: logsearch
@@ -140,7 +148,7 @@ properties:
       include_regex: "collectd\\.cpu\\..*,collectd\\.df\\..*,collectd\\.disk\\..*,collectd\\.elasticsearch\\..*,collectd\\.entropy\\..*,collectd\\.interface\\..*,collectd\\.load\\..*,collectd\\.memory\\..*,collectd\\.processes\\..*,collectd\\.redis_.*,collectd\\.users\\..*"
   elasticsearch:
     host: 10.244.2.2
-    cluster_name: logsearch
+    cluster_name: logsearch--bosh-lite
     indices:
       ttl_interval: "5m"  # We want documents from test runs to be cleaned up frequently
   redis:
