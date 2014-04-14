@@ -18,13 +18,15 @@ properties:
   logstash_forwarder.port:
     default: 5043
     description: "The lumberjack endpoint port."
-  logstash_forwarder.ssl_crt:
+  logstash_forwarder.ssl_certificate:
     default: ''
     description: "The contents of your client ssl certificate (optional)."
   logstash_forwarder.ssl_key:
     default: ''
     description: "The contents to your client ssl key (optional)."
-  logstash_forwarder.ssl_ca_crt:
+  logstash_forwarder.ssl_ca_certificate:
     description: "The path to your trusted ssl CA file. This is used to authenticate your downstream server."
-  logstash_forwarder.files:
-    description: "Log files for forwarding (path should be the key, and the sub-object with a `type` key-value should be specified)."
+  logstash_forwarder.job_files:
+    description: "Log files for forwarding (job-specific; path should be the key, and the sub-object with a `type` key-value should be specified)."
+  logstash_forwarder.global_files:
+    description: "Log files for forwarding (shared across all jobs; path should be the key, and the sub-object with a `type` key-value should be specified)."

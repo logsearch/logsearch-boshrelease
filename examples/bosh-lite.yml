@@ -50,7 +50,7 @@ jobs:
       node:
         allow_data: false
     logstash_forwarder:
-      files:
+      job_files:
       - path: /var/vcap/sys/log/elasticsearch/requests.log
         type: elasticsearch_request
       - path: /var/vcap/sys/log/api/nginx.access.log

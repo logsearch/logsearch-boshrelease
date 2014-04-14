@@ -1,7 +1,7 @@
 {
   "network": {
     "servers": [<% p('logstash_forwarder.servers').each_with_index do | v, i | %><% if 0 < i %>,<% end %>"<%= v %>"<% end %>],
-    <% if '' != p('logstash_forwarder.ssl_crt') %>
+    <% if '' != p('logstash_forwarder.ssl_certificate') %>
       "ssl certificate": "/var/vcap/jobs/logstash_forwarder/config/ssl.crt",
     <% end %>
     <% if '' != p('logstash_forwarder.ssl_key') %>
@@ -12,7 +12,7 @@
   },
   "files": [
     <% prefix = '' %>
-    <% p('logstash_forwarder.files').each do | file | %><%= prefix %><% prefix = ',' %>
+    <% [].push(* p('logstash_forwarder.global_files')).push(* p('logstash_forwarder.job_files')).each do | file | %><%= prefix %><% prefix = ',' %>
       {
         "paths" : [ "<%= file['path'] %>" ],
         "fields" : {
