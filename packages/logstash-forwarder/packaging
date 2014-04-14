@@ -7,3 +7,4 @@ set -u # report the usage of uninitialized variables
 
 
 cp logstash/logstash-forwarder-1.4.0.rc1 $BOSH_INSTALL_TARGET/logstash-forwarder
+chmod +x $BOSH_INSTALL_TARGET/logstash-forwarder
