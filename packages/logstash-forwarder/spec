@@ -1,0 +1,5 @@
+---
+name: logstash-forwarder
+dependencies: []
+files:
+  - logstash/logstash-forwarder-1.4.0.rc1
