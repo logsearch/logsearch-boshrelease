@@ -9,14 +9,20 @@ source /var/vcap/jobs/elasticsearch/helpers/ctl_setup.sh 'elasticsearch'
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
 
+<% p("elasticsearch.exec.environment", {}).each do | k, v | %>
+export <%= k %>=<%= v %>
+<% end %>
+
 case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME
 
-    exec /var/vcap/packages/elasticsearch/bin/elasticsearch -Des.config=${JOB_DIR}/config/default.json \
-         -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled -XX:+PrintCommandLineFlags -XX:+PrintFlagsFinal -XX:+PrintPromotionFailure -XX:+PrintReferenceGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:PermSize=256m  -XX:MaxPermSize=256m -XX:+AggressiveOpts -XX:+UseCompressedOops \
-         -XX:HeapDumpPath=${TMPDIR}/heap-dump/ -Des.pidfile=${PIDFILE}
+    exec /var/vcap/packages/elasticsearch/bin/elasticsearch \
+         -Des.config=${JOB_DIR}/config/default.json \
+         -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
+         -Des.pidfile=${PIDFILE} \
+         <%= p("elasticsearch.exec.options", []).join(' ') %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
 
