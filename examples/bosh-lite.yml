@@ -151,6 +151,9 @@ properties:
     cluster_name: logsearch--bosh-lite
     indices:
       ttl_interval: "5m"  # We want documents from test runs to be cleaned up frequently
+    exec:
+      environment:
+        ES_HEAP_SIZE: 256M
   redis:
     host: 10.244.2.10
   logstash_parser:

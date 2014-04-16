@@ -23,6 +23,22 @@ properties:
   elasticsearch.node.allow_data:
     description: Allow node to store data? (true / false)
     default: true
+  elasticsearch.exec.environment:
+    description: A hash of additional environment variables for the process
+  elasticsearch.exec.options:
+    description: An array of additional options to pass when starting elasticsearch
+    default:
+    - "-XX:+AggressiveOpts"
+    - "-XX:+UseCompressedOops"
+    - "-XX:+UseParNewGC"
+    - "-XX:+UseConcMarkSweepGC"
+    - "-XX:+CMSParallelRemarkEnabled"
+    - "-XX:+PrintCommandLineFlags"
+    - "-XX:+PrintFlagsFinal"
+    - "-XX:+PrintPromotionFailure"
+    - "-XX:+PrintReferenceGC"
+    - "-XX:+PrintGCDateStamps"
+    - "-XX:+PrintGCDetails"
   elasticsearch.discovery.minimum_master_nodes:
     description: The minimum number of master eligible nodes a node should "see" in order to operate within the cluster. Recommended to set it to a higher value than 1 when running more than 2 nodes in the cluster.
     default: 1
