@@ -146,20 +146,6 @@ properties:
     exec:
       environment:
         ES_HEAP_SIZE: 256M
-      options:
-      - "-XX:+UseParNewGC"
-      - "-XX:+UseConcMarkSweepGC"
-      - "-XX:+CMSParallelRemarkEnabled"
-      - "-XX:+PrintCommandLineFlags"
-      - "-XX:+PrintFlagsFinal"
-      - "-XX:+PrintPromotionFailure"
-      - "-XX:+PrintReferenceGC"
-      - "-XX:+PrintGCDateStamps"
-      - "-XX:+PrintGCDetails"
-      - "-XX:PermSize=128m"
-      - "-XX:MaxPermSize=128m"
-      - "-XX:+AggressiveOpts"
-      - "-XX:+UseCompressedOops"
   redis:
     host: 10.244.2.10
   logstash_parser:
