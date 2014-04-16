@@ -13,6 +13,10 @@ export LANG=en_US.UTF-8
 export <%= k %>=<%= v %>
 <% end %>
 
+<% if not p('elasticsearch.exec.environment', {}).has_key? 'ES_HEAP_SIZE' then %>
+export ES_HEAP_SIZE=$((( $( cat /proc/meminfo | grep MemTotal | awk '{ print $2 }' ) * 46 ) / 100 ))K
+<% end %>
+
 case $1 in
 
   start)
