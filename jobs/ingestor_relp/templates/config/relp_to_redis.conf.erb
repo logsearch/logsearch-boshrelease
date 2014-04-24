@@ -10,7 +10,7 @@ input {
 }
 			
 output {
-	<% if_p("logstash_ingestor.debug") do %>
+	<% if p("logstash_ingestor.debug") %>
 	stdout { debug => true codec => "json"}
 	<% end %>
 
