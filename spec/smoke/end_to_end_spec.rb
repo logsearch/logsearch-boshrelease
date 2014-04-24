@@ -8,7 +8,7 @@ describe "elasticsearch cluster" do
      :ingestor_host => RSpec.configuration.logsearch['ingestor_host']
     }
 
-    `touch #{config_path}` #ensure this file is considered "new"
+    `touch spec/smoke/sample_logs/nginx.access.log` #ensure this file is considered "new"
 
     ship_logs(config_path)
 
