@@ -24,3 +24,10 @@ cp -R elasticsearch-HQ-1.1.0/* $BOSH_INSTALL_TARGET/plugins/HQ/_site
 mkdir -p $BOSH_INSTALL_TARGET/plugins/marvel
 cp elasticsearch/marvel-1.1.0.zip $BOSH_INSTALL_TARGET/plugins/marvel
 ( cd $BOSH_INSTALL_TARGET/plugins/marvel && unzip marvel-1.1.0.zip && rm marvel-1.1.0.zip )
+
+tar xzf elasticsearch/kibana-3.0.1.tar.gz
+mkdir -p $BOSH_INSTALL_TARGET/plugins/kibana/_site
+cp -R kibana-3.0.1/* $BOSH_INSTALL_TARGET/plugins/kibana/_site
+# Configure kibana to use the "local" elasticsearch & port
+sed -i 's/elasticsearch: "http:.*/elasticsearch: "http:\/\/"\+window.location.hostname+":"\+window.location.port,/' $BOSH_INSTALL_TARGET/plugins/kibana/_site/config.js
+

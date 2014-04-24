@@ -7,3 +7,4 @@ files:
   - elasticsearch/marvel-1.1.0.zip
   - elasticsearch/cloud-aws-1.14.0.tar.gz
   - elasticsearch/elasticsearch-HQ-1.1.0.tar.gz
+  - elasticsearch/kibana-3.0.1.tar.gz
