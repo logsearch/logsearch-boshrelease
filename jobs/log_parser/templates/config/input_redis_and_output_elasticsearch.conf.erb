@@ -11,7 +11,7 @@ input {
 }
 
 output {
-    <% if_p("logstash_parser.debug") do %>
+    <% if p("logstash_parser.debug") %>
     stdout { debug => true codec => "json"}
     <% end %>
 
