@@ -163,14 +163,12 @@ properties:
   logstash_parser:
     debug: true
   logstash_ingestor:
+    debug: true
     relp:
-      debug: true
       port: 5514
     syslog:
-      debug: true
       port: 5515
     lumberjack:
-      debug: true
       ssl_certificate: |
           -----BEGIN CERTIFICATE-----
           MIICsDCCAhmgAwIBAgIJAJZZlYOII804MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
