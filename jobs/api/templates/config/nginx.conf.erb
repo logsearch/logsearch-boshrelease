@@ -118,10 +118,10 @@ http {
         }
 
 
-        # plugin: marvel, elastichq
+        # plugin: marvel, elastichq, kibana(as plugin)
         # reason: it's mostly read-only
 
-        location ~ ^/_plugin/(marvel|HQ) {
+        location ~ ^/_plugin/(marvel|HQ|kibana) {
             limit_except GET {
                 deny all;
             }
