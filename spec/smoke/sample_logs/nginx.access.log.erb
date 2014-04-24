@@ -1,0 +1,11 @@
+<% t=Time.now
+def timestamp(time)
+  time.strftime "%d/%b/%Y %H:%M:%S %z"
+end
+%>
+192.168.85.12 - - [<%=timestamp(t-10)%>] "GET / HTTP/1.1" 302 2810 "-" "Mozilla/5.0 (compatible; GoogleDocs GoogleApps; script; +http://script.google.com/bot.html)"
+172.12.98.13 - - [<%=timestamp(t-9)%>] "POST /wp-login.php?redirect_to=%2F HTTP/1.1" 200 976 "-" "Mozilla/5.0 (compatible; GoogleDocs GoogleApps; script; +http://script.google.com/bot.html)"
+10.82.183.14 - - [<%=timestamp(t-8)%>] "GET /docs/Skins/Default/Stylesheets/Styles.css HTTP/1.1" 200 6262 "http://labs.cityindex.com/docs/" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36"
+192.168.27.15 - - [<%=timestamp(t-5)%>] "GET /favicon.ico HTTP/1.1" 200 0 "-" "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36"
+172.36.79.16 - - [<%=timestamp(t)%>] "GET /wp-content/uploads/2012/01/lbl-supported.png HTTP/1.1" 200 3463 "-" "Camo Asset Proxy 1.0.5"
+ 
