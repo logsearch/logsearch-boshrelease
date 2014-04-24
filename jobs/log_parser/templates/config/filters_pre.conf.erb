@@ -59,22 +59,5 @@ filter {
     }
 
     #
-    # the various log types that we're interested in
-    #
-
-    if [@type] == "nginx_combined" {
-        grok {
-            match => [ "@message", "%{IPORHOST:remote_addr} - (?:%{USER:remote_user}|-) \[%{HTTPDATE:time_local}\] \"(?:%{WORD:request_method} %{URIPATHPARAM:request_uri}(?: HTTP/%{NUMBER:request_httpversion})?|-)\" %{INT:status} (?:%{NONNEGINT:body_bytes_sent}|-) \"(?:%{URI:http_referer}|-)\" %{QS:http_user_agent} (?:%{NONNEGINT:request_time}|-)" ]
-            match => [ "@message", "%{IPORHOST:remote_addr} - (?:%{USER:remote_user}|-) \[%{HTTPDATE:time_local}\] \"(?:%{WORD:request_method} %{URIPATHPARAM:request_uri}(?: HTTP/%{NUMBER:request_httpversion})?|-)\" %{INT:status} (?:%{NONNEGINT:body_bytes_sent}|-) \"(?:%{URI:http_referer}|-)\" %{QS:http_user_agent}" ]
-            add_tag => "nginx"
-        }
-
-        date {
-            match => [ "time_local", "dd/MMM/YYYY:HH:mm:ss Z" ]
-        }
-    }
-
-    #
     # Additional filter types from /var/vcap/packages/logstash-filters-*/*.conf
     #
-
