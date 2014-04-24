@@ -20,10 +20,14 @@ case $1 in
     echo $$ > $PIDFILE
 
     # construct a complete config file from all the fragments
-    cat ${JOB_DIR}/config/input_redis_and_output_elasticsearch.conf > ${JOB_DIR}/config/all_inputs_outputs_filters.conf 
-    cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf 
-    cat /var/vcap/packages/logstash-filters-*/*.conf >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf
-    cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf 
+    cat ${JOB_DIR}/config/input_redis_and_output_elasticsearch.conf > ${JOB_DIR}/config/all_inputs_outputs_filters.conf
+    cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf
+
+    # find additional filters
+    FILTERS=$(find /var/vcap/packages/ -path '*logstash-filters*' -follow -type f -name '*.conf' | awk -vFS=/ -vOFS=, '{ print $NF,$0 }' | sort -n | cut -d "," -f 2 | xargs)
+    cat ${FILTERS} >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf
+
+    cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf
 
     exec /var/vcap/packages/java7/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
          -f ${JOB_DIR}/config/all_inputs_outputs_filters.conf -w ${LOGSTASH_WORKERS} \
