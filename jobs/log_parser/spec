@@ -2,7 +2,6 @@
 name: log_parser
 packages: 
   - logstash
-  - logstash-filters-common
   - java7
 templates:
   bin/log_parser_ctl: bin/log_parser_ctl
@@ -20,6 +19,9 @@ properties:
   logstash_parser.message_max_size:
     description: "Maximum log message length.  Anything larger is truncated (TODO: move this to ingestor?)"
     default: 1048576
+  logstash_parser.filters:
+    description: "A list of URL downloads (tar, tar.gz, zip)"
+    default: []
 
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
