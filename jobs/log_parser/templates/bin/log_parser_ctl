@@ -20,17 +20,57 @@ case $1 in
     echo $$ > $PIDFILE
 
     # construct a complete config file from all the fragments
-    cat ${JOB_DIR}/config/input_redis_and_output_elasticsearch.conf > ${JOB_DIR}/config/all_inputs_outputs_filters.conf
-    cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf
+    cat ${JOB_DIR}/config/input_redis_and_output_elasticsearch.conf > ${JOB_DIR}/config/logstash.conf
+    cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/logstash.conf
+
+    mkdir -p ${JOB_DIR}/config/raw ${JOB_DIR}/config/composite
+    rm -f ${JOB_DIR}/config/composite/*
+
+    <%
+      md5filters = p('logstash_parser.filters').map do | v |
+        Digest::MD5.hexdigest v
+      end
+    %>
+
+    pushd ${JOB_DIR}/config > /dev/null
+
+    <% p('logstash_parser.filters').each_with_index do | v, i | %>
+      # <%= v %>
+      if ! [[ -d raw/<%= md5filters[i] %> ]] ; then
+        mkdir -p raw/<%= md5filters[i] %>
+        pushd raw/<%= md5filters[i] %> > /dev/null
+
+        <% if v =~ /\.tar\.gz$/ or v =~ /\.tgz$/ %>
+          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -xz --strip-components 1
+        <% elsif v =~ /\.tar$/ %>
+          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -x --strip-components 1
+        <% elsif v =~ /\.zip$/ %>
+          /usr/bin/wget "<%= v %>" && /usr/bin/unzip -d .ziptmp `basename "<%= v %>"` && /bin/mv .ziptmp/*/* ./ && /bin/rm -fr `basename "<%= v %>"` .ziptmp
+        <% end %>
+
+        popd > /dev/null
+      fi
+
+      cp raw/<%= md5filters[i] %>/* composite/
+    <% end %>
+
+    # cleanup old filters
+    for FILTERMD5 in $(ls raw) ; do
+      if ! [[ " <%= md5filters.join(' ') %> " =~ " $FILTERMD5 " ]] ; then
+        rm -fr raw/$FILTERMD5
+      fi
+    done
+
+    popd > /dev/null
 
     # find additional filters
-    FILTERS=$(find /var/vcap/packages/ -path '*logstash-filters*' -follow -type f -name '*.conf' | awk -vFS=/ -vOFS=, '{ print $NF,$0 }' | sort -n | cut -d "," -f 2 | xargs)
-    cat ${FILTERS} >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf
+    FILTERS=$(find ${JOB_DIR}/config/composite -follow -type f -name '*.conf' | awk -vFS=/ -vOFS=, '{ print $NF,$0 }' | sort -n | cut -d "," -f 2 | xargs)
+    cat ${FILTERS} >> ${JOB_DIR}/config/logstash.conf
 
-    cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/all_inputs_outputs_filters.conf
+    cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
 
     exec /var/vcap/packages/java7/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
-         -f ${JOB_DIR}/config/all_inputs_outputs_filters.conf -w ${LOGSTASH_WORKERS} \
+         -f ${JOB_DIR}/config/logstash.conf -w ${LOGSTASH_WORKERS} \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
 
