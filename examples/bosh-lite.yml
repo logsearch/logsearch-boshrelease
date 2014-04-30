@@ -158,6 +158,8 @@ properties:
     host: 10.244.2.10
   logstash_parser:
     debug: true
+    filters:
+    - "https://ci-logsearch.s3.amazonaws.com/logsearch-filters-common--21e1a3b643.tgz"
   logstash_ingestor:
     debug: true
     relp:
