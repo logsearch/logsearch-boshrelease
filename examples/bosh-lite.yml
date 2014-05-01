@@ -159,7 +159,7 @@ properties:
   logstash_parser:
     debug: true
     filters:
-    - "https://ci-logsearch.s3.amazonaws.com/logsearch-filters-common--21e1a3b643.tgz"
+    - "https://ci-logsearch.s3.amazonaws.com/logsearch-filters-cf/logstash-filters-cf-7.tgz"
   logstash_ingestor:
     debug: true
     relp:
