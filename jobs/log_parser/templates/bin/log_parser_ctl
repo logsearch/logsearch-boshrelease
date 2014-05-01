@@ -26,6 +26,9 @@ case $1 in
     mkdir -p ${JOB_DIR}/config/raw ${JOB_DIR}/config/composite
     rm -f ${JOB_DIR}/config/composite/*
 
+    #fetch the standard filters (so they can be overwritten by logstash_parser.filters below if necessary)
+    cp -R /var/vcap/packages/logstash/logsearch-filters-common/* ${JOB_DIR}/config/composite
+
     <%
       md5filters = p('logstash_parser.filters').map do | v |
         Digest::MD5.hexdigest v
@@ -41,9 +44,9 @@ case $1 in
         pushd raw/<%= md5filters[i] %> > /dev/null
 
         <% if v =~ /\.tar\.gz$/ or v =~ /\.tgz$/ %>
-          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -xz --strip-components 1
+          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -xz 
         <% elsif v =~ /\.tar$/ %>
-          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -x --strip-components 1
+          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -x 
         <% elsif v =~ /\.zip$/ %>
           /usr/bin/wget "<%= v %>" && /usr/bin/unzip -d .ziptmp `basename "<%= v %>"` && /bin/mv .ziptmp/*/* ./ && /bin/rm -fr `basename "<%= v %>"` .ziptmp
         <% end %>
@@ -51,7 +54,7 @@ case $1 in
         popd > /dev/null
       fi
 
-      cp raw/<%= md5filters[i] %>/* composite/
+      cp -R raw/<%= md5filters[i] %>/* composite/
     <% end %>
 
     # cleanup old filters
@@ -63,7 +66,7 @@ case $1 in
 
     popd > /dev/null
 
-    # find additional filters
+    # find all filters
     FILTERS=$(find ${JOB_DIR}/config/composite -follow -type f -name '*.conf' | awk -vFS=/ -vOFS=, '{ print $NF,$0 }' | sort -n | cut -d "," -f 2 | xargs)
     cat ${FILTERS} >> ${JOB_DIR}/config/logstash.conf
 
