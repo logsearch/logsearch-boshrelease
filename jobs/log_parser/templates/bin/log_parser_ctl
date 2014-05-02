@@ -60,7 +60,7 @@ case $1 in
       fi
 
       #Copy extracted filters into filter collection (overwriting is intentional)
-      copy_and_flatten raw/f78e4220d8f678b58d41122c939c6ff1 ${JOB_DIR}/config/composite
+      copy_and_flatten raw/<%= md5filters[i] %> ${JOB_DIR}/config/composite
     <% end %>
 
     # cleanup old filters
