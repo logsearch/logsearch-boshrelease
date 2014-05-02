@@ -11,6 +11,11 @@ export LANG=en_US.UTF-8
 # 1 logstash worker / CPU core
 export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
 
+#Copy all files from source folder tree and flatten into dest folder
+function copy_and_flatten  {
+    find $1 -type f -exec cp {} $2 \;
+}  
+
 case $1 in
 
   start)
@@ -27,7 +32,7 @@ case $1 in
     rm -f ${JOB_DIR}/config/composite/*
 
     #fetch the standard filters (so they can be overwritten by logstash_parser.filters below if necessary)
-    cp -R /var/vcap/packages/logstash/logsearch-filters-common/* ${JOB_DIR}/config/composite
+    copy_and_flatten /var/vcap/packages/logstash/logsearch-filters-common ${JOB_DIR}/config/composite
 
     <%
       md5filters = p('logstash_parser.filters').map do | v |
@@ -54,7 +59,8 @@ case $1 in
         popd > /dev/null
       fi
 
-      cp -R raw/<%= md5filters[i] %>/* composite/
+      #Copy extracted filters into filter collection (overwriting is intentional)
+      copy_and_flatten raw/f78e4220d8f678b58d41122c939c6ff1 ${JOB_DIR}/config/composite
     <% end %>
 
     # cleanup old filters
