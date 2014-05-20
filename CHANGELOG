@@ -1,0 +1,4 @@
+### [2014-05-20] releases/logsearch-9.yml
+
+* `#24` - Allow elasticsearch node tags 
+* `#20` - Pull in additional logstash filters from `tar/tar.gz/zip` urls defined in `logstash_parser.filters` array.  
