@@ -23,6 +23,8 @@ properties:
   elasticsearch.node.allow_data:
     description: Allow node to store data? (true / false)
     default: true
+  elasticsearch.node.tags:
+    description: A hash of additional tags for the node
   elasticsearch.exec.environment:
     description: A hash of additional environment variables for the process
   elasticsearch.exec.options:
