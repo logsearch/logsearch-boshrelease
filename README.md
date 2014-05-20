@@ -8,56 +8,27 @@ To use this bosh release, first upload it to your bosh:
 bosh target BOSH_HOST
 git clone https://github.com/cloudfoundry-community/logsearch-boshrelease.git
 cd logsearch-boshrelease
-bosh upload release releases/logsearch-1.yml
+bosh upload release releases/logsearch-X.yml # X => latest logsearch release
+bosh deployment your_deployment_manifest.yml # TODO - document how to create a deployment manifest
+bosh deploy
 ```
 
-For [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can quickly create a deployment manifest & deploy a 3 VM cluster:
+## Process for creating new releases
 
+1.  Create `feature-branch` and PR to merge to `develop`.  Deploy against local bosh-lite. Collaborate
+2.  Merge PR into `develop`
+3.  Create & deploy dev release to test cluster (TODO: automate this step)
 ```
-templates/make_manifest warden
-bosh -n deploy
+bosh target XXX # XXX is the BOSH director where your test cluster runs
+rake dev_release:create_and_upload
+bosh deployment YYY # YYY is your test cluster manifest
+bosh deploy
 ```
+4.  Create final release in `release-candidate`; deploy and test
+5.  PR `release-candidate` -> `master` - add changelog notes
+6.  merge to `master` & announce new release
 
-For Openstack (Nova Networks), create a single VM:
-
-```
-templates/make_manifest openstack-nova
-bosh -n deploy
-```
-
-For AWS EC2, create a single VM:
-
-```
-templates/make_manifest aws-ec2
-bosh -n deploy
-```
-
-### Override security groups
-
-For AWS & Openstack, the default deployment assumes there is a `default` security group. If you wish to use a different security group(s) then you can pass in additional configuration when running `make_manifest` above.
-
-Create a file `my-networking.yml`:
-
-``` yaml
----
-networks:
-  - name: logsearch1
-    type: dynamic
-    cloud_properties:
-      security_groups:
-        - logsearch
-```
-
-Where `- logsearch` means you wish to use an existing security group called `logsearch`.
-
-You now suffix this file path to the `make_manifest` command:
-
-```
-templates/make_manifest openstack-nova my-networking.yml
-bosh -n deploy
-```
-
-## TESTING
+## Testing
 
 ```
 RESTCLIENT_LOG=stdout API_URL="http://10.244.2.2" INGESTOR_HOST="10.244.2.14" bundle exec rspec

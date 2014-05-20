@@ -5,13 +5,16 @@ RSpec::Core::RakeTask.new('spec')
 # If you want to make this the default task
 task :default => :spec
 
-namespace :bosh do
-	desc "Creates, uploads and deploys release.  Useful when developing a release"
-	task :create_and_deploy_release do
+namespace :dev_release do
+	desc "Creates and uploads DEV release to currently targeted BOSH."
+	task :create_and_upload do
 		puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 		sh "bosh create release --force"
 		puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 		sh "bosh -n upload release"
+	end
+	desc "Creates, uploads and deploys DEV release to currently targeted BOSH deployment manifest"
+	task :create_and_upload_and_deploy => :create_and_upload  do
 		puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
 		sh "bosh -n deploy"
 	end
