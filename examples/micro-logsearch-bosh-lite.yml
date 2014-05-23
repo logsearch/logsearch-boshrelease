@@ -1,0 +1,146 @@
+---
+name: logsearch
+director_uuid: f0588560-08a8-4ae2-914a-b9e8b12d9303 
+
+releases:
+- name: logsearch
+  version: 9
+
+compilation:
+  workers: 3
+  network: default
+  reuse_compilation_vms: true
+  cloud_properties: {}
+
+update:
+  serial: false #Deploy jobs in parallel
+  canaries: 1
+  canary_watch_time: 30000
+  update_watch_time: 30000
+  max_in_flight: 4
+  max_errors: 1
+
+resource_pools:
+- name: warden
+  network: default
+  size: 1
+  stemcell:
+    name: bosh-warden-boshlite-ubuntu
+    version: latest
+  cloud_properties: {}
+
+jobs:
+- name: logsearch
+  release: logsearch
+  templates: 
+  - name: api
+  - name: elasticsearch
+  - name: ingestor_lumberjack
+  - name: ingestor_syslog
+  - name: ingestor_relp
+  - name: queue
+  - name: log_parser
+  instances: 1
+  resource_pool: warden
+  networks:
+  - name: default
+    static_ips:
+    - 10.244.2.26
+  persistent_disk: 1024
+  properties:
+    logstash_forwarder:
+      job_files:
+      - path: /var/vcap/sys/log/elasticsearch/requests.log
+        type: elasticsearch_request
+      - path: /var/vcap/sys/log/api/nginx.access.log
+        type: nginx_access
+      - path: /var/vcap/sys/log/api/nginx.error.log
+        type: nginx_error
+properties: 
+  elasticsearch:
+    host: 10.244.2.26
+    cluster_name: micro-logsearch
+    indices:
+      ttl_interval: "5m"  # We want documents from test runs to be cleaned up frequently
+    index:
+      number_of_replicas: 0 # There is only one ES node in a micro-logsearch, so we can't have any replicas
+    exec:
+      environment:
+        ES_HEAP_SIZE: 256M
+  redis:
+    host: 10.244.2.26
+  logstash_parser:
+    debug: true
+    filters: []
+  logstash_ingestor:
+    debug: true
+    relp:
+      port: 5515
+    syslog:
+      port: 5514
+    lumberjack:
+      ssl_certificate: |
+          -----BEGIN CERTIFICATE-----
+          MIICsDCCAhmgAwIBAgIJAJZZlYOII804MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
+          BAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
+          aWRnaXRzIFB0eSBMdGQwHhcNMTQwNDA4MTUxNzA3WhcNMjQwNDA1MTUxNzA3WjBF
+          MQswCQYDVQQGEwJBVTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50
+          ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKB
+          gQC2xI0wD26YOIEukuyokWDkKsFEvZxnadOEGT/9isf/mdiMk10NRZTF5bZU9ek9
+          Vj9HsO7sk2ays31bkjQVAw9/l2eQSDNKtnnWk28AiTEOvZq5ZYnc9PT5uyHQL4Uj
+          XJe2H8Dg/gfJhy9Ru9gpSSnRkYOXnwp2v6eJiQtzC6EG0QIDAQABo4GnMIGkMB0G
+          A1UdDgQWBBSyMMgqdi6u092zAgm03c0/JhP0bDB1BgNVHSMEbjBsgBSyMMgqdi6u
+          092zAgm03c0/JhP0bKFJpEcwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgTClNvbWUt
+          U3RhdGUxITAfBgNVBAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJAJZZlYOI
+          I804MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADgYEAif7W/VbSZ9GHfNDP
+          Cf+dsFTBk/1MpPW0cHXCX2lza42kbZ29PmhW1DSD+LkDcodL5wdVvTKSvJKmi5Cz
+          Y4O5DFyRcLQVTrhlUWfnUxTmaeWWzWyZe4RI98tTc2QHli6S9aeqczpa8k1aTiDp
+          XDPsPhpJjIepHXFRDaXUoV/T984=
+          -----END CERTIFICATE-----
+      ssl_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          MIICWwIBAAKBgQC2xI0wD26YOIEukuyokWDkKsFEvZxnadOEGT/9isf/mdiMk10N
+          RZTF5bZU9ek9Vj9HsO7sk2ays31bkjQVAw9/l2eQSDNKtnnWk28AiTEOvZq5ZYnc
+          9PT5uyHQL4UjXJe2H8Dg/gfJhy9Ru9gpSSnRkYOXnwp2v6eJiQtzC6EG0QIDAQAB
+          AoGASnrQmnw/cnLcWfFv1cXguTqfJfcrDI14r8VmaVkr5YJ5V9gZvHXVicvxwK+x
+          y9gg04NL6karPDme5TkwVju4DXJxwcT70QhFOG5EHFxij1HA8hgOU+K4X4FeNVbz
+          JPi27ktnJTsYs2Hq/UMoWygTvlTtyCsCytcAuo5jZRoy/cECQQDxoeFJiIH6hn2M
+          G/89USPeJKfiXIP8pSZCZi/FagVHRYKhgJ2MY4Uw4bmIxyiMO9VGSXhDpbnx1AAp
+          /6/KOod5AkEAwaKjDcI4c87DRQfPdORNBoKPTY1CuLgYUTIKBDUYUG0d/Vwy+USA
+          0NJI74B6sLCdfxLtK1d95XVuLRPDDGksGQJAMm0zI/JuFcdtegj5umUtlBWYR8BA
+          9z/L/T1wKMXYdihGe8fomTzHtgzVeHr/tkxiVPnONGfop1Qz+I/Yst6GGQJANAJ+
+          L1zikuCPfIQrieckdUIuQZNWv4zbIzwAir7EKB4W9w2Dt4ZZ3z0MUCA/VCQsOYyY
+          3ZJjg3V2QW9UbYn2SQJAMwhKLGhbuv5ge5K5H436Rl0NR2nZVaIgxez0Y8tVeTBT
+          rM8ETzoKmuLdiTl3uUhgJMtdOP8w7geYl8o1YP+3YQ==
+          -----END RSA PRIVATE KEY-----
+
+
+# Warden CPI requires crappy network settings; so "hide" them away here
+networks:
+- name: default
+  # Assumes up to 7 VMs, including 4 static and 3 dynamic.
+  # Plus 7 (double the size) unused IPs, due to BOSH bug/quirk.
+  subnets:
+  - cloud_properties:
+      name: random
+    range: 10.244.2.24/30
+    reserved:
+    - 10.244.2.25
+    static:
+    - 10.244.2.26
+
+  # Bonus double-sized network required due to BOSH oddity
+  - cloud_properties:
+      name: random
+    range: 10.244.2.52/30
+    reserved:
+    - 10.244.2.53
+    static: []
+
+apply_spec:
+  properties:
+    ntp:
+      - 0.europe.pool.ntp.org
+      - 1.europe.pool.ntp.org
+      - 2.europe.pool.ntp.org
+      - 3.europe.pool.ntp.org
