@@ -9,6 +9,8 @@ CPUS=$(grep -c ^processor /proc/cpuinfo)
 
 apt-get update && apt-get install -y python-dev
 
+export LD_LIBRARY_PATH=/var/vcap/packages/python/lib
+
 tar xzf collectd/collectd-5.4.1.tar.gz
 cd collectd-5.4.1
 ./configure --prefix=${BOSH_INSTALL_TARGET} --enable-python --with-python
