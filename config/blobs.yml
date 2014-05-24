@@ -85,11 +85,13 @@ logstash/logstash-forwarder-1.4.0.rc1:
   size: 7214504
 elasticsearch/kibana-3.0.1.tar.gz:
   object_id: 879b9ae3-88eb-4bf5-9832-87641503a3ef
-  sha: !binary |-
-    ZGQ2YzUxNzM1ZGZkZjEyOWMxZjBkZDVmZDM4ODkzY2MxNDU5Y2JiMg==
+  sha: dd6c51735dfdf129c1f0dd5fd38893cc1459cbb2
   size: 1069929
 logstash/logsearch-filters-common--21e1a3b643.tgz:
   object_id: 0a5f2964-c065-4476-861e-4f7a331a9f82
-  sha: !binary |-
-    YjNiMGI2NmJiNGQxZmViYzAzM2U2YTMwZmNiYjAwNDM4MWU4ODRmMw==
+  sha: b3b0b66bb4d1febc033e6a30fcbb004381e884f3
   size: 1088
+python/Python-2.7.6.tgz:
+  object_id: 90f5d5ee-4be7-453e-aaf6-9d43382ef71d
+  sha: 8328d9f1d55574a287df384f4931a3942f03da64
+  size: 14725931
