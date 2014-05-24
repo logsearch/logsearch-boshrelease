@@ -2,6 +2,7 @@
 name: collectd
 packages:
   - collectd
+  - python
 templates:
   bin/collectd_ctl: bin/collectd_ctl
   bin/monit_debugger: bin/monit_debugger

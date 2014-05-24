@@ -1,6 +1,7 @@
 ---
 name: collectd
-dependencies: []
+dependencies:
+  - python
 files:
   - collectd/collectd-5.4.1.tar.gz
   - collectd/collectd-elasticsearch.py
