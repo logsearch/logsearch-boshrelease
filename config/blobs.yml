@@ -88,3 +88,8 @@ elasticsearch/kibana-3.0.1.tar.gz:
   sha: !binary |-
     ZGQ2YzUxNzM1ZGZkZjEyOWMxZjBkZDVmZDM4ODkzY2MxNDU5Y2JiMg==
   size: 1069929
+logstash/logsearch-filters-common--21e1a3b643.tgz:
+  object_id: 0a5f2964-c065-4476-861e-4f7a331a9f82
+  sha: !binary |-
+    YjNiMGI2NmJiNGQxZmViYzAzM2U2YTMwZmNiYjAwNDM4MWU4ODRmMw==
+  size: 1088
