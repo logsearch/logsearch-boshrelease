@@ -25,7 +25,7 @@ resource_pools:
   network: default
   size: 6
   stemcell:
-    name: bosh-warden-boshlite-ubuntu
+    name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
   cloud_properties: {}
 
@@ -145,7 +145,10 @@ properties:
   collectd:
     hostname_prefix: "dev.logsearch.repo-test1."
     python_librato:
+      #enabled: true
       include_regex: "collectd\\.cpu\\..*,collectd\\.df\\..*,collectd\\.disk\\..*,collectd\\.elasticsearch\\..*,collectd\\.entropy\\..*,collectd\\.interface\\..*,collectd\\.load\\..*,collectd\\.memory\\..*,collectd\\.processes\\..*,collectd\\.redis_.*,collectd\\.users\\..*"
+      #email: nobody@example.com
+      #api_token: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
   elasticsearch:
     host: 10.244.2.2
     cluster_name: logsearch--bosh-lite
