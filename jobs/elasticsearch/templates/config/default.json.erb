@@ -10,6 +10,9 @@
   "node" : {
     "master" : <%= p("elasticsearch.node.allow_master") %>,
     "data" : <%= p("elasticsearch.node.allow_data") %>
+    <% p("elasticsearch.node.tags", {}).each do | k, v | %>,
+      "<%= k %>" : "<%= v %>"
+    <% end %>
   },
   "discovery.zen.ping.multicast.enabled": false,
 <% if_p("elasticsearch.host") do %>
