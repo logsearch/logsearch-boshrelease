@@ -25,6 +25,8 @@ properties:
   logstash_parser.workers:
     description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
     default: auto
+  logstash_parser.idle_flush_time:
+    description: "How frequently to flush events if the output queue is not full."
 
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
