@@ -12,9 +12,11 @@ builds:
     version: 5
   72962819239ab79150b7fe979117d169ec0e600c:
     version: 6
-  !binary "NzQ0NzJjM2MxYjg2M2MxMGI1M2I0MWI2M2Y4ZDRhNDYwYTdiYmNjZg==":
+  74472c3c1b863c10b53b41b63f8d4a460a7bbccf:
     version: 7
-  !binary "MzUzMjRkNjNmOGU1YzM0N2IzMGIxNGY4NzQxMWVmZmRiNTc2Njk4Ng==":
+  35324d63f8e5c347b30b14f87411effdb5766986:
     version: 8
-  !binary "YWVmYWIzYjVkOTA0MDE0OTdmNTAyNTQyZDRhZmI5NmI0YzcyMThlMg==":
+  aefab3b5d90401497f502542d4afb96b4c7218e2:
     version: 9
+  3874169a086c7b44fdca644b1ff7d73c64bc5d0c:
+    version: 10
