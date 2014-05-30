@@ -8,8 +8,12 @@ source /var/vcap/jobs/log_parser/helpers/ctl_setup.sh 'log_parser'
 
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
+<% if 'auto' == p('logstash_parser.workers') %>
 # 1 logstash worker / CPU core
 export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
+<% else %>
+export LOGSTASH_WORKERS=<%= p('logstash_parser.workers') %>
+<% end %>
 
 #Copy all files from source folder tree and flatten into dest folder
 function copy_and_flatten  {
