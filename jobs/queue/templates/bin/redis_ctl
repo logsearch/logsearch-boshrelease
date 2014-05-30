@@ -14,12 +14,10 @@ case $1 in
   start)
     pid_guard $PIDFILE $JOB_NAME
 
-    exec /var/vcap/packages/redis/bin/redis-server $JOB_DIR/config/redis.conf \
+    /var/vcap/packages/redis/bin/redis-server $JOB_DIR/config/redis.conf \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
 
-    # store pid in $PIDFILE
-    echo $! > $PIDFILE
     ;;
 
   stop)
