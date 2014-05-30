@@ -22,6 +22,9 @@ properties:
   logstash_parser.filters:
     description: "A list of URL downloads (tar, tar.gz, zip)"
     default: []
+  logstash_parser.workers:
+    description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
+    default: auto
 
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
