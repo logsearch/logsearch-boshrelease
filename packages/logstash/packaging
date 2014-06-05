@@ -8,4 +8,4 @@ set -u # report the usage of uninitialized variables
 cp logstash/logstash-1.3.0.jar $BOSH_INSTALL_TARGET/logstash.jar
 
 mkdir -p $BOSH_INSTALL_TARGET/logsearch-filters-common
-/bin/tar --strip-components 1 -xzf logstash/logsearch-filters-common--21e1a3b643.tgz -C $BOSH_INSTALL_TARGET/logsearch-filters-common
+/bin/tar --strip-components 1 -xzf logstash/logsearch-filters-common--a787b438c0.tgz -C $BOSH_INSTALL_TARGET/logsearch-filters-common

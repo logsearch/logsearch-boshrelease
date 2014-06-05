@@ -3,4 +3,4 @@ name: logstash
 dependencies: []
 files: 
   - logstash/logstash-1.3.0.jar
-  - logstash/logsearch-filters-common--21e1a3b643.tgz
+  - logstash/logsearch-filters-common--a787b438c0.tgz
