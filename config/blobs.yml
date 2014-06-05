@@ -95,3 +95,7 @@ python/Python-2.7.6.tgz:
   object_id: 90f5d5ee-4be7-453e-aaf6-9d43382ef71d
   sha: 8328d9f1d55574a287df384f4931a3942f03da64
   size: 14725931
+logstash/logsearch-filters-common--a787b438c0.tgz:
+  object_id: 9c4a57c4-9235-4a1d-aff4-9c211e76dd3a
+  sha: 2b89af0dbe328e39cd63ab8ac5ef91a0c8213da3
+  size: 1173
