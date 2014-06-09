@@ -97,7 +97,7 @@ http {
         # read: index metadata
         # reason: for kibana and so we can easily use elastichq
 
-        location ~ ^/([^/]+/)?_(aliases|mapping|nodes|stats|status)$ {
+        location ~ ^/([^/]+/)?_(aliases|mapping|mapping/field/.+|nodes|stats|status)$ {
             limit_except GET {
                 deny all;
             }
@@ -118,7 +118,7 @@ http {
         }
 
 
-        # plugin: marvel, elastichq, kibana(as plugin)
+        # plugin: marvel, elastichq, kibana (as plugin)
         # reason: it's mostly read-only
 
         location ~ ^/_plugin/(marvel|HQ|kibana) {
