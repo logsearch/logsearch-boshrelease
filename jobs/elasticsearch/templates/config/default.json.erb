@@ -9,7 +9,9 @@
   "cluster.name" : "<%= p("elasticsearch.cluster_name") %>",
   "node" : {
     "master" : <%= p("elasticsearch.node.allow_master") %>,
-    "data" : <%= p("elasticsearch.node.allow_data") %>
+    "data" : <%= p("elasticsearch.node.allow_data") %>,
+    "job_name" : "<%= name %>",
+    "job_index" : "<%= index %>"
     <% p("elasticsearch.node.tags", {}).each do | k, v | %>,
       "<%= k %>" : "<%= v %>"
     <% end %>
