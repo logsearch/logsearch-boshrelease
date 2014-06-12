@@ -8,6 +8,7 @@
   "node.max_local_storage_nodes" : 1,
   "cluster.name" : "<%= p("elasticsearch.cluster_name") %>",
   "node" : {
+    "name" : "<%= name %>/<%= index %>",
     "master" : <%= p("elasticsearch.node.allow_master") %>,
     "data" : <%= p("elasticsearch.node.allow_data") %>,
     "job_name" : "<%= name %>",
