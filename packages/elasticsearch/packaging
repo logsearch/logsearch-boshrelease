@@ -10,9 +10,6 @@ cp -R elasticsearch-1.0.1/* $BOSH_INSTALL_TARGET
 
 #Plugins
 
-tar xzf elasticsearch/cloud-aws-1.14.0.tar.gz
-cp -R cloud-aws-1.14.0 $BOSH_INSTALL_TARGET/plugins
-
 mkdir -p $BOSH_INSTALL_TARGET/plugins/jetty
 cp elasticsearch/jetty-1.0.1-beta.zip $BOSH_INSTALL_TARGET/plugins/jetty
 ( cd $BOSH_INSTALL_TARGET/plugins/jetty && unzip jetty-1.0.1-beta.zip && rm jetty-1.0.1-beta.zip )
