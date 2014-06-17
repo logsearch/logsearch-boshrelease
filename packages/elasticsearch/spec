@@ -2,8 +2,8 @@
 name: elasticsearch
 dependencies: [] # no compile dependencies
 files: 
-  - elasticsearch/elasticsearch-1.0.1.tar.gz
-  - elasticsearch/jetty-1.0.1-beta.zip
-  - elasticsearch/marvel-1.1.0.zip
+  - elasticsearch/elasticsearch-1.2.1.tar.gz
+  - elasticsearch/elasticsearch-jetty-1.2.1.zip
+  - elasticsearch/marvel-1.2.1.zip
   - elasticsearch/elasticsearch-HQ-1.1.0.tar.gz
   - elasticsearch/kibana-3.0.1.tar.gz
