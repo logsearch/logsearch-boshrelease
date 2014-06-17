@@ -5,22 +5,22 @@ set -u # report the usage of uninitialized variables
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
-tar xzf elasticsearch/elasticsearch-1.0.1.tar.gz
-cp -R elasticsearch-1.0.1/* $BOSH_INSTALL_TARGET 
+tar xzf elasticsearch/elasticsearch-1.2.1.tar.gz
+cp -R elasticsearch-1.2.1/* $BOSH_INSTALL_TARGET
 
 #Plugins
 
 mkdir -p $BOSH_INSTALL_TARGET/plugins/jetty
-cp elasticsearch/jetty-1.0.1-beta.zip $BOSH_INSTALL_TARGET/plugins/jetty
-( cd $BOSH_INSTALL_TARGET/plugins/jetty && unzip jetty-1.0.1-beta.zip && rm jetty-1.0.1-beta.zip )
+cp elasticsearch/elasticsearch-jetty-1.2.1.zip $BOSH_INSTALL_TARGET/plugins/jetty
+( cd $BOSH_INSTALL_TARGET/plugins/jetty && unzip elasticsearch-jetty-1.2.1.zip && rm elasticsearch-jetty-1.2.1.zip )
 
 tar xzf elasticsearch/elasticsearch-HQ-1.1.0.tar.gz
 mkdir -p $BOSH_INSTALL_TARGET/plugins/HQ/_site
 cp -R elasticsearch-HQ-1.1.0/* $BOSH_INSTALL_TARGET/plugins/HQ/_site
 
 mkdir -p $BOSH_INSTALL_TARGET/plugins/marvel
-cp elasticsearch/marvel-1.1.0.zip $BOSH_INSTALL_TARGET/plugins/marvel
-( cd $BOSH_INSTALL_TARGET/plugins/marvel && unzip marvel-1.1.0.zip && rm marvel-1.1.0.zip )
+cp elasticsearch/marvel-1.2.1.zip $BOSH_INSTALL_TARGET/plugins/marvel
+( cd $BOSH_INSTALL_TARGET/plugins/marvel && unzip marvel-1.2.1.zip && rm marvel-1.2.1.zip )
 
 tar xzf elasticsearch/kibana-3.0.1.tar.gz
 mkdir -p $BOSH_INSTALL_TARGET/plugins/kibana/_site
