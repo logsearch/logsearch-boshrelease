@@ -12,7 +12,9 @@ input {
 
 output {
     <% if p("logstash_parser.debug") %>
-    stdout { debug => true codec => "json"}
+        stdout {
+            codec => "json"
+        }
     <% end %>
 
     elasticsearch_http {

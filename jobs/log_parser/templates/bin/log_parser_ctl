@@ -82,7 +82,7 @@ case $1 in
 
     cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
 
-    exec /var/vcap/packages/java7/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
+    exec /var/vcap/packages/logstash/logstash/bin/logstash agent \
          -f ${JOB_DIR}/config/logstash.conf -w ${LOGSTASH_WORKERS} \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log

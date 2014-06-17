@@ -6,7 +6,6 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/ingestor_lumberjack/helpers/ctl_setup.sh 'ingestor_lumberjack'
 
-export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
 # 1 logstash worker / CPU core
 export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
@@ -20,7 +19,7 @@ case $1 in
     # store this processes pid in $PIDFILE, since the exec below doesn't daemonize
     echo $$ > $PIDFILE
 
-    exec /var/vcap/packages/java7/bin/java -jar /var/vcap/packages/logstash/logstash.jar agent \
+    exec /var/vcap/packages/logstash/logstash/bin/logstash agent \
          -f ${JOB_DIR}/config/lumberjack_to_redis.conf -w ${LOGSTASH_WORKERS} \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
