@@ -11,7 +11,9 @@ input {
 			
 output {
 	<% if p("logstash_ingestor.debug") %>
-	stdout { debug => true codec => "json"}
+        stdout {
+            codec => "json"
+        }
 	<% end %>
 
 	redis {
