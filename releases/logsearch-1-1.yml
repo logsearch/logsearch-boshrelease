@@ -1,0 +1,118 @@
+---
+packages:
+- name: collectd
+  version: 1
+  sha1: !binary |-
+    YzdkYjkwZmFhZWRiYjMxOGQ5OWViODYwOTc0NzUzZWE0ODA2Yjk3Nw==
+  fingerprint: !binary |-
+    NDgyMzExMGZjN2YwMjI1Mjc4ODZjMGQzNzczZTRhMzFmNmVkZDk5Mg==
+  dependencies:
+  - python
+- name: elasticsearch
+  version: 1
+  sha1: !binary |-
+    MjJmNzY5NDQ1NTJiOWIzOWVjMGY1OTUzMDg3OWIzNTRkZGZiZTkzMA==
+  fingerprint: !binary |-
+    MWFjZTAyZmRmMjBmYmNlYWUzZDU3NDdjMjk4Y2U3MjI0ZWIxNzdjOA==
+  dependencies: []
+- name: java7
+  version: 1
+  sha1: !binary |-
+    OTBhZjUzMjRkYWE0MDQ4M2Y5NWQ1ZTY4MmFiMDk1OGFlOTczZmE3ZQ==
+  fingerprint: !binary |-
+    ZmJhZGU2OTg4MTYwYmQ4NTc2ZDRjMWM0NGEwZWIwNDlkNzAwODU4Zg==
+  dependencies: []
+- name: logstash
+  version: 1
+  sha1: !binary |-
+    ZDk5YjhkZGU3MGQ2YjdkNzAyMzk3MzNjYTQ4ZGNiZjkzZDlkNzhhZA==
+  fingerprint: !binary |-
+    ZGI4YzBmMGNjOWVjYjE0Y2JjYzUxZmY0M2M3OWU3OWFiY2M1MmRjMA==
+  dependencies: []
+- name: logstash-forwarder
+  version: 1
+  sha1: !binary |-
+    OGRhNTYzNWY3OGNkZTgxMGRhOTM4ZWQyNzk4ZTFkNjY0OGNlZWM4NQ==
+  fingerprint: !binary |-
+    YjE1YTMxZTk5YTg4ZmZkNWM4YzIzNGZhZWYyOWI2ZGJkNjI5MWE3Mw==
+  dependencies: []
+- name: nginx
+  version: 1
+  sha1: !binary |-
+    MmQ2NTBhZTI2NDJlYzJjYzIxOGZmYjdmMTQ0M2RkMDE0YmVmMTIwOQ==
+  fingerprint: !binary |-
+    MGE0NzQ5NjI1MTA3NzJiMmI3ZTU5MjJjNWRjNjFlN2Q4ZTg2YzRiNg==
+  dependencies: []
+- name: python
+  version: 1
+  sha1: !binary |-
+    NTVhODAxNDJlZDQyMjAxZmQ0NGJiODdlODViOTg3MDFhNzcwOTM1ZQ==
+  fingerprint: !binary |-
+    NWM0NmNiMmQ5NmRlYzQ0YzBlNjQ4MGNlNDkwNWQzYWMzYzAzZWRlMw==
+  dependencies: []
+- name: redis
+  version: 1
+  sha1: !binary |-
+    NTEyN2EwZWRiMzk4ZTJjMzljYWVhM2UxNjZhODY1NTVjZjZlMmE5Mw==
+  fingerprint: !binary |-
+    ZTJhNGVjNzE4MzY1ZmQ4ZmYyYTJkZjFlZmJiMTNlNmY4MmY5NDg1NQ==
+  dependencies: []
+jobs:
+- name: api
+  version: 1
+  fingerprint: !binary |-
+    ZmM2YTA0ZjIzZTM5N2VmMzAyMTIyOTM0OGVlNDAxMWVkMDUzOTA3Yw==
+  sha1: !binary |-
+    NDY2ZTNiODY1OTgyOTQ1YjRhYmNlMTJiZGQ4NmRjNDJlNGMyYWZiYQ==
+- name: collectd
+  version: 1
+  fingerprint: !binary |-
+    YTE1ZDE3MDBhNDI2MWE2N2Y2NWFlZDA2NzdiMzc0ZDJjYzcxMGMyMg==
+  sha1: !binary |-
+    NzRiMmE3NTNhMDk3OGVmMTIzMTIwMzAxMDFlZWM3MjE0Zjc2NDI5Zg==
+- name: elasticsearch
+  version: 1
+  fingerprint: !binary |-
+    NDY0MDEyMDY2MDNhZjM2NjJjOTkxNTQxY2FiOGY1YWJiMGQ3MTQyNg==
+  sha1: !binary |-
+    YjM0OTNmMjY4MWU4YTgyYmUyZGNlMjQ3OTMwM2VhOTczZDljNDNjNw==
+- name: ingestor_lumberjack
+  version: 1
+  fingerprint: !binary |-
+    OGJmYWQ1NDNlMjc5MTAxZmM3MjVmMjhkZDA2NTA5MTJjODc4OWMxZQ==
+  sha1: !binary |-
+    NmE1ODcyMjA3MjA1YTcwY2Q3YWFiODI3NGU2NDczMTMwYzAxNjQyZA==
+- name: ingestor_relp
+  version: 1
+  fingerprint: !binary |-
+    MTg3OWRlZWIzMjU0Yjk4ZDk2ZjZkNDQ3MWZlNzI4OTM1MWYwOGRhYQ==
+  sha1: !binary |-
+    YzUyNzU1N2FiMDIwMDU4ZTIzNzc4M2NiYzJlMjE3MDhmMmRkMjU1Yg==
+- name: ingestor_syslog
+  version: 1
+  fingerprint: !binary |-
+    M2NmZTRmN2QyZTJjMzdhZjVkM2YxMmMzYjA0N2MwYmY5ZGRmZmM1Ng==
+  sha1: !binary |-
+    N2EyZmEwNjk3OGQ2YjkyMDQ1ZWMwMGNkZDQ4OWJhM2VkYmQwYzVhMg==
+- name: log_parser
+  version: 1
+  fingerprint: !binary |-
+    OTZjNGJiNzg4NWU2ODgxYmY5ZGFmMzc0ZmYzNDk3M2U0NzA3ZTkxYw==
+  sha1: !binary |-
+    MzRmOWFmMTIzY2JhMjY3YzRlZjRkZDdiOGY1N2UzYzAzODU5MTgzYg==
+- name: logstash_forwarder
+  version: 1
+  fingerprint: !binary |-
+    ZWE0YjkyYTFjYjkzNjRkOTlhYjRhYTk2NzNlNDlhM2NjZTA3MjQxMg==
+  sha1: !binary |-
+    ZTkxMjZkZGJlYzg2YzJhODI2MGJkMzk4MzdjMjMxNGJhNTA5OGM3ZQ==
+- name: queue
+  version: 1
+  fingerprint: !binary |-
+    M2Y0NmI3OTE1YjhhMWFhZmEyNzc5YTNmYmM2ZjhmMzMxNmIzODU1Ng==
+  sha1: !binary |-
+    MzE0NzQ4YzNkOGMyMjhkMjVlMmE5N2FlZTgzZGJmMDU5YzIxODkyOQ==
+commit_hash: eb01e590
+uncommitted_changes: true
+name: logsearch-1
+version: 1

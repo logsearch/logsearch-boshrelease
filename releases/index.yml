@@ -1,28 +1,4 @@
 ---
 builds:
-  05b35a51f3bc2bd789cd52b4801ab09a24b74ec2:
+  !binary "ZDI2OGU3MTIyMTJiOTViNWM2YjVhMGRhNzA4OWI1NWRhNjYxMDQ0OA==":
     version: 1
-  e135b5d3a8a4e09bcbd7f0e085c81d9f2812dfd4:
-    version: 2
-  1695c2b52cffc5ebef1df48d89e333c4d633fa9c:
-    version: 3
-  7240743b2a45479ce7d474e5e37c9eac6d2cf7d5:
-    version: 4
-  3bd41103a032ef47188b44ff492a24a043641e35:
-    version: 5
-  72962819239ab79150b7fe979117d169ec0e600c:
-    version: 6
-  74472c3c1b863c10b53b41b63f8d4a460a7bbccf:
-    version: 7
-  35324d63f8e5c347b30b14f87411effdb5766986:
-    version: 8
-  aefab3b5d90401497f502542d4afb96b4c7218e2:
-    version: 9
-  3874169a086c7b44fdca644b1ff7d73c64bc5d0c:
-    version: 10
-  62d9c6568ab81b2d1eac6a3d5f001566fd7308a7:
-    version: 11
-  50f601d6eca9cf38d6d86851fac81c55ffbbafdc:
-    version: 12
-  5c4d234497257f34f61efc52744d2634557cf445:
-    version: 13
