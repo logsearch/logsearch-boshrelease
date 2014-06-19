@@ -1,7 +1,7 @@
 ---
 name: queue
 packages: 
-  - redis
+- redis
 templates:
   bin/redis_ctl: bin/redis_ctl
   bin/monit_debugger: bin/monit_debugger
@@ -13,3 +13,4 @@ properties:
   redis.port: 
     description: Redis port of queue
     default: 6379
+

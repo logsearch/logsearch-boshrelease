@@ -1,7 +1,7 @@
 ---
 name: logstash_forwarder
 packages:
-  - logstash-forwarder
+- logstash-forwarder
 templates:
   bin/logstash_forwarder_ctl: bin/logstash_forwarder_ctl
   bin/monit_debugger: bin/monit_debugger
@@ -30,3 +30,4 @@ properties:
     description: "Log files for forwarding (job-specific; path should be the key, and the sub-object with a `type` key-value should be specified)."
   logstash_forwarder.global_files:
     description: "Log files for forwarding (shared across all jobs; path should be the key, and the sub-object with a `type` key-value should be specified)."
+

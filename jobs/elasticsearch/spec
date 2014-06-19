@@ -1,8 +1,8 @@
 ---
 name: elasticsearch
 packages: 
-  - elasticsearch
-  - java7
+- elasticsearch
+- java7
 templates:
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
@@ -53,3 +53,4 @@ properties:
   elasticsearch.indices.ttl_default:
     description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
     default: 30d
+

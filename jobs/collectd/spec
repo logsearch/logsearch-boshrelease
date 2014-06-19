@@ -1,8 +1,8 @@
 ---
 name: collectd
 packages:
-  - collectd
-  - python
+- collectd
+- python
 templates:
   bin/collectd_ctl: bin/collectd_ctl
   bin/monit_debugger: bin/monit_debugger
@@ -57,3 +57,4 @@ properties:
     description: "The redis host to connect to."
   collectd.python_redis.port:
     description: "The redis port to connect to."
+
