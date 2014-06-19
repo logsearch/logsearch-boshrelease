@@ -10,3 +10,4 @@ CPUS=`grep -c ^processor /proc/cpuinfo`
 tar xzf redis/redis-2.8.4.tar.gz
 cd redis-2.8.4
 make -j${CPUS} PREFIX=${BOSH_INSTALL_TARGET} install
+

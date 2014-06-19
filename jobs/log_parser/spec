@@ -1,8 +1,8 @@
 ---
 name: log_parser
 packages: 
-  - logstash
-  - java7
+- logstash
+- java7
 templates:
   bin/log_parser_ctl: bin/log_parser_ctl
   bin/monit_debugger: bin/monit_debugger
@@ -45,4 +45,4 @@ properties:
   redis.key: 
     description: Name of queue to pull messages from
     default: logstash
-   
+
