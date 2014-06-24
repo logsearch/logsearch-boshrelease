@@ -19,9 +19,8 @@ appender:
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
 
   request_log_file:
-    type: dailyRollingFile
+    type: file
     file: ${path.logs}/requests.log
-    datePattern: "'.'yyyy-MM-dd"
     layout:
       type: pattern
       conversionPattern: "%m%n"
