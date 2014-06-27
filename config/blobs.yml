@@ -99,3 +99,38 @@ redis/redis-2.8.4.tar.gz:
   object_id: 191a0100-c082-4f96-9bb4-73abe803e649
   sha: 79b156cc9d8bff5a022fdc6d28d5c42999ddcb4f
   size: 1048914
+elasticsearch/elasticsearch-1.2.1.tar.gz:
+  object_id: 2095c352-3c35-4caf-9b53-2f4082f34af1
+  sha: !binary |-
+    ZTc0ZDgwZDc5MjY5YmIyMjQxNTNhZDYzYjQ1ZjFjZjc0NDhmMzM5OA==
+  size: 19849249
+elasticsearch/elasticsearch-jetty-1.2.1.zip:
+  object_id: bb392b74-7898-48e5-bd12-527370404231
+  sha: !binary |-
+    YTFhYWU0OTA5MzgxOGY0YmJkODJhMjE5ZTRjYzk3MjIxNDVhZjg3MA==
+  size: 1167911
+elasticsearch/kibana-3.1.0.tar.gz:
+  object_id: ad1b93da-2ae8-44f9-a62a-a26313aeb880
+  sha: !binary |-
+    ZWZmYzIwYzgzYzBjYjhkNWU4NDRkMjYzNGJkMTg1NGExODU4YmM0Mw==
+  size: 1073033
+elasticsearch/marvel-1.2.1.zip:
+  object_id: 7ad680c1-48f2-4bad-b8b2-918cd9e85138
+  sha: !binary |-
+    MzZlNDQzOGJiNmE5MzcyN2I0NDIyYTIwMWE3NWQ0ZjkzYjllMDBhMA==
+  size: 1970974
+logstash/logsearch-filters-common-15.tgz:
+  object_id: 39462c46-0341-484e-bdf6-2c69c490585c
+  sha: !binary |-
+    MDQ0OGZjNTFhNWZjZmYzNTcxZjUxM2M4NGJmY2E0OGY0NWExMjg4OQ==
+  size: 1597
+logstash/logstash-1.4.1.tar.gz:
+  object_id: ea909464-ce1f-4980-b42f-47323395910b
+  sha: !binary |-
+    ODM0NTk5ZDI4Y2U1MDAxMmMyMjFlY2U3YTY3ODNjNTk0MzIyMWUzNg==
+  size: 64573584
+logstash/logstash-contrib-1.4.1.tar.gz:
+  object_id: ad66291c-ae52-4964-8279-228724008860
+  sha: !binary |-
+    OTMwZGNmZGJmMTMxNjNkYzE5MjVkMGRiMWViNmFkZGYxZWUxODgzMQ==
+  size: 46537053
