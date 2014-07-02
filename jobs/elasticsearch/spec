@@ -17,6 +17,9 @@ properties:
     description: The frontend elasticsearch node services should use.
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
+  elasticsearch.log_level:
+    description: The default logging level (e.g. WARN, DEBUG, INFO)
+    default: INFO
   elasticsearch.node.allow_master:
     description: Allow node to become master? (true / false)
     default: true
