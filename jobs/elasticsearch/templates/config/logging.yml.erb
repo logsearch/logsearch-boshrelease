@@ -1,12 +1,6 @@
-rootLogger: INFO, console
+rootLogger: <%= p("elasticsearch.log_level") %>, console
 logger:
-  # log action execution errors for easier debugging
-  action: DEBUG
-  gateway: DEBUG
-  cluster: DEBUG
-  indices: DEBUG
   request: INFO, request_log_file
-  discovery: DEBUG
 
 additivity:
   request: false
