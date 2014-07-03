@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# simple script for delaying job updates until the cluster is green
+# this lets us do a rolling restart of elasticsearch nodes and avoid noticeable
+# downtime
+#
+# this is invoked somewhere around here:
+# https://github.com/cloudfoundry/bosh/blob/7a7e42312a6a1dce50b578be579f17d10797e556/bosh_agent/lib/bosh_agent/message/drain.rb#L172
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+if ! nc -zw 8 localhost 9300 2>&1 > /dev/null ; then
+    # elasticsearch transport isn't online, so it should be safe to update
+    echo "0"
+    exit 0
+elif [ "green" == `/usr/bin/wget -qO- --timeout 16 'localhost:9200/_cat/health?h=status'` ]; then
+    # cluster is green, so let's proceed
+    echo "0"
+    exit 0
+fi
+
+# otherwise, check back again soon
+echo "-10"
+exit 0
