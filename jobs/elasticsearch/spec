@@ -4,6 +4,7 @@ packages:
 - elasticsearch
 - java7
 templates:
+  bin/drain: bin/drain
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   config/default.json.erb: config/default.json
