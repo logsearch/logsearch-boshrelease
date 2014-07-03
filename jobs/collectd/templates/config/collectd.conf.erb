@@ -79,8 +79,8 @@ LoadPlugin cpu
 ##LoadPlugin curl_json
 #LoadPlugin curl_xml
 ##LoadPlugin dbi
-#LoadPlugin df
-#LoadPlugin disk
+LoadPlugin df
+LoadPlugin disk
 ##LoadPlugin dns
 #LoadPlugin email
 #LoadPlugin entropy
@@ -342,21 +342,18 @@ LoadPlugin network
 #   </Database>
 #</Plugin>
 
-#<Plugin df>
-#   Device "/dev/hda1"
-#   Device "192.168.0.2:/mnt/nfs"
-#   MountPoint "/home"
-#   FSType "ext3"
+<Plugin df>
+   FSType "ext4"
 #   IgnoreSelected false
-#   ReportByDevice false
+   ReportByDevice true
 #   ReportReserved false
 #   ReportInodes false
-#</Plugin>
+</Plugin>
 
-#<Plugin disk>
-#   Disk "/^[hs]d[a-f][0-9]?$/"
+<Plugin disk>
+   Disk "/^(xv|h|s)d[a-f][0-9]?$/"
 #   IgnoreSelected false
-#</Plugin>
+</Plugin>
 
 #<Plugin dns>
 #   Interface "eth0"
