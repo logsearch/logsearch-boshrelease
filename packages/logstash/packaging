@@ -10,5 +10,5 @@ tar -xzf logstash/logstash-1.4.1.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip
 tar -xzf logstash/logstash-contrib-1.4.1.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
 
 mkdir -p $BOSH_INSTALL_TARGET/logsearch-filters-common
-/bin/tar --strip-components 1 -xzf logstash/logsearch-filters-common-15.tgz -C $BOSH_INSTALL_TARGET/logsearch-filters-common
+/bin/tar --strip-components 1 -xzf logstash/logsearch-filters-common-16.tgz -C $BOSH_INSTALL_TARGET/logsearch-filters-common
 
