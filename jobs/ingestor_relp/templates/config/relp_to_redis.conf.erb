@@ -3,9 +3,6 @@ input {
 		add_field => [ "_logstash_input", "relp" ]
 		host => "0.0.0.0"
 		port => "<%= p("logstash_ingestor.relp.port") %>"
-		<% if_p("logstash_ingestor.debug") do %>
-		debug => true
-		<% end %>
 	}
 }
 			
