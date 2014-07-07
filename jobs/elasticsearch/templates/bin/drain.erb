@@ -53,7 +53,7 @@ if ! nc -zw 8 localhost 9300 2>&1 > /dev/null ; then
     # in going offline
 
     proceed
-elif [ "green" == `wget -qO- --timeout 16 'localhost:9200/_cat/health?h=status'` ] ; then
+elif [ "green" == $(curl -s --max-time 16 'localhost:9200/_cat/health?h=status') ] ; then
     # cluster is green, so let's proceed
 
     JOB_STATUS=$(cat $STATE_JOB_STATUS)
@@ -82,7 +82,7 @@ elif [ "green" == `wget -qO- --timeout 16 'localhost:9200/_cat/health?h=status'`
         # since we're terminating, we really care about whether we're still
         # responsible for any shards
 
-        if [ "0" == `wget -qO- 'localhost:9200/_cat/shards?h=index,shard,node' | grep '<%= name %>/<%= index %>' | wc -l` ] ; then
+        if [ "0" == $(curl -s --max-time 32 'localhost:9200/_cat/shards?h=index,shard,node' | grep '<%= name %>/<%= index %>' | wc -l) ] ; then
             # this node has no more shards allocated to it, so it's safe to
             # shutdown
 
