@@ -4,8 +4,6 @@ packages:
 - elasticsearch
 - java7
 templates:
-  bin/drain.erb: bin/drain
-  bin/undrain.erb: bin/undrain
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   config/default.json.erb: config/default.json
@@ -15,10 +13,6 @@ templates:
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
 properties:
-  elasticsearch.drain:
-    description: Whether to use the built-in drain features to improve deployment reliability
-    # disabled while we do additional testing
-    default: false
   elasticsearch.host:
     description: The frontend elasticsearch node services should use.
   elasticsearch.cluster_name:
