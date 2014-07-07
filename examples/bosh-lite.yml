@@ -17,7 +17,7 @@ update:
   canaries: 1
   canary_watch_time: 30000
   update_watch_time: 30000
-  max_in_flight: 4
+  max_in_flight: 1
   max_errors: 1
 
 resource_pools:
@@ -33,9 +33,11 @@ jobs:
 - name: api
   release: logsearch
   templates: 
+  - name: elasticsearch
   - name: api
   - name: collectd
-  - name: elasticsearch
+  update:
+    serial: true
   instances: 1
   resource_pool: warden
   networks:
@@ -104,8 +106,10 @@ jobs:
 - name: elasticsearch_persistent
   release: logsearch
   templates:
-  - name: collectd
   - name: elasticsearch
+  - name: collectd
+  update:
+    serial: true
   instances: 1
   resource_pool: warden
   networks:
@@ -124,8 +128,10 @@ jobs:
 - name: elasticsearch_autoscale
   release: logsearch
   templates:
-  - name: collectd
   - name: elasticsearch
+  - name: collectd
+  update:
+    serial: true
   instances: 1
   resource_pool: warden
   networks:
