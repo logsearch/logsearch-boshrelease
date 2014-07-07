@@ -4,6 +4,7 @@ releases/*.tgz
 dev_releases
 blobs/*
 .blobs
+.bosh_config
 .dev_builds
 .vagrant
 .idea
