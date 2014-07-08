@@ -1,101 +1,170 @@
 #!/bin/bash
 
-# simple script for delaying job updates until the cluster is green
-# this lets us do kind of a rolling restart of elasticsearch nodes and avoid
-# noticeable downtime
 #
-# this uses two state files
-# 1) to store which task we're working on (update, shutdown)
-# 2) whether we've done a one-time handling of that task
+# This script keeps the elasticsearch cluster stable when BOSH needs to manage
+# nodes during deploys. This is simplistic and only accounts for serial
+# changes to the elasticsearch nodes, so be sure elasticsearch jobs are
+# configured to deploy serially.
 #
-# this is necessary because we don't want to make changes to the cluster until
-# it is green (which may not be the first time this script is invoked)
+# When you get into fancier cluster scenarios, you'll want to disable this with
+# the `elasticsearch.drain: false` property and manage your own cluster
+# settings.
 #
-# this is obviously very simplistic... if/when you need to get fancy with your
-# cluster, you'll want to disable this for more advanced allocation and host
-# management tasks
-#
-# this is invoked somewhere around here:
+# This is invoked somewhere around here:
 # https://github.com/cloudfoundry/bosh/blob/7a7e42312a6a1dce50b578be579f17d10797e556/bosh_agent/lib/bosh_agent/message/drain.rb#L172
+#
 
-<% if !p('elasticsearch.drain') %>
-# elasticsearch.drain is disabled in the manifest
-echo "0"
-exit 0
-<% elsif !p('elasticsearch.node.allow_data') %>
-# this node does not contain data, so we can skip all these data-related tasks
-echo "0"
-exit 0
-<% end %>
+set -e
+set -u
 
 JOB_STATUS=$1
+
+<% if !p('elasticsearch.drain') %>
+#
+# The `elasticsearch.drain` property is disabled in the deployment.
+#
+
+echo "0"
+exit 0
+
+<% elsif !p('elasticsearch.node.allow_data') %>
+#
+# This node does not contain data, so we can skip all these tasks.
+#
+
+echo "0"
+exit 0
+
+<% end %>
+
+#
+# some state files we'll use
+#
 
 STATE_JOB_STATUS=/var/vcap/jobs/elasticsearch/config/.boshdrain
 STATE_HANDLED=/var/vcap/jobs/elasticsearch/config/.boshdrainhandled
 
-function proceed {
+
+#
+# some utility functions
+#
+
+function exit_cleanly {
+    #
+    # it's safe for us to shutdown
+    #
+
+    # clean up our state files
     [ ! -f $STATE_JOB_STATUS ] || rm $STATE_JOB_STATUS
     [ ! -f $STATE_HANDLED ] || rm $STATE_HANDLED
 
+    # done
     echo "0"
     exit 0
 }
 
+function exit_tryagain {
+    #
+    # bosh needs to check back later
+    #
+
+    echo "-10"
+    exit 0
+}
+
+
+#
+# ready, set, go...
+#
+
 if [ "job_check_status" != "$JOB_STATUS" ] ; then
+    #
+    # this is the first time bosh is running this drain script
+    #
+
+    # save the task for later (since subsequent calls are job_check_status)
     echo $JOB_STATUS > $STATE_JOB_STATUS
 fi
 
-set -e # exit immediately if a simple command exits with a non-zero status
-set -u # report the usage of uninitialized variables
-
 if ! nc -zw 8 localhost 9300 2>&1 > /dev/null ; then
-    # elasticsearch transport isn't already online, so there should be no harm
-    # in going offline
+    #
+    # elasticsearch transport is offline
+    #
 
-    proceed
-elif [ "green" == $(curl -s --max-time 16 'localhost:9200/_cat/health?h=status') ] ; then
-    # cluster is green, so let's proceed
+    # since we're not already online, it should be safe to stop elasticsearch
+    exit_cleanly
+elif [ "green" != $(curl -s 'localhost:9200/_cat/health?h=status' | tr -d '[:space:]') ] ; then
+    #
+    # the cluster is not yet stable
+    #
 
-    JOB_STATUS=$(cat $STATE_JOB_STATUS)
-
-    if [ ! -f $STATE_HANDLED ] ; then
-        touch $STATE_HANDLED
-
-        if [ "job_changed" == "$JOB_STATUS" ] || [ "job_unchanged" == "$JOB_STATUS" ] ; then
-            # we should disable allocations to avoid indices getting reinitialized
-            # from peer shards while we're offline
-            curl -sX PUT -d '{"transient":{"cluster.routing.allocation.enable":"primaries"}}' 'localhost:9200/_cluster/settings' > /dev/null
-
-            # during startup, we'll look for this value to know if we should
-            # restore the normal allocation settings
-            curl -sX PUT -d '{"drained":1}' 'localhost:9200/.bosh/drain/<%= name %>--<%= index %>' > /dev/null
-        elif [ "job_shutdown" == "$JOB_STATUS" ] ; then
-            curl -sX PUT -d '{"transient":{"cluster.routing.allocation.exclude._name":"<%= name %>/<%= index %>"}}' 'localhost:9200/_cluster/settings' > /dev/null
-
-            # come back soon to check on the rebalancing status
-            echo "-10"
-            exit 0
-        fi
-    fi
-
-    if [ "job_shutdown" == "$JOB_STATUS" ] ; then
-        # since we're terminating, we really care about whether we're still
-        # responsible for any shards
-
-        if [ "0" == $(curl -s --max-time 32 'localhost:9200/_cat/shards?h=index,shard,node' | grep '<%= name %>/<%= index %>' | wc -l) ] ; then
-            # this node has no more shards allocated to it, so it's safe to
-            # shutdown
-
-            proceed
-        fi
-
-        echo "-60"
-        exit 0
-    fi
-
-    proceed
+    # we need to wait before we try to run our drain tasks
+    exit_tryagain
 fi
 
-# check back again soon to see if the cluster is green
-echo "-10"
-exit 0
+#
+# cluster is green
+#
+
+JOB_STATUS=$(cat $STATE_JOB_STATUS)
+
+if [ ! -f $STATE_HANDLED ] ; then
+    #
+    # this is the first time drain has been called where the cluster is green
+    #
+
+    # set the flag to avoid running the one-time job tasks again
+    touch $STATE_HANDLED
+
+    if [ "job_changed" == "$JOB_STATUS" ] || [ "job_unchanged" == "$JOB_STATUS" ] ; then
+        #
+        # this node will be simply be restarted
+        #
+
+        # disable allocations while our node's shards go offline
+        curl -s \
+            -X PUT \
+            -d '{"transient":{"cluster.routing.allocation.enable":"primaries"}}' \
+            'localhost:9200/_cluster/settings' \
+            > /dev/null
+
+        # set a flag so we know to reverse the setting when we start up again
+        curl -s \
+            -X PUT \
+            -d '{"drained":1}' \
+            'localhost:9200/.bosh/drain/<%= name %>--<%= index %>' \
+            > /dev/null
+    elif [ "job_shutdown" == "$JOB_STATUS" ] ; then
+        #
+        # this node (and its data) are going to be eliminated
+        #
+
+        # tell cluster it shouldn't trust us with data
+        curl -s \
+            -X PUT \
+            -d '{"transient":{"cluster.routing.allocation.exclude._name":"<%= name %>/<%= index %>"}}' \
+            'localhost:9200/_cluster/settings' \
+            > /dev/null
+
+        # we need to wait for elasticsearch to transfer shards off
+        exit_tryagain
+    fi
+fi
+
+if [ "job_shutdown" == "$JOB_STATUS" ] ; then
+    #
+    # this node (and its data) are going to be trashed
+    #
+
+    if [ "0" != $(curl -s 'localhost:9200/_cat/shards?h=index,shard,node' | grep '<%= name %>/<%= index %>' | wc -l) ] ; then
+        #
+        # this node still has data on it
+        #
+
+        # we still need to wait for elasticsearch to transfer shards off
+        exit_tryagain
+    fi
+fi
+
+# nothing more is stopping us from shutting down
+exit_cleanly
