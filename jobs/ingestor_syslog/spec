@@ -9,6 +9,8 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/syslog_tls.crt.erb: config/syslog_tls.crt
+  config/syslog_tls.key.erb: config/syslog_tls.key
   config/syslog_to_redis.conf.erb: config/syslog_to_redis.conf
 properties:
   logstash_ingestor.debug:
@@ -18,6 +20,13 @@ properties:
   logstash_ingestor.syslog.port: 
     description: Port to listen for syslog messages
     default: 5514
+
+  logstash_ingestor.syslog_tls.port: 
+    description: Port to listen for syslog-TLS messages (omit to disable) 
+  logstash_ingestor.syslog_tls.ssl_cert:
+    description: Syslog-TLS SSL certificate (file contents, not a path) - required if logstash_ingestor.syslog_tls.port set
+  logstash_ingestor.syslog_tls.ssl_key:
+    description: Syslog-TLS SSL key (file contents, not a path) - required if logstash_ingestor.syslog_tls.port set
 
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
