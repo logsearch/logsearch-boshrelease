@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: f0588560-08a8-4ae2-914a-b9e8b12d9303 
+director_uuid: c5f8d0da-f8ac-4918-a1a3-0a846fb97d09
 
 releases:
 - name: logsearch
@@ -162,6 +162,9 @@ properties:
   logstash_parser:
     debug: true
     filters:
+    # reuse the pre-packaged filters
+    - "file:///var/vcap/packages/logstash/default-filters"
+    # and add the separate cloudfoundry filters
     - "https://ci-logsearch.s3.amazonaws.com/logsearch-filters-cf/logstash-filters-cf-7.tgz"
   logstash_ingestor:
     debug: true
