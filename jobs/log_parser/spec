@@ -20,8 +20,9 @@ properties:
     description: "Maximum log message length.  Anything larger is truncated (TODO: move this to ingestor?)"
     default: 1048576
   logstash_parser.filters:
-    description: "A list of URL downloads (tar, tar.gz, zip)"
-    default: []
+    description: "A list of URL downloads (tar, tar.gz, zip) or local file directories"
+    default:
+    - "file:///var/vcap/packages/logstash/default-filters"
   logstash_parser.workers:
     description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
     default: auto

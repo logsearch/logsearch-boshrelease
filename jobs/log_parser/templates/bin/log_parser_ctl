@@ -35,23 +35,13 @@ case $1 in
     mkdir -p ${JOB_DIR}/config/raw ${JOB_DIR}/config/composite
     rm -f ${JOB_DIR}/config/composite/*
 
-    #fetch the standard filters (so they can be overwritten by logstash_parser.filters below if necessary)
-    copy_and_flatten /var/vcap/packages/logstash/logsearch-filters-common ${JOB_DIR}/config/composite
+    pushd ${JOB_DIR}/config/composite > /dev/null
 
-    <%
-      md5filters = p('logstash_parser.filters').map do | v |
-        Digest::MD5.hexdigest v
-      end
-    %>
-
-    pushd ${JOB_DIR}/config > /dev/null
-
-    <% p('logstash_parser.filters').each_with_index do | v, i | %>
-      # <%= v %>
-      if ! [[ -d raw/<%= md5filters[i] %> ]] ; then
-        mkdir -p raw/<%= md5filters[i] %>
-        pushd raw/<%= md5filters[i] %> > /dev/null
-
+    <% filters = Array(p('logstash_parser.filters', [])) %>
+    <% filters.each do | v | %>
+      <% if v =~ /^file:\/\/(.+)$/ %>
+        find <%= $1 %> -name '*.conf' -exec cp {} . \;
+      <% else %>
         <% if v =~ /\.tar\.gz$/ or v =~ /\.tgz$/ %>
           /usr/bin/wget -qO- "<%= v %>" | /bin/tar -xz 
         <% elsif v =~ /\.tar$/ %>
@@ -59,20 +49,8 @@ case $1 in
         <% elsif v =~ /\.zip$/ %>
           /usr/bin/wget "<%= v %>" && /usr/bin/unzip -d .ziptmp `basename "<%= v %>"` && /bin/mv .ziptmp/*/* ./ && /bin/rm -fr `basename "<%= v %>"` .ziptmp
         <% end %>
-
-        popd > /dev/null
-      fi
-
-      #Copy extracted filters into filter collection (overwriting is intentional)
-      copy_and_flatten raw/<%= md5filters[i] %> ${JOB_DIR}/config/composite
+      <% end %>
     <% end %>
-
-    # cleanup old filters
-    for FILTERMD5 in $(ls raw) ; do
-      if ! [[ " <%= md5filters.join(' ') %> " =~ " $FILTERMD5 " ]] ; then
-        rm -fr raw/$FILTERMD5
-      fi
-    done
 
     popd > /dev/null
 
