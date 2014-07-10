@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: f0588560-08a8-4ae2-914a-b9e8b12d9303 
+director_uuid: c5f8d0da-f8ac-4918-a1a3-0a846fb97d09
 
 releases:
 - name: logsearch
@@ -158,6 +158,7 @@ properties:
   elasticsearch:
     host: 10.244.2.2
     cluster_name: logsearch--bosh-lite
+    drain: true
     indices:
       ttl_interval: "5m"  # We want documents from test runs to be cleaned up frequently
     exec:
