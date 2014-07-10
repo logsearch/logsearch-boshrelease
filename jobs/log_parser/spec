@@ -12,6 +12,8 @@ templates:
   config/input_redis_and_output_elasticsearch.conf.erb: config/input_redis_and_output_elasticsearch.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
+  config/filters_default.conf: config/filters_default.conf
+  config/filters_override.conf.erb: config/filters_override.conf
 properties:
   logstash_parser.debug:
     description: Debug level logging
@@ -20,9 +22,8 @@ properties:
     description: "Maximum log message length.  Anything larger is truncated (TODO: move this to ingestor?)"
     default: 1048576
   logstash_parser.filters:
-    description: "A list of URL downloads (tar, tar.gz, zip) or local file directories"
-    default:
-    - "file:///var/vcap/packages/logstash/default-filters"
+    description: "The configuration to embed into the logstash filters section"
+    default: ''
   logstash_parser.workers:
     description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
     default: auto

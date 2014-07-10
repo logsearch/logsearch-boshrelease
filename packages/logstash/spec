@@ -4,4 +4,3 @@ dependencies: []
 files: 
   - logstash/logstash-1.4.1.tar.gz
   - logstash/logstash-contrib-1.4.1.tar.gz
-  - logstash/logsearch-filters-common-16.tgz
