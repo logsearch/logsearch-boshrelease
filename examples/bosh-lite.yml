@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: f0588560-08a8-4ae2-914a-b9e8b12d9303 
+director_uuid: c5f8d0da-f8ac-4918-a1a3-0a846fb97d09 
 
 releases:
 - name: logsearch
@@ -169,6 +169,42 @@ properties:
       port: 5515
     syslog:
       port: 5514
+    syslog_tls:
+      port: 443
+      ssl_cert: |
+          -----BEGIN CERTIFICATE-----
+          MIICsDCCAhmgAwIBAgIJAJZZlYOII804MA0GCSqGSIb3DQEBBQUAMEUxCzAJBgNV
+          BAYTAkFVMRMwEQYDVQQIEwpTb21lLVN0YXRlMSEwHwYDVQQKExhJbnRlcm5ldCBX
+          aWRnaXRzIFB0eSBMdGQwHhcNMTQwNDA4MTUxNzA3WhcNMjQwNDA1MTUxNzA3WjBF
+          MQswCQYDVQQGEwJBVTETMBEGA1UECBMKU29tZS1TdGF0ZTEhMB8GA1UEChMYSW50
+          ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKB
+          gQC2xI0wD26YOIEukuyokWDkKsFEvZxnadOEGT/9isf/mdiMk10NRZTF5bZU9ek9
+          Vj9HsO7sk2ays31bkjQVAw9/l2eQSDNKtnnWk28AiTEOvZq5ZYnc9PT5uyHQL4Uj
+          XJe2H8Dg/gfJhy9Ru9gpSSnRkYOXnwp2v6eJiQtzC6EG0QIDAQABo4GnMIGkMB0G
+          A1UdDgQWBBSyMMgqdi6u092zAgm03c0/JhP0bDB1BgNVHSMEbjBsgBSyMMgqdi6u
+          092zAgm03c0/JhP0bKFJpEcwRTELMAkGA1UEBhMCQVUxEzARBgNVBAgTClNvbWUt
+          U3RhdGUxITAfBgNVBAoTGEludGVybmV0IFdpZGdpdHMgUHR5IEx0ZIIJAJZZlYOI
+          I804MAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQEFBQADgYEAif7W/VbSZ9GHfNDP
+          Cf+dsFTBk/1MpPW0cHXCX2lza42kbZ29PmhW1DSD+LkDcodL5wdVvTKSvJKmi5Cz
+          Y4O5DFyRcLQVTrhlUWfnUxTmaeWWzWyZe4RI98tTc2QHli6S9aeqczpa8k1aTiDp
+          XDPsPhpJjIepHXFRDaXUoV/T984=
+          -----END CERTIFICATE-----
+      ssl_key: |
+          -----BEGIN RSA PRIVATE KEY-----
+          MIICWwIBAAKBgQC2xI0wD26YOIEukuyokWDkKsFEvZxnadOEGT/9isf/mdiMk10N
+          RZTF5bZU9ek9Vj9HsO7sk2ays31bkjQVAw9/l2eQSDNKtnnWk28AiTEOvZq5ZYnc
+          9PT5uyHQL4UjXJe2H8Dg/gfJhy9Ru9gpSSnRkYOXnwp2v6eJiQtzC6EG0QIDAQAB
+          AoGASnrQmnw/cnLcWfFv1cXguTqfJfcrDI14r8VmaVkr5YJ5V9gZvHXVicvxwK+x
+          y9gg04NL6karPDme5TkwVju4DXJxwcT70QhFOG5EHFxij1HA8hgOU+K4X4FeNVbz
+          JPi27ktnJTsYs2Hq/UMoWygTvlTtyCsCytcAuo5jZRoy/cECQQDxoeFJiIH6hn2M
+          G/89USPeJKfiXIP8pSZCZi/FagVHRYKhgJ2MY4Uw4bmIxyiMO9VGSXhDpbnx1AAp
+          /6/KOod5AkEAwaKjDcI4c87DRQfPdORNBoKPTY1CuLgYUTIKBDUYUG0d/Vwy+USA
+          0NJI74B6sLCdfxLtK1d95XVuLRPDDGksGQJAMm0zI/JuFcdtegj5umUtlBWYR8BA
+          9z/L/T1wKMXYdihGe8fomTzHtgzVeHr/tkxiVPnONGfop1Qz+I/Yst6GGQJANAJ+
+          L1zikuCPfIQrieckdUIuQZNWv4zbIzwAir7EKB4W9w2Dt4ZZ3z0MUCA/VCQsOYyY
+          3ZJjg3V2QW9UbYn2SQJAMwhKLGhbuv5ge5K5H436Rl0NR2nZVaIgxez0Y8tVeTBT
+          rM8ETzoKmuLdiTl3uUhgJMtdOP8w7geYl8o1YP+3YQ==
+          -----END RSA PRIVATE KEY-----
     lumberjack:
       ssl_certificate: |
           -----BEGIN CERTIFICATE-----
