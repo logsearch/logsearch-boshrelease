@@ -15,11 +15,6 @@ export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
 export LOGSTASH_WORKERS=<%= p('logstash_parser.workers') %>
 <% end %>
 
-#Copy all files from source folder tree and flatten into dest folder
-function copy_and_flatten  {
-    find $1 -type f -exec cp {} $2 \;
-}  
-
 case $1 in
 
   start)
@@ -32,31 +27,11 @@ case $1 in
     cat ${JOB_DIR}/config/input_redis_and_output_elasticsearch.conf > ${JOB_DIR}/config/logstash.conf
     cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/logstash.conf
 
-    mkdir -p ${JOB_DIR}/config/raw ${JOB_DIR}/config/composite
-    rm -f ${JOB_DIR}/config/composite/*
-
-    pushd ${JOB_DIR}/config/composite > /dev/null
-
-    <% filters = Array(p('logstash_parser.filters', [])) %>
-    <% filters.each do | v | %>
-      <% if v =~ /^file:\/\/(.+)$/ %>
-        find <%= $1 %> -name '*.conf' -exec cp {} . \;
-      <% else %>
-        <% if v =~ /\.tar\.gz$/ or v =~ /\.tgz$/ %>
-          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -xz 
-        <% elsif v =~ /\.tar$/ %>
-          /usr/bin/wget -qO- "<%= v %>" | /bin/tar -x 
-        <% elsif v =~ /\.zip$/ %>
-          /usr/bin/wget "<%= v %>" && /usr/bin/unzip -d .ziptmp `basename "<%= v %>"` && /bin/mv .ziptmp/*/* ./ && /bin/rm -fr `basename "<%= v %>"` .ziptmp
-        <% end %>
-      <% end %>
+    <% if '' != p('logstash_parser.filters') %>
+      cat ${JOB_DIR}/config/filters_override.conf >> ${JOB_DIR}/config/logstash.conf
+    <% else %>
+      cat ${JOB_DIR}/config/filters_default.conf >> ${JOB_DIR}/config/logstash.conf
     <% end %>
-
-    popd > /dev/null
-
-    # find all filters
-    FILTERS=$(find ${JOB_DIR}/config/composite -follow -type f -name '*.conf' | awk -vFS=/ -vOFS=, '{ print $NF,$0 }' | sort -n | cut -d "," -f 2 | xargs)
-    cat ${FILTERS} >> ${JOB_DIR}/config/logstash.conf
 
     cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
 
