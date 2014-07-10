@@ -121,18 +121,18 @@ if [ ! -f $STATE_HANDLED ] ; then
         # this node will be simply be restarted
         #
 
-        # disable allocations while our node's shards go offline
-        curl -s \
-            -X PUT \
-            -d '{"transient":{"cluster.routing.allocation.enable":"primaries"}}' \
-            'localhost:9200/_cluster/settings' \
-            > /dev/null
-
         # set a flag so we know to reverse the setting when we start up again
         curl -s \
             -X PUT \
             -d '{"drained":1}' \
             'localhost:9200/.bosh/drain/<%= name %>--<%= index %>' \
+            > /dev/null
+
+        # disable allocations while our node's shards go offline
+        curl -s \
+            -X PUT \
+            -d '{"transient":{"cluster.routing.allocation.enable":"primaries"}}' \
+            'localhost:9200/_cluster/settings' \
             > /dev/null
     elif [ "job_shutdown" == "$JOB_STATUS" ] ; then
         #
