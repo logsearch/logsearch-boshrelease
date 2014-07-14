@@ -1,0 +1,170 @@
+#!/bin/bash
+
+#
+# This script keeps the elasticsearch cluster stable when BOSH needs to manage
+# nodes during deploys. This is simplistic and only accounts for serial
+# changes to the elasticsearch nodes, so be sure elasticsearch jobs are
+# configured to deploy serially.
+#
+# When you get into fancier cluster scenarios, you'll want to disable this with
+# the `elasticsearch.drain: false` property and manage your own cluster
+# settings.
+#
+# This is invoked somewhere around here:
+# https://github.com/cloudfoundry/bosh/blob/7a7e42312a6a1dce50b578be579f17d10797e556/bosh_agent/lib/bosh_agent/message/drain.rb#L172
+#
+
+set -e
+set -u
+
+JOB_STATUS=$1
+
+<% if !p('elasticsearch.drain') %>
+#
+# The `elasticsearch.drain` property is disabled in the deployment.
+#
+
+echo "0"
+exit 0
+
+<% elsif !p('elasticsearch.node.allow_data') %>
+#
+# This node does not contain data, so we can skip all these tasks.
+#
+
+echo "0"
+exit 0
+
+<% end %>
+
+#
+# some state files we'll use
+#
+
+STATE_JOB_STATUS=/var/vcap/jobs/elasticsearch/config/.boshdrain
+STATE_HANDLED=/var/vcap/jobs/elasticsearch/config/.boshdrainhandled
+
+
+#
+# some utility functions
+#
+
+function exit_cleanly {
+    #
+    # it's safe for us to shutdown
+    #
+
+    # clean up our state files
+    [ ! -f $STATE_JOB_STATUS ] || rm $STATE_JOB_STATUS
+    [ ! -f $STATE_HANDLED ] || rm $STATE_HANDLED
+
+    # done
+    echo "0"
+    exit 0
+}
+
+function exit_tryagain {
+    #
+    # bosh needs to check back later
+    #
+
+    echo "-10"
+    exit 0
+}
+
+
+#
+# ready, set, go...
+#
+
+if [ "job_check_status" != "$JOB_STATUS" ] ; then
+    #
+    # this is the first time bosh is running this drain script
+    #
+
+    # save the task for later (since subsequent calls are job_check_status)
+    echo $JOB_STATUS > $STATE_JOB_STATUS
+fi
+
+if ! nc -zw 8 localhost 9300 2>&1 > /dev/null ; then
+    #
+    # elasticsearch transport is offline
+    #
+
+    # since we're not already online, it should be safe to stop elasticsearch
+    exit_cleanly
+elif [ "green" != $(curl -s 'localhost:9200/_cat/health?h=status' | tr -d '[:space:]') ] ; then
+    #
+    # the cluster is not yet stable
+    #
+
+    # we need to wait before we try to run our drain tasks
+    exit_tryagain
+fi
+
+#
+# cluster is green
+#
+
+JOB_STATUS=$(cat $STATE_JOB_STATUS)
+
+if [ ! -f $STATE_HANDLED ] ; then
+    #
+    # this is the first time drain has been called where the cluster is green
+    #
+
+    # set the flag to avoid running the one-time job tasks again
+    touch $STATE_HANDLED
+
+    if [ "job_changed" == "$JOB_STATUS" ] || [ "job_unchanged" == "$JOB_STATUS" ] ; then
+        #
+        # this node will be simply be restarted
+        #
+
+        # set a flag so we know to reverse the setting when we start up again
+        curl -s \
+            -X PUT \
+            -d '{"drained":1}' \
+            'localhost:9200/.bosh/drain/<%= name %>--<%= index %>' \
+            > /dev/null
+
+        # disable allocations while our node's shards go offline
+        curl -s \
+            -X PUT \
+            -d '{"transient":{"cluster.routing.allocation.enable":"primaries"}}' \
+            'localhost:9200/_cluster/settings' \
+            > /dev/null
+    elif [ "job_shutdown" == "$JOB_STATUS" ] ; then
+        #
+        # this node (and its data) are going to be eliminated
+        #
+
+        # tell cluster it shouldn't trust us with data
+        curl -s \
+            -X PUT \
+            -d '{"transient":{"cluster.routing.allocation.exclude._name":"<%= name %>/<%= index %>"}}' \
+            'localhost:9200/_cluster/settings' \
+            > /dev/null
+
+        # we need to wait for elasticsearch to transfer shards off
+        exit_tryagain
+    fi
+fi
+
+if [ "job_shutdown" == "$JOB_STATUS" ] ; then
+    #
+    # this node (and its data) are going to be trashed
+    #
+
+    if [ "0" != $(curl -s 'localhost:9200/_cat/shards?h=index,shard,node' | grep '<%= name %>/<%= index %>' | wc -l) ] ; then
+        #
+        # this node still has data on it
+        #
+
+        # we still need to wait for elasticsearch to transfer shards off
+        exit_tryagain
+    fi
+fi
+
+# nothing more is stopping us from shutting down
+exit_cleanly
