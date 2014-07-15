@@ -12,11 +12,11 @@ input {
 	}
 	<% end %>
 
-	<% if p("logstash_ingestor.syslog_tls.port") %>
+	<% if_p("logstash_ingestor.syslog_tls.port") do | port | %>
     tcp {
 		add_field => [ "type", "syslog" ]
 		host => "0.0.0.0"
-		port => "<%= p("logstash_ingestor.syslog_tls.port") %>"
+		port => "<%= port %>"
 		ssl_enable => true
 		ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
 		ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
