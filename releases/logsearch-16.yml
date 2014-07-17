@@ -1,0 +1,84 @@
+---
+packages:
+- name: collectd
+  version: 426c5cb42ff5a326e539aef22f7d14526a02c1be
+  sha1: 92c999014a8e3e392ee4c745444e2eafb7c22877
+  fingerprint: 426c5cb42ff5a326e539aef22f7d14526a02c1be
+  dependencies:
+  - python
+- name: elasticsearch
+  version: e866cba047ff7ce1f31e3bcfce0762e13c2f47cf
+  sha1: ff19d7f4a77f1fe36f4f1bb33d4ad9e44ea89af7
+  fingerprint: e866cba047ff7ce1f31e3bcfce0762e13c2f47cf
+  dependencies: []
+- name: java7
+  version: c04c102fd6c411f867dc44ee65279dd47eb5c8a0
+  sha1: 05709a00abdff4e0b7f7e11510c35fde229bf439
+  fingerprint: c04c102fd6c411f867dc44ee65279dd47eb5c8a0
+  dependencies: []
+- name: logstash
+  version: 5e1a6fd74024db3c4923397f71da1c71a0cb51d3
+  sha1: 422752a0aa44ef0726185fd62dc18d1c81eb4167
+  fingerprint: 5e1a6fd74024db3c4923397f71da1c71a0cb51d3
+  dependencies: []
+- name: logstash-forwarder
+  version: 2f966c5caa729f165636c69ee9acd2ead524183b
+  sha1: 1f0bf801108334e37f3a400d1b0ac226ff936773
+  fingerprint: 2f966c5caa729f165636c69ee9acd2ead524183b
+  dependencies: []
+- name: nginx
+  version: 07fa264094f0ebb55bcc9990578d9cc159748dc0
+  sha1: 8b1625f2f49e08ea2649ed0694b655fc0c10ab13
+  fingerprint: 07fa264094f0ebb55bcc9990578d9cc159748dc0
+  dependencies: []
+- name: python
+  version: 356d0ec8645d158e9d1a517c2fd071762d43429d
+  sha1: b08a66817cffaefe230b64a1e277e0d1e801ddb1
+  fingerprint: 356d0ec8645d158e9d1a517c2fd071762d43429d
+  dependencies: []
+- name: redis
+  version: cd861700c83a544b6d0bba3b620017d22cf0d726
+  sha1: eb71fe4bae7331bdf281783df22603518f12626f
+  fingerprint: cd861700c83a544b6d0bba3b620017d22cf0d726
+  dependencies: []
+jobs:
+- name: api
+  version: 9681797ee8c54a891808ba6d148494e56baea153
+  fingerprint: 9681797ee8c54a891808ba6d148494e56baea153
+  sha1: 9576cae6b7d0c8cae59d8680ebbabbc12227fd8c
+- name: collectd
+  version: 8e0bf1ae5d65c2a9858aba54c1d138f1745f9c9f
+  fingerprint: 8e0bf1ae5d65c2a9858aba54c1d138f1745f9c9f
+  sha1: 104978a0c994b12b9b3524bf6025bd5272430a8b
+- name: elasticsearch
+  version: 9ff5fc0bd435f7f8841b7d691da4b3ae337da922
+  fingerprint: 9ff5fc0bd435f7f8841b7d691da4b3ae337da922
+  sha1: 0fec4920565ab2f269dc5023d7f696217960c599
+- name: ingestor_lumberjack
+  version: 5c62b3bdb57ea73041cccf0f4486e09e4217e446
+  fingerprint: 5c62b3bdb57ea73041cccf0f4486e09e4217e446
+  sha1: b7e57a509ce0712f87d156ca0bd27f594c7ef6e5
+- name: ingestor_relp
+  version: 347ea370d118cc271c1034253e40cbcf1e9c5073
+  fingerprint: 347ea370d118cc271c1034253e40cbcf1e9c5073
+  sha1: 0845d75af976f3c394515f71a7f94b51d366c7d0
+- name: ingestor_syslog
+  version: 9bc652f83923dd42e96312b7486ad1f62225fc7a
+  fingerprint: 9bc652f83923dd42e96312b7486ad1f62225fc7a
+  sha1: 1ea9753029f8dc2cd4be10897a5761c89cd62033
+- name: log_parser
+  version: caafb530b46dea2d6c64ba7ff8f1f8475b55088b
+  fingerprint: caafb530b46dea2d6c64ba7ff8f1f8475b55088b
+  sha1: 1074d8e59a884950a7ffe0196e6d09f81d9907d2
+- name: logstash_forwarder
+  version: 05710c0c57f2d1eb0e26ca4ad81f7ad41b65c1a1
+  fingerprint: 05710c0c57f2d1eb0e26ca4ad81f7ad41b65c1a1
+  sha1: 11f66a8cc26b7a9f8b954298b461086f10d02532
+- name: queue
+  version: 4b07fab7cdb78ccc4f0e8cf11c963d95872ce27d
+  fingerprint: 4b07fab7cdb78ccc4f0e8cf11c963d95872ce27d
+  sha1: 5d78447899998cb25de288185820323c166eaa40
+commit_hash: 1be1254a
+uncommitted_changes: true
+name: logsearch
+version: '16'
