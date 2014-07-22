@@ -24,6 +24,13 @@ input {
 	<% end %>
 }
 
+filter {
+    mutate {
+        rename => [ "host", "@ingestor.remote_host" ]
+        rename => [ "sslsubject", "@ingestor.sslsubject" ]
+    }
+}
+
 output {
 	<% if p("logstash_ingestor.debug") %>
         stdout {
