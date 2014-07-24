@@ -1,0 +1,53 @@
+#!/var/vcap/bosh/bin/ruby
+
+require 'socket'
+
+freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
+useful_info = [
+  'uptime_in_seconds',
+  'connected_clients',
+  'connected_slaves',
+  'blocked_clients',
+  'evicted_keys',
+  'used_memory',
+  'changes_since_last_save',
+  'total_connections_received',
+  'total_commands_processed',
+]
+
+while true
+  ts = Time.now.utc.to_i
+
+  sh = TCPSocket.new('127.0.0.1', 6379)
+
+  sh.write("llen logstash\r\n")
+
+  # :{size}
+  puts "logstash.queue_size #{sh.gets()[1..-1].chop} #{ts}"
+
+
+  sh.write("info\r\n")
+
+  # ${length}
+  len = sh.gets()[1..-1].chop.to_i
+  result = ""
+
+  while result.length < len
+    result << sh.gets
+  end
+
+  result.scan /^[a-zA-Z0-9_]+:.*$/ do | match |
+    k, v = match.chop.split(':')
+
+    puts "redis.#{k} #{v} #{ts}" if useful_info.include? k
+  end
+
+  sh.close
+
+
+  begin
+    sleep(freq)
+  rescue Interrupt => e
+    exit
+  end
+end
