@@ -9,6 +9,7 @@ templates:
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/redis.conf.erb: config/redis.conf
+  logsearch/metric-collector/redis/collector: logsearch/metric-collector/redis/collector
 properties:
   redis.port: 
     description: Redis port of queue
