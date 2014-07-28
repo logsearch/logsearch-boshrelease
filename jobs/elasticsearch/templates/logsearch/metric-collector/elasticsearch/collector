@@ -6,9 +6,9 @@ require 'uri'
 
 STDOUT.sync = true
 
-uri = URI('http://localhost:9200/_nodes/_local/stats/transport,http,process,jvm,indices?pretty')
+freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : nil
 
-freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
+uri = URI('http://localhost:9200/_nodes/_local/stats/transport,http,process,jvm,indices?pretty')
 
 while true
   res = Net::HTTP.start(uri.hostname, uri.port) {|http|
@@ -141,6 +141,8 @@ while true
   puts "elasticsearch.http.current_open #{node_stats['http']['current_open']} #{ts}"
   puts "elasticsearch.http.total_opened #{node_stats['http']['total_opened']} #{ts}"
 
+
+  exit if freq.nil?
 
   begin
     sleep(freq)

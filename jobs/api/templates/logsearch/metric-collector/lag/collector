@@ -6,7 +6,7 @@ require 'uri'
 
 STDOUT.sync = true
 
-freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
+freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : nil
 
 while true
   ts = Time.now.utc
@@ -61,6 +61,8 @@ while true
 
   puts "logstash.search_lag #{[0, ts.to_i - body['aggregations']['max_timestamp']['value'].to_i / 1000].max} #{ts.to_i}"
 
+
+  exit if freq.nil?
 
   begin
     sleep(freq)
