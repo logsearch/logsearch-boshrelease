@@ -2,6 +2,8 @@
 
 require 'socket'
 
+STDOUT.sync = true
+
 freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
 useful_info = [
   'uptime_in_seconds',

@@ -4,6 +4,8 @@ require 'json'
 require 'net/http'
 require 'uri'
 
+STDOUT.sync = true
+
 freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
 
 while true

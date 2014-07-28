@@ -4,6 +4,8 @@ require 'json'
 require 'net/http'
 require 'uri'
 
+STDOUT.sync = true
+
 uri = URI('http://localhost:9200/_nodes/_local/stats/transport,http,process,jvm,indices?pretty')
 
 freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : 300
