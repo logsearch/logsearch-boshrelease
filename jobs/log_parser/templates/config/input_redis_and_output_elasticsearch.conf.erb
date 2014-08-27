@@ -1,13 +1,23 @@
 input {
+    <% if_p('kafka.zookeeper') do %>
+        kafka {
+            zk_connect => '<%= p('kafka.zookeeper').join(',') %>'
+            topic_id => '<%= p('kafka.topic') %>'
+            reset_beginning => true
+            consumer_id => 'log_parser.<%= name %>.<%= index %>'
+        }
+    <% end %>
 
-    redis {
-        host => "<%= p("redis.host") %>"
-        port => "<%= p("redis.port") %>"
-        type => "redis-input"
-        data_type => "list"
-        key => "<%= p("redis.key") %>"
-        threads => 8
-    }
+    <% if_p('redis.host') do %>
+        redis {
+            host => "<%= p("redis.host") %>"
+            port => "<%= p("redis.port") %>"
+            type => "redis-input"
+            data_type => "list"
+            key => "<%= p("redis.key") %>"
+            threads => 8
+        }
+    <% end %>
 }
 
 output {

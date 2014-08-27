@@ -18,6 +18,12 @@ properties:
   logstash_ingestor.relp.port: 
     description: Port to listen for RELP messages
 
+  kafka.broker:
+    description: "An array of host:port values to Kafka brokers"
+  kafka.topic:
+    description: "The logstash topic being used"
+    default: "logstash"
+
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
   elasticsearch.port:

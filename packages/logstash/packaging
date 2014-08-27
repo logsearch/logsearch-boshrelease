@@ -8,3 +8,19 @@ set -u # report the usage of uninitialized variables
 mkdir $BOSH_INSTALL_TARGET/logstash
 tar -xzf logstash/logstash-1.4.1.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
 tar -xzf logstash/logstash-contrib-1.4.1.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
+
+tar -xzf logstash/kafka_2.9.2-0.8.1.1.tgz -C $BOSH_INSTALL_TARGET/logstash/vendor/jar
+tar -xzf logstash/logstash-kafka-v0.5.2.tar.gz
+
+pushd logstash-kafka-0.5.2/
+find lib -type f | xargs -I {} cp {} $BOSH_INSTALL_TARGET/logstash/{}
+popd
+
+LOCDIR="$PWD"
+
+pushd $BOSH_INSTALL_TARGET/logstash
+# note this is depending on an internet connection...
+GEM_HOME=vendor/bundle/jruby/1.9 \
+  GEM_PATH= \
+  /var/vcap/packages/java7/bin/java -jar vendor/jar/jruby-complete-1.7.11.jar --1.9 $LOCDIR/logstash-kafka-0.5.2/gembag.rb $LOCDIR/logstash-kafka-0.5.2/logstash-kafka.gemspec
+popd

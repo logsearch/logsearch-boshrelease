@@ -1,6 +1,11 @@
 ---
 name: logstash
-dependencies: []
+dependencies:
+  - java7
 files: 
   - logstash/logstash-1.4.1.tar.gz
   - logstash/logstash-contrib-1.4.1.tar.gz
+  # http://www.bizdirusa.com/mirrors/apache/kafka/0.8.1.1/kafka_2.9.2-0.8.1.1.tgz
+  - "logstash/kafka_2.9.2-0.8.1.1.tgz"
+  # https://github.com/joekiller/logstash-kafka/archive/v0.5.2.tar.gz
+  - "logstash/logstash-kafka-v0.5.2.tar.gz"

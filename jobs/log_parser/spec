@@ -30,6 +30,12 @@ properties:
   logstash_parser.idle_flush_time:
     description: "How frequently to flush events if the output queue is not full."
 
+  kafka.zookeeper:
+    description: "An array of host:port values to Zookeeper hosts"
+  kafka.topic:
+    description: "The logstash topic being used"
+    default: "logstash"
+
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
   elasticsearch.port:

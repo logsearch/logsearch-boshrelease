@@ -28,6 +28,12 @@ properties:
   logstash_ingestor.syslog_tls.ssl_key:
     description: Syslog-TLS SSL key (file contents, not a path) - required if logstash_ingestor.syslog_tls.port set
 
+  kafka.broker:
+    description: "An array of host:port values to Kafka brokers"
+  kafka.topic:
+    description: "The logstash topic being used"
+    default: "logstash"
+
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
   elasticsearch.port:

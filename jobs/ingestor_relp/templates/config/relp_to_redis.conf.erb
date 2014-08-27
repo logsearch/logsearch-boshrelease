@@ -13,12 +13,22 @@ output {
         }
 	<% end %>
 
-	redis {
-		host => "<%= p("redis.host") %>"
-		port => "<%= p("redis.port") %>"
-		data_type => "list"
-		key => "<%= p("redis.key") %>"
-		batch => true
-		batch_events => 50
-	}
+	<% if_p('kafka.broker') do %>
+		kafka {
+			broker_list => '<%= p('kafka.broker').join(',') %>'
+			topic_id => '<%= p('kafka.topic') %>'
+			client_id => 'ingestor_relp.<%= name %>.<%= index %>'
+		}
+	<% end %>
+
+	<% if_p('redis.host') do %>
+		redis {
+			host => "<%= p("redis.host") %>"
+			port => "<%= p("redis.port") %>"
+			data_type => "list"
+			key => "<%= p("redis.key") %>"
+			batch => true
+			batch_events => 50
+		}
+	<% end %>
 }
