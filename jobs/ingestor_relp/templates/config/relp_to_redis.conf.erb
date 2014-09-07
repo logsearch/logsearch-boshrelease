@@ -31,4 +31,13 @@ output {
 			batch_events => 50
 		}
 	<% end %>
+
+	<% if_p('dev.syslog_mirror.host') do %>
+		syslog {
+		    host => '<%= p('dev.syslog_mirror.host') %>'
+		    port => <%= p('dev.syslog_mirror.port') %>
+		    facility => 'user-level'
+		    severity => 'notice'
+		}
+	<% end %>
 }

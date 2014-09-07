@@ -42,3 +42,7 @@ properties:
     description: Name of queue to pull messages from
     default: logstash
 
+  dev.syslog_mirror.host:
+    default: ~
+  dev.syslog_mirror.port:
+    default: 5514
