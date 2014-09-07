@@ -1,0 +1,5 @@
+check process kafka-archiver
+  with pidfile /var/vcap/sys/run/kafka-archiver/logstash.pid
+  start program "/var/vcap/jobs/kafka-archiver/bin/logstash.process start"
+  stop program "/var/vcap/jobs/kafka-archiver/bin/logstash.process stop"
+  group vcap

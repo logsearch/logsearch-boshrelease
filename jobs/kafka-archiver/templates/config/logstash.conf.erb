@@ -1,0 +1,15 @@
+input {
+    kafka {
+        zk_connect => '<%= p('kafka.zookeeper').join(',') %>'
+        group_id => 'kafka-archiver'
+        topic_id => '<%= p('kafka.topic') %>'
+        decorate_events => false
+        consumer_id => '<%= name %>.<%= index %>'
+    }
+}
+
+output {
+    file {
+        path => '<%= p('kafka_archiver.archive_dir') %>/%{+YYYYMMddHH}.log'
+    }
+}

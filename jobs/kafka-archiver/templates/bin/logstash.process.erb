@@ -1,0 +1,65 @@
+#!/bin/bash
+
+set -e
+set -u
+
+PIDFILE=/var/vcap/sys/run/kafka-archiver/logstash.pid
+LOGDIR=/var/vcap/sys/log/kafka-archiver
+DATADIR=/var/vcap/data/kafka-archiver
+
+mkdir -p `dirname "$PIDFILE"`
+chown vcap:vcap `dirname "$PIDFILE"`
+
+mkdir -p "$LOGDIR"
+chown vcap:vcap "$LOGDIR"
+
+mkdir -p "$DATADIR"
+chown vcap:vcap "$DATADIR"
+
+exec >> /var/vcap/sys/log/kafka-archiver/logstash.control.log
+exec 2>&1
+
+
+case $1 in
+
+  start)
+    /sbin/start-stop-daemon \
+      --background \
+      --pidfile $PIDFILE \
+      --exec /bin/bash \
+      --make-pidfile \
+      --start \
+      -- -c "JAVA_HOME=/var/vcap/packages/java7 \
+        exec /var/vcap/packages/logstash/logstash/bin/logstash \
+        agent \
+        --config /var/vcap/jobs/kafka-archiver/config/logstash.conf \
+        >> \"$LOGDIR/logstash.stdout.log\" \
+        2>> \"$LOGDIR/logstash.stderr.log\" \
+      "
+
+    echo '*/10 * * * * root bash /var/vcap/jobs/kafka-archiver/bin/s3upload.cron >> $LOGDIR/s3upload.stdout.log 2>> $LOGDIR/s3upload.stderr.log' > /etc/cron.d/kafka-archiver.vcap
+    touch /etc/cron.d
+
+    ;;
+
+  stop)
+    rm /etc/cron.d/kafka-archiver.vcap
+    touch /etc/cron.d
+
+    /sbin/start-stop-daemon \
+      --pidfile $PIDFILE \
+      --signal INT \
+      --oknodo \
+      --stop \
+      --retry 15
+
+    ;;
+
+  *)
+    echo "Usage: control {start|stop}" >&2
+
+    exit 1
+
+    ;;
+
+esac

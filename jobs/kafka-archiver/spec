@@ -1,0 +1,27 @@
+---
+name: kafka-archiver
+packages: 
+- logstash
+templates:
+  bin/logstash.process.erb: bin/logstash.process
+  bin/s3upload.cron.erb: bin/s3upload.cron
+  config/logstash.conf.erb: config/logstash.conf
+properties:
+  kafka.broker:
+    description: "An array of host:port values to Kafka brokers"
+  kafka.topic:
+    description: "The logstash topic being used"
+    default: "logstash"
+
+  kafka_archiver.s3.bucket:
+    description: "S3 Bucket"
+  kafka_archiver.s3.prefix:
+    description: "S3 Prefix"
+  kafka_archiver.s3.access_key_id:
+    description: "S3 Access Key ID"
+  kafka_archiver.s3.secret_access_key:
+    description: "S3 Secret Access Key"
+
+  kafka_archiver.archive_dir:
+    default: "/var/vcap/data/kafka-archiver/"
+    description: "Directory for dumping log files"
