@@ -1,10 +1,4 @@
 filter {
-    <% if_p('kafka.zookeeper') do %>
-        mutate {
-            remove_field => [ "kafka" ]
-        }
-    <% end %>
-
     #
     # Default type to _logstash_input 
     #

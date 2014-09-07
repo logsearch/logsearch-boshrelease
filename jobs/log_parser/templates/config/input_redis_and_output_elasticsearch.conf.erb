@@ -4,6 +4,7 @@ input {
             zk_connect => '<%= p('kafka.zookeeper').join(',') %>'
             topic_id => '<%= p('kafka.topic') %>'
             reset_beginning => true
+            decorate_events => false
             consumer_id => 'log_parser.<%= name %>.<%= index %>'
         }
     <% end %>
