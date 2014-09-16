@@ -24,12 +24,18 @@ exit 0
 <% end %>
 
 #
+# some state files we'll use
+#
+
+STATE_DRAINED=/var/vcap/store/elasticsearch/drained.bosh
+
+#
 # we need to wait until we can talk to elasticsearch
 #
 while ! nc -zw 8 localhost 9200 2>&1 > /dev/null ; do sleep 5 ; done
 
 #
-# we need to wait until the .bosh index is certainly available
+# we need to wait until the cluster is certainly available
 #
 READY=false
 while [ "false" == "$READY" ] ; do
@@ -42,7 +48,8 @@ while [ "false" == "$READY" ] ; do
     fi
 done
 
-if [ '{"drained":1}' == $(curl -s 'localhost:9200/.bosh/drain/<%= name %>--<%= index %>/_source') ] ; then
+
+if [ -f "${STATE_DRAINED}" ] ; then
     #
     # looks like the drain script was used, so reverse those settings
     #
@@ -54,9 +61,6 @@ if [ '{"drained":1}' == $(curl -s 'localhost:9200/.bosh/drain/<%= name %>--<%= i
         'localhost:9200/_cluster/settings' \
         > /dev/null
 
-    # avoid us doing this next time
-    curl -s \
-        -X DELETE \
-        'localhost:9200/.bosh/drain/<%= name %>--<%= index %>' \
-        > /dev/null
+    # prevent us from doing this again
+    rm "${STATE_DRAINED}"
 fi
