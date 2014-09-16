@@ -43,3 +43,5 @@ properties:
     description: Name of queue to pull messages from
     default: logstash
 
+  archiver.enabled:
+    default: false
