@@ -24,13 +24,13 @@ while true
   sh = TCPSocket.new('127.0.0.1', 6379)
 
 
-  sh.write("llen logstash\r\n")
+  sh.write("llen <%= p('redis.key') %>\r\n")
 
   # :{size}
   puts "logstash.queue_size #{sh.gets()[1..-1].chop} #{ts}"
 
 
-  sh.write("llen logstash_archiver\r\n")
+  sh.write("llen <%= p('redis.key') %>_archiver\r\n")
 
   # :{size}
   puts "logstash.archiver_queue_size #{sh.gets()[1..-1].chop} #{ts}"
