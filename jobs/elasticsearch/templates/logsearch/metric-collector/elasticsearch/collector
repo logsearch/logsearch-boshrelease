@@ -1,0 +1,152 @@
+#!/var/vcap/bosh/bin/ruby
+
+require 'json'
+require 'net/http'
+require 'uri'
+
+STDOUT.sync = true
+
+freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : nil
+
+uri = URI('http://localhost:9200/_nodes/_local/stats/transport,http,process,jvm,indices?pretty')
+
+while true
+  res = Net::HTTP.start(uri.hostname, uri.port) {|http|
+    http.request(Net::HTTP::Get.new(uri.request_uri))
+  }
+
+  stats = JSON.parse(res.body)
+  node_name, node_stats = stats['nodes'].first
+
+  ts = node_stats['timestamp'].to_i / 1000
+
+  # indices
+
+  puts "elasticsearch.indices.docs.count #{node_stats['indices']['docs']['count']} #{ts}"
+  puts "elasticsearch.indices.docs.deleted #{node_stats['indices']['docs']['deleted']} #{ts}"
+
+  puts "elasticsearch.indices.store.size_in_bytes #{node_stats['indices']['store']['size_in_bytes']} #{ts}"
+  puts "elasticsearch.indices.store.throttle_time_in_millis #{node_stats['indices']['store']['throttle_time_in_millis']} #{ts}"
+
+  puts "elasticsearch.indices.indexing.index_total #{node_stats['indices']['indexing']['index_total']} #{ts}"
+  puts "elasticsearch.indices.indexing.index_time_in_millis #{node_stats['indices']['indexing']['index_time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.indexing.index_current #{node_stats['indices']['indexing']['index_current']} #{ts}"
+  puts "elasticsearch.indices.indexing.delete_total #{node_stats['indices']['indexing']['delete_total']} #{ts}"
+  puts "elasticsearch.indices.indexing.delete_time_in_millis #{node_stats['indices']['indexing']['delete_time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.indexing.delete_current #{node_stats['indices']['indexing']['delete_current']} #{ts}"
+
+  puts "elasticsearch.indices.get.total #{node_stats['indices']['get']['total']} #{ts}"
+  puts "elasticsearch.indices.get.time_in_millis #{node_stats['indices']['get']['time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.get.exists_total #{node_stats['indices']['get']['exists_total']} #{ts}"
+  puts "elasticsearch.indices.get.exists_time_in_millis #{node_stats['indices']['get']['exists_time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.get.missing_total #{node_stats['indices']['get']['missing_total']} #{ts}"
+  puts "elasticsearch.indices.get.missing_time_in_millis #{node_stats['indices']['get']['missing_time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.get.current #{node_stats['indices']['get']['current']} #{ts}"
+
+  puts "elasticsearch.indices.search.open_contexts #{node_stats['indices']['search']['open_contexts']} #{ts}"
+  puts "elasticsearch.indices.search.query_total #{node_stats['indices']['search']['query_total']} #{ts}"
+  puts "elasticsearch.indices.search.query_time_in_millis #{node_stats['indices']['search']['query_time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.search.query_current #{node_stats['indices']['search']['query_current']} #{ts}"
+  puts "elasticsearch.indices.search.fetch_total #{node_stats['indices']['search']['fetch_total']} #{ts}"
+  puts "elasticsearch.indices.search.fetch_time_in_millis #{node_stats['indices']['search']['fetch_time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.search.fetch_current #{node_stats['indices']['search']['fetch_current']} #{ts}"
+
+  puts "elasticsearch.indices.merges.current #{node_stats['indices']['merges']['current']} #{ts}"
+  puts "elasticsearch.indices.merges.current_docs #{node_stats['indices']['merges']['current_docs']} #{ts}"
+  puts "elasticsearch.indices.merges.current_size_in_bytes #{node_stats['indices']['merges']['current_size_in_bytes']} #{ts}"
+  puts "elasticsearch.indices.merges.total #{node_stats['indices']['merges']['total']} #{ts}"
+  puts "elasticsearch.indices.merges.total_time_in_millis #{node_stats['indices']['merges']['total_time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.merges.total_docs #{node_stats['indices']['merges']['total_docs']} #{ts}"
+  puts "elasticsearch.indices.merges.total_size_in_bytes #{node_stats['indices']['merges']['total_size_in_bytes']} #{ts}"
+
+  puts "elasticsearch.indices.refresh.total #{node_stats['indices']['refresh']['total']} #{ts}"
+  puts "elasticsearch.indices.refresh.total_time_in_millis #{node_stats['indices']['refresh']['total_time_in_millis']} #{ts}"
+
+  puts "elasticsearch.indices.flush.total #{node_stats['indices']['flush']['total']} #{ts}"
+  puts "elasticsearch.indices.flush.total_time_in_millis #{node_stats['indices']['flush']['total_time_in_millis']} #{ts}"
+
+  puts "elasticsearch.indices.warmer.current #{node_stats['indices']['warmer']['current']} #{ts}"
+  puts "elasticsearch.indices.warmer.total #{node_stats['indices']['warmer']['total']} #{ts}"
+  puts "elasticsearch.indices.warmer.total_time_in_millis #{node_stats['indices']['warmer']['total_time_in_millis']} #{ts}"
+
+  puts "elasticsearch.indices.filter_cache.memory_size_in_bytes #{node_stats['indices']['filter_cache']['memory_size_in_bytes']} #{ts}"
+  puts "elasticsearch.indices.filter_cache.evictions #{node_stats['indices']['filter_cache']['evictions']} #{ts}"
+
+  puts "elasticsearch.indices.id_cache.memory_size_in_bytes #{node_stats['indices']['id_cache']['memory_size_in_bytes']} #{ts}"
+
+  puts "elasticsearch.indices.fielddata.memory_size_in_bytes #{node_stats['indices']['fielddata']['memory_size_in_bytes']} #{ts}"
+  puts "elasticsearch.indices.fielddata.evictions #{node_stats['indices']['fielddata']['evictions']} #{ts}"
+
+  puts "elasticsearch.indices.percolate.total #{node_stats['indices']['percolate']['total']} #{ts}"
+  puts "elasticsearch.indices.percolate.time_in_millis #{node_stats['indices']['percolate']['time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.percolate.current #{node_stats['indices']['percolate']['current']} #{ts}"
+  puts "elasticsearch.indices.percolate.memory_size_in_bytes #{node_stats['indices']['percolate']['memory_size_in_bytes']} #{ts}"
+  puts "elasticsearch.indices.percolate.queries #{node_stats['indices']['percolate']['queries']} #{ts}"
+
+  puts "elasticsearch.indices.completion.size_in_bytes #{node_stats['indices']['completion']['size_in_bytes']} #{ts}"
+
+  puts "elasticsearch.indices.segments.count #{node_stats['indices']['segments']['count']} #{ts}"
+  puts "elasticsearch.indices.segments.memory_in_bytes #{node_stats['indices']['segments']['memory_in_bytes']} #{ts}"
+
+  puts "elasticsearch.indices.translog.operations #{node_stats['indices']['translog']['operations']} #{ts}"
+  puts "elasticsearch.indices.translog.size_in_bytes #{node_stats['indices']['translog']['size_in_bytes']} #{ts}"
+
+  puts "elasticsearch.indices.suggest.total #{node_stats['indices']['suggest']['total']} #{ts}"
+  puts "elasticsearch.indices.suggest.time_in_millis #{node_stats['indices']['suggest']['time_in_millis']} #{ts}"
+  puts "elasticsearch.indices.suggest.current #{node_stats['indices']['suggest']['current']} #{ts}"
+
+  # process
+
+  puts "elasticsearch.process.open_file_descriptors #{node_stats['process']['open_file_descriptors']} #{ts}"
+
+  puts "elasticsearch.process.cpu.percent #{node_stats['process']['cpu']['percent']} #{ts}"
+  puts "elasticsearch.process.cpu.sys_in_millis #{node_stats['process']['cpu']['sys_in_millis']} #{ts}"
+  puts "elasticsearch.process.cpu.user_in_millis #{node_stats['process']['cpu']['user_in_millis']} #{ts}"
+  puts "elasticsearch.process.cpu.total_in_millis #{node_stats['process']['cpu']['total_in_millis']} #{ts}"
+
+  puts "elasticsearch.process.mem.resident_in_bytes #{node_stats['process']['mem']['resident_in_bytes']} #{ts}"
+  puts "elasticsearch.process.mem.share_in_bytes #{node_stats['process']['mem']['share_in_bytes']} #{ts}"
+  puts "elasticsearch.process.mem.total_virtual_in_bytes #{node_stats['process']['mem']['total_virtual_in_bytes']} #{ts}"
+
+  # jvm
+
+  puts "elasticsearch.jvm.uptime_in_millis #{node_stats['jvm']['uptime_in_millis']} #{ts}"
+
+  puts "elasticsearch.jvm.mem.heap_used_in_bytes #{node_stats['jvm']['mem']['heap_used_in_bytes']} #{ts}"
+  puts "elasticsearch.jvm.mem.heap_used_percent #{node_stats['jvm']['mem']['heap_used_percent']} #{ts}"
+  puts "elasticsearch.jvm.mem.heap_committed_in_bytes #{node_stats['jvm']['mem']['heap_committed_in_bytes']} #{ts}"
+  puts "elasticsearch.jvm.mem.heap_max_in_bytes #{node_stats['jvm']['mem']['heap_max_in_bytes']} #{ts}"
+  puts "elasticsearch.jvm.mem.non_heap_used_in_bytes #{node_stats['jvm']['mem']['non_heap_used_in_bytes']} #{ts}"
+  puts "elasticsearch.jvm.mem.non_heap_committed_in_bytes #{node_stats['jvm']['mem']['non_heap_committed_in_bytes']} #{ts}"
+
+  puts "elasticsearch.jvm.threads.count #{node_stats['jvm']['threads']['count']} #{ts}"
+  puts "elasticsearch.jvm.threads.peak_count #{node_stats['jvm']['threads']['peak_count']} #{ts}"
+
+  puts "elasticsearch.jvm.gc.collectors.young.collection_count #{node_stats['jvm']['gc']['collectors']['young']['collection_count']} #{ts}"
+  puts "elasticsearch.jvm.gc.collectors.young.collection_time_in_millis #{node_stats['jvm']['gc']['collectors']['young']['collection_time_in_millis']} #{ts}"
+
+  puts "elasticsearch.jvm.gc.collectors.old.collection_count #{node_stats['jvm']['gc']['collectors']['old']['collection_count']} #{ts}"
+  puts "elasticsearch.jvm.gc.collectors.old.collection_time_in_millis #{node_stats['jvm']['gc']['collectors']['old']['collection_time_in_millis']} #{ts}"
+
+  # transport
+
+  puts "elasticsearch.transport.server_open #{node_stats['transport']['server_open']} #{ts}"
+  puts "elasticsearch.transport.rx_count #{node_stats['transport']['rx_count']} #{ts}"
+  puts "elasticsearch.transport.rx_size_in_bytes #{node_stats['transport']['rx_size_in_bytes']} #{ts}"
+  puts "elasticsearch.transport.tx_count #{node_stats['transport']['tx_count']} #{ts}"
+  puts "elasticsearch.transport.tx_size_in_bytes #{node_stats['transport']['tx_size_in_bytes']} #{ts}"
+
+  # http
+
+  puts "elasticsearch.http.current_open #{node_stats['http']['current_open']} #{ts}"
+  puts "elasticsearch.http.total_opened #{node_stats['http']['total_opened']} #{ts}"
+
+
+  exit if freq.nil?
+
+  begin
+    sleep(freq)
+  rescue Interrupt => e
+    exit
+  end
+end
