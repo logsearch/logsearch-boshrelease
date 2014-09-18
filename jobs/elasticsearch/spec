@@ -14,6 +14,8 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  logsearch/metric-collector/elasticsearch/collector: logsearch/metric-collector/elasticsearch/collector
+  logsearch/logs.yml: logsearch/logs.yml
 properties:
   elasticsearch.drain:
     description: Whether to use the built-in drain features to improve deployment reliability
