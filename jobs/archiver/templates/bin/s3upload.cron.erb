@@ -10,6 +10,8 @@ S3_SECRET_ACCESS_KEY="<%= p('archiver.s3.secret_access_key') %>"
 
 cd <%= p('archiver.data_dir') %>
 
+mkdir -p s3upload
+
 
 echo "stopping service"
 
@@ -22,43 +24,56 @@ done
 echo "stopped service"
 
 
-for FILE in $(ls *.log) ; do
-    S3GO_FILE="${FILE}.<%= name %>-<%= index %>-`date +%Y%m%d%H%M%S`.tar.gz"
+for FILE in $( ls *.log ) ; do
+    BASENAME=$( echo "${FILE}" | sed 's/\.log$//' )
+    DESTFILE="${BASENAME}.<%= name %>-<%= index %>-`date +%Y%m%d%H%M%S`.log"
+
+    echo "moving ${FILE} -> s3upload/${DESTFILE}"
+
+    mv "${FILE}" "s3upload/${DESTFILE}"
+
+    echo "moved ${FILE}"
+done
 
 
-    echo "compressing ${FILE}"
+echo "starting service"
 
-    tar -czf "${S3GO_FILE}" "${FILE}"
+/var/vcap/bosh/bin/monit start archiver
+
+echo "started service"
+
+
+cd s3upload
+
+for FILE in $( ls *.log ) ; do
+    echo "compressing ${FILE} -> ${FILE}.xz"
+
+    xz --compress "${FILE}"
 
     echo "compressed ${FILE}"
+done
 
 
-    echo "uploading ${S3GO_FILE}"
+for FILE in $( ls *.xz ) ; do
+    echo "uploading ${FILE}"
 
     S3GO_NOW=$( date -R )
-    S3GO_MD5=$( openssl dgst -md5 -binary "${S3GO_FILE}" | openssl enc -e -base64 )
+    S3GO_MD5=$( openssl dgst -md5 -binary "${FILE}" | openssl enc -e -base64 )
     S3GO_ACL="x-amz-acl:private"
     S3GO_MIME="application/x-gzip"
-    S3GO_SIGNATURE=$( echo -en "PUT\n${S3GO_MD5}\n${S3GO_MIME}\n${S3GO_NOW}\n${S3GO_ACL}\n/${S3_BUCKET}/${S3_PREFIX}${S3GO_FILE}" | openssl sha1 -hmac "${S3_SECRET_ACCESS_KEY}" -binary | openssl enc -e -base64 )
+    S3GO_SIGNATURE=$( echo -en "PUT\n${S3GO_MD5}\n${S3GO_MIME}\n${S3GO_NOW}\n${S3GO_ACL}\n/${S3_BUCKET}/${S3_PREFIX}${FILE}" | openssl sha1 -hmac "${S3_SECRET_ACCESS_KEY}" -binary | openssl enc -e -base64 )
 
     curl \
         -X PUT \
-        -T "$S3GO_FILE" \
+        -T "$FILE" \
         -H "$S3GO_ACL" \
         -H "Content-MD5: ${S3GO_MD5}" \
         -H "Date: $S3GO_NOW" \
         -H "Content-Type: application/x-gzip" \
         -H "Authorization: AWS ${S3_ACCESS_KEY_ID}:${S3GO_SIGNATURE}" \
-        "https://${S3_BUCKET}.s3.amazonaws.com/${S3_PREFIX}${S3GO_FILE}"
+        "https://${S3_BUCKET}.s3.amazonaws.com/${S3_PREFIX}${FILE}"
 
-    echo "uploaded ${S3GO_FILE}"
-
-
-    echo "removing ${S3GO_FILE}"
-
-    rm "${S3GO_FILE}"
-
-    echo "removed ${S3GO_FILE}"
+    echo "uploaded ${FILE}"
 
 
     echo "removing ${FILE}"
@@ -68,9 +83,3 @@ for FILE in $(ls *.log) ; do
     echo "removed ${FILE}"
 done
 
-
-echo "starting service"
-
-/var/vcap/bosh/bin/monit start archiver
-
-echo "started service"
