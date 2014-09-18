@@ -1,0 +1,72 @@
+#!/var/vcap/bosh/bin/ruby
+
+require 'json'
+require 'net/http'
+require 'uri'
+
+STDOUT.sync = true
+
+freq = ENV.has_key?('METRIC_FREQUENCY') ? ENV['METRIC_FREQUENCY'].to_i : nil
+
+while true
+  ts = Time.now.utc
+
+  uri = URI("http://localhost:9200/logstash-#{ts.strftime('%Y.%m.%d')}/_search")
+
+  res = Net::HTTP.start(uri.hostname, uri.port) {|http|
+    http.request(Net::HTTP::Post.new(uri.request_uri), JSON.generate(
+      {
+        "query" => {
+          "filtered" => {
+            "query" => {
+              "bool" => {
+                "should" => [
+                  {
+                    "query_string" => {
+                      "query" => "*"
+                    }
+                  }
+                ]
+              }
+            },
+            "filter" => {
+              "bool" => {
+                "must" => [
+                  {
+                    "range" => {
+                      "@timestamp" => {
+                        "to" => ts.strftime('%Y-%m-%dT%H:%M:%S.999Z'),
+                        "from" => "2001-01-01T00:00:00.000Z"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "aggregations" => {
+          "max_timestamp" => {
+            "max" => {
+              "field" => "@timestamp"
+            }
+          }
+        },
+        "size" => 0
+      }
+    ))
+  }
+
+  body = JSON.parse(res.body)
+
+  puts "logstash.search_lag #{[0, ts.to_i - body['aggregations']['max_timestamp']['value'].to_i / 1000].max} #{ts.to_i}"
+
+
+  exit if freq.nil?
+
+  begin
+    sleep(freq)
+  rescue Interrupt => e
+    exit
+  end
+end

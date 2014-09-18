@@ -10,6 +10,7 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  logsearch/metric-collector/lag/collector: logsearch/metric-collector/lag/collector
 properties:
   api.elasticsearch_host:
     description: IP address and port of elasticsearch host to proxy requests for (eg, 127.0.0.1:9200)
