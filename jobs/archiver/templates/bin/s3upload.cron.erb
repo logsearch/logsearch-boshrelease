@@ -23,7 +23,7 @@ echo "stopped service"
 
 
 for FILE in $(ls *.log) ; do
-    S3GO_FILE="${FILE}.`date +%Y%m%d%H%M%S`.tar.gz"
+    S3GO_FILE="${FILE}.<%= name %>-<%= index %>-`date +%Y%m%d%H%M%S`.tar.gz"
 
 
     echo "compressing ${FILE}"
