@@ -31,3 +31,6 @@ properties:
   archiver.cron_schedule:
     default: "*/30 * * * *"
     description: "Schedule for pausing the archiver to upload log files"
+  archiver.workers:
+    default: "auto"
+    description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
