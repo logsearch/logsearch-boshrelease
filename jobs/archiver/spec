@@ -28,3 +28,6 @@ properties:
   archiver.data_dir:
     default: "/var/vcap/store/archiver"
     description: "Directory for dumping log files"
+  archiver.cron_schedule:
+    default: "*/30 * * * *"
+    description: "Schedule for pausing the archiver to upload log files"

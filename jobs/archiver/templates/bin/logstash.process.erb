@@ -37,7 +37,7 @@ case $1 in
         2>> \"$LOGDIR/logstash.stderr.log\" \
       "
 
-    echo "*/30 * * * * root bash -c 'exec /var/vcap/jobs/archiver/bin/s3upload.cron >> $LOGDIR/s3upload.stdout.log 2>> $LOGDIR/s3upload.stderr.log'" > /etc/cron.d/25-vcap-archiver
+    echo "<%= p('archiver.cron_schedule') %> root bash -c 'exec /var/vcap/jobs/archiver/bin/s3upload.cron >> $LOGDIR/s3upload.stdout.log 2>> $LOGDIR/s3upload.stderr.log'" > /etc/cron.d/25-vcap-archiver
     touch /etc/cron.d
 
     ;;
