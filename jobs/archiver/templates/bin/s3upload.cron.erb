@@ -17,7 +17,7 @@ echo "stopping service"
 
 /var/vcap/bosh/bin/monit stop archiver
 
-while kill -0 $( cat /var/vcap/sys/run/archiver/logstash.pid ) >/dev/null 2>&1 ; do
+while ! /var/vcap/bosh/bin/monit summary | grep archiver | grep 'not monitored' | grep -v 'pending' >/dev/null 2>&1 ; do
   sleep 2
 done
 
