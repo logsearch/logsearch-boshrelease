@@ -20,6 +20,10 @@ properties:
     description: "S3 Bucket"
   archiver.s3.prefix:
     description: "S3 Prefix"
+    default: ""
+  archiver.s3.endpoint:
+    description: "S3 Endpoint"
+    default: "s3.amazonaws.com"
   archiver.s3.access_key_id:
     description: "S3 Access Key ID"
   archiver.s3.secret_access_key:
