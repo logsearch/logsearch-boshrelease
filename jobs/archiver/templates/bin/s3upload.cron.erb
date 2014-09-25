@@ -27,7 +27,7 @@ echo "stopped service"
 
 for FILE in $( ls *.log ) ; do
     BASENAME=$( echo "${FILE}" | sed 's/\.log$//' )
-    DESTFILE="${BASENAME}.<%= name %>-<%= index %>-`date +%Y%m%d%H%M%S`.log"
+    DESTFILE="${BASENAME}.`date +%Y%m%d%H%M%S`-<%= name %>-<%= index %>.log"
 
     echo "moving ${FILE} -> s3upload/${DESTFILE}"
 
