@@ -3,9 +3,11 @@ name: elasticsearch
 packages: 
 - elasticsearch
 - java7
+- kibana-dashboards
 templates:
   bin/drain.erb: bin/drain
   bin/undrain.erb: bin/undrain
+  bin/create_dashboards.erb: bin/create_dashboards
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   config/default.json.erb: config/default.json
@@ -58,4 +60,5 @@ properties:
   elasticsearch.indices.ttl_default:
     description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
     default: 30d
-
+  cf.tenants:
+    description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"

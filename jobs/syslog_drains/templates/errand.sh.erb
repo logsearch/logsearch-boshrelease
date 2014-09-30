@@ -1,0 +1,47 @@
+#!/bin/bash
+
+set -x
+# set -e # exit immediately if a simple command exits with a non-zero status
+# set -u # report the usage of uninitialized variables
+
+PATH=/var/vcap/packages/cf/bin:$PATH
+
+cf login -a <%= "#{p("cf.api_prefix")}#{p("cf.app_domain")}" %> -u <%= p("cf.admin_username") %> -p <%= p("cf.admin_password") %> -o system <%= p("ssl.skip_cert_verify") ? '--skip-ssl-validation' : '' %> || true
+
+syslog_host=<%= p("logstash_ingestor.syslog.host") %>
+
+COUNTER=5514
+for x in <%= p("cf.tenants", "").to_s.split(',') %>; do
+  # Parse the tenant in org:space format
+  tenant=$(echo $x | tr -d "[],\"")
+  org=$(echo $tenant | cut -d':' -f1)
+  space=$(echo $tenant | cut -d':' -f2)
+  echo "Targeting org = '${org}' and space = '${space}'"
+  cf target -o $org -s $space
+  for app in `cf apps`; do
+    echo "App = '${app}'"
+    line=$(cf app $app 2>&1)
+    echo "Line: '${line}'"
+    case $line in
+      *"FAILED"*) false;;
+      *) syslog_port=$((COUNTER+10))
+      for port in `seq $syslog_port 6000` 
+      do 
+        echo "Looking for syslog drain port:${port} for ${app}..."
+        is_defined=$(netcat -v ${syslog_host} ${port} -w 1 -z 2>&1)
+        echo "'${is_defined}'"
+        if [[ "$is_defined" =~ "succeeded" ]]; then
+          echo "Creating user-provided syslog-drain-${app} at syslog://${syslog_host}:${port}"
+          cf cups syslog-drain-${app} -l syslog://${syslog_host}:${port} || true
+          cf bs ${app} syslog-drain-${app} || true
+          echo "Restaging ${app} in the ${space} space of the ${org} organization"
+          cf restage ${app} || true
+          COUNTER=$port
+          break
+        fi
+      done
+      ;;
+    esac
+  done
+done
+exit 0

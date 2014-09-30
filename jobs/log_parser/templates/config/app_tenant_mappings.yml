@@ -1,0 +1,4 @@
+---
+# Application GUID to Tenant Mappings (TODO: Fix so that it doesn't need to be updated manually)
+100: test2:development
+101: test2:development

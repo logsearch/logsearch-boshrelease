@@ -1,0 +1,26 @@
+meta: ~
+
+compilation:
+  cloud_properties:
+    ram: 1024
+    disk: 4096
+    cpu: 2
+
+networks: (( merge ))
+
+jobs:
+  - name: logsearch_leader_z1
+    template: logsearch
+    instances: 1
+    resource_pool: small_z1
+    networks: (( merge ))
+  - name: logsearch_z1
+    template: logsearch
+    instances: 2
+    resource_pool: small_z1
+    networks: (( merge ))
+    update:
+      canaries: 10
+    properties:
+      logsearch:
+        master: (( merge ))

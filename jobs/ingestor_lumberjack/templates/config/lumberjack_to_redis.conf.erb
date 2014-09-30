@@ -1,11 +1,23 @@
 input {
 	lumberjack {
-		add_field => [ "_logstash_input", "lumberjack" ]
+		add_field => ["_logstash_input", "lumberjack"]
 		host => "0.0.0.0"
 		port => "<%= p("logstash_ingestor.lumberjack.port") %>"
 		ssl_certificate => "/var/vcap/jobs/ingestor_lumberjack/config/lumberjack.crt"
 		ssl_key => "/var/vcap/jobs/ingestor_lumberjack/config/lumberjack.key"
 	}
+<% p("cf.tenants", "").to_s.split(',').each_with_index do |tenant, i| %>
+	lumberjack {
+		add_field => [ 
+			"_logstash_input", "lumberjack",
+			"tenant", "<%= tenant.strip %>"
+		]
+		host => "0.0.0.0"
+		port => "<%= p("logstash_ingestor.lumberjack.port") + ((i + 1) * (10)) %>"
+		ssl_certificate => "/var/vcap/jobs/ingestor_lumberjack/config/lumberjack.crt"
+		ssl_key => "/var/vcap/jobs/ingestor_lumberjack/config/lumberjack.key"
+	}
+<% end %>
 }
 
 filter {
@@ -30,7 +42,7 @@ output {
 		host => "<%= p("redis.host") %>"
 		port => "<%= p("redis.port") %>"
 		data_type => "list"
-		key => "<%= p("redis.key") %>"
+		key => "<%= p("redis.key") %>-%{tenant}"
 		batch => true
 		batch_events => 50
 	}
