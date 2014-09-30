@@ -1,0 +1,6 @@
+---
+name: kibana-dashboards
+dependencies:
+  - elasticsearch
+files:
+  - kibana-dashboards/kibana-dashboards.tgz

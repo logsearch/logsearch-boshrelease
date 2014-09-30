@@ -1,13 +1,16 @@
 input {
 
+<% p("cf.tenants", "").to_s.split(',').each do |tenant| %>
     redis {
         host => "<%= p("redis.host") %>"
         port => "<%= p("redis.port") %>"
         type => "redis-input"
         data_type => "list"
-        key => "<%= p("redis.key") %>"
+        key => "<%= p("redis.key") %>-<%= tenant.strip %>"
         threads => 8
+        tags => "<%= tenant %>"
     }
+<% end %>
 }
 
 output {
@@ -23,6 +26,7 @@ output {
         <% if p('logstash_parser.idle_flush_time', nil) %>
             idle_flush_time => <%= p('logstash_parser.idle_flush_time') %>
         <% end %>
+        index => "logstash-%{tenant}-%{+YYYY.MM.dd}"
         index_type => "%{@type}"
         manage_template => false
     }
