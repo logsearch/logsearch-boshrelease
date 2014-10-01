@@ -31,26 +31,26 @@ input {
 	<% end %>
 
 	<% if p("logstash_ingestor.syslog_tls.port") %>
-		 #    tcp {
-			# 	add_field => ["type", "syslog"]
-			# 	host => "0.0.0.0"
-			# 	port => "<%= p("logstash_ingestor.syslog_tls.port") %>"
-			# 	ssl_enable => true
-			# 	ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
-			# 	ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
-			# }
+		    tcp {
+		    	add_field => ["type", "syslog"]
+		    	host => "0.0.0.0"
+			 	port => "<%= p("logstash_ingestor.syslog_tls.port") %>"
+			 	ssl_enable => true
+			 	ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
+			 	ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
+			}
 	    <% p("cf.tenants", "").to_s.split(',').each_with_index do | tenant, i | %>
-		 #    tcp {
-			# 	add_field => [ 
-			# 		"type", "syslog",
-			# 		"tenant", "<%= tenant.strip %>"
-			# 	]
-			# 	host => "0.0.0.0"
-			# 	port => "<%= p("logstash_ingestor.syslog_tls.port") + ((i + 1) * (10)) %>"
-			# 	ssl_enable => true
-			# 	ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
-			# 	ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
-			# }
+		    tcp {
+		    	add_field => [ 
+			 		"type", "syslog",
+			 		"tenant", "<%= tenant.strip %>"
+			 	]
+			 	host => "0.0.0.0"
+			 	port => "<%= p("logstash_ingestor.syslog_tls.port") + ((i + 1) * (10)) %>"
+			 	ssl_enable => true
+			 	ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
+			 	ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
+			 }
 		<% end %>
 	<% end %>
 }
