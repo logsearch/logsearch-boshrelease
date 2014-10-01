@@ -12,7 +12,7 @@ templates:
   config/input_redis_and_output_elasticsearch.conf.erb: config/input_redis_and_output_elasticsearch.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
-  config/filters_default.conf.erb: config/filters_default.conf
+  config/filters_default.conf: config/filters_default.conf
   config/filters_override.conf.erb: config/filters_override.conf
   config/app_tenant_mappings.yml: config/app_tenant_mappings.yml
 properties:
