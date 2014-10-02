@@ -7,7 +7,7 @@ set -x
 es_path=/var/vcap/packages/elasticsearch
 dashboard_path=/var/vcap/packages/kibana-dashboards
 mkdir -p $es_path/plugins/kibana/_site/app/dashboards
-for x in <%= p("cf.tenants", "").to_s.split(',') %>; do
+for x in <%= p("tenants").to_s.split(',') %>; do
   # Parse the tenant in org:space format
   tenant=$(echo $x | tr -d "[],\"")
   echo "tenant: '$tenant'"

@@ -1,6 +1,6 @@
 input {
 
-<% p("cf.tenants", "").to_s.split(',').each do |tenant| %>
+<% p("tenants").to_s.split(',').each do |tenant| %>
     redis {
         host => "<%= p("redis.host") %>"
         port => "<%= p("redis.port") %>"

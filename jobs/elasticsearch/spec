@@ -60,5 +60,6 @@ properties:
   elasticsearch.indices.ttl_default:
     description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
     default: 30d
-  cf.tenants:
+  tenants:
     description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
+    default: ""

@@ -4,7 +4,7 @@ input {
 		host => "0.0.0.0"
 		port => "<%= p("logstash_ingestor.relp.port") %>"
 	}
-<% p("cf.tenants", "").to_s.split(',').each_with_index do |tenant, i| %>
+<% p("tenants").to_s.split(',').each_with_index do |tenant, i| %>
 	relp {
 		add_field => [ 
 			"_logstash_input", "relp",
@@ -23,7 +23,7 @@ output {
         }
 	<% end %>
 
-<% p("cf.tenants").to_s.split(',').each do |tenant| %>
+<% p("tenants").to_s.split(',').each do |tenant| %>
 	redis {
 		host => "<%= p("redis.host") %>"
 		port => "<%= p("redis.port") %>"

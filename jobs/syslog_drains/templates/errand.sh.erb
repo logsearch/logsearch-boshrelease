@@ -11,7 +11,7 @@ cf login -a <%= "#{p("cf.api_prefix")}#{p("cf.app_domain")}" %> -u <%= p("cf.adm
 syslog_host=<%= p("logstash_ingestor.syslog.host") %>
 
 COUNTER=5514
-for x in <%= p("cf.tenants", "").to_s.split(',') %>; do
+for x in <%= p("tenants").to_s.split(',') %>; do
   # Parse the tenant in org:space format
   tenant=$(echo $x | tr -d "[],\"")
   org=$(echo $tenant | cut -d':' -f1)
