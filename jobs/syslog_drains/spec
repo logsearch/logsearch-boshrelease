@@ -18,10 +18,11 @@ properties:
     description: "Username of the admin user"
   cf.admin_password:
     description: "Password of the admin user"
-  cf.tenants:
-    description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
   logstash_ingestor.syslog.host:
     description: IP / DNS of logstash syslog endpoint
   ssl.skip_cert_verify:
     description: "When connecting over TLS, don't verify certificates"
     default: false
+  tenants:
+    description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
+    default: ""

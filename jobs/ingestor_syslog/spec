@@ -46,5 +46,6 @@ properties:
     description: Name of queue to pull messages from
     default: logstash
 
-  cf.tenants:
+  tenants:
     description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
+    default: ""
