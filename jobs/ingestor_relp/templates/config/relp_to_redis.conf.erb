@@ -1,19 +1,9 @@
 input {
 	relp {
-		add_field => ["_logstash_input", "relp"]
+		add_field => [ "_logstash_input", "relp" ]
 		host => "0.0.0.0"
 		port => "<%= p("logstash_ingestor.relp.port") %>"
 	}
-<% p("tenants").to_s.split(',').each_with_index do |tenant, i| %>
-	relp {
-		add_field => [ 
-			"_logstash_input", "relp",
-			"tenant", "<%= tenant.strip %>"
-		]
-		host => "0.0.0.0"
-		port => "<%= p("logstash_ingestor.relp.port") + (i + 49626) %>"
-	}
-<% end %>
 }
 			
 output {
@@ -23,14 +13,12 @@ output {
         }
 	<% end %>
 
-<% p("tenants").to_s.split(',').each do |tenant| %>
 	redis {
 		host => "<%= p("redis.host") %>"
 		port => "<%= p("redis.port") %>"
 		data_type => "list"
-		key => "<%= p("redis.key") %>-%{tenant}"
+		key => "<%= p("redis.key") %>"
 		batch => true
 		batch_events => 50
 	}
-<% end %>
 }
