@@ -39,6 +39,9 @@ properties:
   elasticsearch.flush_size:
     description: Redis queue flush size
     default: 100
+  elasticsearch.index:
+    description: The index to write events to.
+    default: "logstash-%{+YYYY.MM.dd}"
 
   redis.host: 
     description: Redis host of queue
