@@ -73,7 +73,8 @@ output {
 		host => "<%= p("redis.host") %>"
 		port => "<%= p("redis.port") %>"
 		data_type => "list"
-		key => "<%= p("redis.key") %>-%{tenant}"
+		key => "<%= p("redis.key") %>"
+ 		add_field => [ "tenant", "%{tenant}" ]
 		batch => true
 		batch_events => 50
 	}

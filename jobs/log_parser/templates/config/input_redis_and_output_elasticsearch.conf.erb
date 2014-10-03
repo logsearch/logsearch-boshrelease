@@ -1,16 +1,13 @@
 input {
 
-<% p("tenants").to_s.split(',').each do |tenant| %>
     redis {
         host => "<%= p("redis.host") %>"
         port => "<%= p("redis.port") %>"
         type => "redis-input"
         data_type => "list"
-        key => "<%= p("redis.key") %>-<%= tenant.strip %>"
+        key => "<%= p("redis.key") %>"
         threads => 8
-        tags => "<%= tenant %>"
     }
-<% end %>
 }
 
 output {
