@@ -3,11 +3,9 @@ name: elasticsearch
 packages: 
 - elasticsearch
 - java7
-- kibana-dashboards
 templates:
   bin/drain.erb: bin/drain
   bin/undrain.erb: bin/undrain
-  bin/create_dashboards.erb: bin/create_dashboards
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   config/default.json.erb: config/default.json
