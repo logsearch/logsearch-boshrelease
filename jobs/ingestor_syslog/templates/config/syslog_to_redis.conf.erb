@@ -74,7 +74,6 @@ output {
 		port => "<%= p("redis.port") %>"
 		data_type => "list"
 		key => "<%= p("redis.key") %>"
- 		add_field => [ "tenant", "%{tenant}" ]
 		batch => true
 		batch_events => 50
 	}
