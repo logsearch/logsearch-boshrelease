@@ -1,0 +1,98 @@
+#!/bin/bash
+
+set -e
+set -u
+
+S3_ENDPOINT="<%= p('archiver.s3.endpoint') %>"
+S3_BUCKET="<%= p('archiver.s3.bucket') %>"
+S3_PREFIX="<%= p('archiver.s3.prefix') %>"
+S3_ACCESS_KEY_ID="<%= p('archiver.s3.access_key_id') %>"
+S3_SECRET_ACCESS_KEY="<%= p('archiver.s3.secret_access_key') %>"
+
+cd <%= p('archiver.data_dir') %>
+
+mkdir -p s3upload
+
+
+echo "stopping service"
+
+/var/vcap/bosh/bin/monit stop archiver
+
+while ! /var/vcap/bosh/bin/monit summary | grep archiver | grep 'not monitored' | grep -v 'pending' >/dev/null 2>&1 ; do
+  sleep 2
+done
+
+echo "stopped service"
+
+
+for FILE in $( ls *.log ) ; do
+    BASENAME=$( echo "${FILE}" | sed 's/\.log$//' )
+    DESTFILE="${BASENAME}.`date +%Y%m%d%H%M%S`-<%= name %>-<%= index %>.log"
+
+    echo "moving ${FILE} -> s3upload/${DESTFILE}"
+
+    mv "${FILE}" "s3upload/${DESTFILE}"
+
+    echo "moved ${FILE}"
+done
+
+
+echo "starting service"
+
+/var/vcap/bosh/bin/monit start archiver
+
+echo "started service"
+
+
+cd s3upload
+
+for FILE in $( ls *.log ) ; do
+    echo "compressing ${FILE} -> ${FILE}.xz"
+
+    xz --compress "${FILE}"
+
+    echo "compressed ${FILE}"
+done
+
+EXIT_CODE=0
+
+for FILE in $( ls *.xz ) ; do
+    echo "uploading ${FILE}"
+
+    S3GO_NOW=$( date -R )
+    S3GO_MD5=$( openssl dgst -md5 -binary "${FILE}" | openssl enc -e -base64 )
+    S3GO_ACL="x-amz-acl:private"
+    S3GO_MIME="application/x-gzip"
+    S3GO_SIGNATURE=$( echo -en "PUT\n${S3GO_MD5}\n${S3GO_MIME}\n${S3GO_NOW}\n${S3GO_ACL}\n/${S3_BUCKET}/${S3_PREFIX}${FILE}" | openssl sha1 -hmac "${S3_SECRET_ACCESS_KEY}" -binary | openssl enc -e -base64 )
+
+    R1=$( curl \
+        -s \
+        -X PUT \
+        -T "$FILE" \
+        -H "$S3GO_ACL" \
+        -H "Content-MD5: ${S3GO_MD5}" \
+        -H "Date: $S3GO_NOW" \
+        -H "Content-Type: application/x-gzip" \
+        -H "Authorization: AWS ${S3_ACCESS_KEY_ID}:${S3GO_SIGNATURE}" \
+        "https://${S3_BUCKET}.${S3_ENDPOINT}/${S3_PREFIX}${FILE}" \
+        2>&1 \
+    )
+
+    if echo "$R1" | grep "<Error>" > /dev/null 2>&1 ; then
+        echo "FAILED uploading ${FILE}"
+        echo "${R1}"
+
+        EXIT_CODE=1
+    else
+        echo $(date) "uploaded ${FILE}"
+
+
+        echo $(date) "removing ${FILE}"
+
+        rm "${FILE}"
+
+        echo $(date) "removed ${FILE}"
+    fi
+done
+
+exit $EXIT_CODE

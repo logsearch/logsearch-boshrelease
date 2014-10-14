@@ -1,0 +1,73 @@
+#!/bin/bash
+
+set -e
+set -u
+
+PIDFILE=/var/vcap/sys/run/archiver/logstash.pid
+LOGDIR=/var/vcap/sys/log/archiver
+DATADIR="<%= p('archiver.data_dir') %>"
+
+mkdir -p `dirname "$PIDFILE"`
+chown vcap:vcap `dirname "$PIDFILE"`
+
+mkdir -p "$LOGDIR"
+chown vcap:vcap "$LOGDIR"
+
+mkdir -p "$DATADIR"
+chown vcap:vcap "$DATADIR"
+
+exec >> /var/vcap/sys/log/archiver/logstash.control.log
+exec 2>&1
+
+<% if 'auto' == p('archiver.workers') %>
+# 1 logstash worker / CPU core
+export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
+<% else %>
+export LOGSTASH_WORKERS=<%= p('archiver.workers') %>
+<% end %>
+
+
+case $1 in
+
+  start)
+    /sbin/start-stop-daemon \
+      --background \
+      --pidfile $PIDFILE \
+      --exec /bin/bash \
+      --make-pidfile \
+      --start \
+      -- -c "JAVA_HOME=/var/vcap/packages/java7 \
+        exec /var/vcap/packages/logstash/logstash/bin/logstash \
+        agent \
+        --config /var/vcap/jobs/archiver/config/logstash.conf \
+        -w ${LOGSTASH_WORKERS} \
+        >> \"$LOGDIR/logstash.stdout.log\" \
+        2>> \"$LOGDIR/logstash.stderr.log\" \
+      "
+
+    echo "<%= p('archiver.cron_schedule') %> root bash -c 'exec /var/vcap/jobs/archiver/bin/s3upload.cron >> $LOGDIR/s3upload.stdout.log 2>> $LOGDIR/s3upload.stderr.log'" > /etc/cron.d/25-vcap-archiver
+    touch /etc/cron.d
+
+    ;;
+
+  stop)
+    rm /etc/cron.d/25-vcap-archiver
+    touch /etc/cron.d
+
+    /sbin/start-stop-daemon \
+      --pidfile $PIDFILE \
+      --signal INT \
+      --oknodo \
+      --stop \
+      --retry 15
+
+    ;;
+
+  *)
+    echo "Usage: control {start|stop}" >&2
+
+    exit 1
+
+    ;;
+
+esac

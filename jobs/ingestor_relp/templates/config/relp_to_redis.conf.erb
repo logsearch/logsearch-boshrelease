@@ -21,4 +21,15 @@ output {
 		batch => true
 		batch_events => 50
 	}
+
+	<% if p('archiver.enabled') %>
+		redis {
+			host => "<%= p("redis.host") %>"
+			port => "<%= p("redis.port") %>"
+			data_type => "list"
+			key => "<%= p("redis.key") %>_archiver"
+			batch => true
+			batch_events => 50
+		}
+	<% end %>
 }

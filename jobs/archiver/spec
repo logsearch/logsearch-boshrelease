@@ -1,0 +1,40 @@
+---
+name: archiver
+packages:
+- logstash
+templates:
+  bin/logstash.process.erb: bin/logstash.process
+  bin/s3upload.cron.erb: bin/s3upload.cron
+  config/logstash.conf.erb: config/logstash.conf
+properties:
+  redis.host:
+    description: Redis host of queue
+  redis.port:
+    description: Redis port of queue
+    default: 6379
+  redis.key:
+    description: Name of queue to pull messages from
+    default: logstash
+
+  archiver.s3.bucket:
+    description: "S3 Bucket"
+  archiver.s3.prefix:
+    description: "S3 Prefix"
+    default: ""
+  archiver.s3.endpoint:
+    description: "S3 Endpoint"
+    default: "s3.amazonaws.com"
+  archiver.s3.access_key_id:
+    description: "S3 Access Key ID"
+  archiver.s3.secret_access_key:
+    description: "S3 Secret Access Key"
+
+  archiver.data_dir:
+    default: "/var/vcap/store/archiver"
+    description: "Directory for dumping log files"
+  archiver.cron_schedule:
+    default: "*/30 * * * *"
+    description: "Schedule for pausing the archiver to upload log files"
+  archiver.workers:
+    default: "auto"
+    description: "The number of worker threads that logstash should use (default: auto = one per CPU)"

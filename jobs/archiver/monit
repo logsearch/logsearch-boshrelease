@@ -1,0 +1,5 @@
+check process archiver
+  with pidfile /var/vcap/sys/run/archiver/logstash.pid
+  start program "/var/vcap/jobs/archiver/bin/logstash.process start"
+  stop program "/var/vcap/jobs/archiver/bin/logstash.process stop"
+  group vcap
