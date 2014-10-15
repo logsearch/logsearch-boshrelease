@@ -5,6 +5,17 @@ input {
 		port => "<%= p("logstash_ingestor.relp.port") %>"
 	}
 }
+
+filter {
+	mutate {
+		add_field => [ "@ingestor.service", "relp" ]
+		add_field => [ "@ingestor.job", "<%= name %>/<%= index %>" ]
+	}
+
+	ruby {
+		code => "event['@ingestor.timestamp'] = Time.now.iso8601(3)"
+	}
+}
 			
 output {
 	<% if p("logstash_ingestor.debug") %>

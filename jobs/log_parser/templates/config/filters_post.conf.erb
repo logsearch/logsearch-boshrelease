@@ -1,2 +1,6 @@
 
+    ruby {
+        code => "n = Time.now ; event['@timer.parser'] = (1000 * (n - Time.parse(event['@parser.timestamp']))).to_i ; if event['@timestamp'].instance_of? Time ; event['@timer.event_lag'] = (1000 * (n - event['@timestamp'])).to_i ; event['@timer.ingestion_lag'] = (1000 * (n - Time.parse(event['@ingestor.timestamp']))).to_i ; end"
+    }
+
 }

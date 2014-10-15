@@ -1,6 +1,5 @@
 input {
 	lumberjack {
-		add_field => [ "_logstash_input", "lumberjack" ]
 		host => "0.0.0.0"
 		port => "<%= p("logstash_ingestor.lumberjack.port") %>"
 		ssl_certificate => "/var/vcap/jobs/ingestor_lumberjack/config/lumberjack.crt"
@@ -9,13 +8,18 @@ input {
 }
 
 filter {
-	if [_logstash_input] == "lumberjack" {
-		mutate {
-			add_field => [ "@source.host", "%{host}" ]
-			add_field => [ "@source.path", "%{file}" ]
-			add_field => [ "@source.offset", "%{offset}" ]
-			remove_field => [ "host", "file", "offset", "_logstash_input" ]
-		}
+	mutate {
+		add_field => [ "@source.host", "%{host}" ]
+		add_field => [ "@source.path", "%{file}" ]
+		add_field => [ "@source.offset", "%{offset}" ]
+		remove_field => [ "host", "file", "offset" ]
+
+		add_field => [ "@ingestor.service", "lumberjack" ]
+		add_field => [ "@ingestor.job", "<%= name %>/<%= index %>" ]
+	}
+
+	ruby {
+		code => "event['@ingestor.timestamp'] = Time.now.iso8601(3)"
 	}
 }
 				
