@@ -1,12 +1,14 @@
 filter {
 
-    mutate {
-        add_field => [ "@parser[job]", "<%= name %>/<%= index %>" ]
-    }
+    <% if 'DEBUG' == p('logstash.metadata_level') %>
+        mutate {
+            add_field => [ "@parser[job]", "<%= name %>/<%= index %>" ]
+        }
 
-    ruby {
-        code => "event['@parser[timestamp]'] = Time.now.iso8601(3)"
-    }
+        ruby {
+            code => "event['@parser[timestamp]'] = Time.now.iso8601(3)"
+        }
+    <% end %>
 
     #
     # Default type to _logstash_input 

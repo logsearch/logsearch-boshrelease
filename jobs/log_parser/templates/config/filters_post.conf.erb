@@ -1,6 +1,8 @@
 
-    ruby {
-        code => "n = Time.now ; event['@parser[duration]'] = (1000 * (n - Time.parse(event['@parser[timestamp]']))).to_i ; event['@timer[ingested_to_parsed]'] = (1000 * (n - Time.parse(event['@ingestor[timestamp]']))).to_i ; if event['@timestamp'].instance_of? Time ; event['@timer[emit_to_ingested]'] = (1000 * (Time.parse(event['@ingestor[timestamp]']) - event['@timestamp'])).to_i ; event['@timer[emit_to_parsed]'] = (1000 * (n - event['@timestamp'])).to_i ; end"
-    }
+    <% if 'DEBUG' == p('logstash.metadata_level') %>
+        ruby {
+            code => "n = Time.now ; event['@parser[duration]'] = (1000 * (n - Time.parse(event['@parser[timestamp]']))).to_i ; event['@timer[ingested_to_parsed]'] = (1000 * (n - Time.parse(event['@ingestor[timestamp]']))).to_i ; if event['@timestamp'].instance_of? Time ; event['@timer[emit_to_ingested]'] = (1000 * (Time.parse(event['@ingestor[timestamp]']) - event['@timestamp'])).to_i ; event['@timer[emit_to_parsed]'] = (1000 * (n - event['@timestamp'])).to_i ; end"
+        }
+    <% end %>
 
 }

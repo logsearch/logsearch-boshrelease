@@ -13,6 +13,10 @@ templates:
   config/syslog_tls.key.erb: config/syslog_tls.key
   config/syslog_to_redis.conf.erb: config/syslog_to_redis.conf
 properties:
+  logstash.metadata_level:
+    description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
+    default: "NONE"
+
   logstash_ingestor.debug:
     description: Debug level logging
     default: false

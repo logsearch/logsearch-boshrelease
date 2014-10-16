@@ -11,6 +11,10 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/relp_to_redis.conf.erb: config/relp_to_redis.conf
 properties:
+  logstash.metadata_level:
+    description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
+    default: "NONE"
+
   logstash_ingestor.debug:
     description: Debug level logging
     default: false
