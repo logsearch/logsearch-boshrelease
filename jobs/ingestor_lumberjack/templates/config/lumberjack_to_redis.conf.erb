@@ -14,12 +14,12 @@ filter {
 		add_field => [ "@source.offset", "%{offset}" ]
 		remove_field => [ "host", "file", "offset" ]
 
-		add_field => [ "@ingestor.service", "lumberjack" ]
-		add_field => [ "@ingestor.job", "<%= name %>/<%= index %>" ]
+		add_field => [ "@ingestor[service]", "lumberjack" ]
+		add_field => [ "@ingestor[job]", "<%= name %>/<%= index %>" ]
 	}
 
 	ruby {
-		code => "event['@ingestor.timestamp'] = Time.now.iso8601(3)"
+		code => "event['@ingestor[timestamp]'] = Time.now.iso8601(3)"
 	}
 }
 				

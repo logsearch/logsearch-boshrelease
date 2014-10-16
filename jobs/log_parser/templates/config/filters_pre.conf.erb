@@ -1,11 +1,11 @@
 filter {
 
     mutate {
-        add_field => [ "@parser.job", "<%= name %>/<%= index %>" ]
+        add_field => [ "@parser[job]", "<%= name %>/<%= index %>" ]
     }
 
     ruby {
-        code => "event['@parser.timestamp'] = Time.now.iso8601(3)"
+        code => "event['@parser[timestamp]'] = Time.now.iso8601(3)"
     }
 
     #
