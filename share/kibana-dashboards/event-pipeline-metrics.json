@@ -14,10 +14,49 @@
           "field": "@type",
           "size": 20,
           "union": "AND"
+        },
+        "1": {
+          "id": 1,
+          "type": "topN",
+          "query": "*",
+          "alias": "by Ingestor",
+          "color": "#6ED0E0",
+          "pin": true,
+          "enable": true,
+          "field": "@ingestor.job",
+          "size": 16,
+          "union": "AND"
+        },
+        "2": {
+          "id": 2,
+          "type": "topN",
+          "query": "*",
+          "alias": "by Parser",
+          "color": "#EF843C",
+          "pin": true,
+          "enable": true,
+          "field": "@parser.job",
+          "size": 16,
+          "union": "AND"
+        },
+        "3": {
+          "id": 3,
+          "type": "topN",
+          "query": "*",
+          "alias": "by Type",
+          "color": "#EAB839",
+          "pin": true,
+          "enable": true,
+          "field": "@type",
+          "size": 16,
+          "union": "AND"
         }
       },
       "ids": [
-        0
+        0,
+        1,
+        2,
+        3
       ]
     },
     "filter": {
@@ -40,10 +79,322 @@
   },
   "rows": [
     {
-      "title": "Max",
+      "title": "Throughput",
+      "height": "180px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "count",
+          "time_field": "@ingestor.timestamp",
+          "value_field": null,
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              1
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 2,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": false,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Ingested Messages"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "count",
+          "time_field": "@parser.timestamp",
+          "value_field": null,
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              2
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 1,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": true,
+          "spyable": true,
+          "zoomlinks": false,
+          "options": false,
+          "legend": false,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "individual",
+            "query_as_alias": true
+          },
+          "title": "Parsed Messages"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Duration",
       "height": "150px",
       "editable": true,
       "collapse": false,
+      "collapsable": true,
+      "panels": [
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "max",
+          "time_field": "@timestamp",
+          "value_field": "@parser.duration",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              3
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 0,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": true,
+          "options": true,
+          "legend": false,
+          "show_query": true,
+          "interactive": true,
+          "legend_counts": true,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Parsing duration (max)"
+        },
+        {
+          "span": 6,
+          "editable": true,
+          "type": "histogram",
+          "loadingEditor": false,
+          "mode": "mean",
+          "time_field": "@timestamp",
+          "value_field": "@parser.duration",
+          "x-axis": true,
+          "y-axis": true,
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "queries": {
+            "mode": "selected",
+            "ids": [
+              3
+            ]
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "auto_int": false,
+          "resolution": 100,
+          "interval": "1m",
+          "intervals": [
+            "auto",
+            "1s",
+            "1m",
+            "5m",
+            "10m",
+            "30m",
+            "1h",
+            "3h",
+            "12h",
+            "1d",
+            "1w",
+            "1y"
+          ],
+          "lines": true,
+          "fill": 0,
+          "linewidth": 1,
+          "points": false,
+          "pointradius": 5,
+          "bars": false,
+          "stack": false,
+          "spyable": true,
+          "zoomlinks": true,
+          "options": true,
+          "legend": false,
+          "show_query": false,
+          "interactive": true,
+          "legend_counts": false,
+          "timezone": "browser",
+          "percentage": false,
+          "zerofill": true,
+          "derivative": false,
+          "tooltip": {
+            "value_type": "cumulative",
+            "query_as_alias": true
+          },
+          "title": "Parsing duration (mean)"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Max",
+      "height": "150px",
+      "editable": true,
+      "collapse": true,
       "collapsable": true,
       "panels": [
         {
@@ -74,9 +425,9 @@
           "percentage": false,
           "interactive": true,
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0
+              3
             ]
           },
           "title": "emit_to_ingested (max)",
@@ -139,9 +490,9 @@
             "min": 0
           },
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0
+              3
             ]
           },
           "annotate": {
@@ -202,79 +553,6 @@
           "loadingEditor": false,
           "mode": "max",
           "time_field": "@timestamp",
-          "value_field": "@parser.duration",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "short",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": false,
-          "resolution": 100,
-          "interval": "1m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 0,
-          "linewidth": 1,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": true,
-          "options": true,
-          "legend": false,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": true,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "title": "Parsing duration (max)"
-        },
-        {
-          "span": 3,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "max",
-          "time_field": "@timestamp",
           "value_field": "@timer.emit_to_parsed",
           "x-axis": true,
           "y-axis": true,
@@ -285,9 +563,9 @@
             "min": 0
           },
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0
+              3
             ]
           },
           "annotate": {
@@ -348,7 +626,7 @@
       "title": "Mean",
       "height": "150px",
       "editable": true,
-      "collapse": false,
+      "collapse": true,
       "collapsable": true,
       "panels": [
         {
@@ -368,9 +646,9 @@
             "min": 0
           },
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0
+              3
             ]
           },
           "annotate": {
@@ -441,9 +719,9 @@
             "min": 0
           },
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0
+              3
             ]
           },
           "annotate": {
@@ -504,79 +782,6 @@
           "loadingEditor": false,
           "mode": "mean",
           "time_field": "@timestamp",
-          "value_field": "@parser.duration",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "short",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "all",
-            "ids": [
-              0
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": false,
-          "resolution": 100,
-          "interval": "1m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 0,
-          "linewidth": 1,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": true,
-          "options": true,
-          "legend": false,
-          "show_query": false,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "title": "Parsing duration (mean)"
-        },
-        {
-          "span": 3,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
-          "time_field": "@timestamp",
           "value_field": "@timer.emit_to_parsed",
           "x-axis": true,
           "y-axis": true,
@@ -587,9 +792,9 @@
             "min": 0
           },
           "queries": {
-            "mode": "all",
+            "mode": "selected",
             "ids": [
-              0
+              3
             ]
           },
           "annotate": {
@@ -666,7 +871,7 @@
           "pages": 5,
           "offset": 0,
           "sort": [
-            "@timestamp",
+            "@ingestor.timestamp",
             "desc"
           ],
           "style": {
@@ -674,15 +879,13 @@
           },
           "overflow": "min-height",
           "fields": [
-            "@timestamp",
-            "@type",
-            "@ingestor.job",
             "@ingestor.timestamp",
-            "@parser.timestamp",
+            "@ingestor.job",
             "@parser.job",
-            "@timer.emit_to_ingested",
+            "@parser.duration",
             "@timer.ingested_to_parsed",
-            "@timer.emit_to_parsed"
+            "@type",
+            "@timestamp"
           ],
           "localTime": true,
           "timeField": "@timestamp",
@@ -694,7 +897,10 @@
           "queries": {
             "mode": "all",
             "ids": [
-              0
+              0,
+              1,
+              2,
+              3
             ]
           },
           "field_list": false,
@@ -733,7 +939,7 @@
     {
       "type": "filtering",
       "collapse": true,
-      "notice": false,
+      "notice": true,
       "enable": true
     }
   ],
