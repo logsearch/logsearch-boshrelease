@@ -1,0 +1,5 @@
+check process ingestor_archiver
+  with pidfile /var/vcap/sys/run/ingestor_archiver/ingestor_archiver.pid
+  start program "/var/vcap/jobs/ingestor_archiver/bin/monit_debugger ingestor_archiver_ctl '/var/vcap/jobs/ingestor_archiver/bin/ingestor_archiver_ctl start'"
+  stop program "/var/vcap/jobs/ingestor_archiver/bin/monit_debugger ingestor_archiver_ctl '/var/vcap/jobs/ingestor_archiver/bin/ingestor_archiver_ctl stop'"
+  group vcap

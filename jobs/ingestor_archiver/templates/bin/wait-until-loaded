@@ -1,0 +1,50 @@
+#!/bin/bash
+
+set -e
+set -x
+
+PID=$( cat /var/vcap/sys/run/ingestor_archiver/ingestor_archiver.pid )
+PATH_PREFIX="<%= p('archiver_restorer.data_dir') %>"
+
+cd /proc/$PID/fd
+
+function check_if_fully_read {
+  set -e
+  set -x
+
+  # loop through all our open file descriptors
+  for FD in $( find . -type l ) ; do
+    FD_PATH=$( readlink $FD )
+
+    # make sure they're files within our restore directory
+    if [[ "$FD_PATH" =~ ^$PATH_PREFIX ]] ; then
+      # check logstash's current read offset
+      FD_OFFSET=$( cat "../fdinfo/$FD" | grep 'pos:' | awk '{ print $2 }' )
+
+      # check the file's actual size
+      FD_SIZE=$( wc -c "$FD_PATH" | awk '{ print $1 }' )
+
+      if [[ "$FD_OFFSET" != "$FD_SIZE" ]] ; then
+        # they don't match - we're obviously not done yet
+        echo "false"
+
+        return
+      fi
+    fi
+  done
+
+  echo "true"
+}
+
+IS_FULLY_READ=false
+
+# continue looping until everything is fully read
+while [ "$IS_FULLY_READ" == "false" ] ; do
+  IS_FULLY_READ=$( check_if_fully_read )
+
+  echo '.'
+
+  if [[ "$IS_FULLY_READ" == "false" ]] ; then
+    sleep 15
+  fi
+done
