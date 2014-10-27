@@ -3,11 +3,16 @@ name: ingestor_archiver
 packages:
 - logstash
 templates:
-  bin/logstash.process.erb: bin/logstash.process
-  bin/s3upload.cron.erb: bin/s3upload.cron
-  config/logstash.conf.erb: config/logstash.conf
+  bin/ingestor_archiver_ctl: bin/ingestor_archiver_ctl
+  bin/monit_debugger: bin/monit_debugger
+  bin/reload: bin/reload
+  bin/wait-until-loaded.erb: bin/wait-until-loaded
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/archiver_to_redis.conf.erb: config/archiver_to_redis.conf
 properties:
-  archiver_restorer.data_dir:
+  ingestor_archiver.data_dir:
     description: "Path to store imported log files and state"
     default: "/var/vcap/data/archiver-restorer"
 
@@ -15,21 +20,14 @@ properties:
     description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
     default: "NONE"
 
-  logstash_parser.debug:
+  logstash_ingestor.debug:
     description: Debug level logging
     default: false
-  logstash_parser.message_max_size:
-    description: "Maximum log message length.  Anything larger is truncated (TODO: move this to ingestor?)"
-    default: 1048576
-  logstash_parser.filters:
-    description: "The configuration to embed into the logstash filters section"
-    default: ''
-  logstash_parser.workers:
-    description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
-    default: auto
 
-  elasticsearch.host:
-    description: IP / DNS of elasticsearch http endpoint
-  elasticsearch.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
+  redis.host:
+    description: Redis host of queue
+  redis.port:
+    description: Redis port of queue
+    default: 6379
+  redis.key:
+    description: Name of queue to pull messages from

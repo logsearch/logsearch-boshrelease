@@ -11,7 +11,7 @@ export LANG=en_US.UTF-8
 export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
 export PIDFILE=$RUN_DIR/ingestor_archiver.pid
 
-mkdir -p "<%= p('archiver_restorer.data_dir') %>/restore"
+mkdir -p "<%= p('ingestor_archiver.data_dir') %>/restore"
 
 case $1 in
 
