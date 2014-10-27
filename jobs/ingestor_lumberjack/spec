@@ -13,6 +13,10 @@ templates:
   config/lumberjack.crt.erb: config/lumberjack.crt
   config/lumberjack.key.erb: config/lumberjack.key
 properties:
+  logstash.metadata_level:
+    description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
+    default: "NONE"
+
   logstash_ingestor.debug:
     description: Debug level logging
     default: false

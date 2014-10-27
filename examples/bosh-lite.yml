@@ -1,19 +1,19 @@
 ---
 name: logsearch
-director_uuid: c5f8d0da-f8ac-4918-a1a3-0a846fb97d09
+director_uuid: 4e46066f-e59b-493e-b775-accc1a7bc6e2
 
 releases:
 - name: logsearch
   version: latest
 
 compilation:
-  workers: 3
+  workers: 2
   network: default
   reuse_compilation_vms: true
   cloud_properties: {}
 
 update:
-  serial: false #Deploy jobs in parallel
+  serial: true
   canaries: 1
   canary_watch_time: 30000
   update_watch_time: 30000
