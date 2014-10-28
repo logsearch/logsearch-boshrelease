@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# usage: cat | /var/vcap/jobs/ingestor_archiver/bin/reload [stdin-file-extension]
+# usage: /var/vcap/jobs/ingestor_archiver/bin/reload local-files...
 
 set -e
 set -u
@@ -46,7 +46,9 @@ cd "<%= p('ingestor_archiver.data_dir') %>/restore"
 
 echo -n 'Transferring logs...'
 
-cat > "_reload.$1"
+for FILE in "$@" ; do
+  mv "$FILE" ./
+done
 
 echo 'done'
 
