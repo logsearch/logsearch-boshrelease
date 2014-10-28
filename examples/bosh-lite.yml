@@ -148,11 +148,11 @@ jobs:
         allow_master: false
 
 # upload your backfill data
-# $ scp -i "$HOME/.ssh/vagrant" 2014102715.20141027150019-api-0.log.xz vcap@10.244.2.26:/tmp/backfill.xz
+# $ sshpass -pc1oudc0w scp -i "$HOME/.ssh/vagrant" 2014102721.20141027220003-api-0.log.xz vcap@10.244.2.26:/tmp/backfill.xz
 # restart ingestion of it all
-# $ ssh -i "$HOME/.ssh/vagrant" vcap@10.244.2.26 "echo c1oudc0w | sudo -p '' -S -- /bin/bash -c '/var/vcap/jobs/ingestor_archiver/bin/reload /tmp/backfill.xz'"
+# $ sshpass -pc1oudc0w ssh -i "$HOME/.ssh/vagrant" vcap@10.244.2.26 "echo c1oudc0w | sudo -p '' -S /var/vcap/jobs/ingestor_archiver/bin/reload /tmp/backfill.xz"
 # utility if you want to block until complete
-# $ ssh -i "$HOME/.ssh/vagrant" vcap@10.244.2.26 "echo c1oudc0w | sudo -p '' -S -- /var/vcap/jobs/ingestor_archiver/bin/wait-until-loaded"
+# $ sshpass -pc1oudc0w ssh -i "$HOME/.ssh/vagrant" vcap@10.244.2.26 "echo c1oudc0w | sudo -p '' -S /var/vcap/jobs/ingestor_archiver/bin/wait-until-loaded"
 - name: restorer
   release: logsearch
   templates:
