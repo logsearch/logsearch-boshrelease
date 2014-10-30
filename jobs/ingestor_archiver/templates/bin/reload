@@ -1,0 +1,108 @@
+#!/bin/bash
+
+# usage: /var/vcap/jobs/ingestor_archiver/bin/reload local-files...
+
+set -e
+set -u
+
+#
+# step 1
+#
+
+echo -n 'Stopping ingestor...'
+
+/var/vcap/bosh/bin/monit stop ingestor_archiver
+
+while /var/vcap/bosh/bin/monit summary | grep ingestor_archiver | grep running > /dev/null 2>&1 ; do
+  echo -n "."
+  sleep 1
+done
+
+sleep 10
+
+echo 'done'
+
+
+#
+# step 2
+#
+
+echo -n 'Purging existing logs, state...'
+
+rm -fr "<%= p('ingestor_archiver.data_dir') %>/restore"
+mkdir -p "<%= p('ingestor_archiver.data_dir') %>/restore"
+
+[ ! -f "<%= p('ingestor_archiver.data_dir') %>/logstash.sincedb" ] || \
+  rm "<%= p('ingestor_archiver.data_dir') %>/logstash.sincedb"
+
+echo 'done'
+
+
+#
+# step 3
+#
+
+cd "<%= p('ingestor_archiver.data_dir') %>/restore"
+
+echo -n 'Transferring logs...'
+
+for FILE in "$@" ; do
+  mv "$FILE" ./
+done
+
+echo 'done'
+
+
+#
+# step 4
+#
+
+echo -n 'Extracting logs...'
+
+EXTRACTED=true
+
+while [[ "true" == "$EXTRACTED" ]] ; do
+  EXTRACTED=false
+
+  for FILE in $( find . -name "*.tgz" ) ; do
+    tar -xzf "$FILE"
+    rm "$FILE"
+
+    echo -n '.'
+    EXTRACTED=true
+  done
+
+  for FILE in $( find . -name "*.tar" ) ; do
+    tar -zf "$FILE"
+    rm "$FILE"
+
+    echo -n '.'
+    EXTRACTED=true
+  done
+
+  for FILE in $( find . -name "*.xz" ) ; do
+    xz -d "$FILE"
+
+    echo -n '.'
+    EXTRACTED=true
+  done
+done
+
+echo 'done'
+
+
+#
+# step 5
+#
+
+echo -n 'Starting ingestor...'
+/var/vcap/bosh/bin/monit start ingestor_archiver
+
+while ! /var/vcap/bosh/bin/monit summary | grep ingestor_archiver | grep running > /dev/null 2>&1 ; do
+  echo -n "."
+  sleep 1
+done
+
+sleep 10
+
+echo 'done'

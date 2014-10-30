@@ -1,0 +1,33 @@
+---
+name: ingestor_archiver
+packages:
+- logstash
+templates:
+  bin/ingestor_archiver_ctl: bin/ingestor_archiver_ctl
+  bin/monit_debugger: bin/monit_debugger
+  bin/reload: bin/reload
+  bin/wait-until-loaded.erb: bin/wait-until-loaded
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/archiver_to_redis.conf.erb: config/archiver_to_redis.conf
+properties:
+  ingestor_archiver.data_dir:
+    description: "Path to store imported log files and state"
+    default: "/var/vcap/data/archiver-restorer"
+
+  logstash.metadata_level:
+    description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
+    default: "NONE"
+
+  logstash_ingestor.debug:
+    description: Debug level logging
+    default: false
+
+  redis.host:
+    description: Redis host of queue
+  redis.port:
+    description: Redis port of queue
+    default: 6379
+  redis.key:
+    description: Name of queue to pull messages from

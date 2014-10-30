@@ -1,0 +1,37 @@
+input {
+    file {
+        path => "<%= p('ingestor_archiver.data_dir') %>/restore/**/*"
+        path => "<%= p('ingestor_archiver.data_dir') %>/restore/*"
+        codec => json
+        sincedb_path => "<%= p('ingestor_archiver.data_dir') %>/logstash.sincedb"
+        start_position => "beginning"
+        stat_interval => 30
+    }
+}
+
+filter {
+    <% if 'DEBUG' == p('logstash.metadata_level') %>
+        ruby {
+            code => "event['@ingestor[timestamp]'] = Time.now.iso8601(3)"
+            add_field => [ "@ingestor[service]", "archiver" ]
+            add_field => [ "@ingestor[job]", "<%= name %>/<%= index %>" ]
+        }
+    <% end %>
+}
+
+output {
+    <% if p("logstash_ingestor.debug") %>
+        stdout {
+            codec => "json"
+        }
+    <% end %>
+
+    redis {
+        host => "<%= p("redis.host") %>"
+        port => "<%= p("redis.port") %>"
+        data_type => "list"
+        key => "<%= p("redis.key") %>"
+        batch => true
+        batch_events => 50
+    }
+}
