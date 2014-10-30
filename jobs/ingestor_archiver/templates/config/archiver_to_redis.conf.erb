@@ -2,6 +2,7 @@ input {
     file {
         path => "<%= p('ingestor_archiver.data_dir') %>/restore/**/*"
         path => "<%= p('ingestor_archiver.data_dir') %>/restore/*"
+        codec => json
         sincedb_path => "<%= p('ingestor_archiver.data_dir') %>/logstash.sincedb"
         start_position => "beginning"
         stat_interval => 30
