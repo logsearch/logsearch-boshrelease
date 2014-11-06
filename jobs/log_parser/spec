@@ -2,18 +2,23 @@
 name: log_parser
 packages: 
 - logstash
+- elasticsearch
 - java7
 templates:
   bin/log_parser_ctl: bin/log_parser_ctl
+  bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/elasticsearch/default.json.erb: config/elasticsearch/default.json
+  config/elasticsearch/logging.yml.erb: config/elasticsearch/logging.yml
   config/input_redis_and_output_elasticsearch.conf.erb: config/input_redis_and_output_elasticsearch.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
   config/filters_default.conf: config/filters_default.conf
   config/filters_override.conf.erb: config/filters_override.conf
+  logsearch/logs.yml: logsearch/logs.yml
 properties:
   logstash.metadata_level:
     description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
@@ -33,6 +38,9 @@ properties:
     default: auto
   logstash_parser.idle_flush_time:
     description: "How frequently to flush events if the output queue is not full."
+  logstash_parser.use_local_elasticsearch:
+    description: "Run a local elasticsearch client node"
+    default: true
 
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint
@@ -42,6 +50,16 @@ properties:
   elasticsearch.flush_size:
     description: Redis queue flush size
     default: 100
+  elasticsearch.cluster_name:
+    description: The name of the elastic search cluster
+  elasticsearch.log_level:
+    description: The default logging level (e.g. WARN, DEBUG, INFO)
+    default: INFO
+  elasticsearch.marvel.agent.enabled:
+    description: Whether to enable the marvel agent
+    default: false
+  elasticsearch.node.tags:
+    description: A hash of additional tags for the node
 
   redis.host: 
     description: Redis host of queue

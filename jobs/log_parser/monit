@@ -3,3 +3,11 @@ check process log_parser
   start program "/var/vcap/jobs/log_parser/bin/monit_debugger log_parser_ctl '/var/vcap/jobs/log_parser/bin/log_parser_ctl start'"
   stop program "/var/vcap/jobs/log_parser/bin/monit_debugger log_parser_ctl '/var/vcap/jobs/log_parser/bin/log_parser_ctl stop'"
   group vcap
+
+<% if p('logstash_parser.use_local_elasticsearch') %>
+  check process log_parser-elasticsearch
+    with pidfile /var/vcap/sys/run/log_parser/elasticsearch.pid
+    start program "/var/vcap/jobs/log_parser/bin/monit_debugger elasticsearch_ctl '/var/vcap/jobs/log_parser/bin/elasticsearch_ctl start'"
+    stop program "/var/vcap/jobs/log_parser/bin/monit_debugger elasticsearch_ctl '/var/vcap/jobs/log_parser/bin/elasticsearch_ctl stop'"
+    group vcap
+<% end %>

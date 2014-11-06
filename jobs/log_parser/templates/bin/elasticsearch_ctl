@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+# Setup env vars and folders for the webapp_ctl script
+source /var/vcap/jobs/log_parser/helpers/ctl_setup.sh 'log_parser' 'elasticsearch'
+
+export PIDFILE=$RUN_DIR/elasticsearch.pid
+export PORT=${PORT:-5000}
+export LANG=en_US.UTF-8
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE $JOB_NAME/elasticsearch
+
+    /var/vcap/jobs/elasticsearch/bin/undrain 2>&1 >> $LOG_DIR/undrain.log &
+
+    exec /var/vcap/packages/elasticsearch/bin/elasticsearch \
+         -Des.config=${JOB_DIR}/config/elasticsearch/default.json \
+         -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
+         -Des.pidfile=${PIDFILE} \
+         >>$LOG_DIR/elasticsearch.stdout.log \
+         2>>$LOG_DIR/elasticsearch.stderr.log
+
+    ;;
+
+  stop)
+    kill_and_wait $PIDFILE
+
+    ;;
+  *)
+    echo "Usage: elasticsearch_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0
