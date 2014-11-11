@@ -5,8 +5,8 @@ set -u # report the usage of uninitialized variables
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
-tar xzf elasticsearch/elasticsearch-1.2.1.tar.gz
-cp -R elasticsearch-1.2.1/* $BOSH_INSTALL_TARGET
+tar xzf elasticsearch/elasticsearch-1.4.0.tar.gz
+cp -R elasticsearch-1.4.0/* $BOSH_INSTALL_TARGET
 
 #Plugins
 
