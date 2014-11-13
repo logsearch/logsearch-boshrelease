@@ -64,3 +64,6 @@ properties:
   elasticsearch.logging_options:
     description: "Additional options to append to elasticsearch's logging.yml (YAML format)."
     default: ~
+  elasticsearch.plugins:
+    description: "Plugins to run elasticsearch with (array[] = { plugin-name: install-source }"
+    default: []
