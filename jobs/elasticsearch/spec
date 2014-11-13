@@ -8,7 +8,7 @@ templates:
   bin/undrain.erb: bin/undrain
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
-  config/default.json.erb: config/default.json
+  config/config.yml.erb: config/config.yml
   config/logging.yml.erb: config/logging.yml
   config/templates/logstash_default.json.erb: config/templates/logstash_default.json
   data/properties.sh.erb: data/properties.sh
@@ -58,4 +58,9 @@ properties:
   elasticsearch.indices.ttl_default:
     description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
     default: 30d
-
+  elasticsearch.config_options:
+    description: "Additional options to append to elasticsearch's config.yml (YAML format)."
+    default: ~
+  elasticsearch.logging_options:
+    description: "Additional options to append to elasticsearch's logging.yml (YAML format)."
+    default: ~

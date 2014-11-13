@@ -25,7 +25,7 @@ case $1 in
     /var/vcap/jobs/elasticsearch/bin/undrain 2>&1 >> $LOG_DIR/undrain.log &
 
     exec /var/vcap/packages/elasticsearch/bin/elasticsearch \
-         -Des.config=${JOB_DIR}/config/default.json \
+         -Des.config=${JOB_DIR}/config/config.yml \
          -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          -Des.pidfile=${PIDFILE} \
          <%= p("elasticsearch.exec.options", []).join(' ') %> \
