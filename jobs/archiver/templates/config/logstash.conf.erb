@@ -1,0 +1,16 @@
+input {
+    redis {
+        host => "<%= p("redis.host") %>"
+        port => "<%= p("redis.port") %>"
+        type => "redis-input"
+        data_type => "list"
+        key => "<%= p("redis.key") %>_archiver"
+        threads => 8
+    }
+}
+
+output {
+    file {
+        path => '<%= p('archiver.data_dir') %>/%{+YYYYMMddHH}.log'
+    }
+}

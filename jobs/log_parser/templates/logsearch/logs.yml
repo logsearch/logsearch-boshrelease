@@ -1,0 +1,4 @@
+files:
+  "log_parser/elasticsearch.requests.log":
+    fields:
+      type: "elasticsearch_request"

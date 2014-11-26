@@ -1,0 +1,74 @@
+#!/bin/bash
+
+#
+# perform a rolling restart of all data/master nodes in a stable cluster
+#
+# args: [elasticsearch-host:port]
+#
+
+set -e
+set -u
+
+CLUSTER="${1:-localhost:9200}"
+
+function decho {
+  /bin/echo $( date -u +"%Y-%m-%dT%H:%M:%SZ" ) "$@"
+}
+
+
+if [[ "green" != $(curl -s "${CLUSTER}/_cat/health?h=status" | tr -d '[:space:]') ]] ; then
+  echo "Cluster is not green!"
+
+  exit 1
+fi
+
+
+# enumerate nodes, starting with master, finishing with data
+for NODEREF in $( curl -s "${CLUSTER}/_cat/nodes?h=host,node.role,master,name" | sed -E 's/ (.) \* / \1 m /' | grep -v ' - - ' | sort -k 3,3r -k 2,2 -k 4,4 | awk '{ printf "%s|%s\n", $1, $4 }' ) ; do
+
+  NODE=$( echo "${NODEREF}" | awk -F '|' '{ print $1 }' )
+  NODE_NAME=$( echo "${NODEREF}" | awk -F '|' '{ print $2 }' )
+
+  decho "> restarting ${NODE_NAME}"
+
+
+  decho "  > disabling allocations"
+
+  curl -s -X PUT -d @- "${CLUSTER}/_cluster/settings" > /dev/null <<EOF
+{"transient":{"cluster.routing.allocation.enable":"primaries"}}
+EOF
+  
+
+  decho "  > sending shutdown to ${NODE}"
+
+  curl -s -X POST "${CLUSTER}/_cluster/nodes/${NODE}/_shutdown" > /dev/null
+  
+
+  decho "  > waiting for node to leave"
+  
+  while curl -s "${CLUSTER}/_cat/nodes?h=host" | grep "${NODE}" > /dev/null ; do
+    sleep 2
+  done
+  
+
+  decho "  > waiting for node to rejoin"
+  
+  while ! curl -s --retry 8 "${CLUSTER}/_cat/nodes?h=host" | grep "${NODE}" > /dev/null ; do
+    sleep 2
+  done
+
+
+  decho "  > enabling allocations"
+
+  curl -s -X PUT -d @- "${CLUSTER}/_cluster/settings" > /dev/null <<EOF
+{"transient":{"cluster.routing.allocation.enable":"all"}}
+EOF
+
+
+  decho "  > waiting for green"
+
+  while [[ "green" != $(curl -s "${CLUSTER}/_cat/health?h=status" | tr -d '[:space:]') ]] ; do
+    sleep 8
+  done
+
+done

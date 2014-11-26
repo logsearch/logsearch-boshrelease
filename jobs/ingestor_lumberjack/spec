@@ -1,6 +1,6 @@
 ---
 name: ingestor_lumberjack
-packages: 
+packages:
 - logstash
 - java7
 templates:
@@ -13,11 +13,15 @@ templates:
   config/lumberjack.crt.erb: config/lumberjack.crt
   config/lumberjack.key.erb: config/lumberjack.key
 properties:
+  logstash.metadata_level:
+    description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
+    default: "NONE"
+
   logstash_ingestor.debug:
     description: Debug level logging
     default: false
 
-  logstash_ingestor.lumberjack.port: 
+  logstash_ingestor.lumberjack.port:
     description: Port to listen for lumberjack messages
     default: 5043
   logstash_ingestor.lumberjack.ssl_certificate:
@@ -34,15 +38,18 @@ properties:
     description: Redis queue flush size
     default: 100
 
-  redis.host: 
+  redis.host:
     description: Redis host of queue
-  redis.port: 
+  redis.port:
     description: Redis port of queue
     default: 6379
-  redis.key: 
+  redis.key:
     description: Name of queue to pull messages from
     default: logstash
 
   tenants:
     description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
     default: ""
+
+  archiver.enabled:
+    default: false

@@ -1,0 +1,20 @@
+rootLogger: <%= p("elasticsearch.log_level") %>, console
+logger:
+  request: INFO, request_log_file
+
+additivity:
+  request: false
+
+appender:
+  console:
+    type: console
+    layout:
+      type: consolePattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+  request_log_file:
+    type: file
+    file: ${path.logs}/elasticsearch.requests.log
+    layout:
+      type: pattern
+      conversionPattern: "%m%n"
