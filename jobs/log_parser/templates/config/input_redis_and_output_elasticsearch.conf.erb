@@ -26,4 +26,6 @@ output {
         index_type => "%{@type}"
         manage_template => false
     }
+
+    <%= p('logstash_parser.outputs', '')  %>
 }

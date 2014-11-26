@@ -33,6 +33,8 @@ properties:
   logstash_parser.filters:
     description: "The configuration to embed into the logstash filters section"
     default: ''
+  logstash_parser.outputs:
+    description: "The configuration to embed into the logstash outputs section"
   logstash_parser.workers:
     description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
     default: auto
