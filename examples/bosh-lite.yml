@@ -23,7 +23,7 @@ update:
 resource_pools:
 - name: warden
   network: default
-  size: 7
+  size: 6
   stemcell:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
@@ -153,21 +153,21 @@ jobs:
 # $ sshpass -pc1oudc0w ssh -i "$HOME/.ssh/vagrant" vcap@10.244.2.26 "echo c1oudc0w | sudo -p '' -S /var/vcap/jobs/ingestor_archiver/bin/reload /tmp/backfill.xz"
 # utility if you want to block until complete
 # $ sshpass -pc1oudc0w ssh -i "$HOME/.ssh/vagrant" vcap@10.244.2.26 "echo c1oudc0w | sudo -p '' -S /var/vcap/jobs/ingestor_archiver/bin/wait-until-loaded"
-- name: restorer
-  release: logsearch
-  templates:
-  - name: ingestor_archiver
-  - name: log_parser
-  instances: 1
-  resource_pool: warden
-  networks:
-  - name: default
-    default:
-    - dns
-    - gateway
-  properties:
-    redis:
-      key: "logstash-restorer"
+#- name: restorer
+#  release: logsearch
+#  templates:
+#  - name: ingestor_archiver
+#  - name: log_parser
+#  instances: 1
+#  resource_pool: warden
+#  networks:
+#  - name: default
+#    default:
+#    - dns
+#    - gateway
+#  properties:
+#    redis:
+#      key: "logstash-restorer"
 
 properties: 
   collectd:
