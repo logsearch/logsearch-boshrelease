@@ -35,6 +35,7 @@ jobs:
   templates: 
   - name: elasticsearch
   - name: api
+  - name: kibana
   update:
     serial: true
   instances: 1
