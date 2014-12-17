@@ -20,24 +20,25 @@ get started. On Mac OS X you could temporarily download it by running...
     $ unzip logstash-forwarder-darwin-amd64.zip 
     $ ./logstash-forwarder -h
 
-Download the bosh-lite sample certificate, [`logstash-forwarder.crt`][2], and the configuration file,
-[`logstash-forwarder.json`][3]...
+Download the bosh-lite sample certificate and the configuration file...
 
-    $ curl -s https://raw.githubusercontent.com/logsearch/logsearch-boshrelease/develop/spec/smoke/bosh-lite.lumberjack.crt
-    $ curl -s https://raw.githubusercontent.com/logsearch/logsearch-boshrelease/develop/spec/smoke/stdin_to_bosh-lite.json
+    $ curl -s "https://raw.githubusercontent.com/logsearch/logsearch-boshrelease/develop/examples/certificates/ingestor-20241214a/ca.crt" \
+      > logstash-forwarder-ca.crt
+    $ curl -s "https://raw.githubusercontent.com/logsearch/logsearch-boshrelease/develop/examples/bosh-lite/logstash-forwarder.json" \
+      > logstash-forwarder.json
 
-And now, when you run `logstash-forwarder`, anything you pipe to it will be forwarded into the logsearch deployment. For
-example, `tail` your `/var/log/system.log` file on Mac OS X...
+The configuration file will attempt to forward `/var/log/system.log`, `/var/log/syslog`, and anything from `stdin`. If
+those inputs are missing, you'll see a warning which you can ignore. On Mac OS X, you could forward
+`/var/log/system.log` (by default) and `/var/log/authd.log` (via `stdin`) by running...
 
-    $ tail -f /var/log/system.log | \
-      ./logstash-forwarder -config logstash-forwarder.json
+    $ tail -f /var/log/authd.log | ./logstash-forwarder -config logstash-forwarder.json
 
 You can generate some events by opening Terminal windows or running some commands with `sudo`. After a few messages have
 been sent, you can visualize them by opening Kibana on the `api/0` node:
 
     http://10.244.2.2/_plugin/kibana/#/dashboard/file/default.json
 
-You should see a few recent bars on the right side of the top chart, as well as your log messages in the table below.
+You should see a few recent bars on the right side of the top chart, as well as the raw log messages in the table below.
 Since the parser doesn't really know what the format of these messages is, there's only a single, `@message` field with
 the log message.
 
