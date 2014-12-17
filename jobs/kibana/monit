@@ -1,0 +1,5 @@
+check process kibana
+  with pidfile /var/vcap/sys/run/kibana/kibana.pid
+  start program "/var/vcap/jobs/kibana/bin/monit_debugger kibana_ctl '/var/vcap/jobs/kibana/bin/kibana_ctl start'"
+  stop program "/var/vcap/jobs/kibana/bin/monit_debugger kibana_ctl '/var/vcap/jobs/kibana/bin/kibana_ctl stop'"
+  group vcap

@@ -1,0 +1,25 @@
+---
+name: "kibana"
+packages:
+  - "java7"
+  - "kibana"
+templates:
+  bin/kibana_ctl: "bin/kibana_ctl"
+  config/kibana.conf.erb: "config/kibana.conf"
+  bin/monit_debugger: "bin/monit_debugger"
+  data/properties.sh.erb: "data/properties.sh"
+  helpers/ctl_setup.sh: "helpers/ctl_setup.sh"
+  helpers/ctl_utils.sh: "helpers/ctl_utils.sh"
+properties:
+  kibana.elasticsearch:
+    description: "IP address and port of elasticsearch host to proxy requests for (eg, 127.0.0.1:9200)"
+    default: "http://127.0.0.1:9200"
+  kibana.default_app_id:
+    description: "The default application to load."
+    default: "discover"
+  kibana.kibana_index:
+    description: "Kibana uses an index in Elasticsearch to store saved searches, visualizations and dashboards"
+    default: ".kibana"
+  kibana.port:
+    description: "Kibana is served by a back end server. This controls which port to use."
+    default: 5601

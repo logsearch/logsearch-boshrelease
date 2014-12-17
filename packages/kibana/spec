@@ -1,0 +1,6 @@
+---
+name: kibana
+dependencies: []
+files: 
+  # https://download.elasticsearch.org/kibana/kibana/kibana-4.0.0-beta3.tar.gz
+  - kibana/kibana-4.0.0-beta3.tar.gz
