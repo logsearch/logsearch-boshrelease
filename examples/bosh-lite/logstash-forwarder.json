@@ -1,0 +1,21 @@
+{
+  "network": {
+    "servers": [ "10.244.2.14:5043" ],
+    "ssl ca": "logstash-forwarder-ca.crt",
+    "timeout": 3
+  },
+  "files": [
+    {
+      "paths": [ "-" ],
+      "fields": { "type": "stdin" }
+    },
+    {
+      "paths": [ "/var/log/system.log" ],
+      "fields": { "type": "system" }
+    },
+    {
+      "paths": [ "/var/log/syslog" ],
+      "fields": { "type": "syslog" }
+    }
+  ]
+}
