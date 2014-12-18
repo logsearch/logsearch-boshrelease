@@ -6,7 +6,7 @@ set -u
 SCP_HOST="<%= p('archiver.scp.host') %>"
 SCP_PORT="<%= p('archiver.scp.port') %>"
 SCP_USER="<%= p('archiver.scp.username') %>"
-SCP_PASSWORD="<%= p('archiver.scp.password') %>"
+SCP_PRIVATE_SSH_KEY=/var/vcap/jobs/archiver/config/scpupload.pem
 SCP_DESTINATION="<%= p('archiver.scp.destination') %>"
 
 cd <%= p('archiver.data_dir') %>
@@ -54,14 +54,6 @@ for FILE in $( ls *.log ) ; do
     echo "compressed ${FILE}"
 done
 
-echo "distributing public ssh key"
-
-chmod 755 /var/vcap/jobs/archiver/bin/distr_sshkey
-
-/var/vcap/jobs/archiver/bin/distr_sshkey $SCP_HOST $SCP_PORT $SCP_USER $SCP_PASSWORD
-
-echo "distributed public ssh key"
-
 EXIT_CODE=0
 
 for FILE in $( ls *.xz ) ; do
@@ -69,6 +61,7 @@ for FILE in $( ls *.xz ) ; do
     R1=$( scp \
         -P ${SCP_PORT} \
         -o "StrictHostKeyChecking no" \
+        -i ${SCP_PRIVATE_SSH_KEY} \
         "${FILE}" \
         "${SCP_USER}@${SCP_HOST}:${SCP_DESTINATION}" \
         2>&1 \

@@ -2,13 +2,12 @@
 name: archiver
 packages:
 - logstash
-- sshpass
 templates:
-  bin/distr_sshkey: bin/distr_sshkey
   bin/logstash.process.erb: bin/logstash.process
   bin/s3upload.cron.erb: bin/s3upload.cron
   bin/scpupload.cron.erb: bin/scpupload.cron
   config/logstash.conf.erb: config/logstash.conf
+  config/scpupload.pem.erb: config/scpupload.pem
 properties:
   redis.host:
     description: Redis host of queue
@@ -44,8 +43,8 @@ properties:
   archiver.scp.username:
     description: "If your remote username differs from the default root one"
     default: root
-  archiver.scp.password:
-    description: "Password for one time sshkey transfer"
+  archiver.scp.ssh_key:
+    description: "Private ssh key in PEM format (file contents, not a path)"
   archiver.scp.destination:
     description: "Destination directory for the tranferred log files"
 

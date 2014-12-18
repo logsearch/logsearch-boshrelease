@@ -1,5 +1,0 @@
----
-name: sshpass
-dependencies: []
-files:
-  - sshpass/sshpass-1.05.tar.gz
