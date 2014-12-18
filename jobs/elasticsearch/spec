@@ -67,3 +67,6 @@ properties:
   elasticsearch.plugins:
     description: "Plugins to run elasticsearch with (array[] = { plugin-name: install-source }"
     default: []
+  tenants:
+    description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
+    default: ""

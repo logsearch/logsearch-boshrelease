@@ -1,26 +1,63 @@
 input {
 	<% if p("logstash_ingestor.syslog.port") %>
-	tcp {
-		add_field => [ "type", "syslog" ]
-		host => "0.0.0.0"
-		port => "<%= p("logstash_ingestor.syslog.port") %>"
-	}
-	udp {
-		add_field => [ "type", "syslog" ]
-		host => "0.0.0.0"
-		port => "<%= p("logstash_ingestor.syslog.port") %>"
-	}
+			tcp {
+				add_field => [
+					"type", "syslog",
+					"tenant", "default"
+				]
+				host => "0.0.0.0"
+				port => "<%= p("logstash_ingestor.syslog.port") %>"
+			}
+			udp {
+				add_field => [
+					"type", "syslog",
+					"tenant", "default"
+				]
+				host => "0.0.0.0"
+				port => "<%= p("logstash_ingestor.syslog.port") %>"
+			}
+		<% p("tenants").to_s.split(',').each_with_index do | tenant, i |  %>
+			tcp {
+				add_field => [
+					"type", "syslog",
+					"tenant", "<%= tenant.strip %>"
+				]
+				host => "0.0.0.0"
+				port => "<%= p("logstash_ingestor.syslog.port") + ((i + 1) * (10)) %>"
+			}
+			udp {
+				add_field => [
+					"type", "syslog",
+					"tenant", "<%= tenant.strip %>"
+				]
+				host => "0.0.0.0"
+				port => "<%= p("logstash_ingestor.syslog.port") + ((i + 1) * (10))  %>"
+			}
+		<% end %>
 	<% end %>
 
-	<% if_p("logstash_ingestor.syslog_tls.port") do | port | %>
-    tcp {
-		add_field => [ "type", "syslog" ]
-		host => "0.0.0.0"
-		port => "<%= port %>"
-		ssl_enable => true
-		ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
-		ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
-	}
+	<% if p("logstash_ingestor.syslog_tls.port") %>
+		    tcp {
+		    	add_field => ["type", "syslog"]
+		    	host => "0.0.0.0"
+			 	port => "<%= p("logstash_ingestor.syslog_tls.port") %>"
+			 	ssl_enable => true
+			 	ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
+			 	ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
+			}
+	    <% p("tenants").to_s.split(',').each_with_index do | tenant, i | %>
+		    tcp {
+		    	add_field => [
+			 		"type", "syslog",
+			 		"tenant", "<%= tenant.strip %>"
+			 	]
+			 	host => "0.0.0.0"
+			 	port => "<%= p("logstash_ingestor.syslog_tls.port") + ((i + 1) * (10)) %>"
+			 	ssl_enable => true
+			 	ssl_cert => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.crt"
+			 	ssl_key => "/var/vcap/jobs/ingestor_syslog/config/syslog_tls.key"
+			 }
+		<% end %>
 	<% end %>
 }
 
@@ -46,7 +83,7 @@ output {
             codec => "json"
         }
 	<% end %>
-	
+
 	redis {
 		host => "<%= p("redis.host") %>"
 		port => "<%= p("redis.port") %>"

@@ -1,6 +1,6 @@
 ---
 name: ingestor_syslog
-packages: 
+packages:
 - logstash
 - java7
 templates:
@@ -21,12 +21,12 @@ properties:
     description: Debug level logging
     default: false
 
-  logstash_ingestor.syslog.port: 
+  logstash_ingestor.syslog.port:
     description: Port to listen for syslog messages
     default: 5514
 
-  logstash_ingestor.syslog_tls.port: 
-    description: Port to listen for syslog-TLS messages (omit to disable) 
+  logstash_ingestor.syslog_tls.port:
+    description: Port to listen for syslog-TLS messages (omit to disable)
   logstash_ingestor.syslog_tls.ssl_cert:
     description: Syslog-TLS SSL certificate (file contents, not a path) - required if logstash_ingestor.syslog_tls.port set
   logstash_ingestor.syslog_tls.ssl_key:
@@ -41,14 +41,18 @@ properties:
     description: Redis queue flush size
     default: 100
 
-  redis.host: 
+  redis.host:
     description: Redis host of queue
-  redis.port: 
+  redis.port:
     description: Redis port of queue
     default: 6379
-  redis.key: 
+  redis.key:
     description: Name of queue to pull messages from
     default: logstash
+
+  tenants:
+    description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
+    default: ""
 
   archiver.enabled:
     default: false

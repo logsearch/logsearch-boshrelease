@@ -47,7 +47,7 @@ case $1 in
 
     ;;
   *)
-    echo "Usage: ingestor_syslog_ctl {start|stop}"
+    echo "Usage: log_parser_ctl {start|stop}"
 
     ;;
 

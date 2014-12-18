@@ -23,6 +23,7 @@ output {
         <% if p('logstash_parser.idle_flush_time', nil) %>
             idle_flush_time => <%= p('logstash_parser.idle_flush_time') %>
         <% end %>
+        index => "<%= p("elasticsearch.index") %>"
         index_type => "%{@type}"
         manage_template => false
     }

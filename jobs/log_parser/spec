@@ -1,6 +1,6 @@
 ---
 name: log_parser
-packages: 
+packages:
 - logstash
 - elasticsearch
 - java7
@@ -52,6 +52,9 @@ properties:
   elasticsearch.flush_size:
     description: Redis queue flush size
     default: 100
+  elasticsearch.index:
+    description: The index to write events to.
+    default: "logstash-%{tenant}-%{+YYYY.MM.dd}"
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
   elasticsearch.log_level:
@@ -63,12 +66,15 @@ properties:
   elasticsearch.node.tags:
     description: A hash of additional tags for the node
 
-  redis.host: 
+  redis.host:
     description: Redis host of queue
-  redis.port: 
+  redis.port:
     description: Redis port of queue
     default: 6379
-  redis.key: 
+  redis.key:
     description: Name of queue to pull messages from
     default: logstash
 
+  tenants:
+    description: "A comma-delimitted string of logical tenants in org:space format, e.g.'test1:development, test2:development'"
+    default: ""
