@@ -1,12 +1,18 @@
 input {
 	<% if p("logstash_ingestor.syslog.port") %>
 			tcp {
-				add_field => ["type", "syslog"]
+				add_field => [
+					"type", "syslog",
+					"tenant", "default"
+				]
 				host => "0.0.0.0"
 				port => "<%= p("logstash_ingestor.syslog.port") %>"
 			}
 			udp {
-				add_field => ["type", "syslog"]
+				add_field => [
+					"type", "syslog",
+					"tenant", "default"
+				]
 				host => "0.0.0.0"
 				port => "<%= p("logstash_ingestor.syslog.port") %>"
 			}

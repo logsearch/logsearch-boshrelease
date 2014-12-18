@@ -54,7 +54,7 @@ properties:
     default: 100
   elasticsearch.index:
     description: The index to write events to.
-    default: "logstash-%{+YYYY.MM.dd}"
+    default: "logstash-%{tenant}-%{+YYYY.MM.dd}"
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
   elasticsearch.log_level:
