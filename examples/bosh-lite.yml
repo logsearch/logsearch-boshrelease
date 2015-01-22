@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: 4e46066f-e59b-493e-b775-accc1a7bc6e2
+director_uuid: cf8dc1fc-9c42-4ffc-96f1-fbad983a6ce6
 
 releases:
 - name: logsearch
