@@ -1,0 +1,114 @@
+---
+packages:
+- name: elasticsearch
+  version: !binary |-
+    Y2U5YTcyZTAzNWJkNjAwMjI1ZGRmMTBmNjRlMWRhZmYxZmJiOTBiNw==
+  sha1: !binary |-
+    OWVlMTdjNzc4MjlkNjYxNzEwNDEwMjhmMjM2MmUxYzhmMzNhMmMwNw==
+  fingerprint: !binary |-
+    Y2U5YTcyZTAzNWJkNjAwMjI1ZGRmMTBmNjRlMWRhZmYxZmJiOTBiNw==
+  dependencies: []
+- name: java7
+  version: c04c102fd6c411f867dc44ee65279dd47eb5c8a0
+  sha1: !binary |-
+    MDU3MDlhMDBhYmRmZjRlMGI3ZjdlMTE1MTBjMzVmZGUyMjliZjQzOQ==
+  fingerprint: !binary |-
+    YzA0YzEwMmZkNmM0MTFmODY3ZGM0NGVlNjUyNzlkZDQ3ZWI1YzhhMA==
+  dependencies: []
+- name: kibana
+  version: !binary |-
+    NzMyNDgzYzhlYTkwNGVjM2JlZmNhMmU3ZGNiYjQwNGU4MjJlY2E2NA==
+  sha1: !binary |-
+    ZTkyM2UxYmE0NjZlNDJiNDI2MzExODA5YmZiODg5NWQ5ZGQ2NDA3ZQ==
+  fingerprint: !binary |-
+    NzMyNDgzYzhlYTkwNGVjM2JlZmNhMmU3ZGNiYjQwNGU4MjJlY2E2NA==
+  dependencies: []
+- name: logstash
+  version: 5e1a6fd74024db3c4923397f71da1c71a0cb51d3
+  sha1: !binary |-
+    NDIyNzUyYTBhYTQ0ZWYwNzI2MTg1ZmQ2MmRjMThkMWM4MWViNDE2Nw==
+  fingerprint: !binary |-
+    NWUxYTZmZDc0MDI0ZGIzYzQ5MjMzOTdmNzFkYTFjNzFhMGNiNTFkMw==
+  dependencies: []
+- name: nginx
+  version: 07fa264094f0ebb55bcc9990578d9cc159748dc0
+  sha1: !binary |-
+    OGIxNjI1ZjJmNDllMDhlYTI2NDllZDA2OTRiNjU1ZmMwYzEwYWIxMw==
+  fingerprint: !binary |-
+    MDdmYTI2NDA5NGYwZWJiNTViY2M5OTkwNTc4ZDljYzE1OTc0OGRjMA==
+  dependencies: []
+- name: redis
+  version: cd861700c83a544b6d0bba3b620017d22cf0d726
+  sha1: !binary |-
+    ZWI3MWZlNGJhZTczMzFiZGYyODE3ODNkZjIyNjAzNTE4ZjEyNjI2Zg==
+  fingerprint: !binary |-
+    Y2Q4NjE3MDBjODNhNTQ0YjZkMGJiYTNiNjIwMDE3ZDIyY2YwZDcyNg==
+  dependencies: []
+jobs:
+- name: api
+  version: fca1f4acb43451d401d242b9d9b9a2efae79bbbe
+  fingerprint: !binary |-
+    ZmNhMWY0YWNiNDM0NTFkNDAxZDI0MmI5ZDliOWEyZWZhZTc5YmJiZQ==
+  sha1: !binary |-
+    MTZkOWExODIyYTUxYWRjNmMyOTUxNjk2NTEyZThkMGYwNTQzNjhiMw==
+- name: archiver
+  version: 69b68098e3654c1ec25cd5a16ea9ff6112ceb02e
+  fingerprint: !binary |-
+    NjliNjgwOThlMzY1NGMxZWMyNWNkNWExNmVhOWZmNjExMmNlYjAyZQ==
+  sha1: !binary |-
+    MjdlODNiMGZhYTNiNDkyYjJlZjhlYzY1Mzg2ODY4ZWZiMzFkNGZjMQ==
+- name: elasticsearch
+  version: !binary |-
+    ZTE4YWI1MTEwZGY0MGNlMjc1ZTAxZGMyNDg4Zjk2Yzk3MmViMWI2MQ==
+  fingerprint: !binary |-
+    ZTE4YWI1MTEwZGY0MGNlMjc1ZTAxZGMyNDg4Zjk2Yzk3MmViMWI2MQ==
+  sha1: !binary |-
+    MzlmN2M0ZjFlMjc4MDk0YWVkMzY3ZGQ2NjNjMDhiMDA0NjdmYmFjNA==
+- name: ingestor_archiver
+  version: ec3f65762d09bff74efd1d07d3f866f7f1c8dc30
+  fingerprint: !binary |-
+    ZWMzZjY1NzYyZDA5YmZmNzRlZmQxZDA3ZDNmODY2ZjdmMWM4ZGMzMA==
+  sha1: !binary |-
+    ZTIxODk2YzI0YzFkZWE2OWE1YmU2NzEwMGZiMDNlMTgxZGNjOTRkNw==
+- name: ingestor_lumberjack
+  version: 592fb6bfa0a970127d0d6ede46e4c5f4884f2871
+  fingerprint: !binary |-
+    NTkyZmI2YmZhMGE5NzAxMjdkMGQ2ZWRlNDZlNGM1ZjQ4ODRmMjg3MQ==
+  sha1: !binary |-
+    ZDIxNDFkNTBlZGI4NmJiNWEzZjNjZTNmYTAwOTM4NTE3NDIxMWE2Nw==
+- name: ingestor_relp
+  version: 11901b7a163992d010119c87d4226bee144c0cb0
+  fingerprint: !binary |-
+    MTE5MDFiN2ExNjM5OTJkMDEwMTE5Yzg3ZDQyMjZiZWUxNDRjMGNiMA==
+  sha1: !binary |-
+    YjEzMzhiNDE2Yzc4Njc0ZmVmYjc1Mjk2NjBiN2Q3ZWU4MzUzZTE3Mw==
+- name: ingestor_syslog
+  version: e59ffc07e601b88d9552b5858db7ebd14c1a26df
+  fingerprint: !binary |-
+    ZTU5ZmZjMDdlNjAxYjg4ZDk1NTJiNTg1OGRiN2ViZDE0YzFhMjZkZg==
+  sha1: !binary |-
+    MDMzMTVlZDc4MjlmOTY1MmNjZGQ5OTJiOGQyM2Q2YTlhZTc4ZTdkMw==
+- name: kibana
+  version: !binary |-
+    YTZiNjk5OTNjNGY4MGJmMjYyZGVjMmRmYjA5YjI0MTA0MWMzNGMwMw==
+  fingerprint: !binary |-
+    YTZiNjk5OTNjNGY4MGJmMjYyZGVjMmRmYjA5YjI0MTA0MWMzNGMwMw==
+  sha1: !binary |-
+    NzA5OGM0YTdmZmE5MzA3N2M4NWJlNTk4ZGI4ZDI3MzM1MTM5YmI0Zg==
+- name: log_parser
+  version: !binary |-
+    YjgxNGE4NjcxYmJhZjg1ZGFiYjM2YTBiY2M0OTAwZTA5ODY4N2IxMQ==
+  fingerprint: !binary |-
+    YjgxNGE4NjcxYmJhZjg1ZGFiYjM2YTBiY2M0OTAwZTA5ODY4N2IxMQ==
+  sha1: !binary |-
+    ZDNhZGM5Mzc1Zjc1MWQ2OTIyMzQ0M2Y4MGViMzE3NmE1MGVjZTQ4Mw==
+- name: queue
+  version: ad4acaba83cb6c5ce57a1aa9a590230b683d5dae
+  fingerprint: !binary |-
+    YWQ0YWNhYmE4M2NiNmM1Y2U1N2ExYWE5YTU5MDIzMGI2ODNkNWRhZQ==
+  sha1: !binary |-
+    YTcxMDA4ODMyMzUzNmE1MjFjZTU3YjA4NjRlYTNkMjU5NmRlY2JkMA==
+commit_hash: adff8e1b
+uncommitted_changes: true
+name: logsearch
+version: '18'

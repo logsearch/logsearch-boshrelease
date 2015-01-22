@@ -44,3 +44,10 @@ builds:
     version: 8e330f94fcc1aa08f5ba3a74ddb144d7785606b7
     sha1: e77d60b65f2260964ebe2fa1db7dcde5ccc5c808
     blobstore_id: fb7dfa64-8ca4-47c6-8235-f203e7a43642
+  !binary "ZTE4YWI1MTEwZGY0MGNlMjc1ZTAxZGMyNDg4Zjk2Yzk3MmViMWI2MQ==":
+    version: !binary |-
+      ZTE4YWI1MTEwZGY0MGNlMjc1ZTAxZGMyNDg4Zjk2Yzk3MmViMWI2MQ==
+    sha1: !binary |-
+      MzlmN2M0ZjFlMjc4MDk0YWVkMzY3ZGQ2NjNjMDhiMDA0NjdmYmFjNA==
+    blobstore_id: 2d0cc1cd-27a5-4c14-87e3-08e0b0534bd8
+format-version: '2'
