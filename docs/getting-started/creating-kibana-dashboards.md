@@ -21,7 +21,7 @@ Run the `upload-dashboards` script to upload some dashboards from the Logsearch-
     * Geo-IP - {"_index":"kibana-int","_type":"dashboard","_id":"Geo-IP","_version":11,"created":true}
     DONE!
 
-That done, click the "open dashboard icon ![open dashboard icon](./kibana-open-dashboards-icon.png)" at the top right of Kibana to see a lite of imported dashboards.
+That done, click the "open dashboard icon ![open dashboard icon](./kibana-open-dashboards-icon.png)" at the top right of Kibana to see a list of imported dashboards.
 
 Click on the `Geo-IP` dashboard to show the following:
 
@@ -31,6 +31,6 @@ Click on the `Geo-IP` dashboard to show the following:
 
 # Further reading
 
-[Kibana documentation](http://www.elasticsearch.org/guide/en/kibana/current/index.html)
-[VIDEO: Kibana - Data Visualization Made Simple and Beautiful](http://www.elasticsearch.org/webinars/kibana-made-simple/?watch=1)
+* [Kibana documentation](http://www.elasticsearch.org/guide/en/kibana/current/index.html)
+* [VIDEO: Kibana - Data Visualization Made Simple and Beautiful](http://www.elasticsearch.org/webinars/kibana-made-simple/?watch=1)
 

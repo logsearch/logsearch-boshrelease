@@ -55,7 +55,7 @@ In this guide we will be using the standard unencrypted [Syslog RFC5242](https:/
 
 A logsearch cluster needs to be deployed with a set of Log parsing rules that configure how the raw log data should be parsed and enriched before being indexed in Elasticsearch as key=>value pairs.
 
-In this guide the Logsearch cluster has been deployed with the [Logsearch for Weblogs Addon](https://github.com/logsearch/logsearch-for-weblogs), so it knows how to parse standard Nginx access logs.
+In this guide the Logsearch cluster has been deployed with the [Logsearch for Websites Addon](https://github.com/logsearch/logsearch-for-websites), so it knows how to parse standard Nginx access logs.
 
 # Shipping some sample logs
 
@@ -133,11 +133,14 @@ However, a much more intuitive and visual way to analyse the logs is using the K
 Under the covers this is issuing similar HTTP search queries; but then displaying the results in readable charts and tables.
 
 ---
-**Next Topic**:  
+
+# Next Topic
+
 [Creating Kibana Dashboards](./creating-kibana-dashboards.md)
 
 Advanced Topics:  
-[Customizing Log Parsing](./customizing-log-parsing.md)
-[Log Shippers](../resources/log-shippers.md)
+
+* [Customizing Log Parsing](./customizing-log-parsing.md)
+* [Log Shippers](../resources/log-shippers.md)
 
 
