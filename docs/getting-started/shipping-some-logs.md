@@ -61,6 +61,10 @@ In this guide the Logsearch cluster has been deployed with the [Logsearch for We
 
 A set of nginx weblogs for the www.logsearch.io website have been archived at `https://s3-eu-west-1.amazonaws.com/ci-logsearch/logs/logsearch.io/logsearch.io-nginx-access-20150119.log.tar.gz`
 
+The screencast and instructions below show how these can be imported and queried
+
+<iframe width="854" height="510" src="//www.youtube.com/embed/xtHcD8fcloU" frameborder="0" allowfullscreen></iframe>
+
 You can import them from inside your Logsearch Workspace using the `ship-logsearch.io-sample-data` script, ie:
 
      [logsearch workspace] ~/environments/local/test ▸ ./logsearch/logsearch-for-weblogs/bin/ship-logsearch.io-sample-data 
