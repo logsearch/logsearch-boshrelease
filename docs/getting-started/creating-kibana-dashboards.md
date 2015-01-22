@@ -26,3 +26,11 @@ That done, click the "open dashboard icon ![open dashboard icon](./kibana-open-d
 Click on the `Geo-IP` dashboard to show the following:
 
 ![Kibana - Geo-IP dashboard](./kibana-geo-ip-dashboard.png)
+
+---
+
+# Further reading
+
+[Kibana documentation](http://www.elasticsearch.org/guide/en/kibana/current/index.html)
+[VIDEO: Kibana - Data Visualization Made Simple and Beautiful](http://www.elasticsearch.org/webinars/kibana-made-simple/?watch=1)
+
