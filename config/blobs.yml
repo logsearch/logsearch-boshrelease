@@ -131,3 +131,13 @@ logstash/logsearch-filters-common-16.tgz:
   object_id: 6e0815ec-01c5-41ec-ace3-dc9b7216c343
   sha: c111b6c9abf4b439a7e0cdf04552986447298a84
   size: 1552
+elasticsearch/elasticsearch-1.4.0.tar.gz:
+  object_id: 3d1f5410-64fc-4f4f-a6c8-37c8fdd84ee4
+  sha: !binary |-
+    NzI4OTEzNzIyYmM5NGRhZDRjYjVlNzU5YTM2MmYwOWRjMTllZDZmZQ==
+  size: 27730896
+kibana/kibana-4.0.0-beta3.tar.gz:
+  object_id: c7ccb1d2-afa0-45e4-b220-99ba254a77f9
+  sha: !binary |-
+    MzI0ODk2Nzc3ZTQ0N2I3ZGQyNjRlZGJiODllZDU4MzY5NDg3MzkwMw==
+  size: 22901370
