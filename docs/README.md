@@ -32,6 +32,8 @@ sure everyone on the team has shared knowledge about the architecture and manage
        * [Handling Missing Elasticsearch Shards](./guides/handling-missing-elasticsearch-shards.md)
     * queue
        * [Recovering a Failed Redis Queue](./guides/recovering-a-failed-redis-queue.md)
+ * Development
+    * [Creating a New Release](./guides/creating-a-new-release.md)
  * More Resources
     * [Log Shippers](./resources/log-shippers.md)
 
@@ -43,6 +45,12 @@ jobs annotate their logs and send custom metrics:
 
  * [elasticsearch](./logsearch-shipper/elasticsearch/)
  * [redis](./logsearch-shipper/redis/) 
+
+In addition to watching standard host metrics (e.g. CPU, disk), you may also want to keep an eye on:
+
+ * rate of logs being shipped from each service/file (to discover unexpected partitions or crashes)
+ * number of `grokparsefailure`s (to discover unexpected formats)
+ * number of mappings (to discover unbounded field parsing)
 
 
  [1]: https://github.com/logsearch/logsearch-boshrelease
