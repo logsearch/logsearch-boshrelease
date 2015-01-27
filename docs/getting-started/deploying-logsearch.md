@@ -62,6 +62,8 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
 
     * on Mac OSX
 
+        _You will be prompted for your administrator password_
+
             cd /path/to/where/you/want/logsearch-workspace
             git clone https://github.com/logsearch/workspace
             vagrant up
@@ -87,6 +89,8 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
                  192.168.50.4:10443 -> 10.244.10.6:443
              [logsearch workspace] ~ ▸ 
 
+    _NB:  You can ignore warnings about missing AWS credentials in this tutorial, since we won't be interacting with AWS_
+    
 ## Target the workspace's local test environments BOSH
 
 By convention, configuration for your Logsearch cluster deployments is stored in the workspace under `~/environments/$ORGANISATION/$ENVIRONMENT`.
@@ -313,6 +317,9 @@ you should see:
             192.168.50.4:10443 -> 10.244.10.6:443
    
     Thus, from outside the Workspace (eg, in your browser), the same curl request can be made using `http://192.168.50.4:10080`
+
+## Troubleshooting
+
 
 ---
 
