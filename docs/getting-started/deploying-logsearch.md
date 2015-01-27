@@ -17,32 +17,75 @@ The process and concepts for deploying a Logsearch cluster to a cloud IaaS are i
 
 ## Start a Logsearch Workspace
 
-0. On your local workstation you need to have installed:
-    * Git 1.8+
-    * Vagrant 1.6.5+
-    * VirtualBox 4.3.18+
-    * A SSH client
+The instructions below walk through setting up a local Logsearch Workspace VM based on Vagrant and Virtualbox:
 
-0. Launch a Vagrant VM (This downloads [a custom Vagrant box of approx 800MB in size from AWS S3](https://github.com/logsearch/workspace/blob/master/Vagrantfile#L12))
+0. You need to have installed:
+    * Git 1.8+  (check with `git version`)
+    * Vagrant 1.6.5+ (check with `vagrant version`)
+    * VirtualBox 4.3.18+ (check with `vboxmanage --version`)
+    * A SSH client (check with `ssh -V`)
 
-        git clone https://github.com/logsearch/workspace ~/logsearch-workspace
-        cd ~/logsearch-workspace
-        vagrant up
+0. Installing above dependancies 
+
+    * on Windows
+    
+        We recommend you use the [Chocolatey](https://chocolatey.org/) package manager to install the above     dependancies on  Windows
+            
+        Open an _Administrative PowerShell_ prompt and:
+            
+            iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')) # Installs olatey
+            choco install git         # Installs git AND a ssh client
+            choco install virtualbox  # Installs VirtualBox
+            choco install vagrant     # Installs Vagrant
+
+    * on Mac OSX
+
+        We recommend you use the [Homebrew](http://brew.sh/) package manager to install the above dependancies on Mac
+        
+        Open an terminal and:
+        
+            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" # Installs     HomeBrew
+            brew install git                       #installs git
+            brew install caskroom/cask/brew-cask   # homebrew-cask manages binary apps with HomeBrew
+            brew cask install virtualbox           # Installs VirtualBox
+            brew cask install vagrant              # Installs Vagrant
+
+0. Launch a Vagrant VM (This downloads [a custom Vagrant box of approx 1.6GB in size from AWS S3](https://github.com/Logsearch/workspace/blob/master/Vagrantfile#L12))
+
+    * on Windows
+
+        _NB! You must run this from an Administrative console prompt_
+
+            cd C:/path/to/where/you/want/logsearch-workspace
+            git clone https://github.com/logsearch/workspace
+            vagrant up
+
+    * on Mac OSX
+
+            cd /path/to/where/you/want/logsearch-workspace
+            git clone https://github.com/logsearch/workspace
+            vagrant up
           
 0. SSH into your workspace
-    * Using the default SSH client on Mac: `vagrant ssh`
-    * Using a customised SSH client (eg, Kitty for Windows), you can get the SSH settings using `vagrant ssh-config`
+    * Using the default SSH client: `vagrant ssh`
+    * In case you want to use a custom SSH client (eg, Putty/Kitty on Windows), you can get the SSH settings needed using `vagrant ssh-config`
+    * Once your SSH terminal is connected you should see something like:
 
-Once ssh'ed into your Logsearch Workspace, you should see something like this:
+             /path/to/where/you/want/logsearch-workspace $ vagrant ssh
+             Welcome to Ubuntu 14.04 LTS (GNU/Linux 3.13.0-37-generic x86_64)
+             
+              * Documentation:  https://help.ubuntu.com/
+             +-+-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+
+             |L|o|g|S|e|a|r|c|h| |W|o|r|k|s|p|a|c|e|
+             +-+-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+
+             
+             ...snip...
 
-
-    Welcome to Ubuntu 14.04 LTS (GNU/Linux 3.13.0-37-generic x86_64)
-    
-     * Documentation:  https://help.ubuntu.com/
-    +-+-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+
-    |L|o|g|S|e|a|r|c|h| |W|o|r|k|s|p|a|c|e|
-    +-+-+-+-+-+-+-+-+-+ +-+-+-+-+-+-+-+-+-+
-
+             Loading ENV variables from ~/.env
+             Port Mappings:
+                 192.168.50.4:10080 -> 10.244.10.2:80
+                 192.168.50.4:10443 -> 10.244.10.6:443
+             [logsearch workspace] ~ ▸ 
 
 ## Target the workspace's local test environments BOSH
 
