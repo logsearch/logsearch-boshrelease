@@ -24,6 +24,7 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
     * Vagrant 1.6.5+ (check with `vagrant version`)
     * VirtualBox 4.3.18+ (check with `vboxmanage --version`)
     * A SSH client (check with `ssh -V`)
+    * 6GB of FREE RAM - we've tested on machines with 16MB+
 
 0. Installing above dependancies 
 
@@ -89,8 +90,8 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
                  192.168.50.4:10443 -> 10.244.10.6:443
              [logsearch workspace] ~ ▸ 
 
-    _NB:  You can ignore warnings about missing AWS credentials in this tutorial, since we won't be interacting with AWS_
-    
+    _NB:  You can ignore warnings about missing AWS & GIT credentials in this tutorial, since we won't be interacting with AWS or Git_
+
 ## Target the workspace's local test environments BOSH
 
 By convention, configuration for your Logsearch cluster deployments is stored in the workspace under `~/environments/$ORGANISATION/$ENVIRONMENT`.
@@ -320,6 +321,27 @@ you should see:
 
 ## Troubleshooting
 
+### BOSH HTTP 500 or 502 errors 
+
+One of the BOSH services has failed to start up.  Grepping the BOSH logs can give a clue as to what is wrong, often something like Redis has failed to start.  Try
+
+```
+sudo -i
+grep -r 'ERROR' /var/vcap/sys/log/director/*.log
+```
+
+If you see something like this:
+```
+[logsearch workspace] ~ ▸ grep -r 'ERROR' /var/vcap/sys/log/director/*.log
+/var/vcap/sys/log/director/director.debug.log:E, [2015-01-27T14:28:02.103117 #2540] [0x3f9c4bdcd328] ERROR -- : Redis::CannotConnectError - Error connecting to Redis on 127.0.0.1:25255 (ECONNREFUSED):
+```
+you can try restart redis by running
+
+```
+monit restart redis
+```
+
+You can list all of BOSH's services by running `monit summary`, and restart any of the others mentioned in the logs using `monit restart <servicename>`
 
 ---
 
