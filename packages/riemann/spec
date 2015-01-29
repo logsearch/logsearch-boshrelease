@@ -1,0 +1,6 @@
+---
+name: riemann
+dependencies: [] # no compile dependencies
+files: 
+  # https://aphyr.com/riemann/riemann-0.2.8.tar.bz2
+  - riemann/riemann-0.2.8.tar.bz2

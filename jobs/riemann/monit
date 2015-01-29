@@ -1,0 +1,5 @@
+check process riemann
+  with pidfile /var/vcap/sys/run/riemann/riemann.pid
+  start program "/var/vcap/jobs/riemann/bin/monit_debugger riemann_ctl '/var/vcap/jobs/riemann/bin/riemann_ctl start'"
+  stop program "/var/vcap/jobs/riemann/bin/monit_debugger riemann_ctl '/var/vcap/jobs/riemann/bin/riemann_ctl stop'"
+  group vcap

@@ -1,0 +1,13 @@
+---
+name: riemann
+packages: 
+- riemann
+- java7
+templates:
+  bin/riemann_ctl: bin/riemann_ctl
+  bin/monit_debugger: bin/monit_debugger
+  config/riemann.config.erb: config/riemann.config
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  #logsearch/logs.yml: logsearch/logs.yml
