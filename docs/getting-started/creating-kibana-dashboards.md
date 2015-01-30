@@ -14,7 +14,7 @@ The introductory page includes some instructions on how to create your own dashb
 
 # Uploading Logsearch-for-weblogs dashboards
 
-Run the `upload-dashboards` script to upload some dashboards from the Logsearch-for-weblogs Addon.  eg:
+Run the `./logsearch/logsearch-for-weblogs/bin/upload-dashboards` script to upload some dashboards from the Logsearch-for-weblogs Addon.  eg:
 
     [logsearch workspace] ~/environments/local/test ▸ ./logsearch/logsearch-for-weblogs/bin/upload-dashboards 
     ===> Uploading dashboards...

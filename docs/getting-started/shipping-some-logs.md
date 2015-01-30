@@ -65,7 +65,10 @@ The screencast and instructions below show how these can be imported and queried
 
 <iframe width="854" height="510" src="//www.youtube.com/embed/xtHcD8fcloU" frameborder="0" allowfullscreen></iframe>
 
-You can import them from inside your Logsearch Workspace using the `ship-logsearch.io-sample-data` script, ie:
+
+### Shipping sample Nginx logs from the www.logsearch.io website
+
+You can import them from inside your Logsearch Workspace using the `./logsearch/logsearch-for-weblogs/bin/ship-logsearch.io-sample-data` script, ie:
 
      [logsearch workspace] ~/environments/local/test ▸ ./logsearch/logsearch-for-weblogs/bin/ship-logsearch.io-sample-data 
      ===> Loading test data ...
@@ -85,7 +88,9 @@ You can import them from inside your Logsearch Workspace using the `ship-logsear
 
 Sample logs have passed through the log processing pipeline, and have been indexed in our local test elasticsearch cluster.
 
-We can ask Elasticsearch for a list of its indexes to see that what data it has:
+### Checking the logs that elasticsearch has stored
+
+We can ask Elasticsearch for a list of its indexes to see that what data it has using `curl 10.244.10.2:9200/_cat/indices?v`:
 
      [logsearch workspace] ~/environments/local/test ▸ curl 10.244.10.2:9200/_cat/indices?v
      health index               pri rep docs.count docs.deleted store.size pri.store.size 
@@ -93,14 +98,16 @@ We can ask Elasticsearch for a list of its indexes to see that what data it has:
 
 In the example above we can see that we have 375 Log event `docs` in an index names `logstash-2015.01.20`
 
+_NB:  For convienience, the import script used updates the log dates to the current day, so your logsearch index name (used in the queries below) will be different._
+
 #Analysing the logs
 
 Now that we have some data in our test Logsearch cluster, we can start to analyse it.  We can do this programatically sending HTTP requests 
 to the `api/0`.  
 
-For example, we could search for (and fetch the first 2) occurences of the word `firefox` in the logs using:
+For example, we could search for (and fetch the first 2) occurences of the word `firefox` in the logs using `curl '10.244.10.2:9200/_all/_search?q=firefox&size=2&pretty'`:
 
-     [logsearch workspace] ~ ▸ curl '10.244.10.2/logstash-2015.01.20/_search?q=firefox&size=2&pretty'
+     [logsearch workspace] ~ ▸ curl '10.244.10.2:9200/_all/_search?q=firefox&size=2&pretty'
      {
        "took" : 7,
        "timed_out" : false,
