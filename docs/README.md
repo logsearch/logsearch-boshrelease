@@ -36,7 +36,8 @@ sure everyone on the team has shared knowledge about the architecture and manage
     * [Creating a New Release](./guides/creating-a-new-release.md)
  * More Resources
     * [Log Shippers](./resources/log-shippers.md)
-
+ * Debugging
+    * [Debugging logs not being indexed](./guides/debugging-logs-not-being-indexed.md)
 
 ## Monitoring
 
