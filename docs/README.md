@@ -34,7 +34,8 @@ sure everyone on the team has shared knowledge about the architecture and manage
        * [Recovering a Failed Redis Queue](./guides/recovering-a-failed-redis-queue.md)
  * More Resources
     * [Log Shippers](./resources/log-shippers.md)
-
+ * Debugging
+    * [Debugging logs not being indexed](./guides/debugging-logs-not-being-indexed.md)
 
 ## Monitoring
 
