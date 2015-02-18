@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+set -u
+
+BASEDIR=/var/vcap/store/archiver/s3upload
+METRIC_FREQUENCY="${METRIC_FREQUENCY:-0}"
+
+while true ; do
+    NOW=`date -u +%s`
+
+    echo "archiver.pending_log" $( find "${BASEDIR}" -name '*.log' | wc -l ) "${NOW}"
+    echo "archiver.pending_xz" $( find "${BASEDIR}" -name '*.xz' | wc -l ) "${NOW}"
+
+    if [[ "0" == "${METRIC_FREQUENCY}" ]] ; then
+        exit
+    fi
+
+    sleep $METRIC_FREQUENCY
+done

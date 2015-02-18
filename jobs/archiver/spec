@@ -6,6 +6,7 @@ templates:
   bin/logstash.process.erb: bin/logstash.process
   bin/s3upload.cron.erb: bin/s3upload.cron
   config/logstash.conf.erb: config/logstash.conf
+  logsearch/metric-collector/files/collector: logsearch/metric-collector/files/collector
 properties:
   redis.host:
     description: Redis host of queue
