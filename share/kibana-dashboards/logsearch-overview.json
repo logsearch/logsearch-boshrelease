@@ -1,11 +1,11 @@
 {
-  "title": "{{ARGS.director||'????'}}/{{ARGS.deployment||'????'}}",
+  "title": "{{ARGS.deployment}}",
   "services": {
     "query": {
       "list": {
         "0": {
           "query": "*",
-          "alias": "",
+          "alias": "Queue Size",
           "color": "#7EB26D",
           "id": 0,
           "pin": false,
@@ -14,8 +14,8 @@
         },
         "1": {
           "id": 1,
-          "color": "#447EBC",
-          "alias": "Messages",
+          "color": "#EAB839",
+          "alias": "Parser",
           "pin": true,
           "type": "lucene",
           "enable": true,
@@ -23,84 +23,33 @@
         },
         "2": {
           "id": 2,
-          "color": "#EF843C",
-          "alias": "Workers",
+          "color": "#6ED0E0",
+          "alias": "Archiver",
           "pin": true,
           "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"redis.connected_clients\""
+          "query": "_type:\"metric\" AND name:\"logstash.archiver_queue_size\""
         },
         "3": {
           "id": 3,
-          "color": "#7EB26D",
-          "alias": "Commands",
+          "type": "topN",
+          "query": "_type:\"metric\" AND name:\"host.load.load.midterm\"",
+          "alias": "5m Load Avg",
+          "color": "#EF843C",
           "pin": true,
-          "type": "lucene",
           "enable": true,
-          "query": "_type:\"metric\" AND name:\"redis.total_commands_processed\""
+          "field": "@source.bosh_job",
+          "size": 32,
+          "union": "AND"
         },
         "4": {
           "id": 4,
-          "color": "#E5AC0E",
-          "alias": "Total",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "_type:\"metric\" AND name:\"elasticsearch.indices.indexing.index_total\""
-        },
-        "5": {
-          "id": 5,
-          "color": "#64B0C8",
-          "alias": "Time",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "_type:\"metric\" AND name:\"elasticsearch.indices.indexing.index_time_in_millis\""
-        },
-        "6": {
-          "id": 6,
-          "color": "#E5AC0E",
-          "alias": "Total",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "_type:\"metric\" AND name:\"elasticsearch.indices.search.query_total\""
-        },
-        "7": {
-          "id": 7,
-          "color": "#64B0C8",
-          "alias": "Time",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "_type:\"metric\" AND name:\"elasticsearch.indices.search.query_time_in_millis\""
-        },
-        "8": {
-          "id": 8,
-          "color": "#629E51",
+          "color": "#EF843C",
           "alias": "Lag",
           "pin": true,
           "type": "lucene",
           "enable": true,
           "query": "_type:\"metric\" AND name:\"logstash.search_lag\""
-        },
-        "9": {
-          "id": 9,
-          "color": "#7EB26D",
-          "alias": "Non-metrics",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "NOT _type:\"metric\""
-        },
-        "10": {
-          "id": 10,
-          "color": "#7EB26D",
-          "alias": "Elasticsearch Requests",
-          "pin": true,
-          "type": "lucene",
-          "enable": true,
-          "query": "_type:\"elasticsearch_request\""
         }
       },
       "ids": [
@@ -108,13 +57,7 @@
         1,
         2,
         3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10
+        4
       ]
     },
     "filter": {
@@ -122,7 +65,7 @@
         "0": {
           "type": "time",
           "field": "@timestamp",
-          "from": "now-1h",
+          "from": "now-6h",
           "to": "now",
           "mandate": "must",
           "active": true,
@@ -131,115 +74,34 @@
         },
         "1": {
           "type": "field",
-          "query": "@source.bosh_director:\"{{ARGS.director||'????'}}\"",
+          "field": "@source.bosh_deployment",
+          "query": "\"{{ARGS.deployment}}\"",
           "mandate": "must",
           "active": true,
           "alias": "",
           "id": 1
-        },
-        "2": {
-          "type": "field",
-          "query": "@source.bosh_deployment:\"{{ARGS.deployment||'????'}}\"",
-          "mandate": "must",
-          "active": true,
-          "alias": "",
-          "id": 2
         }
       },
       "ids": [
         0,
-        1,
-        2
+        1
       ]
     }
   },
   "rows": [
     {
-      "title": "Graph",
-      "height": "200px",
+      "title": "Load Average",
+      "height": "160px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
       "panels": [
         {
-          "span": 4,
+          "span": 12,
           "editable": true,
           "type": "histogram",
           "loadingEditor": false,
           "mode": "max",
-          "time_field": "@timestamp",
-          "value_field": "value",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "short",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              1
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 60,
-          "interval": "1m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 2,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": false,
-          "options": false,
-          "legend": false,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": false,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "title": "Queue Size"
-        },
-        {
-          "span": 4,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
           "time_field": "@timestamp",
           "value_field": "value",
           "x-axis": true,
@@ -266,8 +128,8 @@
               "desc"
             ]
           },
-          "auto_int": true,
-          "resolution": 60,
+          "auto_int": false,
+          "resolution": 100,
           "interval": "1m",
           "intervals": [
             "auto",
@@ -300,48 +162,58 @@
           "timezone": "browser",
           "percentage": false,
           "zerofill": true,
-          "derivative": true,
+          "derivative": false,
           "tooltip": {
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Queue Processing"
-        },
+          "title": "Load Average (5m)"
+        }
+      ],
+      "notice": false
+    },
+    {
+      "title": "Queue Size",
+      "height": "140px",
+      "editable": true,
+      "collapse": false,
+      "collapsable": true,
+      "panels": [
         {
-          "span": 4,
+          "span": 12,
           "editable": true,
+          "group": [
+            "default"
+          ],
           "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
+          "mode": "max",
           "time_field": "@timestamp",
           "value_field": "value",
+          "auto_int": false,
+          "resolution": 60,
+          "interval": "1m",
+          "fill": 2,
+          "linewidth": 2,
+          "timezone": "browser",
+          "spyable": true,
+          "zoomlinks": false,
+          "bars": false,
+          "stack": false,
+          "points": false,
+          "lines": true,
+          "legend": false,
           "x-axis": true,
           "y-axis": true,
-          "scale": 1,
-          "y_format": "none",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
+          "percentage": false,
+          "interactive": true,
           "queries": {
             "mode": "selected",
             "ids": [
+              1,
               2
             ]
           },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 60,
-          "interval": "1m",
+          "title": "Queue Size (messages)",
           "intervals": [
             "auto",
             "1s",
@@ -354,44 +226,49 @@
             "12h",
             "1d",
             "1w",
+            "1M",
             "1y"
           ],
-          "lines": true,
-          "fill": 3,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": false,
           "options": false,
-          "legend": false,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": false,
           "tooltip": {
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Queue Workers"
+          "scale": 1,
+          "y_format": "short",
+          "grid": {
+            "max": null,
+            "min": 0
+          },
+          "annotate": {
+            "enable": false,
+            "query": "*",
+            "size": 20,
+            "field": "_type",
+            "sort": [
+              "_score",
+              "desc"
+            ]
+          },
+          "pointradius": 5,
+          "show_query": true,
+          "legend_counts": false,
+          "zerofill": true,
+          "derivative": false,
+          "scaleSeconds": false
         }
       ],
       "notice": false
     },
     {
-      "title": "Elasticsearch",
-      "height": "200px",
+      "title": "Search Lag",
+      "height": "140px",
       "editable": true,
       "collapse": false,
       "collapsable": true,
       "panels": [
         {
-          "span": 4,
+          "span": 12,
           "editable": true,
           "type": "histogram",
           "loadingEditor": false,
@@ -409,7 +286,7 @@
           "queries": {
             "mode": "selected",
             "ids": [
-              8
+              4
             ]
           },
           "annotate": {
@@ -422,8 +299,8 @@
               "desc"
             ]
           },
-          "auto_int": true,
-          "resolution": 60,
+          "auto_int": false,
+          "resolution": 100,
           "interval": "1m",
           "intervals": [
             "auto",
@@ -440,19 +317,19 @@
             "1y"
           ],
           "lines": true,
-          "fill": 3,
-          "linewidth": 2,
+          "fill": 2,
+          "linewidth": 3,
           "points": false,
           "pointradius": 5,
           "bars": false,
-          "stack": false,
+          "stack": true,
           "spyable": true,
           "zoomlinks": false,
           "options": false,
-          "legend": true,
+          "legend": false,
           "show_query": true,
           "interactive": true,
-          "legend_counts": false,
+          "legend_counts": true,
           "timezone": "browser",
           "percentage": false,
           "zerofill": true,
@@ -461,224 +338,21 @@
             "value_type": "cumulative",
             "query_as_alias": true
           },
-          "title": "Lag"
-        },
-        {
-          "span": 4,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
-          "time_field": "@timestamp",
-          "value_field": "value",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "none",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              4,
-              5
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 60,
-          "interval": "1m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 1,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": false,
-          "options": false,
-          "legend": true,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": true,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "title": "Indexing"
-        },
-        {
-          "span": 4,
-          "editable": true,
-          "type": "histogram",
-          "loadingEditor": false,
-          "mode": "mean",
-          "time_field": "@timestamp",
-          "value_field": "value",
-          "x-axis": true,
-          "y-axis": true,
-          "scale": 1,
-          "y_format": "none",
-          "grid": {
-            "max": null,
-            "min": 0
-          },
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              6,
-              7
-            ]
-          },
-          "annotate": {
-            "enable": false,
-            "query": "*",
-            "size": 20,
-            "field": "_type",
-            "sort": [
-              "_score",
-              "desc"
-            ]
-          },
-          "auto_int": true,
-          "resolution": 60,
-          "interval": "1m",
-          "intervals": [
-            "auto",
-            "1s",
-            "1m",
-            "5m",
-            "10m",
-            "30m",
-            "1h",
-            "3h",
-            "12h",
-            "1d",
-            "1w",
-            "1y"
-          ],
-          "lines": true,
-          "fill": 0,
-          "linewidth": 2,
-          "points": false,
-          "pointradius": 5,
-          "bars": false,
-          "stack": false,
-          "spyable": true,
-          "zoomlinks": false,
-          "options": false,
-          "legend": true,
-          "show_query": true,
-          "interactive": true,
-          "legend_counts": false,
-          "timezone": "browser",
-          "percentage": false,
-          "zerofill": true,
-          "derivative": true,
-          "tooltip": {
-            "value_type": "cumulative",
-            "query_as_alias": true
-          },
-          "title": "Searching"
+          "title": "Search Lag (seconds)",
+          "scaleSeconds": true
         }
       ],
       "notice": false
     },
     {
-      "title": "Elasticsearch Requests",
-      "height": "350px",
+      "title": "Deployment Logs",
+      "height": "400px",
       "editable": true,
       "collapse": true,
       "collapsable": true,
       "panels": [
         {
-          "error": false,
-          "span": 12,
-          "editable": true,
-          "type": "table",
-          "loadingEditor": false,
-          "size": 50,
-          "pages": 10,
-          "offset": 0,
-          "sort": [
-            "_score",
-            "desc"
-          ],
-          "overflow": "min-height",
-          "fields": [
-            "@timestamp",
-            "remoteaddr",
-            "@source.bosh_job",
-            "path",
-            "size",
-            "duration",
-            "status",
-            "code"
-          ],
-          "highlight": [],
-          "sortable": true,
-          "header": true,
-          "paging": true,
-          "field_list": false,
-          "all_fields": false,
-          "trimFactor": 300,
-          "localTime": true,
-          "timeField": "@timestamp",
-          "spyable": true,
-          "queries": {
-            "mode": "selected",
-            "ids": [
-              10
-            ]
-          },
-          "style": {
-            "font-size": "9pt"
-          },
-          "normTimes": true,
-          "title": "Elasticsearch Requests"
-        }
-      ],
-      "notice": false
-    },
-    {
-      "title": "All Events",
-      "height": "350px",
-      "editable": true,
-      "collapse": true,
-      "collapsable": true,
-      "panels": [
-        {
-          "title": "All Events",
+          "title": "Deployment Logs",
           "error": false,
           "span": 12,
           "editable": true,
@@ -700,8 +374,7 @@
           "fields": [
             "@timestamp",
             "@source.bosh_job",
-            "@source.bosh_template",
-            "_type"
+            "@message"
           ],
           "localTime": true,
           "timeField": "@timestamp",
@@ -711,9 +384,13 @@
           "paging": true,
           "spyable": true,
           "queries": {
-            "mode": "selected",
+            "mode": "all",
             "ids": [
-              9
+              0,
+              1,
+              2,
+              3,
+              4
             ]
           },
           "field_list": false,
@@ -744,17 +421,25 @@
       "query": "*",
       "pinned": true,
       "history": [
+        "*",
+        "_type:\"metric\" AND name:\"host.load.load.midterm\"",
+        "_type:\"metric\" AND name:\"logstash.archiver_queue_size\"",
         "_type:\"metric\" AND name:\"logstash.queue_size\"",
-        "*"
+        "_type:\"metric\" AND name:\"host.load.load.shortterm\"",
+        "name:\"logstash.archiver_queue_size\"",
+        "name:\"logstash.queue_size\"",
+        "name:\"redis.total_commands_processed\"",
+        "_type:\"metric\"",
+        "metrics"
       ],
       "remember": 10,
-      "enable": false
+      "enable": true
     },
     {
       "type": "filtering",
       "collapse": true,
       "notice": false,
-      "enable": false
+      "enable": true
     }
   ],
   "nav": [
@@ -806,5 +491,5 @@
     "load_local": true,
     "hide": false
   },
-  "refresh": "1m"
+  "refresh": false
 }
