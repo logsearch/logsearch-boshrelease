@@ -40,6 +40,15 @@ properties:
     default: auto
   logstash_parser.idle_flush_time:
     description: "How frequently to flush events if the output queue is not full."
+  logstash_parser.elasticsearch_document_id:
+    description: "Use a specific, dynamic ID rather than an auto-generated identifier."
+    default: ~
+  logstash_parser.elasticsearch_index:
+    description: "The specific, dynamic index name to write events to."
+    default: "logstash-%{+YYYY.MM.dd}"
+  logstash_parser.elasticsearch_index_type:
+    description: "The specific, dynamic index type name to write events to."
+    default: "%{@type}"
   logstash_parser.use_local_elasticsearch:
     description: "Run a local elasticsearch client node"
     default: true
