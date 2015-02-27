@@ -343,6 +343,13 @@ monit restart redis
 
 You can list all of BOSH's services by running `monit summary`, and restart any of the others mentioned in the logs using `monit restart <servicename>`
 
+### Recovering after rebooting the logsearch-workspace
+
+A limitation of the logsearch workspace is that it will "loose" your deployments when the VM gets rebooting.  Fortunately, it is straight forward to recover them; as is [described here](http://www.logsearch.io/docs/workspace/recovering-after-a-reboot.html).
+
+__WARNING__:  The resurrection process won't retain any data you ship into your DEV logsearch cluster.
+
+
 ---
 
 **Next Topic**:  
