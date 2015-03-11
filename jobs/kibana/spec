@@ -1,7 +1,6 @@
 ---
 name: "kibana"
 packages:
-  - "java7"
   - "kibana"
 templates:
   bin/kibana_ctl: "bin/kibana_ctl"
@@ -11,9 +10,8 @@ templates:
   helpers/ctl_setup.sh: "helpers/ctl_setup.sh"
   helpers/ctl_utils.sh: "helpers/ctl_utils.sh"
 properties:
-  kibana.elasticsearch:
-    description: "IP address and port of elasticsearch host to proxy requests for (eg, 127.0.0.1:9200)"
-    default: "http://127.0.0.1:9200"
+  elasticsearch.host:
+    description: "The frontend elasticsearch node services should use."
   kibana.default_app_id:
     description: "The default application to load."
     default: "discover"
