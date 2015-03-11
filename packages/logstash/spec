@@ -1,6 +1,9 @@
 ---
 name: logstash
-dependencies: []
+dependencies: 
+  - java7
 files: 
-  - logstash/logstash-1.4.1.tar.gz
-  - logstash/logstash-contrib-1.4.1.tar.gz
+  # http://download.elasticsearch.org/logstash/logstash/logstash-1.5.0.rc2.tar.gz
+  - logstash/logstash-1.5.0.rc2.tar.gz
+  # https://rubygems.org/downloads/logstash-filter-alter-0.1.5.gem
+  - logstash/logstash-filter-alter-0.1.5.gem

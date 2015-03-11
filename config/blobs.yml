@@ -151,3 +151,13 @@ kibana/kibana-4.0.1-linux-x64.tar.gz:
   sha: !binary |-
     MWI4OTE0YzYyYTYwNmI3MTAzMjk1YTRlM2FiMDFlYzQwYzk5OTNlZA==
   size: 13625479
+logstash/logstash-1.5.0.rc2.tar.gz:
+  object_id: ef865462-abd9-4346-9d32-5574ad167448
+  sha: !binary |-
+    NmJkYzNlODFkY2IyYTU0NDE5YWFjODk1ODQ0Y2I3YzdhMDc1MjUwZA==
+  size: 89962291
+logstash/logstash-filter-alter-0.1.5.gem:
+  object_id: 8cac589a-03e7-47bf-83e4-5e29a50c88b7
+  sha: !binary |-
+    YjNmOWEwOTdmMjIxMDI5ZWNhNDU3NzQ5ZTk4OGY5NTIyMDg5YjI0Nw==
+  size: 8704

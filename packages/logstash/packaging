@@ -6,5 +6,16 @@ set -u # report the usage of uninitialized variables
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
 mkdir $BOSH_INSTALL_TARGET/logstash
-tar -xzf logstash/logstash-1.4.1.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
-tar -xzf logstash/logstash-contrib-1.4.1.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
+tar -xzf logstash/logstash-1.5.0.rc2.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
+
+# Setup Java so we can run logstash/bin/plugin install
+JAVA_HOME=/var/vcap/packages/java7
+PATH=$PATH:/var/vcap/packages/java7/bin
+
+# Install plugins
+
+# After https://github.com/elastic/logstash/issues/2674 gets resolved, install plugins from .gem files like this:
+# $BOSH_INSTALL_TARGET/logstash/bin/plugin install $BOSH_COMPILE_TARGET/logstash/logstash-filter-alter-0.1.5.gem
+
+# For now, we have to install from rubygems; meaning that the compilation VMs must have 'net access
+$BOSH_INSTALL_TARGET/logstash/bin/plugin install logstash-filter-alter
