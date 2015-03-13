@@ -2,6 +2,7 @@
 name: ingestor_archiver
 packages:
 - logstash
+- java8
 templates:
   bin/ingestor_archiver_ctl: bin/ingestor_archiver_ctl
   bin/monit_debugger: bin/monit_debugger

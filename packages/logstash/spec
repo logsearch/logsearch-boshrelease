@@ -1,7 +1,7 @@
 ---
 name: logstash
 dependencies: 
-  - java7
+  - java8
 files: 
   # http://download.elasticsearch.org/logstash/logstash/logstash-1.5.0.rc2.tar.gz
   - logstash/logstash-1.5.0.rc2.tar.gz

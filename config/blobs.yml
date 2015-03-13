@@ -161,3 +161,8 @@ logstash/logstash-filter-alter-0.1.5.gem:
   sha: !binary |-
     YjNmOWEwOTdmMjIxMDI5ZWNhNDU3NzQ5ZTk4OGY5NTIyMDg5YjI0Nw==
   size: 8704
+java8/openjdk-1.8.0_40.tar.gz:
+  object_id: c1386f34-7585-4f92-b41e-6d9dbbb940ab
+  sha: !binary |-
+    NTkwYmU1YzYzMzc3NTNiMjhhY2M4MWQ0ODQzZTk4ZTYyNDViNTI2MQ==
+  size: 39630740

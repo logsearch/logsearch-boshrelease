@@ -3,7 +3,7 @@ name: log_parser
 packages: 
 - logstash
 - elasticsearch
-- java7
+- java8
 templates:
   bin/log_parser_ctl: bin/log_parser_ctl
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
