@@ -2,7 +2,7 @@
 name: ingestor_syslog
 packages: 
 - logstash
-- java8
+- java7
 templates:
   bin/ingestor_syslog_ctl: bin/ingestor_syslog_ctl
   bin/monit_debugger: bin/monit_debugger
