@@ -19,3 +19,5 @@ PATH=$PATH:/var/vcap/packages/java8/bin
 
 # For now, we have to install from rubygems; meaning that the compilation VMs must have 'net access
 $BOSH_INSTALL_TARGET/logstash/bin/plugin install logstash-filter-alter
+$BOSH_INSTALL_TARGET/logstash/bin/plugin install logstash-filter-translate
+$BOSH_INSTALL_TARGET/logstash/bin/plugin install logstash-input-relp
