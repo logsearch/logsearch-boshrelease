@@ -66,7 +66,7 @@ fi
 
 if [[ -d /var/vcap/packages/java7 ]]
 then
-  export JAVA_HOME="/var/vcap/packages/java8"
+  export JAVA_HOME="/var/vcap/packages/java7"
 fi
 
 # setup CLASSPATH for all jars/ folders within packages
