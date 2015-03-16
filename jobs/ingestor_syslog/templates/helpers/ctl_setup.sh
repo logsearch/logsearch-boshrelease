@@ -64,9 +64,9 @@ then
   export PYTHONPATH=$WEBAPP_DIR/vendor/lib/python
 fi
 
-if [[ -d /var/vcap/packages/java7 ]]
+if [[ -d /var/vcap/packages/java8 ]]
 then
-  export JAVA_HOME="/var/vcap/packages/java7"
+  export JAVA_HOME="/var/vcap/packages/java8"
 fi
 
 # setup CLASSPATH for all jars/ folders within packages
