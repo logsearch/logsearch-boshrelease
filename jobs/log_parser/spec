@@ -16,7 +16,7 @@ templates:
   config/input_redis_and_output_elasticsearch.conf.erb: config/input_redis_and_output_elasticsearch.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
-  config/filters_default.conf: config/filters_default.conf
+  config/logstash-filters-common.conf: config/logstash-filters-common.conf
   config/filters_override.conf.erb: config/filters_override.conf
   logsearch/logs.yml: logsearch/logs.yml
 properties:
