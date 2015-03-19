@@ -10,6 +10,16 @@ export PIDFILE=/var/vcap/sys/run/kibana/kibana.pid #NB this is hardcoded in conf
 case $1 in
 
   start)
+    
+    # Wait up to 5 min for the kibana.api_host to be ready to prevent a startup failure
+    n=0
+    until [ $n -ge 60 ]
+    do
+      curl -s <%= p('kibana.api_host') %> | grep -q 200 && break
+      n=$[$n+1]
+      sleep 5s
+    done
+
     pid_guard $PIDFILE kibana
 
     exec /var/vcap/packages/kibana/bin/kibana \

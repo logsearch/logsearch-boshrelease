@@ -10,8 +10,9 @@ templates:
   helpers/ctl_setup.sh: "helpers/ctl_setup.sh"
   helpers/ctl_utils.sh: "helpers/ctl_utils.sh"
 properties:
-  elasticsearch.host:
-    description: "The frontend elasticsearch node services should use."
+  kibana.api_host:
+    description: "IP address and port of api host to send elasticsearch requests to (eg, 127.0.0.1:80)"
+    default: "127.0.0.1:80"
   kibana.default_app_id:
     description: "The default application to load."
     default: "discover"
