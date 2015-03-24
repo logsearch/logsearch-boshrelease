@@ -22,3 +22,9 @@ properties:
   kibana.port:
     description: "Kibana is served by a back end server. This controls which port to use."
     default: 5601
+  kibana.request_timeout:
+    description: "Time in milliseconds to wait for responses from the back end or elasticsearch.  This must be > 0"
+    default: 300000
+  kibana.shard_timeout:
+    description: "Time in milliseconds for Elasticsearch to wait for responses from shards. Set to 0 to disable"
+    default: 30000

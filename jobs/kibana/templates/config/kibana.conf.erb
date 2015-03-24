@@ -27,11 +27,11 @@ default_app_id: "<%= p('kibana.default_app_id') %>"
 
 # Time in milliseconds to wait for responses from the back end or elasticsearch.
 # This must be > 0
-request_timeout: 300000
+request_timeout: <%= p('kibana.request_timeout') %>
 
 # Time in milliseconds for Elasticsearch to wait for responses from shards.
 # Set to 0 to disable.
-shard_timeout: 30000
+shard_timeout: <%= p('kibana.shard_timeout') %>
 
 # Set to false to have a complete disregard for the validity of the SSL
 # certificate.
