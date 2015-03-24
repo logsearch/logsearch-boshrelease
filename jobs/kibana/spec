@@ -10,7 +10,7 @@ templates:
   helpers/ctl_setup.sh: "helpers/ctl_setup.sh"
   helpers/ctl_utils.sh: "helpers/ctl_utils.sh"
 properties:
-  kibana.api_host:
+  kibana.elasticsearch:
     description: "IP address and port of api host to send elasticsearch requests to (eg, 127.0.0.1:80)"
     default: "127.0.0.1:80"
   kibana.default_app_id:
