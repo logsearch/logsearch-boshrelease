@@ -17,8 +17,9 @@ output {
         }
     <% end %>
 
-    elasticsearch_http {
+    elasticsearch {
         host => "<%= p('logstash_parser.use_local_elasticsearch') ? '127.0.0.1' : p("elasticsearch.host") %>:<%= p("elasticsearch.port") %>"
+        protocol => "http"
         flush_size => <%= p("elasticsearch.flush_size") %>
         <% if p('logstash_parser.idle_flush_time', nil) %>
             idle_flush_time => <%= p('logstash_parser.idle_flush_time') %>

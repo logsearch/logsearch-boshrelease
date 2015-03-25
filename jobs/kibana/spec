@@ -1,7 +1,6 @@
 ---
 name: "kibana"
 packages:
-  - "java7"
   - "kibana"
 templates:
   bin/kibana_ctl: "bin/kibana_ctl"
@@ -12,8 +11,8 @@ templates:
   helpers/ctl_utils.sh: "helpers/ctl_utils.sh"
 properties:
   kibana.elasticsearch:
-    description: "IP address and port of elasticsearch host to proxy requests for (eg, 127.0.0.1:9200)"
-    default: "http://127.0.0.1:9200"
+    description: "IP address and port of api host to send elasticsearch requests to (eg, 127.0.0.1:80)"
+    default: "127.0.0.1:80"
   kibana.default_app_id:
     description: "The default application to load."
     default: "discover"
@@ -23,3 +22,9 @@ properties:
   kibana.port:
     description: "Kibana is served by a back end server. This controls which port to use."
     default: 5601
+  kibana.request_timeout:
+    description: "Time in milliseconds to wait for responses from the back end or elasticsearch.  This must be > 0"
+    default: 300000
+  kibana.shard_timeout:
+    description: "Time in milliseconds for Elasticsearch to wait for responses from shards. Set to 0 to disable"
+    default: 30000

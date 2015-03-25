@@ -2,7 +2,7 @@
 name: ingestor_relp
 packages: 
 - logstash
-- java7
+- java8
 templates:
   bin/ingestor_relp_ctl: bin/ingestor_relp_ctl
   bin/monit_debugger: bin/monit_debugger
