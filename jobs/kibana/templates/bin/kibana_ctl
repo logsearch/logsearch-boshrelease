@@ -5,14 +5,22 @@ set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/kibana/helpers/ctl_setup.sh 'kibana'
-export PIDFILE=$RUN_DIR/kibana.pid
+export PIDFILE=/var/vcap/sys/run/kibana/kibana.pid #NB this is hardcoded in config/kibana.conf.erb
 
 case $1 in
 
   start)
-    pid_guard $PIDFILE kibana
+    
+    # Wait up to 5 min for the kibana.elasticsearch to be ready to prevent a startup failure
+    n=0
+    until [ $n -ge 60 ]
+    do
+      curl -s <%= p('kibana.elasticsearch') %> | grep -q 200 && break
+      n=$[$n+1]
+      sleep 5s
+    done
 
-    echo $$ > $PIDFILE
+    pid_guard $PIDFILE kibana
 
     exec /var/vcap/packages/kibana/bin/kibana \
          -c $JOB_DIR/config/kibana.conf \

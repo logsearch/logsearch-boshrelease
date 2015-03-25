@@ -2,6 +2,7 @@
 name: archiver
 packages:
 - logstash
+- java8
 templates:
   bin/logstash.process.erb: bin/logstash.process
   bin/s3upload.cron.erb: bin/s3upload.cron

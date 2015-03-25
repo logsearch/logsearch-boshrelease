@@ -2,7 +2,7 @@
 name: ingestor_lumberjack
 packages: 
 - logstash
-- java7
+- java8
 templates:
   bin/ingestor_lumberjack_ctl: bin/ingestor_lumberjack_ctl
   bin/monit_debugger: bin/monit_debugger

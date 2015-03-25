@@ -141,3 +141,28 @@ kibana/kibana-4.0.0-beta3.tar.gz:
   sha: !binary |-
     MzI0ODk2Nzc3ZTQ0N2I3ZGQyNjRlZGJiODllZDU4MzY5NDg3MzkwMw==
   size: 22901370
+elasticsearch/elasticsearch-1.4.4.tar.gz:
+  object_id: 618f818f-a0db-4d4b-b480-77456952c288
+  sha: !binary |-
+    OTYzNDE1YTkxMTRlY2YwYjdkZDFhZTQzYTMxNmUzMzk1MzRiOGYzMQ==
+  size: 27900004
+kibana/kibana-4.0.1-linux-x64.tar.gz:
+  object_id: 9999d8fe-8031-4c68-8a9e-d1a77f9ecf58
+  sha: !binary |-
+    MWI4OTE0YzYyYTYwNmI3MTAzMjk1YTRlM2FiMDFlYzQwYzk5OTNlZA==
+  size: 13625479
+logstash/logstash-1.5.0.rc2.tar.gz:
+  object_id: ef865462-abd9-4346-9d32-5574ad167448
+  sha: !binary |-
+    NmJkYzNlODFkY2IyYTU0NDE5YWFjODk1ODQ0Y2I3YzdhMDc1MjUwZA==
+  size: 89962291
+logstash/logstash-filter-alter-0.1.5.gem:
+  object_id: 8cac589a-03e7-47bf-83e4-5e29a50c88b7
+  sha: !binary |-
+    YjNmOWEwOTdmMjIxMDI5ZWNhNDU3NzQ5ZTk4OGY5NTIyMDg5YjI0Nw==
+  size: 8704
+java8/openjdk-1.8.0_40.tar.gz:
+  object_id: c1386f34-7585-4f92-b41e-6d9dbbb940ab
+  sha: !binary |-
+    NTkwYmU1YzYzMzc3NTNiMjhhY2M4MWQ0ODQzZTk4ZTYyNDViNTI2MQ==
+  size: 39630740

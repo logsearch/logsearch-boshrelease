@@ -5,4 +5,4 @@ set -u # report the usage of uninitialized variables
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
-tar -xzf kibana/kibana-4.0.0-beta3.tar.gz -C $BOSH_INSTALL_TARGET --strip-components 1
+tar -xzf kibana/kibana-4.0.1-linux-x64.tar.gz -C $BOSH_INSTALL_TARGET --strip-components 1

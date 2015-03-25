@@ -30,22 +30,38 @@ http {
     proxy_read_timeout 90;
     proxy_temp_path /var/vcap/sys/tmp/api/nginx-proxy-temp;
 
+    # update: proxy headers
+    # reason: common practice, better logging
+
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+
     upstream elasticsearch {
         server <%= p("api.elasticsearch_host") %>;
     }
+    upstream kibana {
+        server <%= p("api.kibana.host") %>;
+    }
 
+    # proxy: Kibana
+    # reason: Proxy requests to <%= p("api.kibana.host_header") %> to internal Kibana url
     server {
-        listen *:80;
-        server_name logsearch;
+        listen *:<%= p("api.kibana.port") %>;
+        server_name <%= p("api.kibana.host_header") %>;
 
+        # allow: all requests below <%= p("api.kibana.host_header") %>
+        # reason: allow access to kibana
+        location / {
+            proxy_pass http://kibana;
+        }
+    }
 
-        # update: proxy headers
-        # reason: common practice, better logging
-
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host;
-
+    # proxy: Elasticsearch
+    # reason: Proxy all other requests to internal Elasticsearch
+    server {
+        listen *:<%= p("api.port") %> default_server;
+        server_name  api;
 
         # update: cors headers
         # reason: support running kibana from other hosts
@@ -55,7 +71,6 @@ http {
         proxy_hide_header Access-Control-Allow-Headers;
         add_header Access-Control-Allow-Headers 'X-Requested-With, Content-Type';
         add_header Access-Control-Allow-Credentials true;
-
 
         # deny: searches against all indices
         # reason: causes us performance issues
@@ -68,11 +83,14 @@ http {
         # read: index searches
         # reason: we like searching
 
-        location ~ ^/[^\/\*]+(/[^\/\*]+)?/_m?search$ {
+        location ~ ^/[^\/\*]+(/[^\/\*]+)?/_m?(search|get)$ {
             rewrite ^(.*)$ $1?timeout=15s break;
             proxy_pass http://elasticsearch;
         }
-
+        location ~ ^/_m?(search|get)$ {
+            rewrite ^(.*)$ $1?timeout=15s break;
+            proxy_pass http://elasticsearch;
+        }
 
         # read: scrolled searches
         # reason: occasionally used by some of our batch scripts
@@ -88,7 +106,9 @@ http {
 
         # read|write: kibana dashboard storage
         # reason: so users can save and share their dashboards
-
+        location ~ ^/(\.kibana).*$ {
+            proxy_pass http://elasticsearch;
+        }
         location ~ ^/(kibana-int|\.marvel-kibana)/(dashboard/.*|temp.*)$ {
             proxy_pass http://elasticsearch;
         }

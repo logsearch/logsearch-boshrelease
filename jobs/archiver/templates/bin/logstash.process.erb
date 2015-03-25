@@ -36,7 +36,7 @@ case $1 in
       --exec /bin/bash \
       --make-pidfile \
       --start \
-      -- -c "JAVA_HOME=/var/vcap/packages/java7 \
+      -- -c "JAVA_HOME=/var/vcap/packages/java8 \
         exec /var/vcap/packages/logstash/logstash/bin/logstash \
         agent \
         --config /var/vcap/jobs/archiver/config/logstash.conf \
