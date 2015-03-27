@@ -1,0 +1,334 @@
+<%
+# NB:  You will need to replace the FIXME notes below, and update the AWS VPC subnets / IPs to match your environment
+%>
+---
+name: XXXXX #FIXME:
+director_uuid: XXXXX #FIXME:
+
+releases:
+- name: logsearch
+  version: "18"
+- name: "logsearch-shipper"
+  version: "2"
+
+compilation:
+  workers: 3
+  network: vpc-private
+  reuse_compilation_vms: true
+  cloud_properties: 
+    instance_type: m3.large
+
+update:
+  serial: true 
+  canaries: 1
+  canary_watch_time: 30000-120000  # 30sec min -> 2min max 
+  update_watch_time: 30000-120000
+  max_in_flight: 1
+  max_errors: 2
+
+networks:
+- name: vpc-public
+  type: manual
+  subnets:
+  - range: 10.12.0.0/24
+    name: vpc-public
+    reserved:
+    - 10.12.0.1 - 10.12.0.50
+    - 10.12.0.254 - 10.12.0.254
+    static:
+    - 10.12.0.51 - 10.12.0.55
+    cloud_properties:
+      security_groups:
+      - "meta-logsearch-io-VPC-40F9XUFXHOY2-SecuritygroupInternalAll-1C80BXBZOZTHC"
+      - "meta-logsearch-io-SecurityGroups-4WGOY6QS8CWV-TrustedWeb-1TPEDMB0P5U86"
+      - "meta-logsearch-io-SecurityGroups-4WGOY6QS8CWV-TrustedIngestion-G4MHT6DGYPOV"
+      subnet: "subnet-34ba7251"
+- name: vpc-private
+  type: manual
+  subnets:
+  - range: 10.12.8.0/24
+    name: vpc-public
+    reserved:
+    - 10.12.8.1 - 10.12.8.50
+    - 10.12.8.254 - 10.12.8.254
+    static:
+    - 10.12.8.51 - 10.12.8.55
+    cloud_properties:
+      security_groups:
+      - "meta-logsearch-io-VPC-40F9XUFXHOY2-SecuritygroupInternalAll-1C80BXBZOZTHC"
+      subnet: "subnet-2aba724f"
+- name: vpc-private-z1
+  type: manual
+  subnets:
+  - range: 10.12.24.0/24
+    name: vpc-public
+    reserved:
+    - 10.12.24.1 - 10.12.24.50
+    - 10.12.24.254 - 10.12.24.254
+    static:
+    - 10.12.24.51 - 10.12.24.55
+    cloud_properties:
+      security_groups:
+      - "meta-logsearch-io-VPC-40F9XUFXHOY2-SecuritygroupInternalAll-1C80BXBZOZTHC"
+      subnet: "subnet-2da6515a"
+- name: floating
+  type: vip
+  cloud_properties: {}
+
+resource_pools:
+- name: vpc-public-m1-small
+  network: vpc-public
+  size: 1
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent-hvm
+    version: 2798
+  cloud_properties:
+    instance_type: m3.medium
+    availability_zone: eu-west-1a
+    spot_bid_price: 0.2
+- name: vpc-public-m3.large
+  network: vpc-public
+  size: 1
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent-hvm
+    version: 2798
+  cloud_properties:
+    instance_type: m3.large
+    availability_zone: eu-west-1a
+    spot_bid_price: 0.3
+- name: vpc-private-m3-medium
+  network: vpc-private
+  size: 1
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent-hvm
+    version: 2798
+  cloud_properties:
+    instance_type: m3.xlarge
+    availability_zone: eu-west-1a
+    spot_bid_price: 0.3
+- name: vpc-private-c1-medium
+  network: vpc-private
+  size: 4
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent-hvm
+    version: 2798
+  cloud_properties:
+    instance_type: c3.large
+    availability_zone: eu-west-1a
+    spot_bid_price: 0.3
+- name: vpc-private-r3.xlarge
+  network: vpc-private
+  size: 1
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent-hvm
+    version: 2798
+  cloud_properties:
+    instance_type: r3.xlarge
+    availability_zone: eu-west-1a
+    spot_bid_price: 0.5    
+- name: vpc-private-r3.xlarge-z1
+  network: vpc-private-z1
+  size: 1
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent-hvm
+    version: 2798
+  cloud_properties:
+    instance_type: r3.xlarge
+    availability_zone: eu-west-1b
+    spot_bid_price: 0.5
+
+disk_pools:
+  - name: "queue"
+    disk_size: 24576
+    cloud_properties:
+      type: "gp2"
+  - name: "elasticsearch_persistent"
+    disk_size: 131072
+    cloud_properties:
+      type: "gp2"
+  - name: "elasticsearch_persistent-z1"
+    disk_size: 131072
+    cloud_properties:
+      type: "gp2"
+
+jobs:
+- name: api
+  release: logsearch
+  templates: 
+  - release: logsearch
+    name: elasticsearch
+  - release: logsearch
+    name: api
+  - release: logsearch
+    name: archiver
+  - release: logsearch
+    name: kibana
+  - release: "logsearch-shipper"
+    name: "logsearch-shipper"
+  update:
+    serial: true
+  instances: 1
+  persistent_disk: 8096
+  resource_pool: vpc-public-m3.large
+  networks:
+  - name: vpc-public
+    default:
+    - dns
+    - gateway
+    static_ips:
+    - 10.12.0.51
+  - name: floating
+    static_ips:
+    - 54.72.208.52
+  properties:
+    elasticsearch:
+      node:
+        allow_data: false
+
+- name: ingestor
+  release: logsearch
+  templates: 
+  - release: logsearch
+    name: ingestor_syslog
+  - release: logsearch
+    name: ingestor_relp
+  - release: "logsearch-shipper"
+    name: "logsearch-shipper"
+  instances: 1
+  resource_pool: vpc-public-m1-small
+  networks:
+  - name: vpc-public
+    static_ips:
+    - 10.12.0.52
+    default:
+    - dns
+    - gateway
+  - name: floating
+    static_ips:
+    - 54.72.9.152
+
+- name: queue
+  release: logsearch
+  templates: 
+  - release: logsearch
+    name: queue
+  - release: "logsearch-shipper"
+    name: "logsearch-shipper"
+  instances: 1
+  resource_pool: vpc-private-m3-medium
+  persistent_disk_pool: "queue"
+  networks:
+  - name: vpc-private
+    static_ips:
+    - 10.12.8.51
+
+- name: log_parser
+  release: logsearch
+  templates:
+  - release: logsearch
+    name: log_parser
+  - release: "logsearch-shipper"
+    name: "logsearch-shipper"
+  instances: 4
+  resource_pool: vpc-private-c1-medium
+  networks:
+  - name: vpc-private
+
+- name: elasticsearch_persistent
+  release: logsearch
+  templates: 
+  - release: logsearch
+    name: elasticsearch
+  - release: "logsearch-shipper"
+    name: "logsearch-shipper"
+  update:
+    serial: true
+  instances: 1
+  resource_pool: vpc-private-r3.xlarge
+  persistent_disk_pool: "elasticsearch_persistent"
+  networks:
+  - name: vpc-private
+    static_ips:
+    - 10.12.8.52
+
+- name: elasticsearch_persistent-z1
+  release: logsearch
+  templates: 
+  - release: logsearch
+    name: elasticsearch
+  - release: "logsearch-shipper"
+    name: "logsearch-shipper"
+  update:
+    serial: true
+  instances: 1
+  persistent_disk_pool: "elasticsearch_persistent-z1"
+  resource_pool: vpc-private-r3.xlarge-z1
+  networks:
+  - name: vpc-private-z1
+    static_ips:
+    - 10.12.24.52
+
+properties:
+  elasticsearch:
+    host: "10.12.0.51,10.12.8.52,10.12.24.52"
+    flush_size: 250
+    drain: true
+    cluster_name: live-logsearch
+    discovery:
+      minimum_master_nodes: 2
+    indices:
+      ttl_interval: "1d"
+    config_options: |
+      http.cors.enabled: true
+    plugins:
+      - { kopf: "lmenezes/elasticsearch-kopf" }
+  redis:
+    host: 10.12.8.51
+  logstash:
+    metadata_level: "DEBUG"
+  logstash_parser:
+    debug: false
+    workers: 3
+# FIXME:  Point at your filters
+#    filters: |
+#            <%= File.read('logsearch/filters.conf').gsub(/^/, '            ').strip %>
+  logstash_ingestor:
+    relp:
+      port: 5515
+    syslog:
+      port: 5514
+    syslog_tls:
+      port: 443
+      ssl_cert: |
+        -----BEGIN CERTIFICATE-----
+        FIXME: REPLACE_ME
+        -----END CERTIFICATE-----
+      ssl_key: |
+        -----BEGIN RSA PRIVATE KEY-----
+        FIXME: REPLACE_ME
+        -----END RSA PRIVATE KEY-----
+  archiver:
+    enabled: true
+    s3:
+      access_key_id: "XXXXXXXXXXXX"
+      secret_access_key: "XXXXXXXXXXX"
+      bucket: "dpb587-kafka-archiver-test"
+      prefix: "bosh-meta-logsearch-io/"
+  logsearch:
+    logs:
+      _defaults: |
+        ---
+        files:
+          "**/*.log":
+            fields:
+              "bosh_director": "bosh-meta-logsearch-io"
+      server: "10.12.0.52:5514"
+    metrics:
+      frequency: 60
+apply_spec:
+  properties:
+    ntp:
+      - 0.europe.pool.ntp.org
+      - 1.europe.pool.ntp.org
+      - 2.europe.pool.ntp.org
+      - 3.europe.pool.ntp.org
