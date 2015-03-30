@@ -1,4 +1,4 @@
 files:
-  "elasticsearch/requests.log":
+  "elasticsearch/elasticsearch.stdout.log":
     fields:
-      type: "elasticsearch_request"
+      type: "logsearch-elasticsearch-stdout-v1"

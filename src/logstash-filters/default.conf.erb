@@ -1,0 +1,11 @@
+if "logsearch-nginx-access-v1" == [@type] {
+  <%= File.read("#{File.dirname(__FILE__)}/snippets/nginx-access-v1.conf").chop.gsub "\n", "\n  " %>
+}
+
+if "logsearch-nginx-error-v1" == [@type] {
+  <%= File.read("#{File.dirname(__FILE__)}/snippets/nginx-error-v1.conf").chop.gsub "\n", "\n  " %>
+}
+
+if "logsearch-elasticsearch-stdout-v1" == [@type] {
+  <%= File.read("#{File.dirname(__FILE__)}/snippets/elasticsearch-stdout-v1.conf").chop.gsub "\n", "\n  " %>
+}

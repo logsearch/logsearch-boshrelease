@@ -1,0 +1,8 @@
+---
+files:
+  "api/nginx.access.log":
+    fields:
+      type: "logsearch-nginx-access-v1"
+  "api/nginx.error.log":
+    fields:
+      type: "logsearch-nginx-error-v1"

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+echo "===> Building ..."
+
+[ ! -e target/logstash-filters ] || rm -fr target/logstash-filters
+
+mkdir -p target/logstash-filters
+
+mkdir target/logstash-filters/snippets
+cp src/logstash-filters/snippets/* target/logstash-filters/snippets/
+
+erb src/logstash-filters/default.conf.erb > target/logstash-filters/default.conf
+
+
+echo "===> Testing ..."
+
+./vendor/logsearch-filters-common/bin/test.sh
