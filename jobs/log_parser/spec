@@ -66,9 +66,6 @@ properties:
   elasticsearch.log_level:
     description: The default logging level (e.g. WARN, DEBUG, INFO)
     default: INFO
-  elasticsearch.marvel.agent.enabled:
-    description: Whether to enable the marvel agent
-    default: false
   elasticsearch.node.tags:
     description: A hash of additional tags for the node
   elasticsearch.discovery.minimum_master_nodes:

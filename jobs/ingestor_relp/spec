@@ -22,15 +22,6 @@ properties:
   logstash_ingestor.relp.port: 
     description: Port to listen for RELP messages
 
-  elasticsearch.host:
-    description: IP / DNS of elasticsearch http endpoint
-  elasticsearch.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
-  elasticsearch.flush_size:
-    description: Redis queue flush size
-    default: 100
-
   redis.host: 
     description: Redis host of queue
   redis.port: 
