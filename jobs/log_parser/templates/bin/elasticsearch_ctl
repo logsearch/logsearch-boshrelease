@@ -15,10 +15,8 @@ case $1 in
   start)
     pid_guard $PIDFILE $JOB_NAME/elasticsearch
 
-    /var/vcap/jobs/elasticsearch/bin/undrain 2>&1 >> $LOG_DIR/undrain.log &
-
     exec /var/vcap/packages/elasticsearch/bin/elasticsearch \
-         -Des.config=${JOB_DIR}/config/elasticsearch/default.json \
+         -Des.config=${JOB_DIR}/config/elasticsearch/config.yml \
          -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          -Des.pidfile=${PIDFILE} \
          >>$LOG_DIR/elasticsearch.stdout.log \

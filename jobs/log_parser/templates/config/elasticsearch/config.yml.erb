@@ -1,15 +1,13 @@
 bootstrap.mlockall: true
 
-path.conf: "/var/vcap/jobs/elasticsearch/config"
-path.logs: "/var/vcap/sys/log/elasticsearch"
-path.data: "/var/vcap/store/elasticsearch"
+path.conf: "/var/vcap/jobs/log_parser/config/elasticsearch"
+path.logs: "/var/vcap/sys/log/log_parser"
 
 cluster.name: "<%= p("elasticsearch.cluster_name") %>"
 
-node.max_local_storage_nodes: 1
 node.name: "<%= name %>/<%= index %>"
-node.master: <%= p("elasticsearch.node.allow_master") %>
-node.data: <%= p("elasticsearch.node.allow_data") %>
+node.master: false
+node.data: false
 node.job_name: "<%= name %>"
 node.job_index: "<%= index %>"
 <% p("elasticsearch.node.tags", {}).each do | k, v | %>
