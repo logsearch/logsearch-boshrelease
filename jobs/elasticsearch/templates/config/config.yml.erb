@@ -24,17 +24,4 @@ discovery.zen.ping.multicast.enabled: false
 discovery.zen.ping.unicast.hosts: "<%= p("elasticsearch.host") %>"
 <% end %>
 
-indices.memory.index_buffer_size: "50%"
-indices.ttl.interval": "<%= p("elasticsearch.indices.ttl_interval") %>"
-index.cache.field.type: "soft"
-index.cache.field.expire: "15m"
-index.translog.flush_threshold_ops: 64000
-
-threadpool.search.type: "fixed"
-threadpool.search.size: 32
-threadpool.search.queue_size: 128
-threadpool.index.type: "fixed"
-threadpool.index.size: 64
-threadpool.index.queue_size: 256
-
 <% if_p('elasticsearch.config_options') do | v | %><%= v %><% end %>
