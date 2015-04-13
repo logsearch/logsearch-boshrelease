@@ -1,7 +1,7 @@
 {
   "network": {
     "servers": [ "10.244.2.14:5043" ],
-    "ssl ca": "logstash-forwarder-ca.crt",
+    "ssl ca": "ca.crt",
     "timeout": 3
   },
   "files": [
