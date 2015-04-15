@@ -29,6 +29,13 @@ for NODEREF in $( curl -s "${CLUSTER}/_cat/nodes?h=host,node.role,master,name" |
   NODE=$( echo "${NODEREF}" | awk -F '|' '{ print $1 }' )
   NODE_NAME=$( echo "${NODEREF}" | awk -F '|' '{ print $2 }' )
 
+  /bin/echo "To skip node ${NODE_NAME}, enter 's' -- any other key will shut it down for maintenance"
+  read SKIP
+  if [ ${SKIP} = "s" ]
+  then
+    continue
+  fi
+
   decho "> restarting ${NODE_NAME}"
 
 
