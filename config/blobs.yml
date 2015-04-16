@@ -133,36 +133,33 @@ logstash/logsearch-filters-common-16.tgz:
   size: 1552
 elasticsearch/elasticsearch-1.4.0.tar.gz:
   object_id: 3d1f5410-64fc-4f4f-a6c8-37c8fdd84ee4
-  sha: !binary |-
-    NzI4OTEzNzIyYmM5NGRhZDRjYjVlNzU5YTM2MmYwOWRjMTllZDZmZQ==
+  sha: 728913722bc94dad4cb5e759a362f09dc19ed6fe
   size: 27730896
 kibana/kibana-4.0.0-beta3.tar.gz:
   object_id: c7ccb1d2-afa0-45e4-b220-99ba254a77f9
-  sha: !binary |-
-    MzI0ODk2Nzc3ZTQ0N2I3ZGQyNjRlZGJiODllZDU4MzY5NDg3MzkwMw==
+  sha: 324896777e447b7dd264edbb89ed583694873903
   size: 22901370
 elasticsearch/elasticsearch-1.4.4.tar.gz:
   object_id: 618f818f-a0db-4d4b-b480-77456952c288
-  sha: !binary |-
-    OTYzNDE1YTkxMTRlY2YwYjdkZDFhZTQzYTMxNmUzMzk1MzRiOGYzMQ==
+  sha: 963415a9114ecf0b7dd1ae43a316e339534b8f31
   size: 27900004
 kibana/kibana-4.0.1-linux-x64.tar.gz:
   object_id: 9999d8fe-8031-4c68-8a9e-d1a77f9ecf58
-  sha: !binary |-
-    MWI4OTE0YzYyYTYwNmI3MTAzMjk1YTRlM2FiMDFlYzQwYzk5OTNlZA==
+  sha: 1b8914c62a606b7103295a4e3ab01ec40c9993ed
   size: 13625479
 logstash/logstash-1.5.0.rc2.tar.gz:
   object_id: ef865462-abd9-4346-9d32-5574ad167448
-  sha: !binary |-
-    NmJkYzNlODFkY2IyYTU0NDE5YWFjODk1ODQ0Y2I3YzdhMDc1MjUwZA==
+  sha: 6bdc3e81dcb2a54419aac895844cb7c7a075250d
   size: 89962291
 logstash/logstash-filter-alter-0.1.5.gem:
   object_id: 8cac589a-03e7-47bf-83e4-5e29a50c88b7
-  sha: !binary |-
-    YjNmOWEwOTdmMjIxMDI5ZWNhNDU3NzQ5ZTk4OGY5NTIyMDg5YjI0Nw==
+  sha: b3f9a097f221029eca457749e988f9522089b247
   size: 8704
 java8/openjdk-1.8.0_40.tar.gz:
   object_id: c1386f34-7585-4f92-b41e-6d9dbbb940ab
-  sha: !binary |-
-    NTkwYmU1YzYzMzc3NTNiMjhhY2M4MWQ0ODQzZTk4ZTYyNDViNTI2MQ==
+  sha: 590be5c6337753b28acc81d4843e98e6245b5261
   size: 39630740
+elasticsearch/elasticsearch-1.5.1.tar.gz:
+  object_id: 93b93692-d68a-44e7-86d7-dabe5e13f8d5
+  sha: b3863a63d265486332042246bf1c002b3a70b46f
+  size: 28183803
