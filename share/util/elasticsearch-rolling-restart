@@ -3,13 +3,19 @@
 #
 # perform a rolling restart of all data/master nodes in a stable cluster
 #
-# args: [elasticsearch-host:port]
+# args: [elasticsearch-host:port] -i|--interactive
 #
 
 set -e
 set -u
 
 CLUSTER="${1:-localhost:9200}"
+INTERACTIVE="${2:-false}"
+
+if [[ ${2} == "-i" ]] || [[ ${2} == "--interactive" ]]
+then
+  INTERACTIVE=true
+fi
 
 function decho {
   /bin/echo $( date -u +"%Y-%m-%dT%H:%M:%SZ" ) "$@"
@@ -29,11 +35,14 @@ for NODEREF in $( curl -s "${CLUSTER}/_cat/nodes?h=host,node.role,master,name" |
   NODE=$( echo "${NODEREF}" | awk -F '|' '{ print $1 }' )
   NODE_NAME=$( echo "${NODEREF}" | awk -F '|' '{ print $2 }' )
 
-  /bin/echo "To skip node ${NODE_NAME}, enter 's' -- any other key will shut it down for maintenance"
-  read SKIP
-  if [ ${SKIP} = "s" ]
+  if [ ${INTERACTIVE} == true ]
   then
-    continue
+    /bin/echo "To skip node ${NODE_NAME}, enter 's' -- any other key will shut it down for maintenance"
+    read SKIP
+    if [ ${SKIP} == "s" ]
+    then
+      continue
+    fi
   fi
 
   decho "> restarting ${NODE_NAME}"
