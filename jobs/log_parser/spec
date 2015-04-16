@@ -11,7 +11,7 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
-  config/elasticsearch/default.json.erb: config/elasticsearch/default.json
+  config/elasticsearch/config.yml.erb: config/elasticsearch/config.yml
   config/elasticsearch/logging.yml.erb: config/elasticsearch/logging.yml
   config/input_redis_and_output_elasticsearch.conf.erb: config/input_redis_and_output_elasticsearch.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
@@ -66,11 +66,17 @@ properties:
   elasticsearch.log_level:
     description: The default logging level (e.g. WARN, DEBUG, INFO)
     default: INFO
-  elasticsearch.marvel.agent.enabled:
-    description: Whether to enable the marvel agent
-    default: false
   elasticsearch.node.tags:
     description: A hash of additional tags for the node
+  elasticsearch.discovery.minimum_master_nodes:
+    description: The minimum number of master eligible nodes a node should "see" in order to operate within the cluster. Recommended to set it to a higher value than 1 when running more than 2 nodes in the cluster.
+    default: 1
+  elasticsearch.config_options:
+    description: "Additional options to append to elasticsearch's config.yml (YAML format)."
+    default: ~
+  elasticsearch.logging_options:
+    description: "Additional options to append to elasticsearch's logging.yml (YAML format)."
+    default: ~
 
   redis.host: 
     description: Redis host of queue

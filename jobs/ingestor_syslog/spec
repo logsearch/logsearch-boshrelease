@@ -35,15 +35,6 @@ properties:
     description: Allowed TLS protocols passed to jdk.tls.client.protocols and https.protocols settings.  Defaults to TLSv1,TLSv1.1,TLSv1.2.  Set to SSLv3,TLSv1,TLSv1.1,TLSv1.2 to enable (POODLE vulnerable) SSLv3 connections from legacy syslog clients
     default: "TLSv1,TLSv1.1,TLSv1.2"
 
-  elasticsearch.host:
-    description: IP / DNS of elasticsearch http endpoint
-  elasticsearch.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
-  elasticsearch.flush_size:
-    description: Redis queue flush size
-    default: 100
-
   redis.host: 
     description: Redis host of queue
   redis.port: 
