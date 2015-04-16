@@ -3,18 +3,23 @@
 #
 # perform a rolling restart of all data/master nodes in a stable cluster
 #
-# args: [elasticsearch-host:port] -i|--interactive
+# args: [-i|--interactive] [elasticsearch-host:port]
 #
 
 set -e
 set -u
 
-CLUSTER="${1:-localhost:9200}"
-INTERACTIVE="${2:-false}"
-
-if [[ ${2} == "-i" ]] || [[ ${2} == "--interactive" ]]
+if [ $# -eq 0 ]
+then
+  CLUSTER="localhost:9200"
+  INTERACTIVE=false
+elif [[ $1 == "-i" || $1 = "--interactive" ]]
 then
   INTERACTIVE=true
+  CLUSTER="${2:-localhost:9200}"
+else
+  INTERACTIVE=false
+  CLUSTER="${1:-localhost:9200}"
 fi
 
 function decho {
