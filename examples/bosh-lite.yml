@@ -144,6 +144,11 @@ jobs:
 #      key: "logstash-restorer"
 
 properties: 
+  api:
+    port: 80
+  kibana:
+   elasticsearch: 127.0.0.1:9200
+   port: 5601
   elasticsearch:
     host: 10.244.2.2
     cluster_name: logsearch--bosh-lite

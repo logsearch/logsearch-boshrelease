@@ -48,6 +48,11 @@ jobs:
     - 10.244.2.26
   persistent_disk: 1024
 properties: 
+  api:
+    port: 80
+  kibana:
+   elasticsearch: 127.0.0.1:9200
+   port: 5601
   elasticsearch:
     host: 10.244.2.26
     cluster_name: micro-logsearch
