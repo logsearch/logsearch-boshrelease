@@ -14,10 +14,20 @@ events {
 http {
     include mime.types;
 
-    log_format combined_custom '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $request_time';
-    access_log  /var/vcap/sys/log/api/nginx.access.log  combined_custom;
+    #log_format combined_custom '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $request_time';
+    #access_log  /var/vcap/sys/log/api/nginx.access.log  combined_custom;
 
-    client_body_temp_path /var/vcap/sys/tmp/api/nginx-client-body-temp;
+    #client_body_temp_path /var/vcap/sys/tmp/api/nginx-client-body-temp;
+    index       index.html index.htm index.php;
+
+
+    log_format   main '$remote_addr - $remote_user [$time_local]  $status '
+    '"$request" $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$http_x_forwarded_for"  '
+    ' $upstream_addr  $upstream_status  $upstream_response_time';
+
+    access_log  /var/vcap/sys/log/api/nginx_access.log  main;
+
 
     gzip on;
     gzip_comp_level 2;
@@ -44,6 +54,17 @@ http {
         server <%= p("api.kibana.host") %>;
     }
 
+    server {
+        listen *:<%= p("api.kibana.port") %>;
+        server_name logsearch.*;
+
+        auth_basic "Restricted";
+        auth_basic_user_file /var/vcap/jobs/api/config/nginx.htpasswd;
+
+        location / {
+            proxy_pass http://kibana;
+        }
+    }
     # proxy: Kibana
     # reason: Proxy requests to <%= p("api.kibana.host_header") %> to internal Kibana url
     server {
@@ -62,8 +83,6 @@ http {
     server {
         listen *:<%= p("api.port") %> default_server;
         server_name  api;
-
-        # update: cors headers
         # reason: support running kibana from other hosts
 
         proxy_pass_header Access-Control-Allow-Origin;
@@ -76,6 +95,7 @@ http {
         # reason: causes us performance issues
 
         location ~ ^/_all/_m?search {
+            allow 127.0.0.1;
             deny all;
         }
 
