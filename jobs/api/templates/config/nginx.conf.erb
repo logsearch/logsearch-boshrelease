@@ -44,6 +44,18 @@ http {
         server <%= p("api.kibana.host") %>;
     }
 
+    server {
+        listen *:<%= p("api.kibana.port") %>;
+        server_name logsearch.*;
+
+        auth_basic "Restricted";
+        auth_basic_user_file /var/vcap/jobs/api/config/nginx.htpasswd;
+
+        location / {
+            proxy_pass http://kibana;
+        }
+    }
+
     # proxy: Kibana
     # reason: Proxy requests to <%= p("api.kibana.host_header") %> to internal Kibana url
     server {
@@ -62,7 +74,7 @@ http {
     server {
         listen *:<%= p("api.port") %> default_server;
         server_name  api;
-
+        
         # update: cors headers
         # reason: support running kibana from other hosts
 

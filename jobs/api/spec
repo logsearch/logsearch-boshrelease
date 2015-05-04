@@ -9,6 +9,7 @@ templates:
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  config/nginx.htpasswd.erb: config/nginx.htpasswd
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   logsearch/metric-collector/lag/collector: logsearch/metric-collector/lag/collector
   logsearch/logs.yml: logsearch/logs.yml
@@ -28,3 +29,9 @@ properties:
   api.kibana.host:
     description: IP address and port of kibana host proxy kibana requests for (eg, 127.0.0.1:5601).
     default: "127.0.0.1:5601"
+  basic_auth.username:
+    default: ""
+    description: "Basic auth username used for accessing all nginx endpoints, e.g. Kibana and ElasticHQ"
+  basic_auth.password:
+    default: ""
+    description: "htpasswd-encrypted basic auth password used for accessing all nginx endpoints, e.g. Kibana and ElasticHQ"
