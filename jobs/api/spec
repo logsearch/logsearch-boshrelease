@@ -30,8 +30,8 @@ properties:
     description: IP address and port of kibana host proxy kibana requests for (eg, 127.0.0.1:5601).
     default: "127.0.0.1:5601"
   basic_auth.username:
-    default: "birdnest"
+    default: ""
     description: "Basic auth username used for accessing all nginx endpoints, e.g. Kibana and ElasticHQ"
   basic_auth.password:
-    default: "sHhcmvcQtV5AU"
+    default: ""
     description: "htpasswd-encrypted basic auth password used for accessing all nginx endpoints, e.g. Kibana and ElasticHQ"
