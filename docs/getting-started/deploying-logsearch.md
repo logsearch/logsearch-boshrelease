@@ -72,6 +72,7 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
 0. SSH into your workspace
     * Using the default SSH client: `vagrant ssh`
     * In case you want to use a custom SSH client (eg, Putty/Kitty on Windows), you can get the SSH settings needed using `vagrant ssh-config`
+    * An SSH agent must be started, when using a custom SSH client
     * Once your SSH terminal is connected you should see something like:
 
              /path/to/where/you/want/logsearch-workspace $ vagrant ssh
