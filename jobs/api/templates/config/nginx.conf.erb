@@ -63,6 +63,18 @@ http {
             proxy_pass http://kibana;
         }
     }
+    server {
+        listen *:<%= p("api.kibana.port") %>;
+        server_name elk.*;
+
+        auth_basic "Restricted";
+        auth_basic_user_file /var/vcap/jobs/api/config/nginx.htpasswd;
+
+        location / {
+            proxy_pass http://kibana;
+        }
+    }
+
     # proxy: Kibana
     # reason: Proxy requests to <%= p("api.kibana.host_header") %> to internal Kibana url
     server {
