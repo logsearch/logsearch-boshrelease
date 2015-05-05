@@ -95,6 +95,8 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
 
 ## Target the workspace's local test environments BOSH
 
+_NB: Commands from this point forward are to be executed in the SSH client connected to the Vagrant box
+
 By convention, configuration for your Logsearch cluster deployments is stored in the workspace under `~/environments/$ORGANISATION/$ENVIRONMENT`.
 
 Navigating to the relevant $ENVIRONMENT folder targets that environment's BOSH director.
