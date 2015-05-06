@@ -17,7 +17,7 @@ export LOGSTASH_WORKERS=<%= p('logstash_parser.workers') %>
 
 LOCAL_PLUGINS_DIR=/var/vcap/packages/logstash/logstash/vendor/bundle/jruby/1.9/gems
 LOCAL_PLUGINS_NAME_LIST=$( cat /var/vcap/packages/logstash/plugins-default.list | tr "\n" ' ' )
-LOCAL_PLUGINS_NAME_LIST=" ${LOCAL_PLUGINS_NAME_LIST} <%= p('logstash_parser.plugins').map { | plugin | plugin[0] }.join(' ') %> "
+LOCAL_PLUGINS_NAME_LIST=" ${LOCAL_PLUGINS_NAME_LIST} <%= p('logstash_parser.plugins').map { | plugin | plugin.first[0] }.join(' ') %> "
 
 case $1 in
 
