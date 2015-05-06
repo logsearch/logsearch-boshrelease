@@ -163,3 +163,19 @@ elasticsearch/elasticsearch-1.5.1.tar.gz:
   object_id: 93b93692-d68a-44e7-86d7-dabe5e13f8d5
   sha: b3863a63d265486332042246bf1c002b3a70b46f
   size: 28183803
+logstash/logstash-1.5.0-rc3.tar.gz:
+  object_id: 28abdf91-406a-4d3d-b5c7-99ac2f0e6e79
+  sha: d535f066c2e829b40fc4d145ddc6a2f723bf913a
+  size: 87458848
+logstash/logstash-filter-alter-0.1.6.gem:
+  object_id: d96edc4c-ffdd-4fc8-9bae-1dc243b2e074
+  sha: e2cadce7e3d145c791087832c4f647f451f5027e
+  size: 8704
+logstash/logstash-filter-translate-0.1.9.gem:
+  object_id: 9848212e-40a3-4f46-b40d-407f5b94d2c3
+  sha: 65e437fd64202ff879990d7c7963f3f7b4e50c17
+  size: 10240
+logstash/logstash-input-relp-0.1.5.gem:
+  object_id: cf9789c1-f2dc-43ca-b0fa-8c53f1346184
+  sha: eb4c73ac65bc39ea3d51b8473dfe69d263694fa9
+  size: 11776

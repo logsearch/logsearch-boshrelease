@@ -5,7 +5,7 @@ title: "Deploying Logsearch with the LogSearch Workspace"
 Logsearch behaves just like any other BOSH release - it has jobs for you to allocate and properties for you to
 configure. If you need an introduction to BOSH, please review [their documentation][1] first.
 
-The [Logsearch Workspace](https://github.com/logsearch/workspace) project provides a local Vagrant VM including all the required dependancies and an embedded instance of [BOSH Lite][4]
+The [Logsearch Workspace](https://github.com/logsearch/workspace) project provides a local Vagrant VM including all the required dependencies and an embedded instance of [BOSH Lite][4]
 which enables allows you to deploy a local LogSearch development/test cluster.
 
 The screencast and instructions below walk step by step through setting up a local Logsearch cluster running in the Logsearch Workspace.  
@@ -26,11 +26,11 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
     * A SSH client (check with `ssh -V`)
     * 6GB of FREE RAM - we've tested on machines with 16MB+
 
-0. Installing above dependancies 
+0. Installing above dependencies
 
     * on Windows
     
-        We recommend you use the [Chocolatey](https://chocolatey.org/) package manager to install the above     dependancies on  Windows
+        We recommend you use the [Chocolatey](https://chocolatey.org/) package manager to install the above     dependencies on  Windows
             
         Open an _Administrative PowerShell_ prompt and:
             
@@ -41,7 +41,7 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
 
     * on Mac OSX
 
-        We recommend you use the [Homebrew](http://brew.sh/) package manager to install the above dependancies on Mac
+        We recommend you use the [Homebrew](http://brew.sh/) package manager to install the above dependencies on Mac
         
         Open an terminal and:
         
@@ -72,6 +72,7 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
 0. SSH into your workspace
     * Using the default SSH client: `vagrant ssh`
     * In case you want to use a custom SSH client (eg, Putty/Kitty on Windows), you can get the SSH settings needed using `vagrant ssh-config`
+    * An SSH agent must be started, when using a custom SSH client
     * Once your SSH terminal is connected you should see something like:
 
              /path/to/where/you/want/logsearch-workspace $ vagrant ssh
@@ -93,6 +94,8 @@ The instructions below walk through setting up a local Logsearch Workspace VM ba
     _NB:  You can ignore warnings about missing AWS & GIT credentials in this tutorial, since we won't be interacting with AWS or Git_
 
 ## Target the workspace's local test environments BOSH
+
+_NB: Commands from this point forward are to be executed in the SSH client connected to the Vagrant box
 
 By convention, configuration for your Logsearch cluster deployments is stored in the workspace under `~/environments/$ORGANISATION/$ENVIRONMENT`.
 
