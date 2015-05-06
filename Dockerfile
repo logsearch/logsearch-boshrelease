@@ -1,7 +1,10 @@
 FROM dockerfile/ruby
 
-RUN apt-get install curl -y
-RUN bundle install #"2014-07-10"
+RUN mkdir -p /workspace
+WORKDIR /workspace
+
+ADD Gemfile /workspace/Gemfile
+ADD Gemfile.lock /workspace/Gemfile.lock
+RUN bundle install
 
 VOLUME ["/workspace"]
-WORKDIR /workspace

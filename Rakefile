@@ -5,18 +5,27 @@ RSpec::Core::RakeTask.new('spec')
 # If you want to make this the default task
 task :default => :spec
 
+target=""
+target="#{target} -t #{ENV['BOSH_TARGET']}" if ENV['BOSH_TARGET']
+target="#{target} -d #{ENV['BOSH_DEPLOYMENT']}" if ENV['BOSH_DEPLOYMENT']
+target="#{target} -u #{ENV['BOSH_USER']}" if ENV['BOSH_USER']
+target="#{target} -p #{ENV['BOSH_PASSWORD']}" if ENV['BOSH_PASSWORD']
+
 namespace :dev_release do
+	desc "Creates DEV release"
+	task :create do
+		puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+		sh "yes logsearch | bosh create release --force --with-tarball"
+	end
 	desc "Creates and uploads DEV release to currently targeted BOSH."
-	task :create_and_upload do
+	task :create_and_upload => :create do
 		puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
-		sh "bosh create release --force"
-		puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
-		sh "bosh -n upload release"
+		sh "bosh #{target} -n upload release"
 	end
 	desc "Creates, uploads and deploys DEV release to currently targeted BOSH deployment manifest"
 	task :create_and_upload_and_deploy => :create_and_upload  do
 		puts "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
-		sh "bosh -n deploy"
+		sh "bosh #{target} -n deploy"
 	end
 end
 
