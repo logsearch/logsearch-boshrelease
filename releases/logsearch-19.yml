@@ -1,0 +1,82 @@
+---
+packages:
+- name: java8
+  version: 0ae49bb225b4b74e6d4f9cab3681ebd2f725b9aa
+  fingerprint: 0ae49bb225b4b74e6d4f9cab3681ebd2f725b9aa
+  sha1: 45359766f7efc2de7ea0df4ba8736b81a9abeb38
+  dependencies: []
+- name: kibana
+  version: 4fff443e15e6003b9796bb29b861306ce399268c
+  fingerprint: 4fff443e15e6003b9796bb29b861306ce399268c
+  sha1: 2cbf11699b09dd703d9acde7b433f861cc9248ea
+  dependencies: []
+- name: elasticsearch
+  version: dd447be01e4cd04d3e28f4fbb266e574368cb92b
+  fingerprint: dd447be01e4cd04d3e28f4fbb266e574368cb92b
+  sha1: 5c683daedf1ba15f32870a727c126515a5fc6241
+  dependencies: []
+- name: redis
+  version: cd861700c83a544b6d0bba3b620017d22cf0d726
+  fingerprint: cd861700c83a544b6d0bba3b620017d22cf0d726
+  sha1: eb71fe4bae7331bdf281783df22603518f12626f
+  dependencies: []
+- name: nginx
+  version: 07fa264094f0ebb55bcc9990578d9cc159748dc0
+  fingerprint: 07fa264094f0ebb55bcc9990578d9cc159748dc0
+  sha1: 8b1625f2f49e08ea2649ed0694b655fc0c10ab13
+  dependencies: []
+- name: logstash
+  version: d4e1d25c39fb20e26f976edf6dae4e3bfe7f989b
+  fingerprint: d4e1d25c39fb20e26f976edf6dae4e3bfe7f989b
+  sha1: 29ed640af033748ad4a528d60458393226f61969
+  dependencies:
+  - java8
+jobs:
+- name: archiver
+  version: 2996033728b8896bcde48331e5d1d1bd22e31f3a
+  fingerprint: 2996033728b8896bcde48331e5d1d1bd22e31f3a
+  sha1: be9558fbf311abc926d491033ad1fc7d0611fc70
+- name: ingestor_syslog
+  version: 287c712ce976d111d75e6bdc427bd464bbc02a3b
+  fingerprint: 287c712ce976d111d75e6bdc427bd464bbc02a3b
+  sha1: c772b4cd0cfe8f1b4a6b1376ea1a084a8d273df1
+- name: ingestor_lumberjack
+  version: ce8645b9cbeeae75a2373ebfaee3d39f4bb6ef9f
+  fingerprint: ce8645b9cbeeae75a2373ebfaee3d39f4bb6ef9f
+  sha1: fd9aa83d07bc4b00423dc477c26e08a8a612f10a
+- name: queue
+  version: 44867e5b6d60939104bb32dcfecc7f247c03b0a0
+  fingerprint: 44867e5b6d60939104bb32dcfecc7f247c03b0a0
+  sha1: 85bbacab2205616cc0bacea961a6df89fae98678
+- name: ingestor_relp
+  version: b7460e2f6b839bf8c6db0f5a7590a3e870bdfc16
+  fingerprint: b7460e2f6b839bf8c6db0f5a7590a3e870bdfc16
+  sha1: a5ff9ffaca710cbc432ee121a22ee346524415c0
+- name: kibana
+  version: 2c92bf9539d1898f5ff673cf6e2675ec1aaffafd
+  fingerprint: 2c92bf9539d1898f5ff673cf6e2675ec1aaffafd
+  sha1: dfafe1ac6a2df5554b83bf580869637ecce846cc
+- name: api
+  version: ed8f50ce8e6bd6700cc9bf80da41f1b0806a40fb
+  fingerprint: ed8f50ce8e6bd6700cc9bf80da41f1b0806a40fb
+  sha1: 8da40e3fcfdb00875182257b5aa4fa7164d395c7
+- name: elasticsearch
+  version: 8fd6976d17994beffcfc623fad675e990d53f2c9
+  fingerprint: 8fd6976d17994beffcfc623fad675e990d53f2c9
+  sha1: f0c899b8fb256b849f6ba2ade7fe4a9b70165857
+- name: log_parser
+  version: f0cce9efe12bb6a4cf56221b0f86f076e833aa85
+  fingerprint: f0cce9efe12bb6a4cf56221b0f86f076e833aa85
+  sha1: d561cf33a7a03c79899fd300a65530eb999d5ded
+- name: ingestor_archiver
+  version: 551e26ba32995f118d2cb6811b85f1437037b8a3
+  fingerprint: 551e26ba32995f118d2cb6811b85f1437037b8a3
+  sha1: df28dbf385d2fe205555ab50f85196eaddbd937a
+license:
+  version: 45ba225fe5790e0633fb9a8e20be9efeea888f51
+  fingerprint: 45ba225fe5790e0633fb9a8e20be9efeea888f51
+  sha1: 065103911af70b44df428eee52b3400417adb630
+commit_hash: 2503ff99
+uncommitted_changes: true
+name: logsearch
+version: '19'
