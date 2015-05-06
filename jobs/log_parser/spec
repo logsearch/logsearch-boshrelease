@@ -52,6 +52,9 @@ properties:
   logstash_parser.use_local_elasticsearch:
     description: "Run a local elasticsearch client node"
     default: true
+  logstash_parser.plugins:
+    description: "Plugins to run logstash with (array[] = { plugin-name: install-source }; e.g. [ { logstash-filter-cityindex-acctlookup: 'https://s3.amazonaws.com/.../logstash-filter-cityindex-acctlookup-1.2.9.gem' } ])"
+    default: []
 
   elasticsearch.host:
     description: IP / DNS of elasticsearch http endpoint

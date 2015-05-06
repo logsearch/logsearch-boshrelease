@@ -15,6 +15,10 @@ export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
 export LOGSTASH_WORKERS=<%= p('logstash_parser.workers') %>
 <% end %>
 
+LOCAL_PLUGINS_DIR=/var/vcap/packages/logstash/logstash/vendor/bundle/jruby/1.9/gems
+LOCAL_PLUGINS_NAME_LIST=$( cat /var/vcap/packages/logstash/plugins-default.list | tr "\n" ' ' )
+LOCAL_PLUGINS_NAME_LIST=" ${LOCAL_PLUGINS_NAME_LIST} <%= p('logstash_parser.plugins').map { | plugin | plugin.first[0] }.join(' ') %> "
+
 case $1 in
 
   start)
@@ -22,6 +26,27 @@ case $1 in
 
     # store this processes pid in $PIDFILE, since the exec below doesn't daemonize
     echo $$ > $PIDFILE
+
+    # install new plugins
+    <% p('logstash_parser.plugins').each do | plugin | pname, psource = plugin.first %>
+      if ! ls ${LOCAL_PLUGINS_DIR}/<%= pname %>-* 1> /dev/null 2>&1 ; then
+        <% if psource =~ /:\/\// %>
+          wget -O '<%= psource %>.gem' '<% psource %>'
+          /var/vcap/packages/logstash/logstash/bin/plugin install '<%= psource %>.gem'
+          rm '<%= psource %>.gem'
+        <% else %>
+          /var/vcap/packages/logstash/logstash/bin/plugin install '<%= pname %>'
+        <% end %>
+      fi
+    <% end %>
+
+    # remove old plugins
+
+    for LOCAL_PLUGIN_NAME in $( /var/vcap/packages/logstash/logstash/bin/plugin list ) ; do
+      if ! [[ "${LOCAL_PLUGINS_NAME_LIST}" =~ (^| )$LOCAL_PLUGIN_NAME($| ) ]] ; then
+        /var/vcap/packages/logstash/logstash/bin/plugin uninstall "${LOCAL_PLUGIN_NAME}"
+      fi
+    done
 
     # construct a complete config file from all the fragments
     cat ${JOB_DIR}/config/input_redis_and_output_elasticsearch.conf > ${JOB_DIR}/config/logstash.conf
