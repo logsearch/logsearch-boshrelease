@@ -11,7 +11,7 @@ own [BOSH](http://docs.cloudfoundry.org/bosh/)-managed infrastructure.
 First make sure you have properly targeted your existing BOSH director. Then
 you can upload the latest logsearch release...
 
-    git clone https://github.com/cloudfoundry-community/logsearch-boshrelease.git
+    git clone https://github.com/logsearch/logsearch-boshrelease.git
     cd logsearch-boshrelease
     bosh upload release releases/logsearch-latest.yml
 
