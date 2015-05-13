@@ -54,33 +54,20 @@ for FILE in $( ls *.log ) ; do
     echo "compressed ${FILE}"
 done
 
-EXIT_CODE=0
-
 for FILE in $( ls *.xz ) ; do
     echo "uploading ${FILE}"
-    R1=$( scp \
+    scp \
         -P ${SCP_PORT} \
         -o "StrictHostKeyChecking no" \
         -i ${SCP_PRIVATE_SSH_KEY} \
         "${FILE}" \
-        "${SCP_USER}@${SCP_HOST}:${SCP_DESTINATION}" \
-        2>&1 \
-    )
+        "${SCP_USER}@${SCP_HOST}:${SCP_DESTINATION}"
 
-    if echo "$R1" | grep "<Error>" > /dev/null 2>&1 ; then
-        echo "FAILED uploading ${FILE}"
-        echo "${R1}"
+    echo $(date) "uploaded ${FILE}"
 
-        EXIT_CODE=1
-    else
-        echo $(date) "uploaded ${FILE}"
+    echo $(date) "removing ${FILE}"
 
-        echo $(date) "removing ${FILE}"
+    rm "${FILE}"
 
-        rm "${FILE}"
-
-        echo $(date) "removed ${FILE}"
-    fi
+    echo $(date) "removed ${FILE}"
 done
-
-exit $EXIT_CODE
