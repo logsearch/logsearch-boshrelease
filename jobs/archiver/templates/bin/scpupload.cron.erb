@@ -1,0 +1,73 @@
+#!/bin/bash
+
+set -e
+set -u
+
+SCP_HOST="<%= p('archiver.scp.host') %>"
+SCP_PORT="<%= p('archiver.scp.port') %>"
+SCP_USER="<%= p('archiver.scp.username') %>"
+SCP_PRIVATE_SSH_KEY=/var/vcap/jobs/archiver/config/scpupload.pem
+SCP_DESTINATION="<%= p('archiver.scp.destination') %>"
+
+cd <%= p('archiver.data_dir') %>
+
+mkdir -p scpupload
+
+
+echo "stopping service"
+
+/var/vcap/bosh/bin/monit stop archiver
+
+while ! /var/vcap/bosh/bin/monit summary | grep archiver | grep 'not monitored' | grep -v 'pending' >/dev/null 2>&1 ; do
+  sleep 2
+done
+
+echo "stopped service"
+
+
+for FILE in $( ls *.log ) ; do
+    BASENAME=$( echo "${FILE}" | sed 's/\.log$//' )
+    DESTFILE="${BASENAME}.`date +%Y%m%d%H%M%S`-<%= name %>-<%= index %>.log"
+
+    echo "moving ${FILE} -> scpupload/${DESTFILE}"
+
+    mv "${FILE}" "scpupload/${DESTFILE}"
+
+    echo "moved ${FILE}"
+done
+
+
+echo "starting service"
+
+/var/vcap/bosh/bin/monit start archiver
+
+echo "started service"
+
+
+cd scpupload
+
+for FILE in $( ls *.log ) ; do
+    echo "compressing ${FILE} -> ${FILE}.xz"
+
+    xz --compress "${FILE}"
+
+    echo "compressed ${FILE}"
+done
+
+for FILE in $( ls *.xz ) ; do
+    echo "uploading ${FILE}"
+    scp \
+        -P ${SCP_PORT} \
+        -o "StrictHostKeyChecking no" \
+        -i ${SCP_PRIVATE_SSH_KEY} \
+        "${FILE}" \
+        "${SCP_USER}@${SCP_HOST}:${SCP_DESTINATION}"
+
+    echo $(date) "uploaded ${FILE}"
+
+    echo $(date) "removing ${FILE}"
+
+    rm "${FILE}"
+
+    echo $(date) "removed ${FILE}"
+done
