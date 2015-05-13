@@ -6,8 +6,10 @@ packages:
 templates:
   bin/logstash.process.erb: bin/logstash.process
   bin/s3upload.cron.erb: bin/s3upload.cron
+  bin/scpupload.cron.erb: bin/scpupload.cron
   config/logstash.conf.erb: config/logstash.conf
   logsearch/metric-collector/files/collector: logsearch/metric-collector/files/collector
+  config/scpupload.pem.erb: config/scpupload.pem
 properties:
   redis.host:
     description: Redis host of queue
@@ -17,6 +19,10 @@ properties:
   redis.key:
     description: Name of queue to pull messages from
     default: logstash
+
+  archiver.method:
+    description: "Select the method for archiving"
+    default: "s3"
 
   archiver.s3.bucket:
     description: "S3 Bucket"
@@ -30,6 +36,19 @@ properties:
     description: "S3 Access Key ID"
   archiver.s3.secret_access_key:
     description: "S3 Secret Access Key"
+
+  archiver.scp.host:
+    description: "Host to transfer the log files to"
+  archiver.scp.port:
+    description: "Port of the remote host"
+    default: 22
+  archiver.scp.username:
+    description: "If your remote username differs from the default root one"
+    default: root
+  archiver.scp.ssh_key:
+    description: "Private ssh key in PEM format (file contents, not a path)"
+  archiver.scp.destination:
+    description: "Destination directory for the tranferred log files"
 
   archiver.data_dir:
     default: "/var/vcap/store/archiver"
