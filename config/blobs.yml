@@ -183,3 +183,7 @@ elasticsearch/elasticsearch-1.5.2.tar.gz:
   object_id: 89918f09-6f64-4e4f-aa39-3064313560fb
   sha: ffe2e46ec88f4455323112a556adaaa085669d13
   size: 28173132
+logstash/logstash-1.5.0.tar.gz:
+  object_id: 5dbd902b-49d4-40e5-a3b1-a240c5af017f
+  sha: 9729c2d31fddaabdd3d8e94c34a6d1f61d57f94a
+  size: 87008665
