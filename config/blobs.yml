@@ -179,3 +179,7 @@ logstash/logstash-input-relp-0.1.5.gem:
   object_id: cf9789c1-f2dc-43ca-b0fa-8c53f1346184
   sha: eb4c73ac65bc39ea3d51b8473dfe69d263694fa9
   size: 11776
+elasticsearch/elasticsearch-1.5.2.tar.gz:
+  object_id: 89918f09-6f64-4e4f-aa39-3064313560fb
+  sha: ffe2e46ec88f4455323112a556adaaa085669d13
+  size: 28173132
