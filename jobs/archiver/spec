@@ -26,6 +26,7 @@ properties:
 
   archiver.s3.bucket:
     description: "S3 Bucket"
+    default: ""
   archiver.s3.prefix:
     description: "S3 Prefix"
     default: ""
@@ -34,11 +35,14 @@ properties:
     default: "s3.amazonaws.com"
   archiver.s3.access_key_id:
     description: "S3 Access Key ID"
+    default: ""
   archiver.s3.secret_access_key:
     description: "S3 Secret Access Key"
+    default: ""
 
   archiver.scp.host:
     description: "Host to transfer the log files to"
+    default: ""
   archiver.scp.port:
     description: "Port of the remote host"
     default: 22
@@ -47,8 +51,10 @@ properties:
     default: root
   archiver.scp.ssh_key:
     description: "Private ssh key in PEM format (file contents, not a path)"
+    default: ""
   archiver.scp.destination:
     description: "Destination directory for the tranferred log files"
+    default: ""
 
   archiver.data_dir:
     default: "/var/vcap/store/archiver"
