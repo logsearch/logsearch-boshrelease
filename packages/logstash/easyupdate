@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+set -u
+
+# find the latest version
+VERSION=$( wget -qO- https://api.github.com/repos/elastic/logstash/tags?per_page=32 | jq -r '.[].name' | grep -E '^v\d+\.\d+\.\d+$' | sed -e 's/^v//' | head -n1 )
+
+if [ ! -e "blobs/logstash/logstash-${VERSION}.tar.gz" ] ; then
+  # if we aren't already using this version
+
+  # download
+  wget -O "blobs/logstash/logstash-${VERSION}.tar.gz" "https://download.elastic.co/logstash/logstash/logstash-${VERSION}.tar.gz"
+
+  # update references
+  find packages/logstash -type f -exec sed -E -i '' -e "s/logstash-[0-9]\.[0-9]\.[0-9]/logstash-${VERSION}/" {} \;
+
+  # upload the new blob
+  bosh -n upload blobs
+
+  # commit
+  git add packages/logstash/packaging packages/logstash/spec config/blobs.yml
+  git commit -m "Upgrade logstash to ${VERSION}"
+fi
+
+for PLUGIN in filter-alter filter-translate input-relp ; do
+  # find the latest version
+  VERSION=$( wget -qO- "https://api.github.com/repos/logstash-plugins/logstash-${PLUGIN}/tags?per_page=32" | jq -r '.[].name' | grep -E '^v\d+\.\d+\.\d+$' | sed -e 's/^v//' | head -n1 )
+
+  if [ ! -e "blobs/logstash/logstash-${PLUGIN}-${VERSION}.gem" ] ; then
+    # if we aren't already using this version
+  
+    # download
+    wget -O "blobs/logstash/logstash-${PLUGIN}-${VERSION}.gem" "https://rubygems.org/downloads/logstash-${PLUGIN}-${VERSION}.gem"
+
+    # update references
+    find packages/logstash -type f -exec sed -E -i '' -e "s/logstash-${PLUGIN}-[0-9]\.[0-9]\.[0-9]/logstash-${PLUGIN}-${VERSION}/" {} \;
+
+    # upload the new blob
+    bosh -n upload blobs
+
+    # commit
+    git add packages/logstash/packaging packages/logstash/spec config/blobs.yml
+    git commit -m "Upgrade logstash/${PLUGIN} to ${VERSION}"
+  fi
+done
