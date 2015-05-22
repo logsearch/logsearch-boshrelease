@@ -1,9 +1,5 @@
-require 'rspec/core/rake_task'
-
-RSpec::Core::RakeTask.new('spec')
-
-# If you want to make this the default task
-task :default => :spec
+require 'erb'
+require 'rake'
 
 namespace :dev_release do
 	desc "Creates and uploads DEV release to currently targeted BOSH."
@@ -31,4 +27,38 @@ namespace :lumberjack do
 	task :forward_stdin_to_bosh_lite do 
 		sh "logstash-forwarder -config=spec/smoke/stdin_to_bosh-lite.json"
 	end	
+end
+
+namespace :logstash_filters do
+	task :clean do
+	  mkdir_p "target"
+	  rm_rf "target/*"
+	end
+	
+	desc "Builds filters & dashboards"
+	task :build => :clean do
+	  puts "===> Building ..."
+	  cp_r "src/logstash-filters/snippets", "target/logstash-filters"
+	  compile_erb 'src/logstash-filters/default.conf.erb', 'target/logstash-filters/default.conf'
+	
+	  puts "===> Artifacts:"
+	  puts `tree target`
+	end
+	
+	desc "Runs unit tests against filters & dashboards"
+	task :test, [:rspec_files] => :build do |t, args|
+	  args.with_defaults(:rspec_files => "$(find spec/logstash-filters -name *spec.rb)")
+		puts "===> Testing ..."
+	  sh %Q[vendor/logstash/bin/rspec #{args[:rspec_files]} ]
+	end
+	
+end #namespace logstash-filters
+
+def compile_erb(source_file, dest_file)
+  if File.extname(source_file) == '.erb'
+    output = ERB.new(File.read(source_file)).result(binding)
+    File.write(dest_file, output)
+  else
+    cp source_file, dest_file
+  end
 end

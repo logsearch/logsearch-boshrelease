@@ -23,3 +23,4 @@ blobs
 
 /target
 /vendor/logsearch-filters-common
+vendor/logstash

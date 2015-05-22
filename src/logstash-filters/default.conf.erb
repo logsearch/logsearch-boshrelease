@@ -1,11 +1,19 @@
+<%
+
+def include_template(file)
+    "#\n# #{file}\n#\n#{ERB.new(File.read(file)).result(binding)}"
+end
+
+%>
+
 if "logsearch-nginx-access-v1" == [@type] {
-  <%= File.read("#{File.dirname(__FILE__)}/snippets/nginx-access-v1.conf").chop.gsub "\n", "\n  " %>
+  <%= include_template 'src/logstash-filters/snippets/nginx-access-v1.conf' %>
 }
 
 if "logsearch-nginx-error-v1" == [@type] {
-  <%= File.read("#{File.dirname(__FILE__)}/snippets/nginx-error-v1.conf").chop.gsub "\n", "\n  " %>
+  <%= include_template 'src/logstash-filters/snippets/nginx-error-v1.conf' %>
 }
 
 if "logsearch-elasticsearch-stdout-v1" == [@type] {
-  <%= File.read("#{File.dirname(__FILE__)}/snippets/elasticsearch-stdout-v1.conf").chop.gsub "\n", "\n  " %>
+  <%= include_template 'src/logstash-filters/snippets/elasticsearch-stdout-v1.conf' %>
 }
