@@ -38,7 +38,6 @@ namespace :logstash_filters do
 	desc "Builds filters & dashboards"
 	task :build => :clean do
 	  puts "===> Building ..."
-	  cp_r "src/logstash-filters/snippets", "target/logstash-filters"
 	  compile_erb 'src/logstash-filters/default.conf.erb', 'target/logstash-filters/default.conf'
 	
 	  puts "===> Artifacts:"

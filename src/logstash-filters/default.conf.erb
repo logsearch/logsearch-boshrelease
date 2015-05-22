@@ -10,6 +10,10 @@ if "logsearch-nginx-access-v1" == [@type] {
   <%= include_template 'src/logstash-filters/snippets/nginx-access-v1.conf' %>
 }
 
+if "logsearch-nginx-access-v2" == [@type] {
+  <%= include_template 'src/logstash-filters/snippets/nginx-access-v2.conf' %>
+}
+
 if "logsearch-nginx-error-v1" == [@type] {
   <%= include_template 'src/logstash-filters/snippets/nginx-error-v1.conf' %>
 }
