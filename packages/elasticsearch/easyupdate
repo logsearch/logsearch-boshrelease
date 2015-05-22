@@ -4,25 +4,21 @@ set -e
 set -u
 
 # find the latest version
-ELASTICSEARCH=$( wget -qO- https://api.github.com/repos/elastic/elasticsearch/tags?per_page=1 | jq -r '.[0].name' | cut -c 2- )
+VERSION=$( wget -qO- https://api.github.com/repos/elastic/elasticsearch/tags?per_page=32 | jq -r '.[].name' | grep -E '^v\d+\.\d+\.\d+$' | sed -e 's/^v//' | head -n1 )
 
-# check if we already have the version
-if [ -e "blobs/elasticsearch/elasticsearch-${ELASTICSEARCH}.tar.gz" ] ; then
-  exit
+if [ ! -e "blobs/elasticsearch/elasticsearch-${VERSION}.tar.gz" ] ; then
+  # if we aren't already using this version
+
+  # download
+  wget -O "blobs/elasticsearch/elasticsearch-${VERSION}.tar.gz" "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${VERSION}.tar.gz"
+
+  # update references
+  find packages/elasticsearch -type f -exec sed -E -i '' -e "s/elasticsearch-[0-9]\.[0-9]\.[0-9]/elasticsearch-${VERSION}/" {} \;
+
+  # upload the new blob
+  bosh -n upload blobs
+
+  # commit
+  git add packages/elasticsearch/packaging packages/elasticsearch/spec config/blobs.yml
+  git commit -m "Upgrade elasticsearch to ${VERSION}"
 fi
-
-# download
-wget -O "blobs/elasticsearch/elasticsearch-${ELASTICSEARCH}.tar.gz" "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ELASTICSEARCH}.tar.gz"
-
-# update references
-find packages/elasticsearch -type f -exec sed -E -i '' -e "s/elasticsearch-[0-9]\.[0-9]\.[0-9]/elasticsearch-${ELASTICSEARCH}/" {} \;
-
-# upload the new blob
-bosh -n upload blobs
-
-# commit
-git add packages/elasticsearch/packaging packages/elasticsearch/spec config/blobs.yml
-git commit -m "Upgrade elasticsearch to ${ELASTICSEARCH}"
-
-# reminders
-echo 'Now, before pushing... test the new package and `git reset HEAD^1` to fix the problems if there are any.'
