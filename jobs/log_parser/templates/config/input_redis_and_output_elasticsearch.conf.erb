@@ -7,6 +7,9 @@ input {
         data_type => "list"
         key => "<%= p("redis.key") %>"
         threads => 8
+        <% if p("logstash_parser.input_codec") %>
+        codec => <%= p("logstash_parser.input_codec") %>
+        <% end %>
     }
 }
 

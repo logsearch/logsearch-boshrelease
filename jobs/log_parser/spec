@@ -49,6 +49,8 @@ properties:
   logstash_parser.elasticsearch_index_type:
     description: "The specific, dynamic index type name to write events to."
     default: "%{@type}"
+  logstash_parser.input_codec:
+    description: "The input codec and configuration used for input data."
   logstash_parser.use_local_elasticsearch:
     description: "Run a local elasticsearch client node"
     default: true
