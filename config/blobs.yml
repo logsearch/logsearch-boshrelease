@@ -1,88 +1,4 @@
 ---
-collectd/collectd-5.4.1.tar.gz:
-  object_id: 3867c23b-3f3f-4403-a895-ab9a4527fe8a
-  sha: faaccac4daf48449bcefc9d6f9236f98a5dd5b4b
-  size: 1894132
-collectd/collectd-elasticsearch-logstash.py:
-  object_id: a3e86d75-771b-4b4b-af46-be6eb90ca31b
-  sha: ab029abdc55bcc3320c12673132733eabff8bec4
-  size: 1856
-collectd/collectd-elasticsearch.py:
-  object_id: dd6f29de-9fc9-4088-b3d0-075ec3808257
-  sha: 803ceedabe3b46f708b541c76f672ba0d88971d7
-  size: 10430
-collectd/collectd-librato.py:
-  object_id: 3df5d0ef-9008-4c9c-9afe-175f1bfb2623
-  sha: 67cfab428216e83f5cfc4af139608e159873455b
-  size: 9945
-collectd/collectd-redis-logstash.py:
-  object_id: 4e685a93-c8c7-4bb1-a202-3215381f0173
-  sha: d680a38c920ec51c8d511f60c77ad2b2c6434a15
-  size: 1173
-collectd/collectd-redis.py:
-  object_id: d29c50ce-5d4b-48b3-abea-7f8229f0bc38
-  sha: b80e5ad81dccf4f685af73bcf41359e1422b783a
-  size: 5409
-elasticsearch/cloud-aws-1.14.0.tar.gz:
-  object_id: 43342c16-14f5-48c3-9dad-441c09b95e00
-  sha: 37429a2a3dd6f02c5331bc038b0bf19e7821ae4f
-  size: 8526529
-elasticsearch/elasticsearch-0.90.5.tar.gz:
-  object_id: 22ef0cf0-fee5-4e44-bf98-bf38be05cc6a
-  sha: c494edd853af1d930b4fd5da17241c6ea91e0699
-  size: 17670025
-elasticsearch/elasticsearch-1.0.1.tar.gz:
-  object_id: d522c693-9d8c-4e64-9fd9-5d4f0789a6b0
-  sha: 26bcf8e36576b2f3809ab84432ea005f893836b9
-  size: 19244140
-elasticsearch/elasticsearch-HQ-1.1.0.tar.gz:
-  object_id: 238f2d53-ae72-4fbb-933d-02bbfc0cf364
-  sha: a89884a7fe0fea3411ede9f61c2544bb5e25e04c
-  size: 3315859
-elasticsearch/jetty-0.90.0.tar.gz:
-  object_id: 64149d21-8708-4105-9e6c-e3e99f34cbe5
-  sha: 8dd89b59ebc4f4d56cda8312d41363c4699612a4
-  size: 1116839
-elasticsearch/jetty-1.0.1-beta.zip:
-  object_id: 54e50405-0ceb-4e60-8cca-13931d13c1ac
-  sha: c8e7abf95929b5f2a11393670ecf32130a8896e0
-  size: 1167955
-elasticsearch/kibana-3.0.1.tar.gz:
-  object_id: a9b0d60f-a255-4a74-b649-1b05f7561513
-  sha: dd6c51735dfdf129c1f0dd5fd38893cc1459cbb2
-  size: 1069929
-elasticsearch/marvel-1.1.0.zip:
-  object_id: e242d003-1633-4a82-9820-4130e0b8922f
-  sha: d05f5f03493d0c49aba175bb26511d4e4c411000
-  size: 1862272
-java7/openjdk-1.7.0_51.tar.gz:
-  object_id: ea52d010-de14-4d9e-942a-b273c7f658a3
-  sha: 0f4d3705e3a4e1452250def57cfc36ab6cc37355
-  size: 34729532
-logstash/logsearch-filters-common--21e1a3b643.tgz:
-  object_id: 6ef03bf5-ebdb-47d2-9a9a-cf0debe4c07f
-  sha: b3b0b66bb4d1febc033e6a30fcbb004381e884f3
-  size: 1088
-logstash/logsearch-filters-common--a787b438c0.tgz:
-  object_id: 15003de8-fe3e-4519-9a78-2ea183ccdd47
-  sha: 2b89af0dbe328e39cd63ab8ac5ef91a0c8213da3
-  size: 1173
-logstash/logstash-1.3.0.jar:
-  object_id: d812931e-ea5e-448b-ad30-5b17dd371659
-  sha: d49d48e0a9590eccb3b8acaa368c01f18125f33d
-  size: 82722740
-logstash/logstash-forwarder-1.4.0.rc1:
-  object_id: b217e54f-10ab-4f4e-83b8-a5fc6b570dc9
-  sha: 4aed8113df093fd6566f402ec0e245ad0780f030
-  size: 7214504
-logstash-filters-common/logstash-filters-common-1.tgz:
-  object_id: 25a07248-e7ab-423b-ace7-f3df263906fe
-  sha: 9c22a65fdee16b33148f2b618d84737586239d03
-  size: 604
-nginx/nginx-1.4.2.tar.gz:
-  object_id: a72ee18a-ccd4-4c26-9722-114e70ced82d
-  sha: 8f006dc773840b6624a137a584ff8850d5155e3f
-  size: 767688
 nginx/nginx-1.4.7.tar.gz:
   object_id: a3a064ab-84ea-4d3c-8bcf-28ba5be5c285
   sha: e13b5b23f9be908b69652b0c394a95e9029687e3
@@ -91,82 +7,22 @@ nginx/pcre-8.33.tar.gz:
   object_id: 1be6421e-16f5-42fc-8ad6-2eb756cde679
   sha: bceafb53553219dad2593bb8af06da4d07fd3828
   size: 1889401
-python/Python-2.7.6.tgz:
-  object_id: 7111e448-bc6a-4071-b56b-739ba9e10316
-  sha: 8328d9f1d55574a287df384f4931a3942f03da64
-  size: 14725931
 redis/redis-2.8.4.tar.gz:
   object_id: 191a0100-c082-4f96-9bb4-73abe803e649
   sha: 79b156cc9d8bff5a022fdc6d28d5c42999ddcb4f
   size: 1048914
-elasticsearch/elasticsearch-1.2.1.tar.gz:
-  object_id: 2095c352-3c35-4caf-9b53-2f4082f34af1
-  sha: e74d80d79269bb224153ad63b45f1cf7448f3398
-  size: 19849249
-elasticsearch/elasticsearch-jetty-1.2.1.zip:
-  object_id: bb392b74-7898-48e5-bd12-527370404231
-  sha: a1aae49093818f4bbd82a219e4cc9722145af870
-  size: 1167911
 elasticsearch/kibana-3.1.0.tar.gz:
   object_id: ad1b93da-2ae8-44f9-a62a-a26313aeb880
   sha: effc20c83c0cb8d5e844d2634bd1854a1858bc43
   size: 1073033
-elasticsearch/marvel-1.2.1.zip:
-  object_id: 7ad680c1-48f2-4bad-b8b2-918cd9e85138
-  sha: 36e4438bb6a93727b4422a201a75d4f93b9e00a0
-  size: 1970974
-logstash/logsearch-filters-common-15.tgz:
-  object_id: 39462c46-0341-484e-bdf6-2c69c490585c
-  sha: 0448fc51a5fcff3571f513c84bfca48f45a12889
-  size: 1597
-logstash/logstash-1.4.1.tar.gz:
-  object_id: ea909464-ce1f-4980-b42f-47323395910b
-  sha: 834599d28ce50012c221ece7a6783c5943221e36
-  size: 64573584
-logstash/logstash-contrib-1.4.1.tar.gz:
-  object_id: ad66291c-ae52-4964-8279-228724008860
-  sha: 930dcfdbf13163dc1925d0db1eb6addf1ee18831
-  size: 46537053
-logstash/logsearch-filters-common-16.tgz:
-  object_id: 6e0815ec-01c5-41ec-ace3-dc9b7216c343
-  sha: c111b6c9abf4b439a7e0cdf04552986447298a84
-  size: 1552
-elasticsearch/elasticsearch-1.4.0.tar.gz:
-  object_id: 3d1f5410-64fc-4f4f-a6c8-37c8fdd84ee4
-  sha: 728913722bc94dad4cb5e759a362f09dc19ed6fe
-  size: 27730896
-kibana/kibana-4.0.0-beta3.tar.gz:
-  object_id: c7ccb1d2-afa0-45e4-b220-99ba254a77f9
-  sha: 324896777e447b7dd264edbb89ed583694873903
-  size: 22901370
-elasticsearch/elasticsearch-1.4.4.tar.gz:
-  object_id: 618f818f-a0db-4d4b-b480-77456952c288
-  sha: 963415a9114ecf0b7dd1ae43a316e339534b8f31
-  size: 27900004
 kibana/kibana-4.0.1-linux-x64.tar.gz:
   object_id: 9999d8fe-8031-4c68-8a9e-d1a77f9ecf58
   sha: 1b8914c62a606b7103295a4e3ab01ec40c9993ed
   size: 13625479
-logstash/logstash-1.5.0.rc2.tar.gz:
-  object_id: ef865462-abd9-4346-9d32-5574ad167448
-  sha: 6bdc3e81dcb2a54419aac895844cb7c7a075250d
-  size: 89962291
-logstash/logstash-filter-alter-0.1.5.gem:
-  object_id: 8cac589a-03e7-47bf-83e4-5e29a50c88b7
-  sha: b3f9a097f221029eca457749e988f9522089b247
-  size: 8704
 java8/openjdk-1.8.0_40.tar.gz:
   object_id: c1386f34-7585-4f92-b41e-6d9dbbb940ab
   sha: 590be5c6337753b28acc81d4843e98e6245b5261
   size: 39630740
-elasticsearch/elasticsearch-1.5.1.tar.gz:
-  object_id: 93b93692-d68a-44e7-86d7-dabe5e13f8d5
-  sha: b3863a63d265486332042246bf1c002b3a70b46f
-  size: 28183803
-logstash/logstash-1.5.0-rc3.tar.gz:
-  object_id: 28abdf91-406a-4d3d-b5c7-99ac2f0e6e79
-  sha: d535f066c2e829b40fc4d145ddc6a2f723bf913a
-  size: 87458848
 logstash/logstash-filter-alter-0.1.6.gem:
   object_id: d96edc4c-ffdd-4fc8-9bae-1dc243b2e074
   sha: e2cadce7e3d145c791087832c4f647f451f5027e
