@@ -1,19 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+BASE_DIR=$(cd $SCRIPT_DIR/.. ; pwd) 
 
-echo "===> Building ..."
+cd $BASE_DIR
 
-[ ! -e target/logstash-filters ] || rm -fr target/logstash-filters
-
-mkdir -p target/logstash-filters
-
-mkdir target/logstash-filters/snippets
-cp src/logstash-filters/snippets/* target/logstash-filters/snippets/
-
-erb src/logstash-filters/default.conf.erb > target/logstash-filters/default.conf
-
-
-echo "===> Testing ..."
-
-./vendor/logsearch-filters-common/bin/test.sh
+rake logstash_filters:test["$1"]

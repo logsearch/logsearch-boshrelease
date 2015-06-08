@@ -2,7 +2,7 @@
 files:
   "api/nginx.access.log":
     fields:
-      type: "logsearch-nginx-access-v1"
+      type: "logsearch-nginx-access-v2"
   "api/nginx.error.log":
     fields:
       type: "logsearch-nginx-error-v1"
