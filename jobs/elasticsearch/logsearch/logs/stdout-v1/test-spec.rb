@@ -2,7 +2,7 @@
 require "logstash/devutils/rspec/spec_helper"
 
   describe 'logsearch/elasticsearch/stdout/v1' do
-    config 'filter {' + File.read("#{File.dirname(__FILE__)}/../../../src/logstash-filters/snippets/elasticsearch-stdout-v1.conf") + '}'
+    config 'filter {' + File.read("#{File.dirname(__FILE__)}/logstash-filters.conf") + '}'
 
     sample('@message' => '[2015-03-13 19:17:23,557][INFO ][cluster.routing.allocation.decider] [log_parser/0] updating [cluster.routing.allocation.enable] from [PRIMARIES] to [ALL]') do
 

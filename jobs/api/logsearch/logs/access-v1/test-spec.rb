@@ -5,7 +5,7 @@ require "logstash/filters/grok"
 describe LogStash::Filters::Grok do
 
   describe 'logsearch/nginx/access/v1' do
-    config 'filter {' + File.read("#{File.dirname(__FILE__)}/../../../src/logstash-filters/snippets/nginx-access-v1.conf") + '}'
+    config 'filter {' + File.read("#{File.dirname(__FILE__)}/logstash-filters.conf") + '}'
 
     sample('@message' => '192.0.2.1 - - [12/Mar/2015:16:50:01 +0000] "POST /logstash-2015.03.12/metric/_msearch HTTP/1.1" 200 1866 "-" "curl/7.35.0" 0.011') do
       insist { subject['tags'] }.nil?

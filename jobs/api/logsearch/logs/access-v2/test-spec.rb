@@ -3,7 +3,7 @@ require "logstash/devutils/rspec/spec_helper"
 require "logstash/filters/grok"
 
 describe 'logsearch/nginx/access/v2' do
-  config "filter { #{File.read("src/logstash-filters/snippets/nginx-access-v2.conf")} }"
+  config "filter { #{File.read("#{File.dirname(__FILE__)}/logstash-filters.conf")} }"
 
   sample('@message' => '10.10.66.43 - birdnest [07/May/2015:01:52:55 +0000] "GET /styles/main.css?_b=5930 HTTP/1.1" 304 0 "https://logsearch.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.135 Safari/537.36" 0.003 "216.253.193.158" 127.0.0.1:5601 304 0.002' ) do
   

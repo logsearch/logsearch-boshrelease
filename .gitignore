@@ -21,5 +21,5 @@ my*.yml
 releases/**/*.tgz
 blobs
 
-/vendor/logsearch-filters-common
-vendor/logstash
+/logsearch-config
+/logsearch-config.tgz

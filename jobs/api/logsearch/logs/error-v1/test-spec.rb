@@ -5,7 +5,7 @@ require "logstash/filters/grok"
 describe LogStash::Filters::Grok do
 
   describe 'logsearch/nginx/access/v1' do
-    config 'filter {' + File.read("#{File.dirname(__FILE__)}/../../../src/logstash-filters/snippets/nginx-error-v1.conf") + '}'
+    config 'filter {' + File.read("#{File.dirname(__FILE__)}/logstash-filters.conf") + '}'
 
     sample('@message' => '2015/03/12 16:10:39 [error] 32022#0: *162 access forbidden by rule, client: 192.0.2.100, server: logsearch, request: "GET /favicon.ico HTTP/1.1", host: "api.logsearch.example.com"') do
       insist { subject['tags'] }.nil?

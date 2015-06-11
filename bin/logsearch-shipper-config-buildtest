@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+set -u
+
+RELEASE_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/..
+
+rm -fr $RELEASE_DIR/logsearch-config
+docker run -v "$RELEASE_DIR:/release" -t -i dpb587/logsearch-shipper-release-utils

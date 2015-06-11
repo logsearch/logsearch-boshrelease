@@ -1,1 +1,0 @@
-# Without this logstash's rspec fails to run
