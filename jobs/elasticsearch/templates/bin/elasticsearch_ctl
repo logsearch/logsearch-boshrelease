@@ -28,6 +28,7 @@ case $1 in
 
     # lock while we update plugins
     echo "$$" > "${PIDFILE}"
+    chown vcap:vcap "${PIDFILE}"
 
     mkdir -p "${LOCAL_PLUGINS_DIR}"
 
@@ -56,7 +57,7 @@ case $1 in
 
     ulimit -n 64000
 
-    exec /var/vcap/packages/elasticsearch/bin/elasticsearch \
+    exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
          -Des.config=${JOB_DIR}/config/config.yml \
          -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          -Des.pidfile=${PIDFILE} \

@@ -15,7 +15,7 @@ case $1 in
   start)
     pid_guard $PIDFILE $JOB_NAME/elasticsearch
 
-    exec /var/vcap/packages/elasticsearch/bin/elasticsearch \
+    exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
          -Des.config=${JOB_DIR}/config/elasticsearch/config.yml \
          -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          -Des.pidfile=${PIDFILE} \
