@@ -24,8 +24,8 @@ input {
 	<% end %>
 }
 
-<% if 'DEBUG' == p('logstash.metadata_level') %>
-	filter {
+filter {
+  <% if 'DEBUG' == p('logstash.metadata_level') %>
 	    mutate {
 	        rename => [ "host", "@ingestor.remote_host" ]
 	        rename => [ "sslsubject", "@ingestor.sslsubject" ]
@@ -37,8 +37,10 @@ input {
 		ruby {
 			code => "event['@ingestor[timestamp]'] = Time.now.iso8601(3)"
 		}
-	}
-<% end %>
+  <% end %>
+
+  <%= p('logstash_ingestor.filters') %>
+}
 
 output {
 	<% if p("logstash_ingestor.debug") %>
