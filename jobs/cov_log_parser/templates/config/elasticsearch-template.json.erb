@@ -1,0 +1,27 @@
+{
+    "template" : "*",
+    "settings" : {
+        "number_of_shards" : <%= p("cov_log_parser.indices.number_of_shards") %>,
+        "number_of_replicas" : <%= p("cov_log_parser.indices.number_of_replicas") %>,
+        "index" : {
+            "refresh_interval" : "5s"
+        }
+    },
+    "mappings" : {
+        "_default_" : {
+            "_timestamp" : {
+                "enabled" : true,
+                "store" : true,
+                "path" : "@timestamp",
+                "format" : "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+            },
+            "_all" : {
+                "enabled" : true
+            },
+            "_ttl" : { 
+                "enabled" : true,
+                "default" : "<%= p("cov_log_parser.indices.ttl_default") %>"
+            }
+        }
+    }
+}

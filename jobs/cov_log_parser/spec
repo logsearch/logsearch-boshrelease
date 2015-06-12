@@ -1,0 +1,44 @@
+---
+name: cov_log_parser
+packages: 
+- logstash
+- java8
+templates:
+  bin/log_parser_ctl: bin/log_parser_ctl
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  config/logstash.conf.erb: config/logstash.conf
+  config/elasticsearch-template.json: config/elasticsearch-template.json
+properties:
+  cov_log_parser.debug:
+    description: "Enable this to send output logs to stdout"
+    default: false
+  cov_log_parser.filters:
+    description: "The configuration to embed into the logstash filters section"
+    default: ''
+  cov_log_parser.outputs:
+    description: "The configuration to embed into the logstash outputs section"
+    default: ''
+  cov_log_parser.workers:
+    description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
+    default: auto
+  redis.host: 
+    description: "Redis host of queue"
+    default: 127.0.0.1
+  redis.port: 
+    description: "Redis port of queue"
+    default: 6379
+  redis.key: 
+    description: "Name of queue to pull messages from"
+    default: logstash
+  cov_log_parser.indices.number_of_shards:
+    description: "The number of primary shards that an index should have, which defaults to 5. This setting cannot be changed after index creation."
+    default: 4
+  cov_log_parser.indices.number_of_replicas:
+    description: "The number of replica shards (copies) that each primary shard should have, which defaults to 1. This setting can be changed at any time on a live index."
+    default: 1
+  cov_log_parser.indices.ttl_default:
+    description: "Default ttl for new documents. Time units: d (days), m (minutes), h (hours), ms (milliseconds) or w (weeks)"
+    default: 30d
