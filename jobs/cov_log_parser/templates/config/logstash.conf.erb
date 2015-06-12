@@ -12,16 +12,16 @@ input {
 
 filter {
 
-    <%= p('logstash_parser.filters', '')  %>
+    <%= p('cov_log_parser.filters', '')  %>
 
 }
 
 output {
-    <% if p("logstash_parser.debug") %>
+    <% if p("cov_log_parser.debug") %>
         stdout {
             codec => "json"
         }
     <% end %>
 
-    <%= p('logstash_parser.outputs', '')  %>
+    <%= p('cov_log_parser.outputs', '')  %>
 }
