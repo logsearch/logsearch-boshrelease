@@ -17,6 +17,9 @@ properties:
     description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
     default: "NONE"
 
+  logstash_ingestor.filters:
+    description: Filters to execute on the ingestors
+    default: ""
   logstash_ingestor.debug:
     description: Debug level logging
     default: false

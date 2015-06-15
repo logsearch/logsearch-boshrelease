@@ -17,6 +17,8 @@ filter {
             add_field => [ "@ingestor[job]", "<%= name %>/<%= index %>" ]
         }
     <% end %>
+
+    <%= p('logstash_ingestor.filters') %>
 }
 
 output {
