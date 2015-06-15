@@ -11,12 +11,7 @@ events {
     use epoll;
 }
 
-http {
-    <% if true == p('cov_api.enable_auth_basic') %>
-        auth_basic           "Restricted";
-        auth_basic_user_file /var/vcap/jobs/cov_api/config/htpasswd;
-    <% end %>
-    
+http {    
     include mime.types;
 
     log_format combined_custom '$remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $request_time "$http_x_forwarded_for" $upstream_addr $upstream_status $upstream_response_time';
@@ -58,6 +53,10 @@ http {
         # allow: all requests below <%= p("cov_api.kibana.host_header") %>
         # reason: allow access to kibana
         location / {
+            <% if true == p('cov_api.enable_auth_basic') %>
+                auth_basic           "Restricted";
+                auth_basic_user_file /var/vcap/jobs/cov_api/config/htpasswd;
+            <% end %>
             proxy_pass http://kibana;
         }
     }
@@ -66,7 +65,7 @@ http {
     # reason: Proxy all other requests to internal Elasticsearch
     server {
         listen *:<%= p("cov_api.port") %> default_server;
-        server_name  cov_api;
+        server_name api;
 
         # update: cors headers
         # reason: support running kibana from other hosts
@@ -84,100 +83,15 @@ http {
             deny all;
         }
 
-
-        # read: index searches
-        # reason: we like searching
-
-        location ~ ^/[^\/\*]+(/[^\/\*]+)?/_m?(search|get)$ {
-            rewrite ^(.*)$ $1?timeout=15s break;
-            proxy_pass http://elasticsearch;
-        }
-        location ~ ^/_m?(search|get)$ {
-            rewrite ^(.*)$ $1?timeout=15s break;
-            proxy_pass http://elasticsearch;
-        }
-
-        # read: scrolled searches
-        # reason: occasionally used by some of our batch scripts
-
-        location ~ ^/_search/scroll$ {
-            limit_except GET {
-                deny all;
-            }
-
-            proxy_pass http://elasticsearch;
-        }
-
-
-        # read|write: kibana dashboard storage
-        # reason: so users can save and share their dashboards
-        location ~ ^/(\.kibana).*$ {
-            proxy_pass http://elasticsearch;
-        }
-        location ~ ^/(kibana-int|\.marvel-kibana)/(dashboard/.*|temp.*)$ {
-            proxy_pass http://elasticsearch;
-        }
-
-
-        # read: index metadata
-        # reason: for kibana and so we can easily use elastichq
-
-        location ~ ^/([^/]+/)?_(aliases|mapping|mapping/field/.+|nodes|stats|status)$ {
-            limit_except GET {
-                deny all;
-            }
-
-            proxy_pass http://elasticsearch;
-        }
-
-
-        # read: cluster + node metadata
-        # reason: so we can easily use elastichq
-
-        location ~ ^/(_cluster|_nodes) {
-            limit_except GET {
-                deny all;
-            }
-
-            proxy_pass http://elasticsearch;
-        }
-        
-        
-        # plugin: kopf
-        location ~ ^/_plugin/(kopf) {
-            proxy_pass http://elasticsearch;
-        }
-
-
-        # plugin: marvel, elastichq, kibana (as plugin)
-        # reason: it's mostly read-only
-
-        location ~ ^/_plugin/(marvel|HQ|kibana) {
-            limit_except GET {
-                deny all;
-            }
-
-            proxy_pass http://elasticsearch;
-        }
-
-
-        # read: elasticsearch hello
-        # reason: easy health check
-
-        location ~ ^/$ {
-            limit_except GET {
-                deny all;
-            }
-
-            proxy_pass http://elasticsearch;
-        }
-
-
-        # deny: everything else
-        # reason: we're secure like that
-
         location / {
-            deny all;
+            <% if true == p('cov_api.enable_auth_basic') %>
+                satisfy any;  
+                allow 127.0.0.1;
+                deny all;
+                auth_basic           "Restricted";
+                auth_basic_user_file /var/vcap/jobs/cov_api/config/htpasswd;
+            <% end %>
+            proxy_pass http://elasticsearch;
         }
     }
 }
