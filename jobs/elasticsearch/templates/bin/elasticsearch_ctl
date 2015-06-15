@@ -28,6 +28,7 @@ case $1 in
 
     # lock while we update plugins
     echo "$$" > "${PIDFILE}"
+    chown vcap:vcap "${PIDFILE}"
 
     mkdir -p "${LOCAL_PLUGINS_DIR}"
 
@@ -52,11 +53,14 @@ case $1 in
       [[ -e "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" ]] || ln -s "${GLOBAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}"
     done
 
+    # v21 switched to running as vcap; remove after a couple versions
+    chown -R vcap:vcap $STORE_DIR $LOG_DIR $RUN_DIR
+
     /var/vcap/jobs/elasticsearch/bin/undrain 2>&1 >> $LOG_DIR/undrain.log &
 
     ulimit -n 64000
 
-    exec /var/vcap/packages/elasticsearch/bin/elasticsearch \
+    exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
          -Des.config=${JOB_DIR}/config/config.yml \
          -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          -Des.pidfile=${PIDFILE} \
