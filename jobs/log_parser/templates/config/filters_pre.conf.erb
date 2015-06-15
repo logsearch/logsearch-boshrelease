@@ -45,6 +45,16 @@ filter {
     }
 
     #
+    # avoid bad interpolations, like `%{type}` when its missing
+    #
+
+    if [@type] == "" {
+        mutate {
+            add_field => [ "@type", "unknown" ]
+        }
+    }
+
+    #
     # ignore particularly useless lines
     #
 
