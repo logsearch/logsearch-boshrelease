@@ -14,6 +14,9 @@ case $1 in
   start)
     pid_guard $PIDFILE $JOB_NAME
 
+    # v21 switched to running as vcap; remove after a couple versions
+    chown -R vcap:vcap $STORE_DIR $LOG_DIR $RUN_DIR
+
     chpst -u vcap /var/vcap/packages/redis/bin/redis-server $JOB_DIR/config/redis.conf \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
