@@ -5,7 +5,6 @@ set -u
 
 . /usr/local/testutils/etc/load-env
 
-STANDALONE_IP=$( silo-host 0.standalone.silo-private.logsearch-standalone-test.bosh )
 SHIPPER_IP=$( silo-host 0.shipper.silo-private.logsearch-standalone-test.bosh )
 
 install-packages \
@@ -34,7 +33,7 @@ echo ""
 # now review our results
 #
 
-if ! grep '"total" : 33' shipper.log > /dev/null 2>&1 ; then
+if ! grep '"total" : 30' shipper.log > /dev/null 2>&1 ; then
   fail 'Failed to capture expected number of messages'
 fi
 

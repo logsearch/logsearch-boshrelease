@@ -152,5 +152,5 @@ jobs:
         trigger: true
         passed:
           - "publish-dev-release"
-      - task: "build-and-test"
-        file: "repo/ci/tasks/logsearch-shipper-filters-test/task.yml"
+      - task: "test"
+        file: "repo/ci/tasks/logsearch-shipper-test/task.yml"

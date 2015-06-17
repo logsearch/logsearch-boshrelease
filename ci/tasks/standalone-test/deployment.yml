@@ -47,7 +47,6 @@ jobs:
         data:
           - /home/vcap/messages.log: |
               <%= File.read('src/sample-logs/repo-commits/messages.log').gsub(/^/, '              ').strip %>
-              # EOF
           - /home/vcap/logstash.conf: |
                                       input {
                                         file {
@@ -58,7 +57,7 @@ jobs:
                                       }
                                       
                                       output {
-                                        if "# EOF" == [message] {
+                                        if [message] =~ /^# EOF/ {
                                           exec {
                                             command => "/bin/bash -c '( sleep 5 ; sudo killall -s TERM java ) &'"
                                           }
@@ -70,7 +69,7 @@ jobs:
                                           port => 5424
                                           rfc => "rfc5424"
                                           severity => "informational"
-                                          sourcehost => "shipper"
+                                          sourcehost => "sample-logs--repo-commits"
                                         }
                                       }
 
@@ -87,10 +86,6 @@ properties:
     host: "127.0.0.1"
   logstash_parser:
     filters: |
-             mutate {
-               rename => [ "syslog_message", "@message" ]
-             }
-             
              <%= File.read('src/sample-logs/repo-commits/logstash-filters.conf').gsub(/^/, '             ').strip %>
   logstash_ingestor:
     syslog:
