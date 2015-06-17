@@ -29,3 +29,4 @@ a214f2a578226032d00eaa198a05d4f5faa9021b 75266430145e87e8a6ead74922cf82d14c949a0
 f33972f7589529995960bc07c457bd6bf11c6c12 2b38bab0ca410527a1e3e458cb384c5acf1eb9b5 4f1561410c7710f419c873a6c20305e06b2892ec 2015-04-16 10:37:18 -0600 Danny Berger // Merge pull request #114 from logsearch/elasticsearch-1-5-1
 2b38bab0ca410527a1e3e458cb384c5acf1eb9b5 fdb09f5abff2ac6ccb577f754964d95b204305f1 6d29bbb772712ba6278e151168307673c8824d73 2015-04-16 10:36:47 -0600 Danny Berger // Merge pull request #115 from logsearch/properties-config-cleanup
 69fa86f629719d80e04b10631345b8aa3418a5ee 601cf052ae0dc5eb0f05f2fe6d2a65687a20e672 2015-04-16 11:00:45 -0400 Johnny Tan // Due to 'set -u', need to check for null value
+# EOF repo-commits

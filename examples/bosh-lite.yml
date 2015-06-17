@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: cf8dc1fc-9c42-4ffc-96f1-fbad983a6ce6
+director_uuid: <%= `bosh status --uuid` %>
 
 releases:
 - name: logsearch
@@ -23,7 +23,6 @@ update:
 resource_pools:
 - name: warden
   network: default
-  size: 6
   stemcell:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
@@ -121,6 +120,21 @@ jobs:
       node:
         allow_master: false
 
+- name: test_e2e_errand
+  lifecycle: errand
+  release: logsearch
+  templates:
+  - name: test_e2e_errand
+  instances: 1
+  resource_pool: warden
+  networks:
+  - name: default
+  properties:
+    test_e2e_errand:
+      syslog_host: "10.244.2.14"
+      syslog_port: 5514
+      elasticsearch_hostport: "10.244.2.2:9200"
+
 # upload your backfill data
 # $ sshpass -pc1oudc0w scp -i "$HOME/.ssh/vagrant" 2014102721.20141027220003-api-0.log.xz vcap@10.244.2.26:/tmp/backfill.xz
 # restart ingestion of it all
@@ -162,11 +176,11 @@ properties:
     host: 10.244.2.10
   logstash_parser:
     debug: true
-<% filtersconf = File.join(File.dirname(File.expand_path(__FILE__)), 'examples/filters.conf') %>
-<% if File.exists? filtersconf %>
     filters: |
-            <%= File.read(filtersconf).gsub(/^/, '            ').strip %>
-<% end %>
+             <% filtersconf = File.join(File.dirname(File.expand_path(__FILE__)), 'examples/filters.conf') %>
+             <%= File.read(filtersconf).gsub(/^/, '             ').strip if File.exists? filtersconf %>
+             # src/sample-logs/repo-commits/logstash-filters.conf
+             <%= File.read("#{File.dirname(File.expand_path(__FILE__))}/src/sample-logs/repo-commits/logstash-filters.conf").gsub(/^/, '             ').strip %>
   logstash_ingestor:
     debug: true
     relp:

@@ -46,7 +46,7 @@ jobs:
       testutils:
         data:
           - /home/vcap/messages.log: |
-              <%= File.read('share/sample-logs/repo-commits/messages.log').gsub(/^/, '              ').strip %>
+              <%= File.read('src/sample-logs/repo-commits/messages.log').gsub(/^/, '              ').strip %>
               # EOF
           - /home/vcap/logstash.conf: |
                                       input {
@@ -91,7 +91,7 @@ properties:
                rename => [ "syslog_message", "@message" ]
              }
              
-             <%= File.read('share/sample-logs/repo-commits/logstash-filters.conf').gsub(/^/, '             ').strip %>
+             <%= File.read('src/sample-logs/repo-commits/logstash-filters.conf').gsub(/^/, '             ').strip %>
   logstash_ingestor:
     syslog:
       port: 5424

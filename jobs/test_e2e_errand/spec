@@ -1,0 +1,16 @@
+---
+name: "test_e2e_errand"
+packages: 
+  - "java8"
+  - "logstash"
+  - "test-data"
+templates:
+  bin/run.erb: "bin/run"
+  config/repo-commits.conf.erb: "config/repo-commits.conf"
+properties:
+  test_e2e_errand.syslog_host: 
+    description: "Syslog host for pushing test messages into"
+  test_e2e_errand.syslog_port: 
+    description: "Syslog port for pushing test messages into"
+  test_e2e_errand.elasticsearch_hostport:
+    description: "Direct access to an elasticsearch instance for executing requests"

@@ -1,65 +1,52 @@
-# BOSH Release for logsearch
+# logsearch
 
-An easily-deployable stack of [Elasticsearch](http://www.elasticsearch.org/overview/elasticsearch/),
+A scalable stack of [Elasticsearch](http://www.elasticsearch.org/overview/elasticsearch/),
 [Logstash](http://www.elasticsearch.org/overview/logstash/), and
-[Kibana](http://www.elasticsearch.org/overview/kibana/) which can scale on your
+[Kibana](http://www.elasticsearch.org/overview/kibana/) for your
 own [BOSH](http://docs.cloudfoundry.org/bosh/)-managed infrastructure.
+
+ * Multiple Protocols - to receive logs via syslog (+TLS), relp, or lumberjack
+ * Queue - to buffer against surges of log messages
+ * Custom Parsing - to extract the fields from your own application-specific
+   log format via logstash filters
+ * Search - to find, aggregate, and report on those fields via elasticsearch
+ * Visualize - to create and share dashboards of your logs via kibana
+ * Archive - to retain log messages compressed and offsite in long-term storage
+   via Amazon S3 or SFTP
 
 
 ## Getting Started
 
-First make sure you have properly targeted your existing BOSH director. Then
-you can upload the latest logsearch release...
+Upload the latest logsearch release from [bosh.io](https://bosh.io)...
 
-    git clone https://github.com/logsearch/logsearch-boshrelease.git
-    cd logsearch-boshrelease
-    bosh upload release releases/logsearch-latest.yml
+    $ bosh upload release https://bosh.io/d/github.com/logsearch/logsearch-boshrelease
 
-Next you'll need to create your own deployment manifest. Right now the easiest
-way to do that is by using one of the [`examples`](./examples) as a starting
-point.
+If you are using [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can
+get started with our sample manifest, [`bosh-lite.yml`](./examples/bosh-lite.yml)...
 
-Then you can run the deploy...
+    $ bosh -d examples/bosh-lite.yml deploy
 
-    bosh deployment my_manifest.yml
-    bosh deploy
-
-
-### Shipping Logs
-
-Logsearch can currently receive logs over three different protocols:
-
- * [Syslog, Syslog TLS](./jobs/ingestor_syslog/spec),
- * [RELP](./jobs/ingestor_relp/spec), and
- * [Lumberjack](./jobs/ingestor_lumberjack/spec).
-
-Depending on the protocol, you may need to configure additional properties in
-your deployment manifest (e.g. add certificates for Syslog TLS and Lumberjack).
-
-If you need help getting your logs into the logsearch stack, you may find these
-tools useful:
-
- * [nxlog](http://nxlog.org/) - multi-platform log collector and forwarder
- * [rsyslog](http://www.rsyslog.com/) - log collector and forwarder
- * [logstash-forwarder](https://github.com/elasticsearch/logstash-forwarder) - log forwarder (using lumberjack)
-
-
-### Customizing Filters
-
-By default, [some filters](https://github.com/logsearch/logsearch-boshrelease/blob/develop/jobs/log_parser/templates/config/filters_default.conf)
-are pre-installed for common log formats, but eventually, you'll want to change
-them or add your own application-specific log formats. Take a look at the
-[`logsearch/logsearch-filters-common`](https://github.com/logsearch/logsearch-filters-common)
-repository for [instructions](https://github.com/logsearch/logsearch-filters-common#reuse)
-on setting up an environment for writing and testing your filters. Once written,
-include your filters through the `logstash_parser.filters` property.
+For more details, review the [`docs/`](http://www.logsearch.io/docs/boshrelease/)
+or raise an issue if you run into a bug.
 
 
 ## Testing
 
-```
-RESTCLIENT_LOG=stdout API_URL="http://10.244.2.2" INGESTOR_HOST="10.244.2.14" bundle exec rspec
-```
+To run a sanity test which ships some sample logs, parses, and then queries them,
+use the pre-configured `test_e2e_errand` errand from `examples/bosh-lite.yml`...
+
+    $ bosh -d examples/bosh-lite.yml run errand test_e2e_errand
+    ...snip...
+    ==> Validating results...
+    SUCCESS
+
+To run tests for [logsearch-shipper](https://github.com/logsearch/logsearch-shipper-boshrelease)
+integration, run the included script...
+
+    $ ./bin/logsearch-shipper-config-buildtest
+    ...snip...
+    SUCCESS
+
 
 ## License
 

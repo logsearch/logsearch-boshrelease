@@ -1,0 +1,5 @@
+---
+name: "test-data"
+dependencies: []
+files:
+  - "sample-logs/**/*"
