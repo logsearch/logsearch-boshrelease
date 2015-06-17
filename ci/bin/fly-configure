@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+set -u
+
+fly -t "${FLY_TARGET}" \
+  configure \
+  --config ci/pipelines/concourse.yml \
+  --vars-from ci/config/default.yml \
+  --vars-from ci/config/private.yml \
+  "${1:-logsearch-boshrelease}"

@@ -1,0 +1,31 @@
+# git log -n30 --pretty=format:'%H %P %ci %aN // %s'
+9d666a0da317777d35e763800ddfd8507cfb580c b056061ab74cc30ee2e6ea3e530f7262b2245228 2015-05-28 18:36:28 -0600 Danny Berger // Start experimenting with concourse
+b056061ab74cc30ee2e6ea3e530f7262b2245228 d1509bebbc8a2fac96f2b8059c20e7bede14cbf4 2015-05-26 16:39:21 -0600 Danny Berger // Drop old blobs
+d1509bebbc8a2fac96f2b8059c20e7bede14cbf4 eed9f3e75977439a0609d1cfe5714749dbc46d7a 4642b855a8a879b32e41f53ea332c42cf38a2d35 2015-05-22 16:31:29 +0100 David Laing // Merge pull request #129 from logsearch/elastic-updates
+4642b855a8a879b32e41f53ea332c42cf38a2d35 c3fed4c18b6d2b370f115b88b25d278a15a57242 eed9f3e75977439a0609d1cfe5714749dbc46d7a 2015-05-20 18:19:48 -0600 Danny Berger // Merge branch 'develop' into elastic-updates
+eed9f3e75977439a0609d1cfe5714749dbc46d7a 86d551856aa5f3d7885b71c0cfd55fb5987cfa6e 2015-05-20 18:19:41 -0600 Danny Berger // Fix archiver spec to default properties for both s3/scp methods
+86d551856aa5f3d7885b71c0cfd55fb5987cfa6e 4ec04e995379a06d13a571e79d20ca46bee6f6a1 2015-05-20 11:56:40 -0600 Danny Berger // Fix logsearch-latest symlink
+c3fed4c18b6d2b370f115b88b25d278a15a57242 b48c6b41f67bfcb4f629dc801152c98f1f715cd3 2015-05-18 12:15:38 -0500 Danny Berger // Add easyupdate for logstash+plugins
+b48c6b41f67bfcb4f629dc801152c98f1f715cd3 78decfb8a73b33c9bd83e77b3cdd2937ed104ca6 2015-05-18 12:15:33 -0500 Danny Berger // Upgrade logstash to 1.5.0
+78decfb8a73b33c9bd83e77b3cdd2937ed104ca6 4ec04e995379a06d13a571e79d20ca46bee6f6a1 2015-05-18 11:44:36 -0500 Danny Berger // Upgrade elasticsearch to 1.5.2
+4ec04e995379a06d13a571e79d20ca46bee6f6a1 a16c9b0129e1c0bf439787e5bfd57524bc2fd5b9 f6629642ebb0be14cecdd61f57f0b54675429c9d 2015-05-14 08:35:10 -0700 David Laing // Merge pull request #126 from JamesClonk/develop
+a16c9b0129e1c0bf439787e5bfd57524bc2fd5b9 2fd98b2ef8aedbd9296c2e0da9de6e1a0d3f54cb 5b79a32135017cb8be21813d139df0f1ee85940b 2015-05-13 07:42:47 -0700 Danny Berger // Merge branch 'malston-scpupload' into develop
+5b79a32135017cb8be21813d139df0f1ee85940b 5fec6fcfff98c2b84102f0c1ceb82fcfae7c0b45 2015-05-13 07:42:20 -0700 Danny Berger // Exit immediately on archiver sftp upload failure
+5fec6fcfff98c2b84102f0c1ceb82fcfae7c0b45 2fd98b2ef8aedbd9296c2e0da9de6e1a0d3f54cb f105f22632439cb7fb7f74c841e12bb46a7e6635 2015-05-13 07:39:37 -0700 Danny Berger // Merge branch 'scpupload' of https://github.com/malston/logsearch-boshrelease into malston-scpupload
+f6629642ebb0be14cecdd61f57f0b54675429c9d 2fd98b2ef8aedbd9296c2e0da9de6e1a0d3f54cb 2015-05-12 10:42:45 +0200 Fabio Berchtold // update git repository url
+2fd98b2ef8aedbd9296c2e0da9de6e1a0d3f54cb 87f46ea0c9bdf699fd8dbd7a9e59edc76e94a35a 2015-05-11 14:44:38 -0700 Danny Berger // Remove very old templates/ in favor of examples/
+87f46ea0c9bdf699fd8dbd7a9e59edc76e94a35a 2503ff998c2991d9b784ca1a026a9f4a182ef7da 2015-05-06 20:42:05 +0000 mrdavidlaing // Finalise logsearch-v19 release
+2503ff998c2991d9b784ca1a026a9f4a182ef7da 99f84553337d10a3700291995fbab5d139dd8b4e beda1240795a182c61efe309c80167769181b652 2015-05-06 11:16:59 -0700 Danny Berger // Merge pull request #122 from logsearch/logstash-plugins
+beda1240795a182c61efe309c80167769181b652 ce05d19872fddbb65226429893b9845a38c482bc 2015-05-06 09:37:37 -0700 Danny Berger // Fix logstash plugin property to be key-value based
+ce05d19872fddbb65226429893b9845a38c482bc 99f84553337d10a3700291995fbab5d139dd8b4e 2015-05-05 15:40:10 -0700 Danny Berger // Add support for dynamic logstash plugins
+99f84553337d10a3700291995fbab5d139dd8b4e 9229e1b239c7cd5b997ef32c41f7325966f9faa1 9f63ad9fa650af32574774f544a05af010d6ec39 2015-05-05 14:59:27 +0100 David Laing // Merge pull request #119 from logsearch/upgrade_to_logstash-1.5.0-rc3
+9229e1b239c7cd5b997ef32c41f7325966f9faa1 75266430145e87e8a6ead74922cf82d14c949a02 ed4adaacca04b88d9bcbe30c0b7bc0da8456db59 2015-05-05 06:13:52 -0700 Danny Berger // Merge pull request #121 from logsearch/fixing_docs
+ed4adaacca04b88d9bcbe30c0b7bc0da8456db59 a27609809b63c69c80229100d61ce424cd500489 2015-05-05 15:36:21 +0700 fandrei // specified where commands are to be executed inside the box
+a27609809b63c69c80229100d61ce424cd500489 e871fc862d5f9769a16178b5452adb872bcf69f6 2015-05-05 15:30:59 +0700 fandrei // write about the need to use SSH agent
+e871fc862d5f9769a16178b5452adb872bcf69f6 75266430145e87e8a6ead74922cf82d14c949a02 2015-05-05 15:26:13 +0700 fandrei // dependencies, not dependancies
+9f63ad9fa650af32574774f544a05af010d6ec39 a214f2a578226032d00eaa198a05d4f5faa9021b 2015-04-29 13:54:14 +0000 mrdavidlaing // Add Kibana properties to sample bosh-lite manifests
+a214f2a578226032d00eaa198a05d4f5faa9021b 75266430145e87e8a6ead74922cf82d14c949a02 2015-04-29 13:48:21 +0000 mrdavidlaing // Upgrade to logstash 1.5.0-rc3
+75266430145e87e8a6ead74922cf82d14c949a02 f33972f7589529995960bc07c457bd6bf11c6c12 69fa86f629719d80e04b10631345b8aa3418a5ee 2015-04-16 13:05:15 -0600 Danny Berger // Merge pull request #117 from johnnydtan/adding_skip_ability
+f33972f7589529995960bc07c457bd6bf11c6c12 2b38bab0ca410527a1e3e458cb384c5acf1eb9b5 4f1561410c7710f419c873a6c20305e06b2892ec 2015-04-16 10:37:18 -0600 Danny Berger // Merge pull request #114 from logsearch/elasticsearch-1-5-1
+2b38bab0ca410527a1e3e458cb384c5acf1eb9b5 fdb09f5abff2ac6ccb577f754964d95b204305f1 6d29bbb772712ba6278e151168307673c8824d73 2015-04-16 10:36:47 -0600 Danny Berger // Merge pull request #115 from logsearch/properties-config-cleanup
+69fa86f629719d80e04b10631345b8aa3418a5ee 601cf052ae0dc5eb0f05f2fe6d2a65687a20e672 2015-04-16 11:00:45 -0400 Johnny Tan // Due to 'set -u', need to check for null value

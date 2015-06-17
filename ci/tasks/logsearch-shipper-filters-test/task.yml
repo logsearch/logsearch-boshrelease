@@ -1,0 +1,8 @@
+---
+platform: "linux"
+image: "docker:///dpb587/logsearch-logstash-dev"
+privileged: true
+inputs:
+  - name: "repo"
+run:
+  path: "repo/ci/tasks/logsearch-shipper-filters-test/run.sh"

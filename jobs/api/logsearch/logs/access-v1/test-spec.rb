@@ -1,6 +1,8 @@
 # encoding: utf-8
-require "logstash/devutils/rspec/spec_helper"
-require "logstash/filters/grok"
+require 'spec_helper'
+require 'logstash/filters/grok'
+require 'logstash/filters/date'
+require 'logstash/filters/mutate'
 
 describe LogStash::Filters::Grok do
 
