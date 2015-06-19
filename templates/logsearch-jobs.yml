@@ -1,0 +1,128 @@
+---
+meta: (( merge ))
+networks: (( merge ))
+name: (( merge ))
+
+properties:
+  <<: (( merge ))
+  logstash_parser:
+    debug: false
+    use_local_elasticsearch: true
+  logstash_ingestor:
+    debug: false
+  redis:
+    host: (( jobs.queue.networks.default.static_ips.[0] ))
+  api:
+    elasticsearch_host: (( jobs.api.networks.default.static_ips.[0] ":9200"))
+  elasticsearch:
+    log_level: DEBUG
+    host: (( jobs.api.networks.default.static_ips.[0] ))
+    discovery:
+      unicast_hosts:
+        - (( jobs.api.networks.default.static_ips.[0] ))
+        - (( jobs.elasticsearch_persistent.networks.default.static_ips.[0] ))
+        - (( jobs.elasticsearch_autoscale.networks.default.static_ips.[0] ))
+    cluster_name: (( name ))
+    exec: ~
+
+jobs:
+- name: api
+  release: logsearch
+  templates:
+  - name: elasticsearch
+  - name: api
+  - name: kibana
+  update:
+    serial: true
+  instances: 1
+  resource_pool: logsearch_api
+  networks:
+  - name: default
+    static_ips: (( static_ips(0) ))
+  persistent_disk: 409600
+  properties:
+    elasticsearch:
+      node:
+        allow_data: true
+    kibana:
+      elasticsearch: (( jobs.api.networks.default.static_ips.[0] ":9200" ))
+
+- name: ingestor
+  release: logsearch
+  templates:
+  - name: ingestor_syslog
+  - name: ingestor_relp
+  instances: 1
+  resource_pool: logsearch_ingestor
+  networks:
+  - name: default
+    static_ips: (( static_ips(1) ))
+  properties:
+    logstash_ingestor:
+      debug: false
+      relp:
+        port: ~
+
+- name: queue
+  release: logsearch
+  templates:
+  - name: queue
+  instances: 1
+  resource_pool: logsearch
+  persistent_disk: 40960
+  networks:
+  - name: default
+    static_ips: (( static_ips(2) ))
+
+- name: log_parser
+  release: logsearch
+  templates:
+  - name: log_parser
+  instances: 1
+  resource_pool: logsearch
+  networks:
+  - name: default
+    default:
+    - dns
+    - gateway
+  properties:
+   elasticsearch:
+     node:
+       allow_master: true
+
+- name: elasticsearch_persistent
+  release: logsearch
+  templates:
+  - name: elasticsearch
+  update:
+    serial: true
+  instances: 1
+  resource_pool: logsearch_elasticsearch
+  networks:
+  - name: default
+    static_ips: (( static_ips(3) ))
+  persistent_disk: 409600
+  properties:
+    elasticsearch:
+      node:
+        allow_master: true
+
+- name: elasticsearch_autoscale
+  release: logsearch
+  templates:
+  - name: elasticsearch
+  update:
+    serial: true
+  instances: 1
+  resource_pool: logsearch_elasticsearch
+  networks:
+  - name: default
+    default:
+    - dns
+    - gateway
+    static_ips: (( static_ips(4) ))
+  persistent_disk: 409600
+  properties:
+    elasticsearch:
+      node:
+        allow_master: true

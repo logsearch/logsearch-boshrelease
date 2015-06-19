@@ -1,0 +1,42 @@
+---
+meta:
+  availability_zone: ap-northeast-1a 
+
+releases:
+- name: logsearch
+  version: latest
+
+name: logsearch-ashamalama
+director_uuid: 12345-12345-12345-12345
+
+resource_pools:
+- name: logsearch_api
+  cloud_properties:
+    elbs: 
+    - logsearch-api
+
+- name: logsearch_ingestor
+  cloud_properties:
+    elbs:
+    - logsearch-ingestor
+
+- name: logsearch_elasticsearch
+  cloud_properties:
+    elbs:
+    - logsearch-elasticsearch
+
+networks:
+- name: default 
+  type: manual
+  subnets:
+  - range: 10.10.48.0/24
+    gateway: 10.10.48.1
+    cloud_properties:
+       subnet: subnet-12345
+       security_groups: [logsearch]
+    dns:
+    - 10.10.0.2
+    reserved:
+    - 10.10.48.2 - 10.10.48.9
+    static:
+    - 10.10.48.10 - 10.10.48.55
