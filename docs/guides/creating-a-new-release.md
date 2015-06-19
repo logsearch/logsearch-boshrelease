@@ -30,7 +30,7 @@ We regularly need to create new BOSH releases, and this is the process we go thr
 
         bosh create release --final --with-tarball
         git add -A .final_builds releases/index.yml
-        ( cd releases && ln -fs logsearch-$RELEASE_NUM.yml logsearch-latest.yml )
+        ( cd releases && cp logsearch-$RELEASE_NUM.yml logsearch-latest.yml )
         git add releases/logsearch-$RELEASE_NUM.yml releases/logsearch-latest.yml
 
 0. Upload the tarball artifacts...
