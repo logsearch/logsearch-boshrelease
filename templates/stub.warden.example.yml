@@ -1,0 +1,6 @@
+---
+meta:
+  environment: (( name ))
+
+name: logsearch
+director_uuid: 12345-678910

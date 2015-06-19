@@ -1,0 +1,75 @@
+---
+meta:
+  <<: (( merge ))
+  stemcell:
+    name: bosh-aws-xen-ubuntu-trusty-go_agent 
+    version: latest
+  availability_zone: (( merge ))
+
+jobs:
+  - name: api
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(0) ))
+
+  - name: ingestor
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(1) ))
+
+  - name: queue
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(2) ))
+
+  - name: log_parser
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(5) ))
+
+  - name: elasticsearch_persistent
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(3) ))
+
+  - name: elasticsearch_autoscale
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(4) ))
+
+compilation:
+  cloud_properties:
+    instance_type: m1.large
+
+resource_pools:
+  - name: logsearch
+    cloud_properties:
+      availability_zone: (( merge || meta.availability_zone ))
+      instance_type: (( merge || "m1.large" ))
+      elbs: ~
+
+  - name: logsearch_api
+    cloud_properties:
+      availability_zone: (( merge || meta.availability_zone ))
+      instance_type: (( merge || "m1.large" ))
+      elbs: ~
+
+  - name: logsearch_ingestor
+    cloud_properties:
+      availability_zone: (( merge || meta.availability_zone ))
+      instance_type: (( merge || "m1.large" ))
+      elbs: ~
+
+  - name: logsearch_elasticsearch
+    cloud_properties:
+      availability_zone: (( merge || meta.availability_zone ))
+      instance_type: (( merge || "m1.large" ))
+      elbs: ~
+
+networks: (( merge ))

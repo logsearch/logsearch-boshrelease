@@ -31,7 +31,7 @@ resource_pools:
 jobs:
 - name: api
   release: logsearch
-  templates: 
+  templates:
   - name: elasticsearch
   - name: api
   - name: kibana
@@ -157,7 +157,7 @@ jobs:
 #    redis:
 #      key: "logstash-restorer"
 
-properties: 
+properties:
   api:
     port: 80
   kibana:
@@ -283,14 +283,14 @@ networks:
     range: 10.244.2.8/30
     reserved:
     - 10.244.2.9
-    static: 
+    static:
     - 10.244.2.10
   - cloud_properties:
       name: random
     range: 10.244.2.12/30
     reserved:
     - 10.244.2.13
-    static: 
+    static:
     - 10.244.2.14
 
   - cloud_properties:

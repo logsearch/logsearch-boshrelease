@@ -24,6 +24,7 @@ properties:
 
   logstash_ingestor.relp.port: 
     description: Port to listen for RELP messages
+    default: 2514
 
   redis.host: 
     description: Redis host of queue
