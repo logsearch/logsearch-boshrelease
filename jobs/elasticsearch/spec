@@ -1,6 +1,7 @@
 ---
 name: elasticsearch
 packages: 
+- es-plugins
 - elasticsearch
 - java8
 templates:
