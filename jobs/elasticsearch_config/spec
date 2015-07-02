@@ -1,0 +1,15 @@
+---
+name: "elasticsearch_config"
+packages:
+  - "elasticsearch"
+  - "java8"
+templates:
+  bin/run.erb: "bin/run"
+  bin/job.process: "bin/job.process"
+properties:
+  elasticsearch.host:
+    description: "The frontend elasticsearch node services should use."
+  elasticsearch.config.templates:
+    description: "An array with key-value hashes; keys being template name, value being template content"
+  elasticsearch.config.docs:
+    description: "An array with key-value hashes; keys being doc path, value being doc source"

@@ -1,0 +1,5 @@
+check process elasticsearch_config
+  with pidfile /var/vcap/sys/run/elasticsearch_config/job.pid
+  start program "/var/vcap/jobs/elasticsearch_config/bin/job.process start"
+  stop program "/var/vcap/jobs/elasticsearch_config/bin/job.process stop"
+  group vcap

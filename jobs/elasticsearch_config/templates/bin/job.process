@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+set -u
+
+PIDFILE=/var/vcap/sys/run/elasticsearch_config/job.pid
+LOGDIR=/var/vcap/sys/log/elasticsearch_config
+
+mkdir -p `dirname "$PIDFILE"`
+chown vcap:vcap `dirname "$PIDFILE"`
+
+mkdir -p "$LOGDIR"
+chown vcap:vcap "$LOGDIR"
+
+exec >> /var/vcap/sys/log/elasticsearch_config/job.control.log
+exec 2>&1
+
+case $1 in
+
+  start)
+    echo $$ > "${PIDFILE}"
+
+    /var/vcap/jobs/elasticsearch_config/bin/run
+
+    # pretend we're still running to keep monit happy
+    echo 1 > "${PIDFILE}"
+
+    ;;
+
+  stop)
+    rm -f "${PIDFILE}"
+
+    ;;
+
+  *)
+    echo "Usage: control {start|stop}" >&2
+
+    exit 1
+
+    ;;
+
+esac
