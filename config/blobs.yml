@@ -51,3 +51,7 @@ logstash/logstash-1.5.2.tar.gz:
   object_id: 36249fab-dcf7-45b1-9ecd-e2a842b93c9f
   sha: 92e4ce646ca6a1868bac56def5ddf096349ec0a6
   size: 91217160
+kibana/kibana-4.1.1-linux-x64.tar.gz:
+  object_id: c08909df-55f0-400a-bac6-399e309d70c0
+  sha: d43e039adcea43e1808229b9d55f3eaee6a5edb9
+  size: 11676499
