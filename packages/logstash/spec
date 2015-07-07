@@ -3,8 +3,8 @@ name: logstash
 dependencies: 
   - java8
 files: 
-  # https://download.elastic.co/logstash/logstash/logstash-1.5.0.tar.gz
-  - logstash/logstash-1.5.0.tar.gz
+  # https://download.elastic.co/logstash/logstash/logstash-1.5.2.tar.gz
+  - logstash/logstash-1.5.2.tar.gz
   # https://rubygems.org/downloads/logstash-filter-alter-0.1.6.gem
   - logstash/logstash-filter-alter-0.1.6.gem
   # https://rubygems.org/downloads/logstash-filter-translate-0.1.9.gem 

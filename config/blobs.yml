@@ -47,3 +47,7 @@ elasticsearch/elasticsearch-1.6.0.tar.gz:
   object_id: c305d75d-a100-4dfd-a619-b5c4ee31d0e9
   sha: cb8522f5d3daf03ef96ed533d027c0e3d494e34b
   size: 28401477
+logstash/logstash-1.5.2.tar.gz:
+  object_id: 36249fab-dcf7-45b1-9ecd-e2a842b93c9f
+  sha: 92e4ce646ca6a1868bac56def5ddf096349ec0a6
+  size: 91217160
