@@ -10,7 +10,6 @@ templates:
   bin/monit_debugger: bin/monit_debugger
   config/config.yml.erb: config/config.yml
   config/logging.yml.erb: config/logging.yml
-  config/templates/logstash_default.json.erb: config/templates/logstash_default.json
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
