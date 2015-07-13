@@ -17,11 +17,7 @@ We regularly need to create new BOSH releases, and this is the process we go thr
         git checkout develop
         git pull --ff-only origin develop
 
-0. Ensure you've deployed everything and it's all working...
-
-        rake dev_release:create_and_upload_and_deploy
-
-0. If you have new blobs, upload them and commit those metadata changes...
+0. Ensure new blobs are uploaded and committed...
 
         bosh upload blobs
         git commit -m 'upload new blobs for release'
@@ -41,18 +37,18 @@ We regularly need to create new BOSH releases, and this is the process we go thr
 0. Review the logs to create a draft summarizing the release (see Release Notes section)...
 
         git log v$(($RELEASE_NUM-1))..HEAD
-        vim release.md
+        vim releases/logsearch-$RELEASE_NUM.md
+        git add releases/logsearch-$RELEASE_NUM.md
 
-0. Commit, tag, and create GitHub release...
+0. Commit and tag the new release...
 
-        ( echo "Release $RELEASE_NUM" ; echo "" ; cat release.md ) | git commit -F-
+        ( echo "Release $RELEASE_NUM" ; echo "" ; cat releases/logsearch-$RELEASE_NUM.md ) | git commit -F-
         git tag v$RELEASE_NUM
+
+0. Push and create a GitHub Release...
+
         git push origin develop v$RELEASE_NUM
-        ( echo -n "{\"tag_name\":\"v$RELEASE_NUM\",\"body\":\"" ; sed -e 's/"/\\"/g' -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' release.md ; echo "\"}" ) | curl -H "Authorization: token $GITHUB_TOKEN" -d @- https://api.github.com/repos/logsearch/logsearch-boshrelease/releases
-
-0. Cleanup and get back to developing...
-
-        rm release.md
+        ( echo -n "{\"tag_name\":\"v$RELEASE_NUM\",\"body\":\"" ; sed -e 's/"/\\"/g' -e ':a' -e 'N' -e '$!ba' -e 's/\n/\\n/g' releases/logsearch-$RELEASE_NUM.md ; echo "\"}" ) | curl -H "Authorization: token $GITHUB_TOKEN" -d @- https://api.github.com/repos/logsearch/logsearch-boshrelease/releases
 
 
 ## Writing Release Notes
