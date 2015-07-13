@@ -6,7 +6,7 @@ set -u # report the usage of uninitialized variables
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
 mkdir $BOSH_INSTALL_TARGET/logstash
-tar -xzf logstash/logstash-1.5.0.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
+tar -xzf logstash/logstash-1.5.2.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
 
 # Setup Java so we can run logstash/bin/plugin install
 JAVA_HOME=/var/vcap/packages/java8
