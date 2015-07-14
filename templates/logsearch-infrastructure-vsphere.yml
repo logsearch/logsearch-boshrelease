@@ -1,0 +1,76 @@
+---
+meta:
+  <<: (( merge ))
+  stemcell:
+    name: bosh-vsphere-esxi-ubuntu-trusty-go_agent
+    version: latest
+
+jobs:
+  - name: api
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(0) ))
+
+  - name: ingestor
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(1) ))
+
+  - name: queue
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(2) ))
+
+  - name: log_parser
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(5) ))
+
+  - name: elasticsearch_persistent
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(3) ))
+
+  - name: elasticsearch_autoscale
+    instances: 1
+    networks:
+      - name: default
+        static_ips: (( static_ips(4) ))
+
+compilation:
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+resource_pools:
+- name: logsearch
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: logsearch_api
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: logsearch_ingestor
+  cloud_properties:
+    ram: 2048
+    disk: 4096
+    cpu: 2
+
+- name: logsearch_elasticsearch
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+networks: (( merge ))
