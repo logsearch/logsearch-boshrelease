@@ -1,0 +1,25 @@
+---
+meta:
+
+releases:
+- name: logsearch
+  version: latest
+
+name: logsearch-ashamalama
+director_uuid: 12345-12345-12345-12345
+
+
+networks:
+- name: default
+  subnets:
+  - range: 10.10.48.0/24
+    gateway: 10.10.48.1
+    dns:
+    - 10.10.0.2
+    reserved:
+    - 10.10.48.2 - 10.10.48.9
+    static:
+    - 10.10.48.10 - 10.10.48.55
+    cloud_properties:
+      name: vblk-pcf-test-mgmt
+
