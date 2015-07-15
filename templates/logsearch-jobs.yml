@@ -29,6 +29,7 @@ jobs:
 - name: api
   release: logsearch
   templates:
+  - <<: (( merge ))
   - name: elasticsearch
   - name: api
   - name: kibana
@@ -42,6 +43,7 @@ jobs:
   persistent_disk: 409600
   properties:
     elasticsearch:
+      <<: (( merge ))
       node:
         allow_data: true
     kibana:

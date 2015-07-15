@@ -19,6 +19,7 @@ networks: (( merge ))
 releases:
 - name: logsearch
   version: latest
+- <<: (( merge ))
 
 compilation:
   workers: 4
@@ -34,7 +35,7 @@ update:
   max_in_flight: 1
   max_errors: 1
 
-resource_pools: 
+resource_pools:
 - name: logsearch
   network: default
   stemcell: (( meta.stemcell ))
