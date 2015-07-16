@@ -68,4 +68,15 @@ elif ! echo "${TESTLINE}" | grep '"parents":\["b056061ab74cc30ee2e6ea3e530f7262b
   fail 'Failed to capture parent field'
 fi
 
+echo '' ; echo '==> Purging just added test data...'
+
+curl -s -X DELETE '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sample-logs--repo-commits' ; echo ''
+
+echo '' ; echo '==> Ensuring test data was cleaned up...'
+
+curl -s '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sample-logs--repo-commits/_search?size=1024&pretty' > curl.out
+if ! grep '"total" : 0' curl.out > /dev/null 2>&1 ; then
+  fail 'There was still test data present after cleanup...'
+fi
+
 echo '' ; echo "SUCCESS"
