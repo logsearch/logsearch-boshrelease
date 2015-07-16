@@ -2,6 +2,7 @@
 
 set -e
 set -u
+set -x
 
 function fail {
   echo "FAILURE: ${1}" >&2
@@ -15,40 +16,63 @@ export PATH="/var/vcap/packages/java8/bin:$PATH"
 
 [ ! -e /home/vcap/.sincedb ] || rm /home/vcap/.sincedb
 
-
-echo '' ; echo '==> Purging existing test data...'
-
-curl -s -X DELETE '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sample-logs--repo-commits' ; echo ''
-
+export QUERY=$(cat <<EOF
+{ "query": {
+    "filtered" : {
+        "query" : {
+            "term" : { "@source.host":"sample-logs--repo-commits" }
+        },
+        "filter" : {
+          "bool" : {
+            "must" : {
+                "range" : {
+                    "@timestamp" : {
+                        "from" : "$(date --iso-8601=ns)",
+                        "to" : "now"
+                    }
+                }
+            }
+          }
+        }
+     }
+  }
+}
+EOF
+)
 
 echo '' ; echo '==> Installing syslog output plugin...'
 
 /var/vcap/packages/logstash/logstash/bin/plugin install logstash-output-syslog
 
-
 echo '' ; echo '==> Shipping test data...'
 
 /var/vcap/packages/logstash/logstash/bin/logstash --config config/repo-commits.conf
 
+echo '' ; echo '==> Waiting for shipped logs to be ingested and indexed...'
 
-echo '' ; echo '==> Waiting for sanity...'
-
-sleep 5
-
+n=0
+until [ $n -ge 5 ]
+do
+  curl -s -d "$QUERY" -X POST '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_count' > curl.out
+  cat curl.out
+  grep '"count":32' curl.out && break  
+  echo "30 shipped logs not detected yet.  Waiting 15 seconds then trying again..."
+  n=$[$n+1]
+  sleep 15
+done
 
 echo '' ; echo '==> Refreshing indices...'
 
 curl -s -X POST '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_refresh' ; echo ''
 
-
 echo '' ; echo '==> Dumping test data...'
 
-curl -s '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sample-logs--repo-commits/_search?size=1024&pretty' > curl.out
-
+curl -s -d "$QUERY" -X POST '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_search?size=1024&pretty' > curl.out
 
 echo '' ; echo '==> Validating results...'
 
-if ! grep '"total" : 30' curl.out > /dev/null 2>&1 ; then
+if ! grep '"total" : 32' curl.out > /dev/null 2>&1 ; then
+  cat curl.out
   fail 'Failed to capture expected number of messages'
 fi
 
