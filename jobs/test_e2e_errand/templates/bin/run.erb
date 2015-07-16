@@ -15,6 +15,14 @@ export PATH="/var/vcap/packages/java8/bin:$PATH"
 
 [ ! -e /home/vcap/.sincedb ] || rm /home/vcap/.sincedb
 
+echo '' ; echo '==> Checking elastic search health...'
+
+curl -XGET http://<%= p('test_e2e_errand.elasticsearch_hostport') %>/_cluster/health?pretty 2>/dev/null > curl.out
+
+if [[ $(grep '"status" : "red"' curl.out) == "" ]]; then
+  cat curl.out
+  fail 'ElasticSearch is in a bad state, giving up'
+fi
 
 echo '' ; echo '==> Purging existing test data...'
 
