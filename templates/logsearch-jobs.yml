@@ -29,7 +29,6 @@ jobs:
 - name: api
   release: logsearch
   templates:
-  - <<: (( merge ))
   - name: elasticsearch
   - name: api
   - name: kibana
