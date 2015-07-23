@@ -6,6 +6,7 @@ name: (( merge ))
 properties:
   <<: (( merge ))
   logstash_parser:
+    <<: (( merge ))
     debug: false
     use_local_elasticsearch: true
   logstash_ingestor:
