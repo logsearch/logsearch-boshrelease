@@ -16,12 +16,7 @@ properties:
     elasticsearch_host: (( jobs.api.networks.default.static_ips.[0] ":9200"))
   elasticsearch:
     log_level: DEBUG
-    host: (( jobs.api.networks.default.static_ips.[0] ))
-    discovery:
-      unicast_hosts:
-        - (( jobs.api.networks.default.static_ips.[0] ))
-        - (( jobs.elasticsearch_persistent.networks.default.static_ips.[0] ))
-        - (( jobs.elasticsearch_autoscale.networks.default.static_ips.[0] ))
+    host: (( jobs.api.networks.default.static_ips.[0] "," jobs.elasticsearch_persistent.networks.default.static_ips.[0] "," jobs.elasticsearch_autoscale.networks.default.static_ips.[0]))
     cluster_name: (( name ))
     exec: ~
 
