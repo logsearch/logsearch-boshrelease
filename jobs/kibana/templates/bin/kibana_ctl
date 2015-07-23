@@ -5,7 +5,7 @@ set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/kibana/helpers/ctl_setup.sh 'kibana'
-export PIDFILE=/var/vcap/sys/run/kibana/kibana.pid #NB this is hardcoded in config/kibana.conf.erb
+export PIDFILE=/var/vcap/sys/run/kibana/kibana.pid
 
 case $1 in
 
@@ -21,6 +21,8 @@ case $1 in
     done
 
     pid_guard $PIDFILE kibana
+
+    echo $$ > $PIDFILE
 
     exec /var/vcap/packages/kibana/bin/kibana \
          -c $JOB_DIR/config/kibana.conf \
