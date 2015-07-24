@@ -2,6 +2,9 @@
 meta:
   <<: (( merge ))
   environment: ~
+  releases:
+  - name: logsearch
+    version: latest
   default_env:
     # Default vcap & root password on deployed VMs (ie c1oudc0w)
     # Generated using mkpasswd -m sha-512
@@ -16,10 +19,7 @@ properties: (( merge ))
 jobs: (( merge ))
 networks: (( merge ))
 
-releases:
-- name: logsearch
-  version: latest
-- <<: (( merge ))
+releases: (( merge || meta.releases ))
 
 compilation:
   workers: 4

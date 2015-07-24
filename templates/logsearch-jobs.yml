@@ -1,5 +1,13 @@
 ---
-meta: (( merge ))
+meta:
+  <<: (( merge ))
+  jobs:
+    api:
+      templates:
+      - name: elasticsearch
+      - name: api
+      - name: kibana
+
 networks: (( merge ))
 name: (( merge ))
 
@@ -29,11 +37,7 @@ properties:
 jobs:
 - name: api
   release: logsearch
-  templates:
-  - <<: (( merge ))
-  - name: elasticsearch
-  - name: api
-  - name: kibana
+  templates: (( merge || meta.jobs.api.templates ))
   update:
     serial: true
   instances: 1
