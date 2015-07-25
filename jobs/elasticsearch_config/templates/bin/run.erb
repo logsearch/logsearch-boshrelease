@@ -23,7 +23,7 @@ done
 # templates
 #
 
-<% p('elasticsearch.config.templates').each do | plugin | ckey, cvalue = plugin.first %>
+<% p('elasticsearch_config.templates').each do | plugin | ckey, cvalue = plugin.first %>
   URL="http://127.0.0.1:9200/_template/<%= ckey %>"
 
   <% if nil == cvalue %>
@@ -40,7 +40,7 @@ EOF
 # documents
 #
 
-<% p('elasticsearch.config.docs').each do | plugin | ckey, cvalue = plugin.first %>
+<% p('elasticsearch_config.docs').each do | plugin | ckey, cvalue = plugin.first %>
   URL="http://127.0.0.1:9200/<%= ckey %>"
 
   <% if nil == cvalue %>

@@ -7,9 +7,9 @@ templates:
   bin/run.erb: "bin/run"
   bin/job.process: "bin/job.process"
 properties:
-  elasticsearch.config.templates:
+  elasticsearch_config.templates:
     description: "An array with key-value hashes; keys being template name, value being template content"
     default: []
-  elasticsearch.config.docs:
+  elasticsearch_config.docs:
     description: "An array with key-value hashes; keys being doc path, value being doc source"
     default: []
