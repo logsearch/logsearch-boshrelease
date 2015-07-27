@@ -4,7 +4,7 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/log_parser/helpers/ctl_setup.sh 'log_parser' 'elasticsearch'
+source /var/vcap/jobs/parser/helpers/ctl_setup.sh 'parser' 'elasticsearch'
 
 export PIDFILE=$RUN_DIR/elasticsearch.pid
 export PORT=${PORT:-5000}

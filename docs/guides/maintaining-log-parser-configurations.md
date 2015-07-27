@@ -3,7 +3,7 @@ title: "Maintaining Log Parser Configurations"
 ---
 
 As your logsearch deployment becomes more heavily used, you're bound to receive multiple different log formats. Trying
-to manage all the different parser rules in a `log_parser.filters` property as a multi-line string inside a YAML-based
+to manage all the different parser rules in a `parser.filters` property as a multi-line string inside a YAML-based
 configuration file can become very difficult.
 
 The easiest improvement is to extract the filter configuration into a separate file which lives alongside your
@@ -11,7 +11,7 @@ deployment manifest. Since BOSH automatically supports manifests which are ERB t
 following...
 
     properties:
-      log_parser:
+      parser:
         filters: |
                 <%= File.read('logstash-filters.conf').gsub(/^/, '            ').strip %>
 

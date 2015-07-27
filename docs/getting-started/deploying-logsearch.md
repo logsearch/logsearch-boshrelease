@@ -176,7 +176,7 @@ The deployment manifest at `~/environments/local/test/logsearch/manifest.yml` de
  * api (`10.244.2.2`) - where you will execute queries and load kibana via HTTP on port 80
  * ingestor (`10.244.2.14`) - with a Syslog over TLS exposed on port 443
  * queue
- * log_parser
+ * parser
  * 2 &times; elasticsearch data nodes
 
 To deploy this cluster run:
@@ -242,7 +242,7 @@ you should see:
       Started binding instance vms > api/0
       Started binding instance vms > ingestor/0
       Started binding instance vms > queue/0
-      Started binding instance vms > log_parser/0
+      Started binding instance vms > parser/0
       Started binding instance vms > elasticsearch_az1/0
       Started binding instance vms > elasticsearch_az2/0
          Done binding instance vms > ingestor/0 (00:00:00)
@@ -250,7 +250,7 @@ you should see:
          Done binding instance vms > queue/0 (00:00:00)
          Done binding instance vms > elasticsearch_az1/0 (00:00:00)
          Done binding instance vms > elasticsearch_az2/0 (00:00:00)
-         Done binding instance vms > log_parser/0 (00:00:00)
+         Done binding instance vms > parser/0 (00:00:00)
          Done binding instance vms (00:00:00)
         
       Started preparing configuration > Binding configuration. Done (00:00:01)
@@ -258,7 +258,7 @@ you should see:
       Started updating job api > api/0 (canary). Done (00:00:43)
       Started updating job ingestor > ingestor/0 (canary). Done (00:00:47)
       Started updating job queue > queue/0 (canary). Done (00:00:38)
-      Started updating job log_parser > log_parser/0 (canary). Done (00:00:49)
+      Started updating job parser > parser/0 (canary). Done (00:00:49)
       Started updating job elasticsearch_az1 > elasticsearch_az1/0 (canary). Done (00:00:44)
       Started updating job elasticsearch_az2 > elasticsearch_az2/0 (canary). Done (00:00:44)
         
@@ -289,7 +289,7 @@ you should see:
         | elasticsearch_az1/0 | running | warden        | 10.244.10.122 |
         | elasticsearch_az2/0 | running | warden        | 10.244.10.126 |
         | ingestor/0          | running | warden        | 10.244.10.6   |
-        | log_parser/0        | running | warden        | 10.244.10.118 |
+        | parser/0            | running | warden        | 10.244.10.118 |
         | queue/0             | running | warden        | 10.244.10.10  |
         +---------------------+---------+---------------+---------------+
        

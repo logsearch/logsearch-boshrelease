@@ -1,11 +1,11 @@
 ---
-name: log_parser
+name: parser
 packages: 
 - logstash
 - elasticsearch
 - java8
 templates:
-  bin/log_parser_ctl: bin/log_parser_ctl
+  bin/parser_ctl: bin/parser_ctl
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
@@ -89,4 +89,3 @@ properties:
   redis.key: 
     description: Name of queue to pull messages from
     default: logstash
-

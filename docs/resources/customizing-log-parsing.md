@@ -2,7 +2,7 @@
 title: "Customizing Log Parsing"
 ---
 
-Logsearch provides the `log_parser.filters` property to allow you to customize how your messages are extracted. The
+Logsearch provides the `parser.filters` property to allow you to customize how your messages are extracted. The
 value can be any of logstash's filter directives, fully explained in [their documentation][1]. If you're not already
 familiar with how logstash filters work, please read through their documentation first.
 
@@ -43,7 +43,7 @@ After the `date` filter, our event will have an extra `@timestamp` key with a va
 apply these filters and get our parsers using them, we'll need to update the property in our deployment manifest...
 
     properties:
-      log_parser:
+      parser:
         filters: |
           grok {
             match => [ "@message" , "%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} (?<process_name>[^\[]+)\[%{INT:process_id:int}\]: %{GREEDYDATA:message}" ]

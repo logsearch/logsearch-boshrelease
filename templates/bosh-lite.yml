@@ -72,10 +72,10 @@ jobs:
     static_ips:
     - 10.244.2.10
 
-- name: log_parser
+- name: parser
   release: logsearch
   templates:
-  - name: log_parser
+  - name: parser
   instances: 1
   resource_pool: warden
   networks:
@@ -145,7 +145,7 @@ jobs:
 #  release: logsearch
 #  templates:
 #  - name: ingestor_archiver
-#  - name: log_parser
+#  - name: parser
 #  instances: 1
 #  resource_pool: warden
 #  networks:

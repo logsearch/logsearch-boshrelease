@@ -76,10 +76,10 @@ jobs:
   - name: default
     static_ips: (( static_ips(2) ))
 
-- name: log_parser
+- name: parser
   release: logsearch
   templates:
-  - name: log_parser
+  - name: parser
   instances: 1
   resource_pool: logsearch
   networks:
