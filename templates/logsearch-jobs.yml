@@ -27,6 +27,7 @@ properties:
   api:
     elasticsearch_host: (( jobs.api.networks.default.static_ips.[0] ":9200"))
   elasticsearch:
+    <<: (( merge ))
     log_level: DEBUG
     host: (( jobs.api.networks.default.static_ips.[0] "," jobs.elasticsearch_persistent.networks.default.static_ips.[0] "," jobs.elasticsearch_autoscale.networks.default.static_ips.[0]))
     cluster_name: (( name ))
