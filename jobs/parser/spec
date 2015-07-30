@@ -13,7 +13,7 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/elasticsearch/config.yml.erb: config/elasticsearch/config.yml
   config/elasticsearch/logging.yml.erb: config/elasticsearch/logging.yml
-  config/input_redis_and_output_elasticsearch.conf.erb: config/input_redis_and_output_elasticsearch.conf
+  config/input_and_output.conf.erb: config/input_and_output.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
   config/logstash-filters-common.conf.erb: config/logstash-filters-common.conf
@@ -89,3 +89,13 @@ properties:
   redis.key: 
     description: Name of queue to pull messages from
     default: logstash
+
+  rabbitmq.host:
+    description: RabbitMQ host of queue
+  rabbitmq.exchange:
+    description: RabbitMQ Exchange
+    default: amq.direct
+  rabbitmq.user:
+    description: RabbitMQ username
+  rabbitmq.password:
+    description: RabbitMQ password

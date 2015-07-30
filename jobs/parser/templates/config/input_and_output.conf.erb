@@ -1,5 +1,5 @@
 input {
-
+    <% if_p("redis.host") do |redis_host| %>
     redis {
         host => "<%= p("redis.host") %>"
         port => "<%= p("redis.port") %>"
@@ -8,6 +8,19 @@ input {
         key => "<%= p("redis.key") %>"
         threads => 8
     }
+    <% end %>
+
+   <% if_p("rabbitmq.host") do |rabbitmq_host| %>
+   rabbitmq {
+	host => "<%= p("rabbitmq.host") %>"
+	exchange => "<%= p("rabbitmq.exchange") %>"
+	user => "<%= p("rabbitmq.user") %>"
+	password => "<%= p("rabbitmq.password") %>"
+   }
+   <% end %>
+
+   <% an_input = p(['redis.host', 'rabbitmq.host'], nil) %>
+   <% raise "There are no input configured" if an_input.nil? %>
 }
 
 output {
