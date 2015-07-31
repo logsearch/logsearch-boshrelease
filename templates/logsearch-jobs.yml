@@ -7,6 +7,9 @@ meta:
       - name: elasticsearch
       - name: api
       - name: kibana
+    elasticsearch:
+      templates:
+      - name: elasticsearch
 
 networks: (( merge ))
 name: (( merge ))
@@ -24,6 +27,7 @@ properties:
   api:
     elasticsearch_host: (( jobs.api.networks.default.static_ips.[0] ":9200"))
   elasticsearch:
+    <<: (( merge ))
     log_level: DEBUG
     host: (( jobs.api.networks.default.static_ips.[0] "," jobs.elasticsearch_persistent.networks.default.static_ips.[0] "," jobs.elasticsearch_autoscale.networks.default.static_ips.[0]))
     cluster_name: (( name ))
@@ -94,8 +98,7 @@ jobs:
 
 - name: elasticsearch_persistent
   release: logsearch
-  templates:
-  - name: elasticsearch
+  templates: (( merge || meta.jobs.elasticsearch.templates ))
   update:
     serial: true
   instances: 1
@@ -111,8 +114,7 @@ jobs:
 
 - name: elasticsearch_autoscale
   release: logsearch
-  templates:
-  - name: elasticsearch
+  templates: (( merge || meta.jobs.elasticsearch.templates ))
   update:
     serial: true
   instances: 1
