@@ -22,9 +22,9 @@ Upload the latest logsearch release from [bosh.io](https://bosh.io)...
     $ bosh upload release https://bosh.io/d/github.com/logsearch/logsearch-boshrelease
 
 If you are using [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can
-get started with our sample manifest, [`bosh-lite.yml`](./examples/bosh-lite.yml)...
+get started with our sample manifest, [`bosh-lite.yml`](./templates/bosh-lite.yml)...
 
-    $ bosh -d examples/bosh-lite.yml deploy
+    $ bosh -d templates/bosh-lite.yml deploy
 
 For more details, review the [`docs/`](http://www.logsearch.io/docs/boshrelease/)
 or raise an issue if you run into a bug.
@@ -33,9 +33,9 @@ or raise an issue if you run into a bug.
 ## Testing
 
 To run a sanity test which ships some sample logs, parses, and then queries them,
-use the pre-configured `test_e2e_errand` errand from `examples/bosh-lite.yml`...
+use the pre-configured `test_e2e_errand` errand from `templates/bosh-lite.yml`...
 
-    $ bosh -d examples/bosh-lite.yml run errand test_e2e_errand
+    $ bosh -d templates/bosh-lite.yml run errand test_e2e_errand
     ...snip...
     ==> Validating results...
     SUCCESS
