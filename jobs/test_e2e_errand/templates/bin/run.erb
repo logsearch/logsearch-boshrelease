@@ -15,13 +15,12 @@ export PATH="/var/vcap/packages/java8/bin:$PATH"
 
 [ ! -e /home/vcap/.sincedb ] || rm /home/vcap/.sincedb
 
-echo '' ; echo '==> Checking elastic search health...'
+echo '' ; echo '==> Checking elasticsearch health...'
 
-curl -XGET http://<%= p('test_e2e_errand.elasticsearch_hostport') %>/_cluster/health?pretty 2>/dev/null > curl.out
+ESCOLOR=$( curl -s http://<%= p('test_e2e_errand.elasticsearch_hostport') %>/_cat/health?h=status | tr -d '[:space:]' )
 
-if [[ $(grep '"status" : "red"' curl.out) == "" ]]; then
-  cat curl.out
-  fail 'ElasticSearch is in a bad state, giving up'
+if [[ "green" != "${ESCOLOR}" ]] && [[ "yellow" != "${ESCOLOR}" ]]; then
+  fail "elasticsearch is '${ESCOLOR}' but should be at least yellow - giving up"
 fi
 
 echo '' ; echo '==> Purging existing test data...'
@@ -74,8 +73,7 @@ curl -s -X DELETE '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sampl
 
 echo '' ; echo '==> Ensuring test data was cleaned up...'
 
-curl -s '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sample-logs--repo-commits/_search?size=1024&pretty' > curl.out
-if ! grep '"total" : 0' curl.out > /dev/null 2>&1 ; then
+if ! curl -s '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sample-logs--repo-commits/_search?size=1024' | grep -q '"total":0,' ; then
   fail 'There was still test data present after cleanup...'
 fi
 
