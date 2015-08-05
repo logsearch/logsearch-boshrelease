@@ -33,6 +33,8 @@ properties:
   logstash_parser.filters:
     description: "The configuration to embed into the logstash filters section"
     default: ''
+  logstash_parser.inputs:
+    description: "The configuration to embed into the logstash inputs section"
   logstash_parser.outputs:
     description: "The configuration to embed into the logstash outputs section"
   logstash_parser.workers:
@@ -89,13 +91,3 @@ properties:
   redis.key: 
     description: Name of queue to pull messages from
     default: logstash
-
-  rabbitmq.host:
-    description: RabbitMQ host of queue
-  rabbitmq.exchange:
-    description: RabbitMQ Exchange
-    default: amq.direct
-  rabbitmq.user:
-    description: RabbitMQ username
-  rabbitmq.password:
-    description: RabbitMQ password

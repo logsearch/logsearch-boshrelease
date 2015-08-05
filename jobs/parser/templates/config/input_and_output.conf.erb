@@ -10,16 +10,11 @@ input {
     }
     <% end %>
 
-   <% if_p("rabbitmq.host") do |rabbitmq_host| %>
-   rabbitmq {
-	host => "<%= p("rabbitmq.host") %>"
-	exchange => "<%= p("rabbitmq.exchange") %>"
-	user => "<%= p("rabbitmq.user") %>"
-	password => "<%= p("rabbitmq.password") %>"
-   }
+   <% if_p("logstash_parser.inputs") do |logstash_parser_inputs| %>
+        <%= p("logstash_parser.inputs") %>
    <% end %>
 
-   <% an_input = p(['redis.host', 'rabbitmq.host'], nil) %>
+   <% an_input = p(['redis.host', 'logstash_parser.inputs'], nil) %>
    <% raise "There are no input configured" if an_input.nil? %>
 }
 
