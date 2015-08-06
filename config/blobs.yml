@@ -15,10 +15,6 @@ elasticsearch/kibana-3.1.0.tar.gz:
   object_id: ad1b93da-2ae8-44f9-a62a-a26313aeb880
   sha: effc20c83c0cb8d5e844d2634bd1854a1858bc43
   size: 1073033
-kibana/kibana-4.0.1-linux-x64.tar.gz:
-  object_id: 9999d8fe-8031-4c68-8a9e-d1a77f9ecf58
-  sha: 1b8914c62a606b7103295a4e3ab01ec40c9993ed
-  size: 13625479
 java8/openjdk-1.8.0_40.tar.gz:
   object_id: c1386f34-7585-4f92-b41e-6d9dbbb940ab
   sha: 590be5c6337753b28acc81d4843e98e6245b5261
@@ -35,18 +31,6 @@ logstash/logstash-input-relp-0.1.5.gem:
   object_id: cf9789c1-f2dc-43ca-b0fa-8c53f1346184
   sha: eb4c73ac65bc39ea3d51b8473dfe69d263694fa9
   size: 11776
-elasticsearch/elasticsearch-1.5.2.tar.gz:
-  object_id: 89918f09-6f64-4e4f-aa39-3064313560fb
-  sha: ffe2e46ec88f4455323112a556adaaa085669d13
-  size: 28173132
-logstash/logstash-1.5.0.tar.gz:
-  object_id: 5dbd902b-49d4-40e5-a3b1-a240c5af017f
-  sha: 9729c2d31fddaabdd3d8e94c34a6d1f61d57f94a
-  size: 87008665
-elasticsearch/elasticsearch-1.6.0.tar.gz:
-  object_id: c305d75d-a100-4dfd-a619-b5c4ee31d0e9
-  sha: cb8522f5d3daf03ef96ed533d027c0e3d494e34b
-  size: 28401477
 logstash/logstash-1.5.2.tar.gz:
   object_id: 36249fab-dcf7-45b1-9ecd-e2a842b93c9f
   sha: 92e4ce646ca6a1868bac56def5ddf096349ec0a6
