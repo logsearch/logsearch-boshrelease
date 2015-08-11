@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+set -u
+
+ELASTICSEARCH_HOST=<%= properties.purge_logs.elasticsearch_host %>
+ELASTICSEARCH_PORT=<%= properties.purge_logs.elasticsearch_port %>
+DAYS_RETENTION=<%= properties.purge_logs.retention_period %>
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+export PATH=/var/vcap/packages/curator/bin:$PATH
+export PYTHONPATH=/var/vcap/packages/curator/lib/python3.4/site-packages/
+# export LD_LIBRARY_PATH=/var/vcap/packages/python/lib
+
+echo '' ; echo '==> Purging logs...'
+curator \
+  --host $ELASTICSEARCH_HOST \
+  --port $ELASTICSEARCH_PORT  \
+  delete indices --older-than $DAYS_RETENTION --time-unit days \
+  --timestring 'logstash-%Y.%m.%d'
+
+echo '' ; echo "SUCCESS"
+

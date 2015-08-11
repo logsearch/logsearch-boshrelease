@@ -1,0 +1,11 @@
+set -e -x
+
+echo "Extracting python..."
+tar xzvf python/Python-3.4.3.tgz
+
+echo "Building python..."
+pushd Python-3.4.3
+  ./configure --prefix=${BOSH_INSTALL_TARGET}
+  make
+  make install
+popd
