@@ -1,0 +1,9 @@
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+export PATH=/var/vcap/packages/python3/bin:$PATH
+
+pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/urllib3-1.8.3.tar.gz
+pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/click-3.3.tar.gz
+pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/elasticsearch-py.tar.gz
+pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/elasticsearch-curator.tar.gz

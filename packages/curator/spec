@@ -1,0 +1,10 @@
+---
+name: curator
+dependencies: 
+- python3
+files: 
+- curator/click-3.3.tar.gz
+- curator/elasticsearch-curator.tar.gz
+- curator/elasticsearch-py.tar.gz
+- curator/urllib3-1.8.3.tar.gz
+
