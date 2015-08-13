@@ -61,10 +61,6 @@ compilation:
     name: random
 
 resource_pools:
-- name: logsearch
-  cloud_properties:
-    name: random
-
 - name: logsearch_api
   cloud_properties:
     name: random
@@ -74,6 +70,14 @@ resource_pools:
     name: random
 
 - name: logsearch_elasticsearch
+  cloud_properties:
+    name: random
+
+- name: logsearch_queue
+  cloud_properties:
+    name: random
+
+- name: logsearch_parser
   cloud_properties:
     name: random
 
