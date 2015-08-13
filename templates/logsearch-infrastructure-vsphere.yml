@@ -28,8 +28,6 @@ jobs:
     instances: 1
     networks:
       - name: default
-        static_ips: (( static_ips(5) ))
-
   - name: elasticsearch_persistent
     instances: 1
     networks:
