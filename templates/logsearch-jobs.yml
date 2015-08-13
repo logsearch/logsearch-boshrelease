@@ -74,7 +74,7 @@ jobs:
   templates:
   - name: queue
   instances: 1
-  resource_pool: logsearch
+  resource_pool: logsearch_queue
   persistent_disk: 40960
   networks:
   - name: default
@@ -85,7 +85,7 @@ jobs:
   templates:
   - name: parser
   instances: 1
-  resource_pool: logsearch
+  resource_pool: logsearch_parser
   networks:
   - name: default
     default:
