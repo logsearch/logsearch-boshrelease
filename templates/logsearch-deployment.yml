@@ -63,6 +63,6 @@ resource_pools:
 - name: logsearch_parser
   network: default
   stemcell: (( meta.stemcell ))
-  cloud_properties: (( merge ))
+  cloud_properties: ~
   env: (( merge || meta.default_env ))
 
