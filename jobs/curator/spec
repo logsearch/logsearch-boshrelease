@@ -1,17 +1,21 @@
 ---
-name: purge-logs
+name: curator
 packages:
   - curator
   - python3
 templates:
-  bin/run: bin/run
+  bin/purge_logs: bin/purge_logs
+  bin/curator_ctl: bin/curator_ctl
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  data/properties.sh.erb: data/properties.sh
 properties:
-  purge_logs.elasticsearch_host:
+  curator.elasticsearch_host:
     description: IP address of elasticsearch host to proxy requests for (eg, 127.0.0.1)
     default: "127.0.0.1"
-  purge_logs.elasticsearch_port:
+  curator.elasticsearch_port:
     description: Port address of elasticsearch host to proxy requests for (eg, 9200)
     default: 9200
-  purge_logs.retention_period:
+  curator.purge_logs.retention_period:
     description: Days that logs will be retained
     default: 30

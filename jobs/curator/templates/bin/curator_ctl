@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+set -u
+
+CRON_SCHEDULE="*/2 * * * * /var/vcap/jobs/curator/bin/purge_logs"
+CRON_STATUS=`pgrep cron | wc -l`
+
+source /var/vcap/jobs/curator/helpers/ctl_setup.sh 'curator'
+
+case $1 in
+  start)
+    if [ $CRON_STATUS -eq 0 ]; then
+      /usr/sbin/cron start
+    fi
+    if [ -z "$(crontab -l)" ]; then
+      echo "$CRON_SCHEDULE" > /tmp/crontab_buffer
+    else
+      crontab -l > /tmp/crontab_buffer
+      echo "$CRON_SCHEDULE" >> /tmp/crontab_buffer
+    fi
+    crontab < /tmp/crontab_buffer
+    rm -f /tmp/crontab_buffer
+    pgrep cron > /var/vcap/sys/run/curator/curator.pid
+    ;;
+  stop)
+   if [ -z "$(crontab -l | grep -v "purge_logs")" ]; then
+     crontab -r
+   else
+     crontab -l > /tmp/crontab_buffer
+     cat /tmp/crontab_buffer | grep -v "purge_logs" > /tmp/crontab
+     crontab < /tmp/crontab
+   fi
+
+    rm -f /tmp/crontab*
+    rm -f /var/vcap/sys/run/curator/curator.pid
+    ;;
+  *)
+    echo "Usage: curator_ctl {start|stop}"
+    ;;
+
+esac
