@@ -14,6 +14,14 @@ input {
         <%= p("logstash_parser.inputs") %>
    <% end %>
 
+<% p('logstash_parser.inputs').each do | input | %>
+    <%= input['plugin'] %> {
+        <% input['options'].each do | k, v | %>
+          <%= k %> => <%= v.inspect %>
+        <% end %>
+    }
+<% end %>
+
    <% an_input = p(['redis.host', 'logstash_parser.inputs'], nil) %>
    <% raise "There are no input configured" if an_input.nil? %>
 }
