@@ -4,7 +4,7 @@ packages:
   - curator
   - python3
 templates:
-  bin/purge_logs: bin/purge_logs
+  bin/run: bin/run
   bin/curator_ctl: bin/curator_ctl
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
