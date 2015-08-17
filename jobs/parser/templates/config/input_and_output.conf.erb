@@ -10,10 +10,6 @@ input {
     }
     <% end %>
 
-   <% if_p("logstash_parser.inputs") do |logstash_parser_inputs| %>
-        <%= p("logstash_parser.inputs") %>
-   <% end %>
-
 <% p('logstash_parser.inputs').each do | input | %>
     <%= input['plugin'] %> {
         <% input['options'].each do | k, v | %>
