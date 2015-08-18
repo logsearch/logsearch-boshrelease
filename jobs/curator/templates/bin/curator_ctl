@@ -4,7 +4,6 @@ set -e
 set -u
 set -x
 
-CRON_SCHEDULE="*/2 * * * * /var/vcap/jobs/curator/bin/run"
 CRON_STATUS=`pgrep cron | wc -l`
 
 source /var/vcap/jobs/curator/helpers/ctl_setup.sh 'curator'
@@ -15,17 +14,8 @@ case $1 in
       /usr/sbin/cron start
     fi
 
-    if [ -n "$(crontab -l)" ]; then
-      crontab -l > /tmp/crontab_buffer
-    fi
+    (crontab -l | sed /run/d; cat /var/vcap/jobs/curator/config/purge_logs.cron) | sed /^$/d | crontab 
 
-    if [ -z "$(crontab -l | grep 'run')" ] ; then
-      echo "$CRON_SCHEDULE" >> /tmp/crontab_buffer
-    fi
-
-    crontab < /tmp/crontab_buffer
-
-    rm -f /tmp/crontab_buffer
     pgrep cron > /var/vcap/sys/run/curator/curator.pid
     ;;
   stop)
@@ -33,13 +23,10 @@ case $1 in
     if [ -z "$(crontab -l | grep -v 'run')" ]; then
       crontab -r
     else
-      crontab -l > /tmp/crontab_buffer
-      cat /tmp/crontab_buffer | grep -v "run" > /tmp/crontab_buffer
-      crontab < /tmp/crontab_buffer
+      (crontab -l | sed /run/d) | sed /^$/d | crontab 
     fi
 
 
-    rm -f /tmp/crontab_buffer
     rm -f /var/vcap/sys/run/curator/curator.pid
 
     ;;

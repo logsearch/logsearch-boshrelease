@@ -6,6 +6,7 @@ packages:
 templates:
   bin/run: bin/run
   bin/curator_ctl: bin/curator_ctl
+  config/purge_logs.cron: config/purge_logs.cron
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   data/properties.sh.erb: data/properties.sh

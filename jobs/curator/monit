@@ -1,4 +1,4 @@
-check process curator_ctl with pidfile "/var/vcap/sys/run/curator/curator.pid"
+check process curator with pidfile "/var/vcap/sys/run/curator/curator.pid"
  start program "/var/vcap/jobs/curator/bin/curator_ctl start"
  stop program "/var/vcap/jobs/curator/bin/curator_ctl stop"
  group vcap
