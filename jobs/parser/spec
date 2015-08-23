@@ -34,7 +34,16 @@ properties:
     description: "The configuration to embed into the logstash filters section"
     default: ''
   logstash_parser.inputs:
-    description: "The configuration to embed into the logstash inputs section"
+    description: |
+      A list of output plugins, with a hash of options for each of them. Please refer to example below.
+    example:
+      inputs:
+        - plugin: rabbitmq
+          options:
+            host: 192.168.1.1
+            user: logsearch
+            password: c1oudbunny
+    default: [ { plugin: "redis", options : {} } ]
   logstash_parser.outputs:
     description: "The configuration to embed into the logstash outputs section"
   logstash_parser.workers:
