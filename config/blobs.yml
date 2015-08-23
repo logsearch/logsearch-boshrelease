@@ -43,3 +43,7 @@ elasticsearch/elasticsearch-1.7.1.tar.gz:
   object_id: 5ba2c3ed-1730-40fc-9646-aafcab7d9c39
   sha: 0984ae27624e57c12c33d4a559c3ebae25e74508
   size: 28500556
+elasticsearch/elasticsearch-2.0.0-beta1-SNAPSHOT-468cb61.tar.gz:
+  object_id: 12c56b2f-f9ee-494f-b3e6-5481017b2fb9
+  sha: 5eeca632576acd3987018d43fb6d0150c5ca71cb
+  size: 28546136
