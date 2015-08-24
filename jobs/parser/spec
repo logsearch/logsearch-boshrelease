@@ -35,7 +35,7 @@ properties:
     default: ''
   logstash_parser.inputs:
     description: |
-      A list of output plugins, with a hash of options for each of them. Please refer to example below.
+      A list of input plugins, with a hash of options for each of them. Please refer to example below.
     example:
       inputs:
         - plugin: rabbitmq
