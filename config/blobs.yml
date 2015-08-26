@@ -31,10 +31,6 @@ logstash/logstash-input-relp-0.1.5.gem:
   object_id: cf9789c1-f2dc-43ca-b0fa-8c53f1346184
   sha: eb4c73ac65bc39ea3d51b8473dfe69d263694fa9
   size: 11776
-logstash/logstash-1.5.2.tar.gz:
-  object_id: 36249fab-dcf7-45b1-9ecd-e2a842b93c9f
-  sha: 92e4ce646ca6a1868bac56def5ddf096349ec0a6
-  size: 91217160
 kibana/kibana-4.1.1-linux-x64.tar.gz:
   object_id: c08909df-55f0-400a-bac6-399e309d70c0
   sha: d43e039adcea43e1808229b9d55f3eaee6a5edb9
@@ -63,3 +59,7 @@ python/Python-3.4.3.tgz:
   object_id: 34ff2b80-c2ca-4075-81a7-164805059d89
   sha: 94cae02a334c72ea6ba8c056bb2864e2838878d3
   size: 19554643
+logstash/logstash-1.5.4.tar.gz:
+  object_id: f1b973e2-ba2e-4bc4-969e-ad4049caef37
+  sha: c892b71a3902bfdb54827385ed2c26a14ad816dd
+  size: 91956015
