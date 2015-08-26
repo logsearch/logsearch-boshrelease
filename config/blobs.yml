@@ -43,3 +43,23 @@ elasticsearch/elasticsearch-1.7.1.tar.gz:
   object_id: 5ba2c3ed-1730-40fc-9646-aafcab7d9c39
   sha: 0984ae27624e57c12c33d4a559c3ebae25e74508
   size: 28500556
+curator/click-3.3.tar.gz:
+  object_id: 5a17f7ca-b4dc-467a-b5a3-9181dfba17b6
+  sha: d716a932b930d71059e49465b6b42e833808369a
+  size: 259855
+curator/elasticsearch-curator.tar.gz:
+  object_id: dbacd365-5287-439b-8d48-006be450ee5b
+  sha: 28fd2f073b92b33e01db0df08adfc16699969e81
+  size: 82745
+curator/elasticsearch-py.tar.gz:
+  object_id: 44bd1583-2ea7-463d-97f8-a0860da085eb
+  sha: d6d61ddb5c20b0f806978174f75754bce1c53e41
+  size: 77205
+curator/urllib3-1.8.3.tar.gz:
+  object_id: f5601b3b-e555-4ca0-b955-c01e4081d0ee
+  sha: 00c92b0c3b0756ae3c4e6262d5bc80023dfe9ca3
+  size: 85466
+python/Python-3.4.3.tgz:
+  object_id: 34ff2b80-c2ca-4075-81a7-164805059d89
+  sha: 94cae02a334c72ea6ba8c056bb2864e2838878d3
+  size: 19554643
