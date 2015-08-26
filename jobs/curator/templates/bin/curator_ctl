@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -e
+set -u
+set -x
+
+CRON_STATUS=`pgrep cron | wc -l`
+
+source /var/vcap/jobs/curator/helpers/ctl_setup.sh 'curator'
+
+case $1 in
+  start)
+    if [ $CRON_STATUS -eq 0 ]; then
+      /usr/sbin/cron start
+    fi
+
+    (crontab -l | sed /run/d; cat /var/vcap/jobs/curator/config/purge_logs.cron) | sed /^$/d | crontab 
+
+    pgrep cron > /var/vcap/sys/run/curator/curator.pid
+    ;;
+  stop)
+
+    if [ -z "$(crontab -l | grep -v 'run')" ]; then
+      crontab -r
+    else
+      (crontab -l | sed /run/d) | sed /^$/d | crontab 
+    fi
+
+
+    rm -f /var/vcap/sys/run/curator/curator.pid
+
+    ;;
+  *)
+    echo "Usage: curator_ctl {start|stop}"
+    ;;
+
+esac

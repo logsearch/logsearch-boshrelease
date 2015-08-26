@@ -16,6 +16,9 @@ name: (( merge ))
 
 properties:
   <<: (( merge ))
+  curator:
+    <<: (( merge ))
+    elasticsearch_host: (( jobs.api.networks.default.static_ips.[0] ))
   logstash_parser:
     <<: (( merge ))
     debug: false
@@ -130,3 +133,18 @@ jobs:
     elasticsearch:
       node:
         allow_master: true
+
+- name: curator
+  instances: 1
+  release: logsearch
+  templates:
+  - name: curator
+  resource_pool: logsearch
+  networks:
+  - name: default
+    default:
+    - dns
+    - gateway
+    static_ips: (( static_ips(6) ))
+  persistent_disk: 0
+

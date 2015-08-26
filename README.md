@@ -13,6 +13,7 @@ own [BOSH](http://docs.cloudfoundry.org/bosh/)-managed infrastructure.
  * Visualize - to create and share dashboards of your logs via kibana
  * Archive - to retain log messages compressed and offsite in long-term storage
    via Amazon S3 or SFTP
+ * Curator - to set log retention
 
 
 ## Getting Started
