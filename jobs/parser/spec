@@ -13,7 +13,7 @@ templates:
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
   config/elasticsearch/config.yml.erb: config/elasticsearch/config.yml
   config/elasticsearch/logging.yml.erb: config/elasticsearch/logging.yml
-  config/input_redis_and_output_elasticsearch.conf.erb: config/input_redis_and_output_elasticsearch.conf
+  config/input_and_output.conf.erb: config/input_and_output.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
   config/logstash-filters-common.conf.erb: config/logstash-filters-common.conf
@@ -33,6 +33,17 @@ properties:
   logstash_parser.filters:
     description: "The configuration to embed into the logstash filters section"
     default: ''
+  logstash_parser.inputs:
+    description: |
+      A list of input plugins, with a hash of options for each of them. Please refer to example below.
+    example:
+      inputs:
+        - plugin: rabbitmq
+          options:
+            host: 192.168.1.1
+            user: logsearch
+            password: c1oudbunny
+    default: [ { plugin: "redis", options : {} } ]
   logstash_parser.outputs:
     description: "The configuration to embed into the logstash outputs section"
   logstash_parser.workers:

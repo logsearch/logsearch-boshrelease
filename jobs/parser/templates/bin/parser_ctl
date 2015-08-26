@@ -49,7 +49,7 @@ case $1 in
     done
 
     # construct a complete config file from all the fragments
-    cat ${JOB_DIR}/config/input_redis_and_output_elasticsearch.conf > ${JOB_DIR}/config/logstash.conf
+    cat ${JOB_DIR}/config/input_and_output.conf > ${JOB_DIR}/config/logstash.conf
     cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/logstash.conf
     cat ${JOB_DIR}/config/logstash-filters-common.conf >> ${JOB_DIR}/config/logstash.conf
 
