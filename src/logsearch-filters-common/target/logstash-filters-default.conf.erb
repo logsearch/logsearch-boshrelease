@@ -45,7 +45,7 @@ if [@type] in ["syslog", "relp"] {
           grok {
               # I don't think this is rfc5424-legal because it says SD *must* exist and message *may* exist.
               # However, this makes parsing compatible with common syslog implementations.
-              match => [ "syslog_message", "(?:%{DATA:syslog_procid}|\-) (?:%{DATA:syslog_msgid}|\-)(?: %{SYSLOG5424SD:syslog_sd}| \-)? %{GREEDYDATA:syslog_message}" ]
+              match => [ "syslog_message", "(?:-|%{DATA:syslog_procid}) (?:-|%{DATA:syslog_msgid})(?: %{SYSLOG5424SD:syslog_sd}| \-)? %{GREEDYDATA:syslog_message}" ]
               overwrite => [
                   "syslog_message"
               ]
@@ -114,6 +114,8 @@ if [@type] in ["syslog", "relp"] {
           remove_field => "syslog_severity"
           remove_field => "syslog_sd_id"
           remove_field => "syslog_sd_params"
+          remove_field => "syslog_procid"
+          remove_field => "syslog_msgid"
   
           # syslog host is actually the shipper
           rename => [ "@source.host", "@shipper[host]" ]
