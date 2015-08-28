@@ -59,7 +59,7 @@
             inputs: [ { name: "version-dev" } ]
             run:
               path: "/bin/bash"
-              args: [ "-c", "wget -O tarball.tgz https://{{artifact-bucket}}.s3.amazonaws.com/{{artifact-dev-prefix}}tarball/logsearch-$( cat version-dev/number ).tgz" ]
+              args: [ "-c", "wget -O tarball.tgz https://{{artifact-bucket}}.s3.amazonaws.com/{{artifact-dev-prefix}}release/logsearch-$( cat version-dev/number ).tgz" ]
     - task: "finalize-release"
       file: "src/ci/tasks/finalize-release/task.yml"
       config:
@@ -71,7 +71,7 @@
         - put: "release-final"
           params:
             from: "finalize-release/repo/releases/(.+).tgz"
-            to: "{{artifact-release-prefix}}tarball/"
+            to: "{{artifact-release-prefix}}release/"
         - put: "release-final-src"
           params:
             from: "finalize-release/repo/releases-src/logsearch/(.+).tgz"
@@ -91,8 +91,8 @@
     # update our published version
     - put: "version-final"
       params:
-        file: "version-final-wip/number"
+        file: "version/number"
     # update the version for our next development build, too
     - put: "version-dev-wip"
       params:
-        file: "version-final-wip/number"
+        file: "version/number"
