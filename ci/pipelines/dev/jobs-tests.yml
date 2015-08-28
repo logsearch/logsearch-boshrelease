@@ -1,0 +1,59 @@
+- name: "e2e"
+  plan:
+    - get: "version"
+      resource: "version-dev-wip"
+      trigger: true
+      passed:
+        - "create-release"
+    - aggregate:
+        - task: "release"
+          config:
+            platform: linux
+            image: docker:///konne/ubuntu-wget
+            inputs: [ { name: "version" } ]
+            run:
+              path: "/bin/bash"
+              args: [ "-c", "wget -O tarball.tgz https://{{artifact-bucket}}.s3.amazonaws.com/{{artifact-dev-prefix}}tarball/logsearch-$( cat version/number ).tgz" ]
+        - task: "src"
+          config:
+            platform: linux
+            image: docker:///konne/ubuntu-wget
+            inputs: [ { name: "version" } ]
+            run:
+              path: "/bin/bash"
+              args: [ "-c", "wget -O- https://{{artifact-bucket}}.s3.amazonaws.com/{{artifact-dev-prefix}}src/logsearch-src-$( cat version/number ).tgz | tar -xzf- --strip-components=1" ]
+        - get: "bosh-warden-stemcell"
+    - put: "e2e-deployment"
+      params:
+        manifest: "src/ci/jobs/dev-e2e/deployment.yml"
+        stemcells:
+          - "bosh-warden-stemcell/*.tgz"
+        releases:
+          - "release/*.tgz"
+    - task: "test"
+      file: "src/ci/tasks/run-deployment-errand/task.yml"
+      config:
+        params:
+          BOSH_TARGET: "{{bosh-lite-target}}"
+          BOSH_USERNAME: "{{bosh-lite-username}}"
+          BOSH_PASSWORD: "{{bosh-lite-password}}"
+          DEPLOYMENT_NAME: "develop-e2e"
+          ERRAND_NAME: "test_e2e_errand"
+
+- name: "logsearch-shipper-filters"
+  plan:
+    - get: "version"
+      resource: "version-dev-wip"
+      trigger: true
+      passed:
+        - "create-release"
+    - task: "src"
+      config:
+        platform: linux
+        image: docker:///konne/ubuntu-wget
+        inputs: [ { name: "version" } ]
+        run:
+          path: "/bin/bash"
+          args: [ "-c", "wget -O- https://{{artifact-bucket}}.s3.amazonaws.com/{{artifact-dev-prefix}}src/logsearch-src-$( cat version/number ).tgz | tar -xzf- --strip-components=1" ]
+    - task: "test"
+      file: "src/ci/tasks/logsearch-shipper-test/task.yml"
