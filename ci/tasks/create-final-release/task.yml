@@ -1,8 +1,0 @@
----
-platform: "linux"
-image: "docker:///concourse/concourse-ci"
-inputs:
-  - name: "repo"
-  - name: "version"
-run:
-  path: "repo/ci/scripts/create-final-release/run.sh"

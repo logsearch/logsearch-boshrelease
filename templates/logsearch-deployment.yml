@@ -36,12 +36,6 @@ update:
   max_errors: 1
 
 resource_pools:
-- name: logsearch
-  network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: (( merge ))
-  env: (( merge || meta.default_env ))
-
 - name: logsearch_api
   network: default
   stemcell: (( meta.stemcell ))
@@ -55,6 +49,18 @@ resource_pools:
   env: (( merge || meta.default_env ))
 
 - name: logsearch_elasticsearch
+  network: default
+  stemcell: (( meta.stemcell ))
+  cloud_properties: ~
+  env: (( merge || meta.default_env ))
+
+- name: logsearch_queue
+  network: default
+  stemcell: (( meta.stemcell ))
+  cloud_properties: ~
+  env: (( merge || meta.default_env ))
+
+- name: logsearch_parser
   network: default
   stemcell: (( meta.stemcell ))
   cloud_properties: ~

@@ -1,0 +1,7 @@
+---
+platform: "linux"
+image: "docker:///concourse/concourse-ci"
+inputs:
+  - name: "src"
+run:
+  path: "src/ci/tasks/run-deployment-errand/run.sh"

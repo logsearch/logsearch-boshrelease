@@ -9,12 +9,6 @@ source /var/vcap/jobs/ingestor_syslog/helpers/ctl_setup.sh 'ingestor_syslog'
 export LANG=en_US.UTF-8
 # 1 logstash worker / CPU core
 export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
-export JAVA_OPTS='-Dhttps.protocols="<%= p("logstash_ingestor.syslog_tls.jdk_tls_client_protocols") %>" -Djdk.tls.client.protocols="<%= p("logstash_ingestor.syslog_tls.jdk_tls_client_protocols") %>"' 
-
-<% if p("logstash_ingestor.syslog_tls.jdk_tls_client_protocols").include? "SSLv3" %>
-# Ensure that Java security config doesn't prevent using the SSLv3 protocol.
-sed -i s/^jdk.tls.disabledAlgorithms=SSLv3/#jdk.tls.disabledAlgorithms=SSLv3/ /var/vcap/packages/java8/lib/security/java.security
-<% end %>
 
 case $1 in
 

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+set -u
+
+cd $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+echo "jobs:"
+cat ../dev/jobs-tests.yml | sed 's/^/  /'
+cat jobs.yml | sed 's/^/  /'
+
+echo "resources:"
+cat ../dev/resources.yml | sed 's/^/  /'
+cat resources.yml | sed 's/^/  /'

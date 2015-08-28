@@ -1,0 +1,1 @@
+*/59 * * * * /var/vcap/jobs/curator/bin/run >>/var/vcap/sys/log/curator/curator.log 2>&1
