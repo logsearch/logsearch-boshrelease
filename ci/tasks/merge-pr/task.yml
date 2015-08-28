@@ -1,0 +1,8 @@
+---
+platform: "linux"
+image: "docker:///concourse/concourse-ci"
+inputs:
+  - name: "repo-base"
+  - name: "repo-head"
+run:
+  path: "repo-base/ci/tasks/merge-pr/run.sh"

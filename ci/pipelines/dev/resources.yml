@@ -1,0 +1,52 @@
+- name: "repo-dev"
+  type: "git"
+  source:
+    uri: "{{repo-uri}}"
+    branch: "{{repo-dev-branch}}"
+    private_key: "{{repo-key}}"
+
+- name: "version-dev"
+  type: "semver"
+  source:
+    bucket: "{{artifact-bucket}}"
+    key: "{{artifact-dev-prefix}}version"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"
+
+- name: "version-dev-wip"
+  type: "semver"
+  source:
+    bucket: "{{artifact-bucket}}"
+    key: "{{artifact-dev-prefix}}version-wip"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"
+
+- name: "release-dev"
+  type: "s3"
+  source:
+    bucket: "{{artifact-bucket}}"
+    regexp: "{{artifact-dev-prefix}}tarball/logsearch-(.*).tgz"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"
+
+- name: "release-dev-src"
+  type: "s3"
+  source:
+    bucket: "{{artifact-bucket}}"
+    regexp: "{{artifact-dev-prefix}}src/logsearch-src-(.*).tgz"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"
+
+- name: "e2e-deployment"
+  type: "bosh-deployment"
+  source:
+    target: "{{bosh-lite-target}}"
+    username: "{{bosh-lite-username}}"
+    password: "{{bosh-lite-password}}"
+    deployment: "develop-e2e"
+    ignore_ssl: "yes"
+
+- name: "bosh-warden-stemcell"
+  type: "bosh-io-stemcell"
+  source:
+    name: "bosh-warden-boshlite-ubuntu-trusty-go_agent"

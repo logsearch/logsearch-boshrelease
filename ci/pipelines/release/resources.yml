@@ -1,0 +1,38 @@
+- name: "release-final"
+  type: "s3"
+  source:
+    bucket: "{{artifact-bucket}}"
+    regexp: "{{artifact-release-prefix}}tarball/logsearch-(.*).tgz"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"
+
+- name: "release-final-src"
+  type: "s3"
+  source:
+    bucket: "{{artifact-bucket}}"
+    regexp: "{{artifact-release-prefix}}src/logsearch-src-(.*).tgz"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"
+
+- name: "github-release"
+  type: "github-release"
+  source:
+    access_token: "{{github-api-token}}"
+    user: "{{github-user}}"
+    repository: "{{github-repository}}"
+
+- name: "version-final"
+  type: "semver"
+  source:
+    bucket: "{{artifact-bucket}}"
+    key: "{{artifact-release-prefix}}version"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"
+
+- name: "version-final-wip"
+  type: "semver"
+  source:
+    bucket: "{{artifact-bucket}}"
+    key: "{{artifact-release-prefix}}version-wip"
+    access_key_id: "{{aws-access-key}}"
+    secret_access_key: "{{aws-secret-key}}"

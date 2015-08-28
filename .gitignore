@@ -20,6 +20,7 @@ tmp
 my*.yml
 releases/**/*.tgz
 blobs
+version
 
 /logsearch-config
 /logsearch-config.tgz

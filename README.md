@@ -49,6 +49,20 @@ integration, run the included script...
     SUCCESS
 
 
+### Release Channels
+
+We currently maintain two release channels...
+
+ * **final** - our latest stable, final release (also available on [bosh.io](http://bosh.io/releases/github.com/logsearch/logsearch-boshrelease))
+ * **develop** - the latest build from our `develop` branch which has passed all our tests
+
+You can find the artifacts with the following URI templates...
+
+ * Latest Version: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/version`
+ * Release Tarball: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/release/logsearch-{version}.tgz`
+ * Source Tarball: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/src/logsearch-src-{version}.tgz`
+
+
 ## License
 
 [Apache License 2.0](./LICENSE)

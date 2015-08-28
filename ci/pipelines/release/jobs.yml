@@ -1,0 +1,98 @@
+- name: "major"
+  public: true
+  plan:
+    - get: "version"
+      resource: "version-final-wip"
+      params:
+        bump: "major"
+    - put: "version-final-wip"
+      params:
+        file: "version/number"
+
+- name: "minor"
+  public: true
+  plan:
+    - get: "version"
+      resource: "version-final-wip"
+      params:
+        bump: "minor"
+    - put: "version-final-wip"
+      params:
+        file: "version/number"
+
+- name: "patch"
+  public: true
+  plan:
+    - get: "version"
+      resource: "version-final-wip"
+      params:
+        bump: "patch"
+    - put: "version-final-wip"
+      params:
+        file: "version/number"
+
+- name: "publish"
+  public: true
+  plan:
+    # whenever wip changes, we're creating a new version
+    - get: "version"
+      resource: "version-final-wip"
+      trigger: true
+    # we'll be release the latest, successful dev build
+    - get: "version-dev"
+    # we'll be using all our artifacts here
+    - aggregate:
+        - get: "repo"
+          resource: "repo-dev"
+        - task: "src"
+          config:
+            platform: linux
+            image: docker:///konne/ubuntu-wget
+            inputs: [ { name: "version-dev" } ]
+            run:
+              path: "/bin/bash"
+              args: [ "-c", "wget -O- https://{{artifact-bucket}}.s3.amazonaws.com/{{artifact-dev-prefix}}src/logsearch-src-$( cat version-dev/number ).tgz | tar -xzf- --strip-components=1" ]
+        - task: "release"
+          config:
+            platform: linux
+            image: docker:///konne/ubuntu-wget
+            inputs: [ { name: "version-dev" } ]
+            run:
+              path: "/bin/bash"
+              args: [ "-c", "wget -O tarball.tgz https://{{artifact-bucket}}.s3.amazonaws.com/{{artifact-dev-prefix}}tarball/logsearch-$( cat version-dev/number ).tgz" ]
+    - task: "finalize-release"
+      file: "src/ci/tasks/finalize-release/task.yml"
+      config:
+        params:
+          AWS_ACCESS_KEY: "{{aws-access-key}}"
+          AWS_SECRET_KEY: "{{aws-secret-key}}"
+    # push out archives and our updated repo
+    - aggregate:
+        - put: "release-final"
+          params:
+            from: "finalize-release/repo/releases/(.+).tgz"
+            to: "{{artifact-release-prefix}}tarball/"
+        - put: "release-final-src"
+          params:
+            from: "finalize-release/repo/releases-src/logsearch/(.+).tgz"
+            to: "{{artifact-release-prefix}}src/"
+        - put: "repo-dev"
+          params:
+            repository: "finalize-release/repo"
+            rebase: true
+            tag: "finalize-release/name"
+    # created a release in GitHub with our release notes
+    - put: "github-release"
+      params:
+        name: "finalize-release/name"
+        tag: "finalize-release/name"
+        body: "finalize-release/notes.md"
+        commitish: "finalize-release/commit"
+    # update our published version
+    - put: "version-final"
+      params:
+        file: "version-final-wip/number"
+    # update the version for our next development build, too
+    - put: "version-dev-wip"
+      params:
+        file: "version-final-wip/number"
