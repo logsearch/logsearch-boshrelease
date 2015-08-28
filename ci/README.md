@@ -39,11 +39,11 @@ After running `fly-configure` to install the new PR pipeline, you'll want to unp
 
 If you're setting up pipelines from scratch or for your own fork, you might need to initialize a few files...
 
-    echo -n "22+dev.4" > version
+    echo -n "22.0.0-dev.4" > version
     aws s3api put-object --bucket=logsearch-boshrelease --key=develop/version --body=version
     aws s3api put-object --bucket=logsearch-boshrelease --key=develop/version-wip --body=version
     
-    echo -n "22.0.0" > version
+    echo -n "23.0.0" > version
     aws s3api put-object --bucket=logsearch-boshrelease --key=final/version --body=version
     aws s3api put-object --bucket=logsearch-boshrelease --key=final/version-wip --body=version
 
