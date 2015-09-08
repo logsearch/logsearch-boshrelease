@@ -1,1 +1,3 @@
-/config/private*.yml
+/config/*-private.yml
+/config/pr/
+/config/pr.txt

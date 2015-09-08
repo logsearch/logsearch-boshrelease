@@ -28,8 +28,6 @@ jobs:
     instances: 1
     networks:
       - name: default
-        static_ips: (( static_ips(5) ))
-
   - name: elasticsearch_persistent
     instances: 1
     networks:
@@ -49,12 +47,6 @@ compilation:
     cpu: 2
 
 resource_pools:
-- name: logsearch
-  cloud_properties:
-    ram: 4096
-    disk: 30000
-    cpu: 2
-
 - name: logsearch_api
   cloud_properties:
     ram: 4096
@@ -68,6 +60,18 @@ resource_pools:
     cpu: 2
 
 - name: logsearch_elasticsearch
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: logsearch_queue
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: logsearch_parser
   cloud_properties:
     ram: 4096
     disk: 30000

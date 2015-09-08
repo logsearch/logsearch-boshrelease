@@ -34,9 +34,6 @@ properties:
     description: Syslog-TLS SSL certificate (file contents, not a path) - required if logstash_ingestor.syslog_tls.port set
   logstash_ingestor.syslog_tls.ssl_key:
     description: Syslog-TLS SSL key (file contents, not a path) - required if logstash_ingestor.syslog_tls.port set
-  logstash_ingestor.syslog_tls.jdk_tls_client_protocols:
-    description: Allowed TLS protocols passed to jdk.tls.client.protocols and https.protocols settings.  Defaults to TLSv1,TLSv1.1,TLSv1.2.  Set to SSLv3,TLSv1,TLSv1.1,TLSv1.2 to enable (POODLE vulnerable) SSLv3 connections from legacy syslog clients
-    default: "TLSv1,TLSv1.1,TLSv1.2"
 
   redis.host: 
     description: Redis host of queue

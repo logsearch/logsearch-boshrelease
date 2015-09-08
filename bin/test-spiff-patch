@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#
+# I'm not really familiar with spiff, so I started diffing the resultant spiff
+# output to hopefully avoid a buggy merge. Run it on a clean branch and pass it
+# the patch URL; then probably run `git reset --hard` afterwards.
+#
+# ./bin/test-spiff-patch https://github.com/logsearch/logsearch-boshrelease/pull/159.patch
+#
+
+set -e
+set -u
+
+INFRAS="aws warden vsphere"
+
+mkdir -p tmp/
+
+for INFRA in $INFRAS ; do
+  ./generate_deployment_manifest $INFRA templates/stub.$INFRA.example.yml > tmp/spiff-merge-$INFRA-old.yml
+done
+
+wget -qO- "${1}" | patch -p1
+
+echo ""
+
+for INFRA in $INFRAS ; do
+  ./generate_deployment_manifest $INFRA templates/stub.$INFRA.example.yml > tmp/spiff-merge-$INFRA-new.yml
+done
+
+for INFRA in $INFRAS ; do
+  echo "====> ${INFRA}"
+
+  diff tmp/spiff-merge-$INFRA-old.yml tmp/spiff-merge-$INFRA-new.yml || true
+  
+  echo ""
+done

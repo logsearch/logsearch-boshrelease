@@ -1,0 +1,8 @@
+---
+platform: "linux"
+image: "docker:///concourse/concourse-ci"
+inputs:
+  - name: "src"
+  - name: "version"
+run:
+  path: "src/ci/tasks/create-dev-release-tarball/run.sh"

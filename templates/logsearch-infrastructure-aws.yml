@@ -48,12 +48,6 @@ compilation:
     instance_type: m1.large
 
 resource_pools:
-  - name: logsearch
-    cloud_properties:
-      availability_zone: (( merge || meta.availability_zone ))
-      instance_type: (( merge || "m1.large" ))
-      elbs: ~
-
   - name: logsearch_api
     cloud_properties:
       availability_zone: (( merge || meta.availability_zone ))
@@ -67,6 +61,18 @@ resource_pools:
       elbs: ~
 
   - name: logsearch_elasticsearch
+    cloud_properties:
+      availability_zone: (( merge || meta.availability_zone ))
+      instance_type: (( merge || "m1.large" ))
+      elbs: ~
+
+  - name: logsearch_queue
+    cloud_properties:
+      availability_zone: (( merge || meta.availability_zone ))
+      instance_type: (( merge || "m1.large" ))
+      elbs: ~
+
+  - name: logsearch_parser
     cloud_properties:
       availability_zone: (( merge || meta.availability_zone ))
       instance_type: (( merge || "m1.large" ))

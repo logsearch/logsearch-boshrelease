@@ -13,6 +13,7 @@ own [BOSH](http://docs.cloudfoundry.org/bosh/)-managed infrastructure.
  * Visualize - to create and share dashboards of your logs via kibana
  * Archive - to retain log messages compressed and offsite in long-term storage
    via Amazon S3 or SFTP
+ * Curator - to set log retention
 
 
 ## Getting Started
@@ -22,9 +23,9 @@ Upload the latest logsearch release from [bosh.io](https://bosh.io)...
     $ bosh upload release https://bosh.io/d/github.com/logsearch/logsearch-boshrelease
 
 If you are using [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can
-get started with our sample manifest, [`bosh-lite.yml`](./examples/bosh-lite.yml)...
+get started with our sample manifest, [`bosh-lite.yml`](./templates/bosh-lite.yml)...
 
-    $ bosh -d examples/bosh-lite.yml deploy
+    $ bosh -d templates/bosh-lite.yml deploy
 
 For more details, review the [`docs/`](http://www.logsearch.io/docs/boshrelease/)
 or raise an issue if you run into a bug.
@@ -33,9 +34,9 @@ or raise an issue if you run into a bug.
 ## Testing
 
 To run a sanity test which ships some sample logs, parses, and then queries them,
-use the pre-configured `test_e2e_errand` errand from `examples/bosh-lite.yml`...
+use the pre-configured `test_e2e_errand` errand from `templates/bosh-lite.yml`...
 
-    $ bosh -d examples/bosh-lite.yml run errand test_e2e_errand
+    $ bosh -d templates/bosh-lite.yml run errand test_e2e_errand
     ...snip...
     ==> Validating results...
     SUCCESS
@@ -46,6 +47,20 @@ integration, run the included script...
     $ ./bin/logsearch-shipper-config-buildtest
     ...snip...
     SUCCESS
+
+
+### Release Channels
+
+We currently maintain two release channels...
+
+ * **final** - our latest stable, final release (also available on [bosh.io](http://bosh.io/releases/github.com/logsearch/logsearch-boshrelease))
+ * **develop** - the latest build from our `develop` branch which has passed all our tests
+
+You can find the artifacts with the following URI templates...
+
+ * Latest Version: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/version`
+ * Release Tarball: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/release/logsearch-{version}.tgz`
+ * Source Tarball: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/src/logsearch-src-{version}.tgz`
 
 
 ## License

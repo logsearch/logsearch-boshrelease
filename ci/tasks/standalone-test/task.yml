@@ -1,8 +1,0 @@
----
-platform: "linux"
-image: "docker:///dpb587/logsearch-testutils"
-inputs:
-  - name: "release"
-  - name: "repo"
-run:
-  path: "repo/ci/tasks/standalone-test/run.sh"
