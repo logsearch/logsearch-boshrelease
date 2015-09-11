@@ -8,6 +8,9 @@ set -u # report the usage of uninitialized variables
 mkdir $BOSH_INSTALL_TARGET/logstash
 tar -xzf logstash/logstash-1.5.4.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
 
+# Temp. fix for issue #178. Should be removed beyond logstash-1.5.4
+chmod 644 $BOSH_INSTALL_TARGET/logstash/vendor/bundle/jruby/1.9/gems/march_hare-2.11.0-java/lib/ext/*
+
 # Setup Java so we can run logstash/bin/plugin install
 JAVA_HOME=/var/vcap/packages/java8
 PATH=$PATH:/var/vcap/packages/java8/bin
