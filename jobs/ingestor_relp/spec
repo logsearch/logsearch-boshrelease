@@ -9,7 +9,7 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
-  config/relp_to_redis.conf.erb: config/relp_to_redis.conf
+  config/logstash.conf.erb: config/logstash.conf
 properties:
   logstash.metadata_level:
     description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
@@ -21,6 +21,18 @@ properties:
   logstash_ingestor.debug:
     description: Debug level logging
     default: false
+  logstash_ingestor.outputs:
+    description: |
+      A list of output plugins, with a hash of options for each of them. Please refer to example below.
+    example:
+      outputs:
+        - plugin: rabbitmq
+          options:
+            host: 192.168.1.1
+            user: logsearch
+            password: c1oudbunny
+            exchange_type: "direct"
+    default: [ { plugin: "redis", options : {} } ]
 
   logstash_ingestor.relp.port: 
     description: Port to listen for RELP messages
@@ -37,3 +49,4 @@ properties:
 
   archiver.enabled:
     default: false
+    description: Additional queue for archive (Redis only)
