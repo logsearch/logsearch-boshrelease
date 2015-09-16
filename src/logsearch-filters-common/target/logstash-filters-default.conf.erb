@@ -45,7 +45,7 @@ if [@type] in ["syslog", "relp"] {
           grok {
               # I don't think this is rfc5424-legal because it says SD *must* exist and message *may* exist.
               # However, this makes parsing compatible with common syslog implementations.
-              match => [ "syslog_message", "(?:-|%{DATA:syslog_procid}) (?:-|%{DATA:syslog_msgid})(?: %{SYSLOG5424SD:syslog_sd}| \-)? %{GREEDYDATA:syslog_message}" ]
+              match => [ "syslog_message", "(?:%{DATA:syslog_procid}|\-) (?:%{DATA:syslog_msgid}|\-)(?: %{SYSLOG5424SD:syslog_sd}| \-)? %{GREEDYDATA:syslog_message}" ]
               overwrite => [
                   "syslog_message"
               ]
@@ -72,58 +72,19 @@ if [@type] in ["syslog", "relp"] {
                       ]
                   }
   
-                  if [syslog_sd_params][type] {
-                      # establish a convention that a structured data key of "type" will be the log type
-                      mutate {
-                          replace => { "@type" => "%{syslog_sd_params[type]}" }
-                          remove_field => [ "syslog_sd_params[type]" ]
-                      }
+                 if [syslog_sd_params][type] {
+                     # when the syslog params include a type, prepare the message for parsing by additional downstream parsing rules:
+                     #  - Change the @type - this triggers downstream parsing rules
+                     #  - @message_unparsed = 'unparsed' message body that will be parsed by downstream @type rules
+                     mutate {
+                         replace => { "@type" => "%{syslog_sd_params[type]}" }
+                         remove_field => [ "syslog_sd_params[type]" ]
+                         add_field => { "@message_unparsed" => "%{syslog_message}" }
+                     }
+  
                   }
               }
           }
-      }
-  }
-
-  if "NXLOG@14506" == [syslog_sd_id] {
-      # We're going to treat syslog as a transparent transport and pretend it was never even
-      # utilized. This means we'll drop the syslog metadata, but it really shouldn't matter.
-  
-      mutate {
-          # This is a workaround to an apparent bug where logstash treats a non-existant field
-          # as an array which causes a "Not possible to merge an array and a hash" error. Here
-          # we force the probably non-existant field to a hash with a temp field so we can use
-          # the mutate's merge option.
-          add_field => [ "@source[_forcemeahash]", "workaround" ]
-      }
-  
-      mutate {
-          merge => [ "@source", "syslog_sd_params" ]
-          rename => [ "syslog_message", "@message" ]
-          remove_field => [ "@source[_forcemeahash]" ]
-      }
-  
-      mutate {
-          # syslog is just the transport; no need to store
-          remove_field => "syslog_message"
-          remove_field => "syslog_pri"
-          remove_field => "syslog5424_ver"
-          remove_field => "syslog_program"
-          remove_field => "syslog_severity_code"
-          remove_field => "syslog_facility_code"
-          remove_field => "syslog_facility"
-          remove_field => "syslog_severity"
-          remove_field => "syslog_sd_id"
-          remove_field => "syslog_sd_params"
-          remove_field => "syslog_procid"
-          remove_field => "syslog_msgid"
-  
-          # syslog host is actually the shipper
-          rename => [ "@source.host", "@shipper[host]" ]
-  
-          # these are parsed with kv, but they're static nxlog shipper properties
-          rename => [ "@source[EventReceivedTime]", "@shipper[event_received_time]" ]
-          rename => [ "@source[SourceModuleName]", "@shipper[module_name]" ]
-          rename => [ "@source[SourceModuleType]", "@shipper[module_type]" ]
       }
   }
 
