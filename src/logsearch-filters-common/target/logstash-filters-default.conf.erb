@@ -75,11 +75,11 @@ if [@type] in ["syslog", "relp"] {
                  if [syslog_sd_params][type] {
                      # when the syslog params include a type, prepare the message for parsing by additional downstream parsing rules:
                      #  - Change the @type - this triggers downstream parsing rules
-                     #  - @message_unparsed = 'unparsed' message body that will be parsed by downstream @type rules
+                     #  - @message_body = 'unparsed' message body that will be parsed by downstream @type rules
                      mutate {
                          replace => { "@type" => "%{syslog_sd_params[type]}" }
                          remove_field => [ "syslog_sd_params[type]" ]
-                         add_field => { "@message_unparsed" => "%{syslog_message}" }
+                         add_field => { "@message_body" => "%{syslog_message}" }
                      }
   
                   }
