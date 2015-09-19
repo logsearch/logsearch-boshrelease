@@ -18,7 +18,7 @@ end
 desc "Runs unit tests against filters & dashboards"
 task :test => :build do
 	puts "===> Testing ..."
-  sh %Q[ JAVA_OPTS="$JAVA_OPTS -XX:+TieredCompilation -XX:TieredStopAtLevel=1" vendor/logstash/bin/logstash rspec $(find test -name *spec.rb) ]
+  sh %Q[ vendor/logstash/bin/rspec $(find test -name *spec.rb) ]
 end
 
 def compile_erb(source_file, dest_file)
