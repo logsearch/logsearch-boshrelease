@@ -47,7 +47,7 @@ describe LogStash::Filters::Grok do
   end
 
   describe "Accepting Cloud Foundry syslog message with valid host" do
-    sample("host" => "1.2.3.4", "@message" => '<14>2014-04-23T23:19:01.227366+00:00 172.31.201.31 vcap.nats [job=vcap.nats index=1]  {\"timestamp\":1398295141.227022}') do
+    sample("@message" => '<14>2014-04-23T23:19:01.227366+00:00 172.31.201.31 vcap.nats [job=vcap.nats index=1]  {\"timestamp\":1398295141.227022}') do
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("2014-04-23T23:19:01.227Z")
       
@@ -65,13 +65,13 @@ describe LogStash::Filters::Grok do
   end
 
   describe "Invalid syslog message" do
-    sample("host" => "1.2.3.4", "@message" => '<78>Apr 24, this message should fail') do
+    sample("@message" => '<78>Apr 24, this message should fail') do
       insist { subject["tags"] } == [ 'fail/syslog_standard/_grokparsefailure' ]
     end
   end
 
   describe "Cloud Foundry loggregator messages" do
-    sample('host' => 'rspec', '@message' => '276 <14>1 2014-05-20T20:40:49+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - - {"@timestamp":"2014-05-20T20:40:49.907Z","message":"LowRequestRate 2014-05-20T15:44:58.794Z","@source.name":"watcher-bot-ppe","logger":"logsearch_watcher_bot.Program","level":"WARN"}') do
+    sample('@message' => '276 <14>1 2014-05-20T20:40:49+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - - {"@timestamp":"2014-05-20T20:40:49.907Z","message":"LowRequestRate 2014-05-20T15:44:58.794Z","@source.name":"watcher-bot-ppe","logger":"logsearch_watcher_bot.Program","level":"WARN"}') do
       insist { subject["tags"] } === [ 'syslog_standard' ]
       insist { subject["@timestamp"] } === Time.iso8601("2014-05-20T20:40:49Z")
 
@@ -91,7 +91,7 @@ describe LogStash::Filters::Grok do
       insist { subject['syslog_message'] } == '{"@timestamp":"2014-05-20T20:40:49.907Z","message":"LowRequestRate 2014-05-20T15:44:58.794Z","@source.name":"watcher-bot-ppe","logger":"logsearch_watcher_bot.Program","level":"WARN"}'
     end
 
-    sample('host' => 'rspec', '@message' => '167 <14>1 2014-05-20T09:46:16+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - - Updating AppSettings for /home/vcap/app/logsearch-watcher-bot.exe.config') do
+    sample('@message' => '167 <14>1 2014-05-20T09:46:16+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - - Updating AppSettings for /home/vcap/app/logsearch-watcher-bot.exe.config') do
       insist { subject["tags"] } === [ 'syslog_standard' ]
       insist { subject["@timestamp"] } === Time.iso8601("2014-05-20T09:46:16Z")
 
@@ -129,6 +129,48 @@ describe LogStash::Filters::Grok do
       insist { subject['syslog_procid'] } == '[App/0]'
       insist { subject['syslog_msgid'] } == '-'
       insist { subject['syslog_message'] } == '-'
+    end
+  end
+
+  describe "NXLOG message" do
+    sample("@message" => '<13>1 2015-09-24T11:16:12.808763+01:00 PKH-PPE-WEB28 - - - [NXLOG@14506 EventReceivedTime="2015-09-24 11:16:12" SourceModuleName="in_file1" SourceModuleType="im_file" path="\\PKH-PPE-WEB24\\Logs\\TradingApi.log*.log" type="ci_log4net" host="PKH-PPE-WEB24" service="CI WEBSERVICE/TradingAPI" environment="PPE"] INFO  2015-09-24 11:16:12,501 42 CityIndex.TradingApi.Common.Logging.MethodTimeLogger Request 4133629: Action: IOrderService.ListOpenPositions Duration 8ms') do
+
+      insist { subject["tags"] } == [ 'syslog_standard' ]
+      insist { subject["@timestamp"] } == Time.iso8601("2015-09-24T10:16:12.808Z")
+
+      insist { subject['@source']['host'] } == 'PKH-PPE-WEB28'
+      insist { subject['syslog_hostname'] } == 'PKH-PPE-WEB28'
+
+      insist { subject['syslog_sd_id'] } == 'NXLOG@14506'
+
+      sd_params = subject['syslog_sd_params'] 
+      insist { sd_params['EventReceivedTime'] } == '2015-09-24 11:16:12'
+      insist { sd_params['SourceModuleName'] } == 'in_file1'
+      insist { sd_params['SourceModuleType'] } == 'im_file'
+      insist { sd_params['path'] } == '\PKH-PPE-WEB24\Logs\TradingApi.log*.log'
+      insist { sd_params['type'] } == 'ci_log4net'
+      insist { sd_params['host'] } == 'PKH-PPE-WEB24'
+      insist { sd_params['service'] } == 'CI WEBSERVICE/TradingAPI'
+      insist { sd_params['environment'] } == 'PPE'
+
+      insist { subject['@type'] } == 'ci_log4net'
+      insist { subject['@message_body'] } == 'INFO  2015-09-24 11:16:12,501 42 CityIndex.TradingApi.Common.Logging.MethodTimeLogger Request 4133629: Action: IOrderService.ListOpenPositions Duration 8ms'
+    end
+  end
+
+  describe "log4net.Appenders.Contrib.RemoteSyslog5424Appender message" do
+    sample("@message" => '221 <14>1 2015-09-18T13:07:32.553201Z LON-WS01351X G2Shell - - [fields@0 environment="PPE"] INFO  2015-09-18 14:07:32,553 SenderThread RemoteSyslog5424AppenderDiagLogger Connection to the server lost. Re-try in 10 seconds.') do
+
+      insist { subject["tags"] } == [ 'syslog_standard' ]
+      insist { subject["@timestamp"] } == Time.iso8601("2015-09-18T13:07:32.553Z")
+      
+      insist { subject['@source']['host'] } == 'LON-WS01351X'
+      insist { subject['syslog_hostname'] } == 'LON-WS01351X'
+
+      insist { subject['syslog_sd_id'] } == 'fields@0'
+      insist { subject['syslog_sd_params']['environment'] } == 'PPE'
+
+      insist { subject['syslog_message'] } == 'INFO  2015-09-18 14:07:32,553 SenderThread RemoteSyslog5424AppenderDiagLogger Connection to the server lost. Re-try in 10 seconds.'
     end
   end
 
