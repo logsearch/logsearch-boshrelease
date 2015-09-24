@@ -25,9 +25,9 @@ input {
 }
 
 filter {
-	#Store host as @ingestor.remote_host
+	#Store host as @shipper.host
 	mutate {
-		add_field => { "[@ingestor][remote_host]" => "%{host}" }
+		add_field => { "[@shipper][host]" => "%{host}" }
 	}
 	mutate {
 		remove_field => [ "host" ]

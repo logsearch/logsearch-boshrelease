@@ -11,7 +11,7 @@ describe LogStash::Filters::Grok do
   CONFIG
 
   describe "Accepting standard syslog message without PID specified" do
-    sample("@ingestor" => { "received_from" => "1.2.3.4" } , "@message" => '<85>Apr 24 02:05:03 localhost sudo: bosh_h5156e598 : TTY=pts/0 ; PWD=/var/vcap/bosh_ssh/bosh_h5156e598 ; USER=root ; COMMAND=/bin/pwd') do
+    sample("@shipper" => { "host" => "1.2.3.4" } , "@message" => '<85>Apr 24 02:05:03 localhost sudo: bosh_h5156e598 : TTY=pts/0 ; PWD=/var/vcap/bosh_ssh/bosh_h5156e598 ; USER=root ; COMMAND=/bin/pwd') do
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("#{Time.now.year}-04-24T02:05:03.000Z")
       
@@ -29,7 +29,7 @@ describe LogStash::Filters::Grok do
   end
 
   describe "Accepting standard syslog message with PID specified" do
-    sample("@ingestor" => { "received_from" => "1.2.3.4" }, "@message" => '<78>Apr 24 04:03:06 localhost crontab[32185]: (root) LIST (root)') do
+    sample("@shipper" => { "host" => "1.2.3.4" }, "@message" => '<78>Apr 24 04:03:06 localhost crontab[32185]: (root) LIST (root)') do
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("#{Time.now.year}-04-24T04:03:06.000Z")
       
@@ -50,7 +50,9 @@ describe LogStash::Filters::Grok do
     sample("host" => "1.2.3.4", "@message" => '<14>2014-04-23T23:19:01.227366+00:00 172.31.201.31 vcap.nats [job=vcap.nats index=1]  {\"timestamp\":1398295141.227022}') do
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("2014-04-23T23:19:01.227Z")
+      
       insist { subject['@source']['host'] } == '172.31.201.31'
+      insist { subject['syslog_hostname'] } == '172.31.201.31'
 
       insist { subject['syslog_facility'] } == 'user-level'
       insist { subject['syslog_facility_code'] } == 1
@@ -72,9 +74,11 @@ describe LogStash::Filters::Grok do
     sample('host' => 'rspec', '@message' => '276 <14>1 2014-05-20T20:40:49+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - - {"@timestamp":"2014-05-20T20:40:49.907Z","message":"LowRequestRate 2014-05-20T15:44:58.794Z","@source.name":"watcher-bot-ppe","logger":"logsearch_watcher_bot.Program","level":"WARN"}') do
       insist { subject["tags"] } === [ 'syslog_standard' ]
       insist { subject["@timestamp"] } === Time.iso8601("2014-05-20T20:40:49Z")
-      insist { subject['@source']['host'] } === 'loggregator'
-      insist { subject['syslog_program'] } === 'd5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc'
 
+      insist { subject['@source']['host'] } === 'loggregator'
+      insist { subject['syslog_hostname'] } == 'loggregator'
+
+      insist { subject['syslog_program'] } === 'd5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc'
       insist { subject['syslog6587_msglen'] } === 276
       insist { subject['syslog5424_ver'] } === 1
       insist { subject['syslog_severity_code'] } === 6
@@ -90,9 +94,11 @@ describe LogStash::Filters::Grok do
     sample('host' => 'rspec', '@message' => '167 <14>1 2014-05-20T09:46:16+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - - Updating AppSettings for /home/vcap/app/logsearch-watcher-bot.exe.config') do
       insist { subject["tags"] } === [ 'syslog_standard' ]
       insist { subject["@timestamp"] } === Time.iso8601("2014-05-20T09:46:16Z")
-      insist { subject['@source']['host'] } === 'loggregator'
-      insist { subject['syslog_program'] } === 'd5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc'
 
+      insist { subject['@source']['host'] } === 'loggregator'
+      insist { subject['syslog_hostname'] } == 'loggregator'
+
+      insist { subject['syslog_program'] } === 'd5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc'
       insist { subject['syslog6587_msglen'] } === 167
       insist { subject['syslog5424_ver'] } === 1
       insist { subject['syslog_severity_code'] } === 6
@@ -108,9 +114,11 @@ describe LogStash::Filters::Grok do
     sample('host' => 'rspec', '@message' => '94 <11>1 2014-05-20T09:46:07+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - -') do
       insist { subject["tags"] } === [ 'syslog_standard' ]
       insist { subject["@timestamp"] } === Time.iso8601("2014-05-20T09:46:07Z")
-      insist { subject['@source']['host'] } === 'loggregator'
-      insist { subject['syslog_program'] } === 'd5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc'
 
+      insist { subject['@source']['host'] } === 'loggregator'
+      insist { subject['syslog_hostname'] } == 'loggregator'
+
+      insist { subject['syslog_program'] } === 'd5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc'
       insist { subject['syslog6587_msglen'] } === 94
       insist { subject['syslog5424_ver'] } === 1
       insist { subject['syslog_severity_code'] } === 3
