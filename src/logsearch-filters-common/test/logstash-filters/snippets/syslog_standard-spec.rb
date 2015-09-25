@@ -132,13 +132,35 @@ describe LogStash::Filters::Grok do
     end
   end
 
+  describe "syslog_sd_params rules" do
+    describe "when sd_params.host exists, @shipper.host = syslog_hostname, @source.host = sd_params.host" do
+      sample("@message" => '<13>1 2015-09-24T11:16:12.808763+01:00 SYSLOG-HOST - - - [NXLOG@14506 host="SDPARAMS-HOST"] IOrderService.ListOpenPositions Duration 8ms') do
+
+        insist { subject["tags"] } == [ 'syslog_standard' ]
+
+        insist { subject['@shipper']['host'] } == 'SYSLOG-HOST'
+        insist { subject['@source']['host'] } == 'SDPARAMS-HOST'
+      end
+    end
+    describe "when sd_params.type exists, @type = sd_params.type, @message_body = syslog_message" do
+      sample("@message" => '<13>1 2015-09-24T11:16:12.808763+01:00 SYSLOG-HOST - - - [NXLOG@14506 type="SDPARAMS-TYPE"] IOrderService.ListOpenPositions Duration 8ms') do
+
+        insist { subject["tags"] } == [ 'syslog_standard' ]
+
+        insist { subject['@type'] } == 'SDPARAMS-TYPE'
+        insist { subject['@message_body'] } == 'IOrderService.ListOpenPositions Duration 8ms'
+      end
+    end
+  end
+
   describe "NXLOG message" do
     sample("@message" => '<13>1 2015-09-24T11:16:12.808763+01:00 PKH-PPE-WEB28 - - - [NXLOG@14506 EventReceivedTime="2015-09-24 11:16:12" SourceModuleName="in_file1" SourceModuleType="im_file" path="\\PKH-PPE-WEB24\\Logs\\TradingApi.log*.log" type="ci_log4net" host="PKH-PPE-WEB24" service="CI WEBSERVICE/TradingAPI" environment="PPE"] INFO  2015-09-24 11:16:12,501 42 CityIndex.TradingApi.Common.Logging.MethodTimeLogger Request 4133629: Action: IOrderService.ListOpenPositions Duration 8ms') do
 
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("2015-09-24T10:16:12.808Z")
 
-      insist { subject['@source']['host'] } == 'PKH-PPE-WEB28'
+      insist { subject['@shipper']['host'] } == 'PKH-PPE-WEB28'
+      insist { subject['@source']['host'] } == 'PKH-PPE-WEB24'
       insist { subject['syslog_hostname'] } == 'PKH-PPE-WEB28'
 
       insist { subject['syslog_sd_id'] } == 'NXLOG@14506'
