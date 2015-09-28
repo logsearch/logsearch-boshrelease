@@ -2,6 +2,6 @@
 name: elasticsearch
 dependencies: [] # no compile dependencies
 files: 
-  # http://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.0.0-beta1/elasticsearch-2.0.0-beta1.tar.gz
-  - elasticsearch/elasticsearch-2.0.0-beta1.tar.gz
+  # http://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.0.0-beta1/elasticsearch-2.0.0-beta2-beta1.tar.gz
+  - elasticsearch/elasticsearch-2.0.0-beta2-beta1.tar.gz
   - elasticsearch/kibana-3.1.0.tar.gz

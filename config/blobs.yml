@@ -63,3 +63,7 @@ elasticsearch/elasticsearch-2.0.0-beta1.tar.gz:
   object_id: 57acdad8-30ab-4db4-9a0b-bc56bf8fb867
   sha: 9accb0ae9a2a91a45605d4abaa1a5715914597ac
   size: 28546082
+elasticsearch/elasticsearch-2.0.0-beta2.tar.gz:
+  object_id: b5bb3dce-fcaf-4a31-9ac7-95a8382d9685
+  sha: 8f0b004292745698e45606dcdfe873c43cad39f1
+  size: 28557977
