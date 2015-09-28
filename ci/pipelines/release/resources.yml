@@ -2,7 +2,7 @@
   type: "s3"
   source:
     bucket: "{{artifact-bucket}}"
-    regexp: "{{artifact-release-prefix}}tarball/logsearch-(.*).tgz"
+    regexp: "{{artifact-release-prefix}}release/logsearch-(.*).tgz"
     access_key_id: "{{aws-access-key}}"
     secret_access_key: "{{aws-secret-key}}"
 
