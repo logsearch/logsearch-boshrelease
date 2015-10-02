@@ -9,16 +9,21 @@ source /var/vcap/jobs/parser/helpers/ctl_setup.sh 'parser' 'elasticsearch'
 export PIDFILE=$RUN_DIR/elasticsearch.pid
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
+export ES_HEAP_SIZE=256M
 
 case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME/elasticsearch
 
+    ulimit -l unlimited # required to enable elasticsearch's mlockall setting
+    mkdir -p ${JOB_DIR}/config/elasticsearch/scripts #required for ES to start (even though we don't have any)
+    mkdir -p /var/vcap/packages/elasticsearch/plugins #required for ES to start (even though we don't have any)
+
     exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
+         -p ${PIDFILE} \
          -Des.config=${JOB_DIR}/config/elasticsearch/config.yml \
-         -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
-         -Des.pidfile=${PIDFILE} \
+         --XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          >>$LOG_DIR/elasticsearch.stdout.log \
          2>>$LOG_DIR/elasticsearch.stderr.log
 

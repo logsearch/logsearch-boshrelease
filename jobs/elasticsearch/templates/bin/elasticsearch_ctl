@@ -59,11 +59,14 @@ case $1 in
     /var/vcap/jobs/elasticsearch/bin/undrain 2>&1 >> $LOG_DIR/undrain.log &
 
     ulimit -n 64000
+    ulimit -l unlimited  # required to enable elasticsearch's mlockall setting
+
+    mkdir -p ${JOB_DIR}/config/scripts #required for ES to start (even though we don't have any)
 
     exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
+         -p ${PIDFILE} \
          -Des.config=${JOB_DIR}/config/config.yml \
-         -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
-         -Des.pidfile=${PIDFILE} \
+         --XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          <%= p("elasticsearch.exec.options", []).join(' ') %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
