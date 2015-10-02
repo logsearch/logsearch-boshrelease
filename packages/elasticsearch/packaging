@@ -8,12 +8,3 @@ set -u # report the usage of uninitialized variables
 tar xzf elasticsearch/elasticsearch-*.tar.gz
 cp -R elasticsearch-*/* $BOSH_INSTALL_TARGET
 
-#Plugins
-
-tar xzf elasticsearch/kibana-3.1.0.tar.gz
-mkdir -p $BOSH_INSTALL_TARGET/plugins-global/kibana/_site
-cp -R kibana-3.1.0/* $BOSH_INSTALL_TARGET/plugins-global/kibana/_site
-# Configure kibana to use the "local" elasticsearch & port
-sed -i 's/elasticsearch: "http:.*/elasticsearch: "http:\/\/"\+window.location.hostname+":"\+window.location.port,/' $BOSH_INSTALL_TARGET/plugins-global/kibana/_site/config.js
-
-

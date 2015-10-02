@@ -1,6 +1,6 @@
 ---
 name: elasticsearch
-packages: 
+packages:
 - elasticsearch
 - java8
 templates:
@@ -39,12 +39,7 @@ properties:
     description: A hash of additional environment variables for the process
   elasticsearch.exec.options:
     description: An array of additional options to pass when starting elasticsearch
-    default:
-    - "-XX:+AggressiveOpts"
-    - "-XX:+UseCompressedOops"
-    - "-XX:+UseParNewGC"
-    - "-XX:+UseConcMarkSweepGC"
-    - "-XX:+CMSParallelRemarkEnabled"
+    default: []
   elasticsearch.discovery.minimum_master_nodes:
     description: The minimum number of master eligible nodes a node should "see" in order to operate within the cluster. Recommended to set it to a higher value than 1 when running more than 2 nodes in the cluster.
     default: 1
