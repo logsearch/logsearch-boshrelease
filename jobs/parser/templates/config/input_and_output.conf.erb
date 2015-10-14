@@ -38,7 +38,7 @@ output {
             document_id => "<%= p('logstash_parser.elasticsearch_document_id') %>"
         <% end %>
         index => "<%= p('logstash_parser.elasticsearch_index') %>"
-        index_type => "<%= p('logstash_parser.elasticsearch_index_type') %>"
+        document_type => "<%= p('logstash_parser.elasticsearch_index_type') %>"
         manage_template => false
     }
 
