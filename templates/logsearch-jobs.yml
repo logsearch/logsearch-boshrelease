@@ -139,7 +139,7 @@ jobs:
   release: logsearch
   templates:
   - name: curator
-  resource_pool: logsearch
+  resource_pool: logsearch_api
   networks:
   - name: default
     default:
