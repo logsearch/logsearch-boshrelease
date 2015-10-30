@@ -59,3 +59,7 @@ curator/elasticsearch-1.7.0.tar.gz:
   object_id: 3bdcfe3c-1af6-4777-9a15-2d053d172a15
   sha: 01b76bf67b47a0bcbb69a6d7d00169449f780484
   size: 62054
+elasticsearch/elasticsearch-2.0.0.tar.gz:
+  object_id: 9f2ad16d-631e-482d-b789-f014e3ff633d
+  sha: e369d8579bd3a2e8b5344278d5043f19f14cac88
+  size: 28576708
