@@ -63,9 +63,12 @@ case $1 in
 
     mkdir -p ${JOB_DIR}/config/scripts #required for ES to start (even though we don't have any)
 
+    # ES2.0 deprcated -Des.config and insists on having the config file under ES_HOME/config
+    rm /var/vcap/packages/elasticsearch/config/elasticsearch.yml
+    ln -s $JOB_DIR/config/elasticsearch.yml /var/vcap/packages/elasticsearch/config
+
     exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
          -p ${PIDFILE} \
-         -Des.config=${JOB_DIR}/config/config.yml \
          --XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          <%= p("elasticsearch.exec.options", []).join(' ') %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
