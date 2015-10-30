@@ -20,6 +20,7 @@ export ES_HEAP_SIZE=$((( $( cat /proc/meminfo | grep MemTotal | awk '{ print $2 
 GLOBAL_PLUGINS_DIR=/var/vcap/packages/elasticsearch/plugins-global
 LOCAL_PLUGINS_DIR=/var/vcap/data/elasticsearch-plugins
 LOCAL_PLUGINS_NAME_LIST=" <%= p('elasticsearch.plugins').map { | plugin | plugin.first[0] }.join(' ') %> "
+PLUGIN_SCRIPTS_DIR=/var/vcap/data/elasticsearch/plugin-scripts
 
 case $1 in
 
@@ -61,7 +62,8 @@ case $1 in
     ulimit -n 64000
     ulimit -l unlimited  # required to enable elasticsearch's mlockall setting
 
-    mkdir -p ${JOB_DIR}/config/scripts #required for ES to start (even though we don't have any)
+    mkdir -p $PLUGIN_SCRIPTS_DIR
+    chown -R vcap: $PLUGIN_SCRIPTS_DIR
 
     # ES2.0 deprcated -Des.config and insists on having the config file under ES_HOME/config
     rm /var/vcap/packages/elasticsearch/config/elasticsearch.yml

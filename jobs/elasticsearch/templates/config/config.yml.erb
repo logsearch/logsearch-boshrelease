@@ -3,6 +3,7 @@ bootstrap.mlockall: true
 path.conf: "/var/vcap/jobs/elasticsearch/config"
 path.logs: "/var/vcap/sys/log/elasticsearch"
 path.data: "/var/vcap/store/elasticsearch"
+path.scripts: "/var/vcap/data/elasticsearch/plugin-scripts"
 
 cluster.name: "<%= p("elasticsearch.cluster_name") %>"
 
