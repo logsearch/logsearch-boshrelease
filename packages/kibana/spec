@@ -1,6 +1,6 @@
 ---
 name: kibana
 dependencies: []
-files: 
-  # https://download.elasticsearch.org/kibana/kibana/kibana-4.1.1-linux-x64.tar.gz
-  - kibana/kibana-4.1.1-linux-x64.tar.gz
+files:
+  # https://download.elastic.co/kibana/kibana/kibana-4.2.0-linux-x64.tar.gz
+  - kibana/kibana-4.2.0-linux-x64.tar.gz
