@@ -1,6 +1,6 @@
 ---
 name: parser
-packages: 
+packages:
 - logstash
 - elasticsearch
 - java8
@@ -11,7 +11,7 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
-  config/elasticsearch/config.yml.erb: config/elasticsearch/config.yml
+  config/elasticsearch/config.yml.erb: config/elasticsearch/elasticsearch.yml
   config/elasticsearch/logging.yml.erb: config/elasticsearch/logging.yml
   config/input_and_output.conf.erb: config/input_and_output.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
@@ -92,11 +92,11 @@ properties:
     description: "Additional options to append to elasticsearch's logging.yml (YAML format)."
     default: ~
 
-  redis.host: 
+  redis.host:
     description: Redis host of queue
-  redis.port: 
+  redis.port:
     description: Redis port of queue
     default: 6379
-  redis.key: 
+  redis.key:
     description: Name of queue to pull messages from
     default: logstash

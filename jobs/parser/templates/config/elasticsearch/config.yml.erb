@@ -3,6 +3,7 @@ bootstrap.mlockall: true
 path.conf: "/var/vcap/jobs/parser/config/elasticsearch"
 path.logs: "/var/vcap/sys/log/parser"
 path.data: "/var/vcap/store/parser" # shouldn't be used in client mode, but ES seems to require it to be set to start up
+path.scripts: "/var/vcap/data/elasticsearch/plugin-scripts"
 
 cluster.name: "<%= p("elasticsearch.cluster_name") %>"
 
