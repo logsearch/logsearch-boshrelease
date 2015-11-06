@@ -1,0 +1,55 @@
+---
+meta:
+  availability_zone: nova
+
+releases:
+- name: logsearch
+  version: latest
+
+name: logsearch-ashamalama
+director_uuid: 12345-12345-12345-12345
+
+compilation:
+  cloud_properties:
+    instance_type: m1.small
+
+resource_pools:
+- name: logsearch_api
+  cloud_properties:
+    instance_type: m1.small
+
+- name: logsearch_ingestor
+  cloud_properties:
+    instance_type: m1.small
+
+- name: logsearch_elasticsearch
+  cloud_properties:
+    instance_type: m1.small
+
+- name: logsearch_queue
+  cloud_properties:
+    instance_type: m1.small
+
+- name: logsearch_parser
+  cloud_properties:
+    instance_type: m1.small
+
+- name: logsearch_curator
+  cloud_properties:
+    instance_type: m1.small
+
+networks:
+- name: default 
+  type: manual
+  subnets:
+  - range: 10.10.48.0/24
+    gateway: 10.10.48.1
+    cloud_properties:
+       net_id: 12345-12345-12345-12345
+       security_groups: [logsearch]
+    dns:
+    - 10.10.0.2
+    reserved:
+    - 10.10.48.2 - 10.10.48.9
+    static:
+    - 10.10.48.10 - 10.10.48.55
