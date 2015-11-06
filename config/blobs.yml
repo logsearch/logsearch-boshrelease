@@ -67,7 +67,3 @@ kibana/kibana-4.2.0-linux-x64.tar.gz:
   object_id: 6e093f7c-afc3-4028-a4ba-d32cdeb28270
   sha: 094e197c687012211ae0e291faf3111d47e714d9
   size: 30647841
-curator/elasticsearch-2.1.0.tar.gz:
-  object_id: 5a8858dc-1d1b-4730-b55e-ff21f77c7bb2
-  sha: 942c464aa89cffd6cb9c7508cad0df04af4197d4
-  size: 56504
