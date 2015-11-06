@@ -3,7 +3,13 @@ set -u # report the usage of uninitialized variables
 
 export PATH=/var/vcap/packages/python3/bin:$PATH
 
-pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/urllib3-1.8.3.tar.gz
-pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/click-3.3.tar.gz
-pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/elasticsearch-2.1.0.tar.gz
-pip3 install --install-option="--prefix=$BOSH_INSTALL_TARGET" curator/elasticsearch-curator-3.4.0-dev1.tar.gz
+echo "All dependancies should be in $BOSH_COMPILE_TARGET/curator"
+find $BOSH_COMPILE_TARGET/curator
+
+# --no-index prevents contacting pypi to download packages
+# --find-links tells pip where to look for the dependancies
+pip3 install --no-index --find-links $BOSH_COMPILE_TARGET/curator --install-option="--prefix=$BOSH_INSTALL_TARGET" elasticsearch-curator
+
+echo "Installed to $BOSH_INSTALL_TARGET"
+find $BOSH_INSTALL_TARGET
+
