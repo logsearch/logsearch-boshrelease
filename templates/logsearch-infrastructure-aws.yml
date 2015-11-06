@@ -45,7 +45,7 @@ jobs:
 
 compilation:
   cloud_properties:
-    instance_type: m1.large
+    instance_type: c4.large
 
 resource_pools:
   - name: logsearch_api
