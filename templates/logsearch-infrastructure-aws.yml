@@ -78,4 +78,10 @@ resource_pools:
       instance_type: (( merge || "m1.large" ))
       elbs: ~
 
+  - name: logsearch_curator
+    cloud_properties:
+      availability_zone: (( merge || meta.availability_zone ))
+      instance_type: (( merge || "t2.micro" ))
+      elbs: ~
+
 networks: (( merge ))
