@@ -38,7 +38,7 @@ case $1 in
     # install new plugins
     <% p('elasticsearch.plugins').each do | plugin | pname, psource = plugin.first %>
       if [[ ! -e "${LOCAL_PLUGINS_DIR}/<%= pname %>" ]] ; then
-        /var/vcap/packages/elasticsearch/bin/plugin <% if psource =~ /:\/\// %>--url "<%= psource %>" --install "<%= pname %>"<% else %>--install "<%= psource %>"<% end %>
+        /var/vcap/packages/elasticsearch/bin/plugin install <%= psource %>
       fi
     <% end %>
 
@@ -49,7 +49,11 @@ case $1 in
       fi
     done
 
+
     # install packaged plugins
+    # FIXME: placeholder directory for the following loop, we might not need
+    #the whole thingt since plugins are not packaged with es2
+    mkdir "$GLOBAL_PLUGINS_DIR"
     for GLOBAL_PLUGIN_NAME in $( ls "${GLOBAL_PLUGINS_DIR}" ) ; do
       [[ -e "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" ]] || ln -s "${GLOBAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}"
     done
