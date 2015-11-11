@@ -120,6 +120,19 @@ jobs:
       node:
         allow_master: false
 
+- name: curator
+  instances: 1
+  templates:
+  - name: curator
+    release: logsearch
+  resource_pool: warden
+  networks:
+  - name: default
+    default:
+    - dns
+    - gateway
+  persistent_disk: 0
+
 - name: test_e2e_errand
   lifecycle: errand
   release: logsearch
@@ -161,8 +174,12 @@ properties:
   api:
     port: 80
   kibana:
-   elasticsearch: 127.0.0.1:9200
-   port: 5601
+    elasticsearch: 127.0.0.1:9200
+    port: 5601
+  curator:
+    elasticsearch_host: 10.244.2.2
+    purge_logs:
+      retention_period: 3
   elasticsearch:
     host: 10.244.2.2
     cluster_name: logsearch--bosh-lite
