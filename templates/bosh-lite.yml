@@ -30,11 +30,13 @@ resource_pools:
 
 jobs:
 - name: api
-  release: logsearch
   templates:
   - name: elasticsearch
+    release: logsearch
   - name: api
+    release: logsearch
   - name: kibana
+    release: logsearch
   update:
     serial: true
   instances: 1
@@ -49,11 +51,13 @@ jobs:
         allow_data: false
 
 - name: ingestor
-  release: logsearch
   templates:
   - name: ingestor_lumberjack
+    release: logsearch
   - name: ingestor_syslog
+    release: logsearch
   - name: ingestor_relp
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -62,9 +66,9 @@ jobs:
     - 10.244.2.14
 
 - name: queue
-  release: logsearch
   templates:
   - name: queue
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -73,9 +77,9 @@ jobs:
     - 10.244.2.10
 
 - name: parser
-  release: logsearch
   templates:
   - name: parser
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
@@ -85,9 +89,9 @@ jobs:
     - gateway
 
 - name: elasticsearch_persistent
-  release: logsearch
   templates:
   - name: elasticsearch
+    release: logsearch
   update:
     serial: true
   instances: 1
@@ -103,9 +107,9 @@ jobs:
         allow_master: false
 
 - name: elasticsearch_autoscale
-  release: logsearch
   templates:
   - name: elasticsearch
+    release: logsearch
   update:
     serial: true
   instances: 1
@@ -135,9 +139,9 @@ jobs:
 
 - name: test_e2e_errand
   lifecycle: errand
-  release: logsearch
   templates:
   - name: test_e2e_errand
+    release: logsearch
   instances: 1
   resource_pool: warden
   networks:
