@@ -47,10 +47,6 @@ logstash/logstash-1.5.4.tar.gz:
   object_id: f1b973e2-ba2e-4bc4-969e-ad4049caef37
   sha: c892b71a3902bfdb54827385ed2c26a14ad816dd
   size: 91956015
-elasticsearch/elasticsearch-2.0.0-rc1.tar.gz:
-  object_id: 0ce572de-8540-40c1-90c4-100de45fd298
-  sha: 426b36913ff114db053e241862f96ce7a4e3e9ac
-  size: 28562470
 curator/elasticsearch-curator-3.4.0-dev1.tar.gz:
   object_id: 508de17f-8c5b-4baf-b3e7-63bcd73247dc
   sha: 8e75e27c24d5b05ff446e778ef9dd3b95c49c91b
