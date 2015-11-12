@@ -27,10 +27,6 @@ logstash/logstash-input-relp-0.1.5.gem:
   object_id: cf9789c1-f2dc-43ca-b0fa-8c53f1346184
   sha: eb4c73ac65bc39ea3d51b8473dfe69d263694fa9
   size: 11776
-kibana/kibana-4.1.1-linux-x64.tar.gz:
-  object_id: c08909df-55f0-400a-bac6-399e309d70c0
-  sha: d43e039adcea43e1808229b9d55f3eaee6a5edb9
-  size: 11676499
 curator/click-3.3.tar.gz:
   object_id: 5a17f7ca-b4dc-467a-b5a3-9181dfba17b6
   sha: d716a932b930d71059e49465b6b42e833808369a
