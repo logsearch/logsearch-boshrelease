@@ -36,10 +36,9 @@ case $1 in
     [[ -e /var/vcap/packages/elasticsearch/plugins ]] || ln -s "${LOCAL_PLUGINS_DIR}" /var/vcap/packages/elasticsearch/plugins
 
     # install new plugins
+    rm -rf /var/vcap/packages/elasticsearch/plugins/*
     <% p('elasticsearch.plugins').each do | plugin | pname, psource = plugin.first %>
-      if [[ ! -e "${LOCAL_PLUGINS_DIR}/<%= pname %>" ]] ; then
-        /var/vcap/packages/elasticsearch/bin/plugin install <%= psource %>
-      fi
+      /var/vcap/packages/elasticsearch/bin/plugin install <%= psource %>
     <% end %>
 
     # remove old plugins
