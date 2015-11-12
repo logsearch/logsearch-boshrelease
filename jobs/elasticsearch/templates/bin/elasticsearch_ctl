@@ -52,8 +52,8 @@ case $1 in
 
     # install packaged plugins
     # FIXME: placeholder directory for the following loop, we might not need
-    #the whole thingt since plugins are not packaged with es2
-    mkdir "$GLOBAL_PLUGINS_DIR"
+    #the whole thing since plugins are not packaged with es2
+    [ -d "$GLOBAL_PLUGINS_DIR" ] || mkdir "$GLOBAL_PLUGINS_DIR"
     for GLOBAL_PLUGIN_NAME in $( ls "${GLOBAL_PLUGINS_DIR}" ) ; do
       [[ -e "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" ]] || ln -s "${GLOBAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}"
     done
