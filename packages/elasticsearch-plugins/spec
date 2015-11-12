@@ -1,0 +1,6 @@
+---
+name: elasticsearch-plugins
+dependencies: []
+files: 
+  # elasticsearch-*.zip plugin files. Do not forget to add it on your manifest under properties -> elasticsearch -> plugins: [ name: file:///var/vcap/packages/elasticsearch-plugins/elasticsearch-name.zip ]
+  - elasticsearch-plugins/elasticsearch-*
