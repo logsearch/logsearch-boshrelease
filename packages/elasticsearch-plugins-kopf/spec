@@ -1,0 +1,5 @@
+---
+name: elasticsearch-plugins-kopf
+dependencies: []
+files:
+  - elasticsearch-plugins-kopf/elasticsearch-kopf.zip

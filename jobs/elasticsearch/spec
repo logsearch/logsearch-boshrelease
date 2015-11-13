@@ -2,7 +2,7 @@
 name: elasticsearch
 packages:
 - elasticsearch
-- elasticsearch-plugins
+- elasticsearch-plugins-kopf
 - java8
 templates:
   bin/drain.erb: bin/drain

@@ -1,9 +1,11 @@
 ---
 name: logsearch
-director_uuid: <%= `bosh status --uuid` %>
+director_uuid: ea33eb06-8878-419e-9177-c46c713d2f94
 
 releases:
 - name: logsearch
+  version: latest
+- name: logsearch-for-cloudfoundry
   version: latest
 
 compilation:
@@ -30,6 +32,8 @@ resource_pools:
 
 jobs:
 - name: api
+  instances: 1
+  release: logsearch
   templates:
   - name: elasticsearch
     release: logsearch
@@ -37,9 +41,10 @@ jobs:
     release: logsearch
   - name: kibana
     release: logsearch
+  - name: elasticsearch-plugins-auth
+    release: logsearch-for-cloudfoundry
   update:
     serial: true
-  instances: 1
   resource_pool: warden
   networks:
   - name: default
@@ -51,6 +56,7 @@ jobs:
         allow_data: false
 
 - name: ingestor
+  release: logsearch
   templates:
   - name: ingestor_lumberjack
     release: logsearch
@@ -66,6 +72,7 @@ jobs:
     - 10.244.2.14
 
 - name: queue
+  release: logsearch
   templates:
   - name: queue
     release: logsearch
@@ -77,6 +84,7 @@ jobs:
     - 10.244.2.10
 
 - name: parser
+  release: logsearch
   templates:
   - name: parser
     release: logsearch
@@ -89,6 +97,7 @@ jobs:
     - gateway
 
 - name: elasticsearch_persistent
+  release: logsearch
   templates:
   - name: elasticsearch
     release: logsearch
@@ -107,6 +116,7 @@ jobs:
         allow_master: false
 
 - name: elasticsearch_autoscale
+  release: logsearch
   templates:
   - name: elasticsearch
     release: logsearch
@@ -125,6 +135,7 @@ jobs:
         allow_master: false
 
 - name: curator
+  release: logsearch
   instances: 1
   templates:
   - name: curator
@@ -139,6 +150,7 @@ jobs:
 
 - name: test_e2e_errand
   lifecycle: errand
+  release: logsearch
   templates:
   - name: test_e2e_errand
     release: logsearch
