@@ -47,7 +47,7 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(0) ))
-  persistent_disk: 409600
+  persistent_disk: 40960
   properties:
     elasticsearch:
       <<: (( merge ))
@@ -109,7 +109,7 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(3) ))
-  persistent_disk: 409600
+  persistent_disk: 40960
   properties:
     elasticsearch:
       node:
@@ -128,7 +128,7 @@ jobs:
     - dns
     - gateway
     static_ips: (( static_ips(4) ))
-  persistent_disk: 409600
+  persistent_disk: 40960
   properties:
     elasticsearch:
       node:
