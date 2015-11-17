@@ -1,87 +1,71 @@
----
-meta:
-  <<: (( merge ))
-  stemcell:
-    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
-    version: latest
-  availability_zone: (( merge ))
-
-jobs:
-  - name: api
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(0) ))
-
-  - name: ingestor
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(1) ))
-
-  - name: queue
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(2) ))
-
-  - name: parser
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(5) ))
-
-  - name: elasticsearch_persistent
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(3) ))
-
-  - name: elasticsearch_autoscale
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(4) ))
+meta: (( merge ))
 
 compilation:
   cloud_properties:
     instance_type: c4.large
 
 resource_pools:
-  - name: logsearch_api
-    cloud_properties:
-      availability_zone: (( merge || meta.availability_zone ))
-      instance_type: (( merge || "t2.micro" ))
-      elbs: ~
+- name: elasticsearch_master
+  <<: (( merge ))
+  cloud_properties:
+    <<: (( merge ))
+    availability_zone: eu-west-1a
+    instance_type: (( merge || "t2.micro" ))
 
-  - name: logsearch_ingestor
-    cloud_properties:
-      availability_zone: (( merge || meta.availability_zone ))
-      instance_type: (( merge || "t2.micro" ))
-      elbs: ~
+- name: elasticsearch_data
+  <<: (( merge ))
+  cloud_properties:
+    <<: (( merge ))
+    availability_zone: eu-west-1a
+    instance_type: (( merge || "t2.micro" ))
 
-  - name: logsearch_elasticsearch
-    cloud_properties:
-      availability_zone: (( merge || meta.availability_zone ))
-      instance_type: (( merge || "t2.small" ))
-      elbs: ~
+- name: queue
+  <<: (( merge ))
+  cloud_properties:
+    <<: (( merge ))
+    availability_zone: eu-west-1a
+    instance_type: (( merge || "t2.small" ))
 
-  - name: logsearch_queue
-    cloud_properties:
-      availability_zone: (( merge || meta.availability_zone ))
-      instance_type: (( merge || "t2.micro" ))
-      elbs: ~
+- name: ingestor
+  <<: (( merge ))
+  cloud_properties:
+    <<: (( merge ))
+    availability_zone: eu-west-1a
+    instance_type: (( merge || "t2.micro" ))
 
-  - name: logsearch_parser
-    cloud_properties:
-      availability_zone: (( merge || meta.availability_zone ))
-      instance_type: (( merge || "t2.micro" ))
-      elbs: ~
+- name: parser
+  <<: (( merge ))
+  cloud_properties:
+    <<: (( merge ))
+    availability_zone: eu-west-1a
+    instance_type: (( merge || "t2.micro" ))
 
-  - name: logsearch_curator
-    cloud_properties:
-      availability_zone: (( merge || meta.availability_zone ))
-      instance_type: (( merge || "t2.micro" ))
-      elbs: ~
+- name: kibana
+  <<: (( merge ))
+  cloud_properties:
+    <<: (( merge ))
+    availability_zone: eu-west-1a
+    instance_type: (( merge || "t2.micro" ))
 
-networks: (( merge ))
+- name: maintenance
+  <<: (( merge ))
+  cloud_properties:
+    <<: (( merge ))
+    availability_zone: eu-west-1a
+    instance_type: (( merge || "t2.micro" ))
+
+disk_pools:
+- name: elasticsearch_master
+  disk_size: (( merge || 102400 ))
+  cloud_properties:
+    type: (( merge || "gp2" ))
+
+- name: elasticsearch_data
+  disk_size: (( merge || 102400 ))
+  cloud_properties:
+    type: (( merge || "gp2" ))
+
+- name: queue
+  disk_size: (( merge || 102400 ))
+  cloud_properties:
+    type: (( merge || "gp2" ))

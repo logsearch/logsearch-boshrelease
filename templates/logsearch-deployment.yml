@@ -1,4 +1,3 @@
----
 meta:
   <<: (( merge ))
   environment: ~
@@ -27,6 +26,52 @@ compilation:
   reuse_compilation_vms: true
   cloud_properties: ~
 
+disk_pools: (( merge ))
+
+resource_pools:
+- name: elasticsearch_master
+  <<: (( merge ))
+  network: default
+  stemcell: (( meta.stemcell ))
+  env: (( meta.default_env || nil ))
+
+- name: elasticsearch_data
+  <<: (( merge ))
+  network: default
+  stemcell: (( meta.stemcell ))
+  env: (( meta.default_env || nil ))
+
+- name: ingestor
+  <<: (( merge ))
+  network: default
+  stemcell: (( meta.stemcell ))
+  env: (( meta.default_env || nil ))
+
+- name: queue
+  <<: (( merge ))
+  network: default
+  stemcell: (( meta.stemcell ))
+  env: (( meta.default_env || nil ))
+
+- name: parser
+  <<: (( merge ))
+  network: default
+  stemcell: (( meta.stemcell ))
+  env: (( meta.default_env || nil ))
+
+- name: kibana
+  <<: (( merge ))
+  network: default
+  stemcell: (( meta.stemcell ))
+  cloud_properties: ~
+  env: (( meta.default_env || nil ))
+
+- name: maintenance
+  <<: (( merge ))
+  network: default
+  stemcell: (( meta.stemcell ))
+  env: (( meta.default_env || nil ))
+
 update:
   serial: true
   canaries: 1
@@ -34,41 +79,4 @@ update:
   update_watch_time: 5000-600000
   max_in_flight: 1
   max_errors: 1
-
-resource_pools:
-- name: logsearch_api
-  network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: ~
-  env: (( merge || meta.default_env ))
-
-- name: logsearch_ingestor
-  network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: ~
-  env: (( merge || meta.default_env ))
-
-- name: logsearch_elasticsearch
-  network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: ~
-  env: (( merge || meta.default_env ))
-
-- name: logsearch_queue
-  network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: ~
-  env: (( merge || meta.default_env ))
-
-- name: logsearch_parser
-  network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: ~
-  env: (( merge || meta.default_env ))
-
-- name: logsearch_curator
-  network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: ~
-  env: (( merge || meta.default_env ))
 

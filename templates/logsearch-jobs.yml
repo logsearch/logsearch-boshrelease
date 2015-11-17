@@ -1,24 +1,120 @@
----
-meta:
-  <<: (( merge ))
-  jobs:
-    api:
-      templates:
-      - name: elasticsearch
-      - name: api
-      - name: kibana
-    elasticsearch:
-      templates:
-      - name: elasticsearch
+meta: (( merge ))
 
-networks: (( merge ))
-name: (( merge ))
+jobs:
+- name: elasticsearch_master
+  <<: (( merge ))
+  release: logsearch
+  templates:
+  - {name: elasticsearch, release: logsearch}
+  - {name: api, release: logsearch}
+  update:
+    serial: true
+  instances: 1
+  networks:
+  - <<: (( merge ))
+  - name: default
+    static_ips: (( merge || static_ips(0) ))
+  persistent_disk_pool: (( merge || elasticsearch_master ))
+  resource_pool: (( merge ))
+  properties:
+    elasticsearch:
+      node:
+        allow_master: true
+        allow_data: false
+
+- name: elasticsearch_data
+  <<: (( merge ))
+  release: logsearch
+  templates:
+  - {name: elasticsearch, release: logsearch}
+  update:
+    serial: true
+  instances: (( merge || 2 ))
+  networks:
+  - name: default
+    static_ips: (( merge || static_ips(16, 17) ))
+  resource_pool: (( merge ))
+  persistent_disk_pool: (( merge || elasticsearch_data ))
+  properties:
+    elasticsearch:
+      node:
+        allow_master: false
+        allow_data: true
+
+- name: ingestor
+  <<: (( merge ))
+  release: logsearch
+  templates:
+  - {name: ingestor_syslog, release: logsearch}
+  - {name: ingestor_relp, release: logsearch}
+  instances: (( merge || 1 ))
+  networks:
+  - <<: (( merge ))
+  - name: default
+    default: [gateway, dns]
+    static_ips: (( merge || static_ips(1) ))
+  resource_pool: (( merge ))
+  properties:
+    logstash_ingestor:
+      debug: false
+      relp:
+        port: ~
+
+- name: queue
+  <<: (( merge ))
+  release: logsearch
+  templates:
+  - {name: queue, release: logsearch}
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( merge || static_ips(3) ))
+  resource_pool: (( merge ))
+  persistent_disk_pool: (( merge || queue ))
+
+- name: parser
+  <<: (( merge ))
+  release: logsearch
+  templates:
+  - {name: parser, release: logsearch}
+  instances: (( merge || 1 ))
+  networks:
+  - name: default
+    static_ips: (( merge || static_ips(4) ))
+  resource_pool: (( merge ))
+  properties:
+   elasticsearch:
+     node:
+       allow_master: true
+
+- name: kibana
+  <<: (( merge ))
+  release: logsearch
+  templates:
+  - {name: kibana, release: logsearch}
+  instances: 1
+  resource_pool: parser
+  networks:
+  - <<: (( merge ))
+  - name: default
+  resource_pool: (( merge ))
+
+- name: maintenance
+  <<: (( merge ))
+  instances: 1
+  release: logsearch
+  templates:
+  - {name: elasticsearch_config, release: logsearch}
+  - {name: curator, release: logsearch}
+  networks:
+  - name: default
+  resource_pool: (( merge ))
 
 properties:
   <<: (( merge ))
   curator:
     <<: (( merge ))
-    elasticsearch_host: (( jobs.api.networks.default.static_ips.[0] ))
+    elasticsearch_host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ))
   logstash_parser:
     <<: (( merge ))
     debug: false
@@ -28,123 +124,12 @@ properties:
   redis:
     host: (( jobs.queue.networks.default.static_ips.[0] ))
   api:
-    elasticsearch_host: (( jobs.api.networks.default.static_ips.[0] ":9200"))
+    elasticsearch_host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200"))
   elasticsearch:
     <<: (( merge ))
     log_level: DEBUG
-    host: (( jobs.api.networks.default.static_ips.[0] "," jobs.elasticsearch_persistent.networks.default.static_ips.[0] "," jobs.elasticsearch_autoscale.networks.default.static_ips.[0]))
-    cluster_name: (( name ))
+    host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] "," jobs.elasticsearch_data.networks.default.static_ips.[0] ))
+    cluster_name: logsearch
     exec: ~
-
-jobs:
-- name: api
-  release: logsearch
-  templates: (( merge || meta.jobs.api.templates ))
-  update:
-    serial: true
-  instances: 1
-  resource_pool: logsearch_api
-  networks:
-  - name: default
-    static_ips: (( static_ips(0) ))
-  persistent_disk: 409600
-  properties:
-    elasticsearch:
-      <<: (( merge ))
-      node:
-        allow_data: true
-    kibana:
-      elasticsearch: (( jobs.api.networks.default.static_ips.[0] ":9200" ))
-
-- name: ingestor
-  release: logsearch
-  templates:
-  - name: ingestor_syslog
-  - name: ingestor_relp
-  instances: 1
-  resource_pool: logsearch_ingestor
-  networks:
-  - name: default
-    static_ips: (( static_ips(1) ))
-  properties:
-    logstash_ingestor:
-      debug: false
-      relp:
-        port: ~
-
-- name: queue
-  release: logsearch
-  templates:
-  - name: queue
-  instances: 1
-  resource_pool: logsearch_queue
-  persistent_disk: 40960
-  networks:
-  - name: default
-    static_ips: (( static_ips(2) ))
-
-- name: parser
-  release: logsearch
-  templates:
-  - name: parser
-  instances: 1
-  resource_pool: logsearch_parser
-  networks:
-  - name: default
-    default:
-    - dns
-    - gateway
-  properties:
-   elasticsearch:
-     node:
-       allow_master: true
-
-- name: elasticsearch_persistent
-  release: logsearch
-  templates: (( merge || meta.jobs.elasticsearch.templates ))
-  update:
-    serial: true
-  instances: 1
-  resource_pool: logsearch_elasticsearch
-  networks:
-  - name: default
-    static_ips: (( static_ips(3) ))
-  persistent_disk: 409600
-  properties:
-    elasticsearch:
-      node:
-        allow_master: true
-
-- name: elasticsearch_autoscale
-  release: logsearch
-  templates: (( merge || meta.jobs.elasticsearch.templates ))
-  update:
-    serial: true
-  instances: 1
-  resource_pool: logsearch_elasticsearch
-  networks:
-  - name: default
-    default:
-    - dns
-    - gateway
-    static_ips: (( static_ips(4) ))
-  persistent_disk: 409600
-  properties:
-    elasticsearch:
-      node:
-        allow_master: true
-
-- name: curator
-  instances: 1
-  release: logsearch
-  templates:
-  - name: curator
-  resource_pool: logsearch_curator
-  networks:
-  - name: default
-    default:
-    - dns
-    - gateway
-    static_ips: (( static_ips(6) ))
-  persistent_disk: 0
-
+  kibana:
+    elasticsearch: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200" ))
