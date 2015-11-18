@@ -1,71 +1,55 @@
-meta: (( merge ))
-
 compilation:
   cloud_properties:
     instance_type: c4.large
 
 resource_pools:
 - name: elasticsearch_master
-  <<: (( merge ))
   cloud_properties:
-    <<: (( merge ))
     availability_zone: eu-west-1a
-    instance_type: (( merge || "t2.micro" ))
+    instance_type: t2.micro
 
 - name: elasticsearch_data
-  <<: (( merge ))
   cloud_properties:
-    <<: (( merge ))
     availability_zone: eu-west-1a
-    instance_type: (( merge || "t2.micro" ))
+    instance_type: t2.micro
 
 - name: queue
-  <<: (( merge ))
   cloud_properties:
-    <<: (( merge ))
     availability_zone: eu-west-1a
-    instance_type: (( merge || "t2.small" ))
+    instance_type: t2.small
 
 - name: ingestor
-  <<: (( merge ))
   cloud_properties:
-    <<: (( merge ))
     availability_zone: eu-west-1a
-    instance_type: (( merge || "t2.micro" ))
+    instance_type: t2.micro
 
 - name: parser
-  <<: (( merge ))
   cloud_properties:
-    <<: (( merge ))
     availability_zone: eu-west-1a
-    instance_type: (( merge || "t2.micro" ))
+    instance_type: t2.micro
 
 - name: kibana
-  <<: (( merge ))
   cloud_properties:
-    <<: (( merge ))
     availability_zone: eu-west-1a
-    instance_type: (( merge || "t2.micro" ))
+    instance_type: t2.micro
 
 - name: maintenance
-  <<: (( merge ))
   cloud_properties:
-    <<: (( merge ))
     availability_zone: eu-west-1a
-    instance_type: (( merge || "t2.micro" ))
+    instance_type: t2.micro
 
 disk_pools:
 - name: elasticsearch_master
-  disk_size: (( merge || 102400 ))
+  disk_size: 102400
   cloud_properties:
-    type: (( merge || "gp2" ))
+    type: gp2
 
 - name: elasticsearch_data
-  disk_size: (( merge || 102400 ))
+  disk_size: 102400
   cloud_properties:
-    type: (( merge || "gp2" ))
+    type: gp2
 
 - name: queue
-  disk_size: (( merge || 102400 ))
+  disk_size: 102400
   cloud_properties:
-    type: (( merge || "gp2" ))
+    type: gp2

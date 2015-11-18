@@ -1,24 +1,14 @@
 meta:
-  <<: (( merge ))
-  environment: ~
-  releases:
-  - name: logsearch
-    version: latest
   default_env:
     # Default vcap & root password on deployed VMs (ie c1oudc0w)
     # Generated using mkpasswd -m sha-512
     bosh:
-      password: (( merge || "$6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0" ))
-  stemcell: (( merge ))
+      password: "$6$4gDD3aV0rdqlrKC$2axHCxGKIObs6tAmMTqYCspcdvQXh3JJcvWOY2WGb4SrdXtnCyNaWlrf3WEqvYR2MYizEGp3kMmbpwBC6jsHt0"
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
 
-name: (( meta.environment ))
-director_uuid: (( merge ))
-properties: (( merge ))
-
-jobs: (( merge ))
-networks: (( merge ))
-
-releases: (( merge || meta.releases ))
+name: logsearch
 
 compilation:
   workers: 4
@@ -26,51 +16,41 @@ compilation:
   reuse_compilation_vms: true
   cloud_properties: ~
 
-disk_pools: (( merge ))
-
 resource_pools:
 - name: elasticsearch_master
-  <<: (( merge ))
   network: default
-  stemcell: (( meta.stemcell ))
-  env: (( meta.default_env || nil ))
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
 
 - name: elasticsearch_data
-  <<: (( merge ))
   network: default
-  stemcell: (( meta.stemcell ))
-  env: (( meta.default_env || nil ))
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
 
 - name: ingestor
-  <<: (( merge ))
   network: default
-  stemcell: (( meta.stemcell ))
-  env: (( meta.default_env || nil ))
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
 
 - name: queue
-  <<: (( merge ))
   network: default
-  stemcell: (( meta.stemcell ))
-  env: (( meta.default_env || nil ))
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
 
 - name: parser
-  <<: (( merge ))
   network: default
-  stemcell: (( meta.stemcell ))
-  env: (( meta.default_env || nil ))
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
 
 - name: kibana
-  <<: (( merge ))
   network: default
-  stemcell: (( meta.stemcell ))
-  cloud_properties: ~
-  env: (( meta.default_env || nil ))
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
 
 - name: maintenance
-  <<: (( merge ))
   network: default
-  stemcell: (( meta.stemcell ))
-  env: (( meta.default_env || nil ))
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
 
 update:
   serial: true

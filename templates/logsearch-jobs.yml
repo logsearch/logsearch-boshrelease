@@ -1,8 +1,5 @@
-meta: (( merge ))
-
 jobs:
 - name: elasticsearch_master
-  <<: (( merge ))
   release: logsearch
   templates:
   - {name: elasticsearch, release: logsearch}
@@ -11,11 +8,9 @@ jobs:
     serial: true
   instances: 1
   networks:
-  - <<: (( merge ))
   - name: default
-    static_ips: (( merge || static_ips(0) ))
-  persistent_disk_pool: (( merge || elasticsearch_master ))
-  resource_pool: (( merge ))
+    static_ips: (( static_ips(0) ))
+  persistent_disk_pool: elasticsearch_master
   properties:
     elasticsearch:
       node:
@@ -23,18 +18,16 @@ jobs:
         allow_data: false
 
 - name: elasticsearch_data
-  <<: (( merge ))
   release: logsearch
   templates:
   - {name: elasticsearch, release: logsearch}
   update:
     serial: true
-  instances: (( merge || 2 ))
+  instances: 2
   networks:
   - name: default
-    static_ips: (( merge || static_ips(16, 17) ))
-  resource_pool: (( merge ))
-  persistent_disk_pool: (( merge || elasticsearch_data ))
+    static_ips: (( static_ips(16, 17) ))
+  persistent_disk_pool: (( elasticsearch_data ))
   properties:
     elasticsearch:
       node:
@@ -42,18 +35,15 @@ jobs:
         allow_data: true
 
 - name: ingestor
-  <<: (( merge ))
   release: logsearch
   templates:
   - {name: ingestor_syslog, release: logsearch}
   - {name: ingestor_relp, release: logsearch}
-  instances: (( merge || 1 ))
+  instances: 1
   networks:
-  - <<: (( merge ))
   - name: default
     default: [gateway, dns]
-    static_ips: (( merge || static_ips(1) ))
-  resource_pool: (( merge ))
+    static_ips: (( static_ips(1) ))
   properties:
     logstash_ingestor:
       debug: false
@@ -61,46 +51,38 @@ jobs:
         port: ~
 
 - name: queue
-  <<: (( merge ))
   release: logsearch
   templates:
   - {name: queue, release: logsearch}
   instances: 1
   networks:
   - name: default
-    static_ips: (( merge || static_ips(3) ))
-  resource_pool: (( merge ))
-  persistent_disk_pool: (( merge || queue ))
+    static_ips: (( static_ips(3) ))
+  persistent_disk_pool: queue
 
 - name: parser
-  <<: (( merge ))
   release: logsearch
   templates:
   - {name: parser, release: logsearch}
-  instances: (( merge || 1 ))
+  instances: 1
   networks:
   - name: default
-    static_ips: (( merge || static_ips(4) ))
-  resource_pool: (( merge ))
+    static_ips: (( static_ips(4) ))
   properties:
    elasticsearch:
      node:
        allow_master: true
 
 - name: kibana
-  <<: (( merge ))
   release: logsearch
   templates:
   - {name: kibana, release: logsearch}
   instances: 1
   resource_pool: parser
   networks:
-  - <<: (( merge ))
   - name: default
-  resource_pool: (( merge ))
 
 - name: maintenance
-  <<: (( merge ))
   instances: 1
   release: logsearch
   templates:
@@ -108,28 +90,23 @@ jobs:
   - {name: curator, release: logsearch}
   networks:
   - name: default
-  resource_pool: (( merge ))
 
 properties:
-  <<: (( merge ))
   curator:
-    <<: (( merge ))
-    elasticsearch_host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+    elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
   logstash_parser:
-    <<: (( merge ))
     debug: false
     use_local_elasticsearch: true
   logstash_ingestor:
     debug: false
   redis:
-    host: (( jobs.queue.networks.default.static_ips.[0] ))
+    host: (( grab jobs.queue.networks.default.static_ips.[0] ))
   api:
-    elasticsearch_host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200"))
+    elasticsearch_host: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200"))
   elasticsearch:
-    <<: (( merge ))
     log_level: DEBUG
-    host: (( jobs.elasticsearch_master.networks.default.static_ips.[0] "," jobs.elasticsearch_data.networks.default.static_ips.[0] ))
+    host: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] "," jobs.elasticsearch_data.networks.default.static_ips.[0] ))
     cluster_name: logsearch
     exec: ~
   kibana:
-    elasticsearch: (( jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200" ))
+    elasticsearch: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200" ))
