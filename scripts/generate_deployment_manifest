@@ -1,6 +1,6 @@
 #!/bin/sh
 
-templates=$(dirname $0)/templates
+templates=$(dirname $0)/../templates
 
 infrastructure=$1
 
