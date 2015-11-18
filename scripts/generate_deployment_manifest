@@ -1,6 +1,6 @@
 #!/bin/sh
 
-spruce="$(dirname $0)/bin/spruce-$(uname -s)"
+spruce="$(dirname $0)/../bin/spruce-$(uname -s)"
 
 templates=$(dirname $0)/../templates
 
@@ -15,7 +15,7 @@ if [ "$infrastructure" != "aws" ] && \
   exit 1
 fi
 
-spruce merge --prune meta \
+$spruce merge --prune meta \
   $templates/logsearch-deployment.yml \
   $templates/logsearch-jobs.yml \
   $templates/logsearch-infrastructure-${infrastructure}.yml \
