@@ -5,8 +5,6 @@ director_uuid: ea33eb06-8878-419e-9177-c46c713d2f94
 releases:
 - name: logsearch
   version: latest
-- name: logsearch-for-cloudfoundry
-  version: latest
 
 compilation:
   workers: 2
@@ -31,7 +29,7 @@ resource_pools:
   cloud_properties: {}
 
 jobs:
-- name: api
+- name: elasticsearch_master
   instances: 1
   release: logsearch
   templates:
@@ -41,8 +39,6 @@ jobs:
     release: logsearch
   - name: kibana
     release: logsearch
-  - name: elasticsearch-plugins-auth
-    release: logsearch-for-cloudfoundry
   update:
     serial: true
   resource_pool: warden
@@ -55,11 +51,29 @@ jobs:
       node:
         allow_data: false
 
+- name: elasticsearch_data
+  release: logsearch
+  templates:
+  - name: elasticsearch
+    release: logsearch
+  update:
+    serial: true
+  instances: 2
+  resource_pool: warden
+  networks:
+  - name: default
+    static_ips:
+    - 10.244.2.6
+    - 10.244.2.10
+  persistent_disk: 1024
+  properties:
+    elasticsearch:
+      node:
+        allow_master: false
+
 - name: ingestor
   release: logsearch
   templates:
-  - name: ingestor_lumberjack
-    release: logsearch
   - name: ingestor_syslog
     release: logsearch
   - name: ingestor_relp
@@ -81,7 +95,7 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 10.244.2.10
+    - 10.244.2.18
 
 - name: parser
   release: logsearch
@@ -96,48 +110,12 @@ jobs:
     - dns
     - gateway
 
-- name: elasticsearch_persistent
+- name: maintenance
   release: logsearch
+  instances: 1
   templates:
-  - name: elasticsearch
+  - name: elasticsearch_config
     release: logsearch
-  update:
-    serial: true
-  instances: 1
-  resource_pool: warden
-  networks:
-  - name: default
-    static_ips:
-    - 10.244.2.6
-  persistent_disk: 1024
-  properties:
-    elasticsearch:
-      node:
-        allow_master: false
-
-- name: elasticsearch_autoscale
-  release: logsearch
-  templates:
-  - name: elasticsearch
-    release: logsearch
-  update:
-    serial: true
-  instances: 1
-  resource_pool: warden
-  networks:
-  - name: default
-    default:
-    - dns
-    - gateway
-  properties:
-    elasticsearch:
-      node:
-        allow_master: false
-
-- name: curator
-  release: logsearch
-  instances: 1
-  templates:
   - name: curator
     release: logsearch
   resource_pool: warden
@@ -190,7 +168,7 @@ properties:
   api:
     port: 80
   kibana:
-    elasticsearch: 127.0.0.1:9200
+    elasticsearch: 10.244.2.2:9200
     port: 5601
   curator:
     elasticsearch_host: 10.244.2.2
@@ -206,7 +184,11 @@ properties:
       environment:
         ES_HEAP_SIZE: 256M
   redis:
-    host: 10.244.2.10
+    host: 10.244.2.18
+  elasticsearch_config:
+    elasticsearch:
+      host: 10.244.2.2
+      port: 9200
   logstash_parser:
     debug: true
     filters: |
