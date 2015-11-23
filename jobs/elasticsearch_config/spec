@@ -7,6 +7,11 @@ templates:
   bin/run.erb: "bin/run"
   bin/job.process: "bin/job.process"
 properties:
+  elasticsearch_config.elasticsearch.host:
+    description: "The elasticsearch master node hostname"
+  elasticsearch_config.elasticsearch.port:
+    description: "the elasticsearch master node port"
+    default: 9200
   elasticsearch_config.templates:
     description: "An array with key-value hashes; keys being template name, value being template content"
     default: []
