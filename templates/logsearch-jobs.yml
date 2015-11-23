@@ -110,3 +110,6 @@ properties:
     exec: ~
   kibana:
     elasticsearch: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200" ))
+  elasticsearch_config:
+    elasticsearch:
+      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
