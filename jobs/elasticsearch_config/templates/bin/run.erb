@@ -51,3 +51,12 @@ EOF
 EOF
   <% end %>
 <% end %>
+
+#
+# bulk files
+#
+
+URL="http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>/_bulk"
+<% p('elasticsearch_config.bulk_data_files').each do |path| %>
+  cat <%= path %> | curl -X PUT --data-binary @- "${URL}"
+<% end %>
