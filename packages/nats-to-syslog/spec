@@ -4,4 +4,4 @@ name: nats-to-syslog
 dependencies:
 
 files:
-- nats-to-syslog/nats-to-syslog
+- nats-to-syslog/*

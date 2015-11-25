@@ -1,2 +1,11 @@
 # abort script on any command that exits with a non zero value
 set -e
+
+cd nats-to-syslog
+GOOS=linux GOARCH=amd64 go build -x
+
+# only keep the compiled artefact
+cp nats-to-syslog /tmp/nats-to-syslog
+rm -r * .*
+mv /tmp/nats-to-syslog .
+
