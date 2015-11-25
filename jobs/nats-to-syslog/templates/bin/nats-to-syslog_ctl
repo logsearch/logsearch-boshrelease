@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+LOG_DIR=/var/vcap/sys/log/nats-to-syslog
+PIDFILE=/var/vcap/sys/run/nats-to-syslog.pid
+
+source /var/vcap/jobs/nats-to-syslog/helpers/utils.sh
+
+case $1 in
+
+  start)
+    pid_guard $PIDFILE "nats-to-syslog"
+
+    mkdir -p $LOG_DIR
+    chown -R vcap:vcap $LOG_DIR
+
+    echo $$ > $PIDFILE
+
+    wait_for_service_on_port 127.0.0.1 514
+
+    exec chpst -u vcap:vcap /var/vcap/packages/nats-to-syslog/bin/nats-to-syslog \
+      -nats-uri nats://<%= p("nats-to-syslog.nats.user") %>:<%= p("nats-to-syslog.nats.password") %>@<%= p("nats-to-syslog.nats.machines").first %>:<%= p("nats-to-syslog.nats.port") %> \
+      -nats-subject "<%= p("nats-to-syslog.nats.subject") %>" \
+      -syslog-endpoint <%= p("nats-to-syslog.syslog.host") %>:<%= p("nats-to-syslog.syslog.port" ) %> \
+      -debug <%= p("nats-to-syslog.debug") %> \
+
+      >>$LOG_DIR/nats-to-syslog.stdout.log \
+      2>>$LOG_DIR/nats-to-syslog.stderr.log
+    ;;
+
+  stop)
+
+    kill_and_wait $PIDFILE
+
+    ;;
+
+  *)
+    echo "Usage: nats-to-syslog_ctl {start|stop}"
+
+    ;;
+
+esac
+exit 0

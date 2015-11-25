@@ -1,0 +1,6 @@
+# abort script on any command that exits with a non zero value
+set -e
+
+mkdir -p $BOSH_INSTALL_TARGET/bin
+cp nats-to-syslog/* $BOSH_INSTALL_TARGET/bin
+

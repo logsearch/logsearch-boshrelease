@@ -1,0 +1,3 @@
+[submodule "src/nats-to-syslog"]
+	path = src/nats-to-syslog
+	url = https://github.com/logsearch/nats-to-syslog.git
