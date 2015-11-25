@@ -2,6 +2,7 @@
 set -e
 
 cd nats-to-syslog
+find .
 
 export GOPATH="$(pwd)/Godeps/_workspace"
 GOOS=linux GOARCH=amd64 go build -x
