@@ -2,6 +2,8 @@
 set -e
 
 cd nats-to-syslog
+
+export GOPATH="$(pwd)/Godeps/_workspace"
 GOOS=linux GOARCH=amd64 go build -x
 
 # only keep the compiled artefact
