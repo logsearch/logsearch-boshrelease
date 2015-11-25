@@ -15,8 +15,8 @@ compilation:
 update:
   serial: true
   canaries: 1
-  canary_watch_time: 30000
-  update_watch_time: 30000
+  canary_watch_time: 30000-120000
+  update_watch_time: 30000-120000
   max_in_flight: 1
   max_errors: 1
 
@@ -84,6 +84,68 @@ jobs:
   - name: default
     static_ips:
     - 10.244.2.14
+
+- name: cluster_monitor
+  release: logsearch
+  instances: 1
+  templates:
+    - { release: logsearch, name: queue }
+    - { release: logsearch, name: parser }
+    - { release: logsearch, name: ingestor_syslog }
+    - { release: logsearch, name: elasticsearch }
+    - { release: logsearch, name: elasticsearch_config }
+    - { release: logsearch, name: curator }
+    - { release: logsearch, name: kibana }
+    - { release: logsearch, name: nats-to-syslog }
+  resource_pool: warden
+  networks:
+  - name: default
+    default:
+    - dns
+    - gateway
+  persistent_disk: 0
+  properties:
+    kibana:
+      elasticsearch: 127.0.0.1:9200
+      port: 5601
+    elasticsearch:
+      host: 127.0.0.1
+      cluster_name: monitor
+      allow_master: true
+      allow_data: true
+      #plugins:
+      #- kopf: file:///var/vcap/packages/elasticsearch-plugins/elasticsearch-kopf.zip
+    redis:
+      host: 127.0.0.1
+    curator:
+      elasticsearch_host: 127.0.0.1
+      elasticsearch_port: 9200
+      purge_logs:
+        retention_period: 7
+    elasticsearch_config:
+      elasticsearch:
+        host: 127.0.0.1
+        port: 9200
+      bulk_data_files: []
+      #templates:
+        #- elk-for-pcf-monitor: ""
+    #logstash_parser:
+      #filters: ""
+    nats-to-syslog:
+      nats:
+        subject: ">"
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.254.50.4]
+      debug: true
+      syslog:
+        host: 127.0.0.1
+        port: 514
+    logstash_ingestor:
+      syslog:
+        port: 514
+
 
 - name: queue
   release: logsearch
