@@ -10,15 +10,16 @@ task :build => :clean do
   puts "===> Building ..."
   compile_erb 'src/logstash-filters/default.conf.erb', 'target/logstash-filters-default.conf'
   create_bosh_job_template 'target/logstash-filters-default.conf', 'target/logstash-filters-default.conf.erb'
-  
+
   puts "===> Artifacts:"
   puts `tree target`
 end
 
 desc "Runs unit tests against filters & dashboards"
-task :test => :build do
-	puts "===> Testing ..."
-  sh %Q[ vendor/logstash/bin/rspec $(find test -name *spec.rb) ]
+task :test, [:rspec_files] => :build do |t, args|
+  args.with_defaults(:rspec_files => "$(find test -name *spec.rb)")
+  puts "===> Testing ..."
+  sh %Q[ vendor/logstash/bin/rspec #{args[:rspec_files]} --color ]
 end
 
 def compile_erb(source_file, dest_file)
