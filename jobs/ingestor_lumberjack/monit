@@ -1,5 +1,0 @@
-check process ingestor_lumberjack
-  with pidfile /var/vcap/sys/run/ingestor_lumberjack/ingestor_lumberjack.pid
-  start program "/var/vcap/jobs/ingestor_lumberjack/bin/monit_debugger ingestor_lumberjack_ctl '/var/vcap/jobs/ingestor_lumberjack/bin/ingestor_lumberjack_ctl start'"
-  stop program "/var/vcap/jobs/ingestor_lumberjack/bin/monit_debugger ingestor_lumberjack_ctl '/var/vcap/jobs/ingestor_lumberjack/bin/ingestor_lumberjack_ctl stop'"
-  group vcap
