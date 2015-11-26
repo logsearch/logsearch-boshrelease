@@ -91,6 +91,58 @@ jobs:
   networks:
   - name: default
 
+- name: cluster_monitor
+  instances: 1
+  release: logsearch
+  templates:
+  - { release: logsearch, name: queue }
+  - { release: logsearch, name: parser }
+  - { release: logsearch, name: ingestor_syslog }
+  - { release: logsearch, name: elasticsearch }
+  - { release: logsearch, name: elasticsearch_config }
+  - { release: logsearch, name: curator }
+  - { release: logsearch, name: kibana }
+  - { release: logsearch, name: nats-to-syslog }
+  networks:
+  - name: default
+  properties:
+    kibana:
+      elasticsearch: 127.0.0.1:9200
+      port: 5601
+    elasticsearch:
+      host: 127.0.0.1
+      cluster_name: monitor
+      allow_master: true
+      allow_data: true
+    redis:
+      host: 127.0.0.1
+    curator:
+      elasticsearch_host: 127.0.0.1
+      elasticsearch_port: 9200
+      purge_logs:
+        retention_period: 7
+    elasticsearch_config:
+      elasticsearch:
+        host: 127.0.0.1
+        port: 9200
+      bulk_data_files: []
+    nats-to-syslog:
+      nats:
+        subject: ">"
+        user: nats
+        password: (( param "BOSH NATS password" ))
+        port: 4222
+        machines: [10.0.0.6]
+      debug: true
+      syslog:
+        host: 127.0.0.1
+        port: 514
+    logstash_ingestor:
+      syslog:
+        port: 514
+    logstash_parser:
+      use_local_elasticsearch: false
+
 properties:
   curator:
     elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
