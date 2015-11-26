@@ -130,7 +130,7 @@ jobs:
       nats:
         subject: ">"
         user: nats
-        password: (( param "BOSH NATS password" ))
+        password: nats-password
         port: 4222
         machines: [10.0.0.6]
       debug: true
