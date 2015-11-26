@@ -92,7 +92,7 @@ jobs:
   - name: default
 
 - name: cluster_monitor
-  instances: 1
+  instances: 0
   release: logsearch
   templates:
   - { release: logsearch, name: queue }
