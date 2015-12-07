@@ -3,4 +3,4 @@ name: kibana
 dependencies: []
 files:
   # https://download.elastic.co/kibana/kibana/kibana-4.2.0-linux-x64.tar.gz
-  - kibana/kibana-4.2.0-linux-x64.tar.gz
+  - kibana/kibana-4.3.0-linux-x64.tar.gz

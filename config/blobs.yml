@@ -51,11 +51,11 @@ curator/elasticsearch-1.7.0.tar.gz:
   object_id: 3bdcfe3c-1af6-4777-9a15-2d053d172a15
   sha: 01b76bf67b47a0bcbb69a6d7d00169449f780484
   size: 62054
-elasticsearch/elasticsearch-2.0.0.tar.gz:
-  object_id: 9f2ad16d-631e-482d-b789-f014e3ff633d
-  sha: e369d8579bd3a2e8b5344278d5043f19f14cac88
-  size: 28576708
-kibana/kibana-4.2.0-linux-x64.tar.gz:
-  object_id: 6e093f7c-afc3-4028-a4ba-d32cdeb28270
-  sha: 094e197c687012211ae0e291faf3111d47e714d9
-  size: 30647841
+elasticsearch/elasticsearch-2.1.0.tar.gz:
+  object_id: 1b679a0b-63ce-481a-bb63-2f70af6b52cb
+  sha: b6d681b878e3a906fff8c067b3cfe855240bffbb
+  size: 28994631
+kibana/kibana-4.3.0-linux-x64.tar.gz:
+  object_id: 2f03f2cc-4314-44f2-8a18-9df356d05a1e
+  sha: d64e1fc0ddeaaab85e168177de6c78ed82bb3a3b
+  size: 30616137
