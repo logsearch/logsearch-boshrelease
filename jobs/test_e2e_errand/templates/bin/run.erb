@@ -5,7 +5,7 @@ set -u
 
 function fail {
   echo "FAILURE: ${1}" >&2
-  
+
   exit 1
 }
 
@@ -30,12 +30,12 @@ curl -s -X DELETE '<%= p('test_e2e_errand.elasticsearch_hostport') %>/_all/sampl
 
 echo '' ; echo '==> Installing syslog output plugin...'
 
-/var/vcap/packages/logstash/logstash/bin/plugin install logstash-output-syslog
+/var/vcap/packages/logstash/bin/plugin install logstash-output-syslog
 
 
 echo '' ; echo '==> Shipping test data...'
 
-/var/vcap/packages/logstash/logstash/bin/logstash --config config/repo-commits.conf
+/var/vcap/packages/logstash/bin/logstash --config config/repo-commits.conf
 
 
 echo '' ; echo '==> Waiting for sanity...'

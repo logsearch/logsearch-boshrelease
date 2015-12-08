@@ -6,21 +6,21 @@ set -u # report the usage of uninitialized variables
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
 mkdir $BOSH_INSTALL_TARGET/logstash
-tar -xzf logstash/logstash-1.5.4.tar.gz -C $BOSH_INSTALL_TARGET/logstash --strip-components 1
-
-# Temp. fix for issue #178. Should be removed beyond logstash-1.5.4
-chmod 644 $BOSH_INSTALL_TARGET/logstash/vendor/bundle/jruby/1.9/gems/march_hare-2.11.0-java/lib/ext/*
+tar -xzf logstash/logstash-2.1.0.tar.gz -C $BOSH_INSTALL_TARGET --strip-components 1
 
 # Setup Java so we can run logstash/bin/plugin install
 JAVA_HOME=/var/vcap/packages/java8
 PATH=$PATH:/var/vcap/packages/java8/bin
 
+#DEBUG list all files
+find $BOSH_INSTALL_TARGET
+
 # Install plugins
 
-$BOSH_INSTALL_TARGET/logstash/bin/plugin install \
-  $BOSH_COMPILE_TARGET/logstash/logstash-filter-alter-0.1.6.gem \
-  $BOSH_COMPILE_TARGET/logstash/logstash-filter-translate-0.1.9.gem \
-  $BOSH_COMPILE_TARGET/logstash/logstash-input-relp-0.1.5.gem
+$BOSH_INSTALL_TARGET/bin/plugin install \
+  $BOSH_COMPILE_TARGET/logstash/logstash-filter-alter-2.0.3.gem \
+  $BOSH_COMPILE_TARGET/logstash/logstash-filter-translate-2.0.2.gem \
+  $BOSH_COMPILE_TARGET/logstash/logstash-input-relp-2.0.3.gem
 
-$BOSH_INSTALL_TARGET/logstash/bin/plugin list \
+$BOSH_INSTALL_TARGET/bin/plugin list \
   > $BOSH_INSTALL_TARGET/plugins-default.list

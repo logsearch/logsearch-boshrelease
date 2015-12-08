@@ -3,12 +3,12 @@ input {
 <% p('logstash_parser.inputs').each do | input | %>
     <%= input['plugin'] %> {
       <% if 'redis' == input['plugin'] %>
-        <% input['options'] = { 
-           "host" => p('redis.host'), 
-           "port" => p('redis.port'), 
-           "type" => "redis-input", 
-           "data_type" => "list", 
-           "key" => p('redis.key'), 
+        <% input['options'] = {
+           "host" => p('redis.host'),
+           "port" => p('redis.port'),
+           "type" => "redis-input",
+           "data_type" => "list",
+           "key" => p('redis.key'),
            "threads" => 8
          } %>
       <% end %>
@@ -28,8 +28,7 @@ output {
     <% end %>
 
     elasticsearch {
-        host => "<%= p('logstash_parser.use_local_elasticsearch') ? '127.0.0.1' : p("elasticsearch.host") %>:<%= p("elasticsearch.port") %>"
-        protocol => "http"
+        hosts => ["<%= p('logstash_parser.use_local_elasticsearch') ? '127.0.0.1' : p("elasticsearch.host") %>:<%= p("elasticsearch.port") %>"]
         flush_size => <%= p("elasticsearch.flush_size") %>
         <% if p('logstash_parser.idle_flush_time', nil) %>
             idle_flush_time => <%= p('logstash_parser.idle_flush_time') %>

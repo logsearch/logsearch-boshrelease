@@ -15,18 +15,6 @@ java8/openjdk-1.8.0_40.tar.gz:
   object_id: c1386f34-7585-4f92-b41e-6d9dbbb940ab
   sha: 590be5c6337753b28acc81d4843e98e6245b5261
   size: 39630740
-logstash/logstash-filter-alter-0.1.6.gem:
-  object_id: d96edc4c-ffdd-4fc8-9bae-1dc243b2e074
-  sha: e2cadce7e3d145c791087832c4f647f451f5027e
-  size: 8704
-logstash/logstash-filter-translate-0.1.9.gem:
-  object_id: 9848212e-40a3-4f46-b40d-407f5b94d2c3
-  sha: 65e437fd64202ff879990d7c7963f3f7b4e50c17
-  size: 10240
-logstash/logstash-input-relp-0.1.5.gem:
-  object_id: cf9789c1-f2dc-43ca-b0fa-8c53f1346184
-  sha: eb4c73ac65bc39ea3d51b8473dfe69d263694fa9
-  size: 11776
 curator/click-3.3.tar.gz:
   object_id: 5a17f7ca-b4dc-467a-b5a3-9181dfba17b6
   sha: d716a932b930d71059e49465b6b42e833808369a
@@ -39,10 +27,6 @@ python/Python-3.4.3.tgz:
   object_id: 34ff2b80-c2ca-4075-81a7-164805059d89
   sha: 94cae02a334c72ea6ba8c056bb2864e2838878d3
   size: 19554643
-logstash/logstash-1.5.4.tar.gz:
-  object_id: f1b973e2-ba2e-4bc4-969e-ad4049caef37
-  sha: c892b71a3902bfdb54827385ed2c26a14ad816dd
-  size: 91956015
 curator/elasticsearch-curator-3.4.0-dev1.tar.gz:
   object_id: 508de17f-8c5b-4baf-b3e7-63bcd73247dc
   sha: 8e75e27c24d5b05ff446e778ef9dd3b95c49c91b
@@ -59,3 +43,19 @@ kibana/kibana-4.3.0-linux-x64.tar.gz:
   object_id: 2f03f2cc-4314-44f2-8a18-9df356d05a1e
   sha: d64e1fc0ddeaaab85e168177de6c78ed82bb3a3b
   size: 30616137
+logstash/logstash-2.1.0.tar.gz:
+  object_id: 42fddb93-97de-4889-b923-bc4a9af8fb73
+  sha: 83b1f6afaa389b0dff1fc4bcddaf96187065512a
+  size: 73512846
+logstash/logstash-filter-alter-2.0.3.gem:
+  object_id: fd22b475-4493-4547-a058-1f1438e9f3d5
+  sha: 75ba197a10d8abf34f73adbedd51443207883527
+  size: 9216
+logstash/logstash-input-relp-2.0.3.gem:
+  object_id: 7833e5b3-46d3-44c8-845f-b038d3977dff
+  sha: d8e707c30da4c63ed5f80605c24ed09e3685c0cd
+  size: 14336
+logstash/logstash-filter-translate-2.0.2.gem:
+  object_id: 25527713-b86c-476b-994c-4c216a3b8847
+  sha: 2f74a3d290c66b5f39de945e21d9ce6497551c2c
+  size: 10752

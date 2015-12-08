@@ -21,7 +21,7 @@ case $1 in
     # store this processes pid in $PIDFILE, since the exec below doesn't daemonize
     echo $$ > $PIDFILE
 
-    exec /var/vcap/packages/logstash/logstash/bin/logstash agent \
+    exec /var/vcap/packages/logstash/bin/logstash agent \
          -f ${JOB_DIR}/config/archiver_to_redis.conf -w ${LOGSTASH_WORKERS} \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log

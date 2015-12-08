@@ -15,7 +15,7 @@ export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
 export LOGSTASH_WORKERS=<%= p('logstash_parser.workers') %>
 <% end %>
 
-LOCAL_PLUGINS_DIR=/var/vcap/packages/logstash/logstash/vendor/bundle/jruby/1.9/gems
+LOCAL_PLUGINS_DIR=/var/vcap/packages/logstash/vendor/bundle/jruby/1.9/gems
 LOCAL_PLUGINS_NAME_LIST=$( cat /var/vcap/packages/logstash/plugins-default.list | tr "\n" ' ' )
 LOCAL_PLUGINS_NAME_LIST=" ${LOCAL_PLUGINS_NAME_LIST} <%= p('logstash_parser.plugins').map { | plugin | plugin.first[0] }.join(' ') %> "
 
@@ -32,19 +32,19 @@ case $1 in
       if ! ls ${LOCAL_PLUGINS_DIR}/<%= pname %>-* 1> /dev/null 2>&1 ; then
         <% if psource =~ /:\/\// %>
           wget -O '<%= psource %>.gem' '<% psource %>'
-          /var/vcap/packages/logstash/logstash/bin/plugin install '<%= psource %>.gem'
+          /var/vcap/packages/logstash/bin/plugin install '<%= psource %>.gem'
           rm '<%= psource %>.gem'
         <% else %>
-          /var/vcap/packages/logstash/logstash/bin/plugin install '<%= pname %>'
+          /var/vcap/packages/logstash/bin/plugin install '<%= pname %>'
         <% end %>
       fi
     <% end %>
 
     # remove old plugins
 
-    for LOCAL_PLUGIN_NAME in $( /var/vcap/packages/logstash/logstash/bin/plugin list ) ; do
+    for LOCAL_PLUGIN_NAME in $( /var/vcap/packages/logstash/bin/plugin list ) ; do
       if ! [[ "${LOCAL_PLUGINS_NAME_LIST}" =~ (^| )$LOCAL_PLUGIN_NAME($| ) ]] ; then
-        /var/vcap/packages/logstash/logstash/bin/plugin uninstall "${LOCAL_PLUGIN_NAME}"
+        /var/vcap/packages/logstash/bin/plugin uninstall "${LOCAL_PLUGIN_NAME}"
       fi
     done
 
@@ -63,7 +63,7 @@ case $1 in
 
     cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
 
-    exec chpst -u vcap /var/vcap/packages/logstash/logstash/bin/logstash agent \
+    exec chpst -u vcap /var/vcap/packages/logstash/bin/logstash agent \
          -f ${JOB_DIR}/config/logstash.conf -w ${LOGSTASH_WORKERS} \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
