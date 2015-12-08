@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: ea33eb06-8878-419e-9177-c46c713d2f94
+director_uuid: 25b988f9-206d-4e0f-a9e8-851e1ecbbb11
 
 releases:
 - name: logsearch
@@ -58,13 +58,12 @@ jobs:
     release: logsearch
   update:
     serial: true
-  instances: 2
+  instances: 1
   resource_pool: warden
   networks:
   - name: default
     static_ips:
     - 10.244.2.6
-    - 10.244.2.10
   persistent_disk: 1024
   properties:
     elasticsearch:
@@ -87,7 +86,7 @@ jobs:
 
 - name: cluster_monitor
   release: logsearch
-  instances: 1
+  instances: 0
   templates:
     - { release: logsearch, name: queue }
     - { release: logsearch, name: parser }
@@ -157,7 +156,7 @@ jobs:
   networks:
   - name: default
     static_ips:
-    - 10.244.2.18
+    - 10.244.2.10
 
 - name: parser
   release: logsearch
@@ -244,7 +243,7 @@ properties:
       environment:
         ES_HEAP_SIZE: 256M
   redis:
-    host: 10.244.2.18
+    host: 10.244.2.10
   elasticsearch_config:
     elasticsearch:
       host: 10.244.2.2
