@@ -16,80 +16,10 @@ jobs:
       node:
         allow_master: true
         allow_data: false
-
-- name: elasticsearch_data
-  release: logsearch
-  templates:
-  - {name: elasticsearch, release: logsearch}
   update:
-    serial: true
-  instances: 2
-  networks:
-  - name: default
-    static_ips: (( static_ips(16, 17) ))
-  persistent_disk_pool: (( elasticsearch_data ))
-  properties:
-    elasticsearch:
-      node:
-        allow_master: false
-        allow_data: true
-
-- name: ingestor
-  release: logsearch
-  templates:
-  - {name: ingestor_syslog, release: logsearch}
-  - {name: ingestor_relp, release: logsearch}
-  instances: 1
-  networks:
-  - name: default
-    default: [gateway, dns]
-    static_ips: (( static_ips(1) ))
-  properties:
-    logstash_ingestor:
-      debug: false
-      relp:
-        port: ~
-
-- name: queue
-  release: logsearch
-  templates:
-  - {name: queue, release: logsearch}
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(3) ))
-  persistent_disk_pool: queue
-
-- name: parser
-  release: logsearch
-  templates:
-  - {name: parser, release: logsearch}
-  instances: 1
-  networks:
-  - name: default
-    static_ips: (( static_ips(4) ))
-  properties:
-   elasticsearch:
-     node:
-       allow_master: true
-
-- name: kibana
-  release: logsearch
-  templates:
-  - {name: kibana, release: logsearch}
-  instances: 1
-  resource_pool: parser
-  networks:
-  - name: default
-
-- name: maintenance
-  instances: 1
-  release: logsearch
-  templates:
-  - {name: elasticsearch_config, release: logsearch}
-  - {name: curator, release: logsearch}
-  networks:
-  - name: default
+    serial: false
+    canaries: 1
+    max_in_flight: 1
 
 - name: cluster_monitor
   instances: 0
@@ -142,6 +72,108 @@ jobs:
         port: 514
     logstash_parser:
       use_local_elasticsearch: false
+  update:
+    serial: false
+    canaries: 1
+    max_in_flight: 1
+
+- name: queue
+  release: logsearch
+  templates:
+  - {name: queue, release: logsearch}
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(3) ))
+  persistent_disk_pool: queue
+  update:
+    serial: true
+    canaries: 1
+    max_in_flight: 1
+
+- name: kibana
+  release: logsearch
+  templates:
+  - {name: kibana, release: logsearch}
+  instances: 1
+  resource_pool: parser
+  networks:
+  - name: default
+  update:
+    serial: false
+    canaries: 1
+    max_in_flight: 1
+
+- name: elasticsearch_data
+  release: logsearch
+  templates:
+  - {name: elasticsearch, release: logsearch}
+  update:
+    serial: true
+  instances: 2
+  networks:
+  - name: default
+    static_ips: (( static_ips(16, 17) ))
+  persistent_disk_pool: (( elasticsearch_data ))
+  properties:
+    elasticsearch:
+      node:
+        allow_master: false
+        allow_data: true
+  update:
+    serial: false
+    canaries: 1
+    max_in_flight: 1
+
+- name: ingestor
+  release: logsearch
+  templates:
+  - {name: ingestor_syslog, release: logsearch}
+  - {name: ingestor_relp, release: logsearch}
+  instances: 1
+  networks:
+  - name: default
+    default: [gateway, dns]
+    static_ips: (( static_ips(1) ))
+  properties:
+    logstash_ingestor:
+      debug: false
+      relp:
+        port: ~
+  update:
+    serial: false
+    canaries: 1
+    max_in_flight: 1
+
+- name: parser
+  release: logsearch
+  templates:
+  - {name: parser, release: logsearch}
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(4) ))
+  properties:
+   elasticsearch:
+     node:
+       allow_master: true
+  update:
+    serial: false
+    canaries: 1
+    max_in_flight: 4
+
+- name: maintenance
+  instances: 1
+  release: logsearch
+  templates:
+  - {name: elasticsearch_config, release: logsearch}
+  - {name: curator, release: logsearch}
+  networks:
+  - name: default
+  update:
+    serial: false
+    canaries: 1
+    max_in_flight: 1
 
 properties:
   curator:
