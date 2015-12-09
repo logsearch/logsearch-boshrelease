@@ -7,7 +7,7 @@ elif [ "$(uname -s)" == "Darwin" ]; then
   getpath="greadlink -f"
 fi
 
-LOGSTASH_VERSION=1.5.4
+LOGSTASH_VERSION=2.1.0
 
 if [ -e /usr/local/logstash-$LOGSTASH_VERSION ] ; then
   echo "Detected that running in Logsearch Workspace.  Linking to logstash at /usr/local/logstash-$LOGSTASH_VERSION"
@@ -25,5 +25,6 @@ elif [ ! -e vendor/logstash-$LOGSTASH_VERSION ] ; then
   )
 fi
 
-[ -e vendor/logstash ] || ln -s $($getpath $SCRIPT_DIR/../vendor/logstash-$LOGSTASH_VERSION) vendor/logstash
+rm -f vendor/logstash
+ln -s $($getpath $SCRIPT_DIR/../vendor/logstash-$LOGSTASH_VERSION) vendor/logstash
 echo "Done.  Using logstash $(vendor/logstash/bin/logstash --version) from $($getpath vendor/logstash)"
