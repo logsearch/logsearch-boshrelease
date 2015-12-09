@@ -33,6 +33,9 @@ jobs:
     serial: false
     canaries: 1
     max_in_flight: 1
+  properties:
+    haproxy:
+      backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
 
 - name: cluster_monitor
   instances: 0
@@ -210,5 +213,4 @@ properties:
   elasticsearch_config:
     elasticsearch:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
-  haproxy:
-    backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
+
