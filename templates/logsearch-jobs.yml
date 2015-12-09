@@ -211,4 +211,4 @@ properties:
     elasticsearch:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
   haproxy:
-    backend_servers: (( grab jobs.ingestor.networks.default.static_ips ))
+    backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
