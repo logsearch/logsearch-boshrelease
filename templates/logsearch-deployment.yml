@@ -57,6 +57,11 @@ resource_pools:
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
 
+- name: haproxy
+  network: default
+  stemcell: (( grab meta.stemcell ))
+  env: (( grab meta.default_env ))
+
 update:
   serial: true
   canaries: 1

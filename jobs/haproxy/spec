@@ -1,0 +1,68 @@
+---
+name: haproxy
+
+description: "The HAProxy."
+
+packages:
+- haproxy
+
+templates:
+  haproxy.config.erb:        config/haproxy.config
+  haproxy_ctl:               bin/haproxy_ctl
+  monit_debugger:            bin/monit_debugger
+  cert.pem.erb:              config/cert.pem
+  helpers/ctl_setup.sh:      helpers/ctl_setup.sh
+  helpers/ctl_utils.sh:      helpers/ctl_utils.sh
+  properties.sh.erb:    data/properties.sh
+
+properties:
+  haproxy.syslog_server:
+    description: "An IPv4 address optionally followed by a colon and a UDP port. It can also be an IPv6 address or filesystem path to a UNIX domain socket."
+    default: "127.0.0.1"
+  haproxy.log_level:
+    description: "Log level"
+    default: "info"
+  haproxy.ssl_pem:
+    description: "SSL certificate (PEM file)"
+    default: ~
+  haproxy.ssl_ciphers:
+    default: ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:ECDHE-RSA-RC4-SHA:ECDHE-ECDSA-RC4-SHA:AES128:AES256:RC4-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK
+    description: "List of SSL Ciphers that are passed to HAProxy"
+  haproxy.default_dh_param:
+    default: 2048
+    description: "Maximum size of DH params when generating epmehmeral keys during key exchange"
+
+  haproxy.connect_timeout:
+    description: "Timeout waiting for connections to establish to a server (in seconds)"
+    default:     5
+  haproxy.client_timeout:
+    description: "Timeout waiting for data from a client (in seconds)"
+    default:     30
+  haproxy.server_timeout:
+    description: "Timeout waiting for data from a server (in seconds)"
+    default:     30
+  haproxy.websocket_timeout:
+    description: "Timeout for websocket/tunnel traffic (in seconds)"
+    default:     3600
+  haproxy.keepalive_timeout:
+    description: "Timeout waiting for new HTTP requests under http keep-alive mode (in seconds)"
+    default:     1
+  haproxy.request_timeout:
+    description: "Maximum HTTP request length (in seconds)"
+    default:     30
+  haproxy.queue_timeout:
+    description: "Timeout for requests queued waiting for free connection slots (in seconds)"
+    default:     30
+
+  haproxy.syslog_ingestor.port:
+    description: "The port the syslog ingestor frontend is listening on."
+    default: 514
+
+  haproxy.backend_servers:
+    description: "Array of the ingestor IPs"
+    default: []
+  haproxy.backend_port:
+    description: "The port number the ingestors are listening on"
+    default: 514
+
+

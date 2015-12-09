@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: 25b988f9-206d-4e0f-a9e8-851e1ecbbb11
+director_uuid: 3606f4d1-c2f8-48bc-913d-b5a4012e81ec
 
 releases:
 - name: logsearch
@@ -50,6 +50,22 @@ jobs:
     elasticsearch:
       node:
         allow_data: false
+
+- name: haproxy
+  instances: 1
+  release: logsearch
+  templates:
+  - { name: haproxy, release: logsearch }
+  resource_pool: warden
+  networks:
+  - name: default
+  properties:
+    haproxy:
+      syslog_ingestor:
+        port: 5514
+      backend_servers: [10.244.2.6]
+      backend_port: 5514
+
 
 - name: elasticsearch_data
   release: logsearch
@@ -163,7 +179,7 @@ jobs:
   templates:
   - name: parser
     release: logsearch
-  instances: 1
+  instances: 0
   resource_pool: warden
   networks:
   - name: default
@@ -173,7 +189,7 @@ jobs:
 
 - name: maintenance
   release: logsearch
-  instances: 1
+  instances: 0
   templates:
   - name: elasticsearch_config
     release: logsearch

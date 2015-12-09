@@ -21,6 +21,19 @@ jobs:
     canaries: 1
     max_in_flight: 1
 
+- name: haproxy
+  instances: 0
+  release: logsearch
+  templates:
+  - { name: haproxy, release: logsearch }
+  resource_pool: haproxy
+  networks:
+  - name: default
+  update:
+    serial: false
+    canaries: 1
+    max_in_flight: 1
+
 - name: cluster_monitor
   instances: 0
   release: logsearch
@@ -197,3 +210,5 @@ properties:
   elasticsearch_config:
     elasticsearch:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+  haproxy:
+    backend_servers: (( grab jobs.ingestor.networks.default.static_ips ))

@@ -59,3 +59,11 @@ logstash/logstash-filter-translate-2.0.2.gem:
   object_id: 25527713-b86c-476b-994c-4c216a3b8847
   sha: 2f74a3d290c66b5f39de945e21d9ce6497551c2c
   size: 10752
+haproxy/haproxy-1.6.2.tar.gz:
+  object_id: 48bf1c42-207b-4c26-90ca-eeca21f96787
+  sha: 407bed920315cf66500ab57aea0c402bad850129
+  size: 1538976
+haproxy/pcre-8.38.tar.gz:
+  object_id: 9538f6cf-5cd1-4551-a5c3-1263fb32edf6
+  sha: 3ab418d0026c2a4e693ec783bd60660debc32b8f
+  size: 2053336

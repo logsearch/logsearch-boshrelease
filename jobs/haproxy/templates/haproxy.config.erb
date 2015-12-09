@@ -1,0 +1,42 @@
+global
+    log <%= p('haproxy.syslog_server') %> syslog <%= p('haproxy.log_level') %>
+    daemon
+    user vcap
+    group vcap
+    maxconn 64000
+    spread-checks 4
+    tune.ssl.default-dh-param <%= p("haproxy.default_dh_param") %>
+
+defaults
+    log global
+    maxconn 64000
+    option http-server-close
+    option httplog
+    option forwardfor
+    option contstats
+    timeout connect         <%= p("haproxy.connect_timeout").to_i    * 1000 %>ms
+    timeout client          <%= p("haproxy.client_timeout").to_i     * 1000 %>ms
+    timeout server          <%= p("haproxy.server_timeout").to_i     * 1000 %>ms
+    timeout tunnel          <%= p("haproxy.websocket_timeout").to_i  * 1000 %>ms
+    timeout http-keep-alive <%= p("haproxy.keepalive_timeout").to_i  * 1000 %>ms
+    timeout http-request    <%= p("haproxy.request_timeout").to_i    * 1000 %>ms
+    timeout queue           <%= p("haproxy.queue_timeout").to_i      * 1000 %>ms
+
+frontend syslog-in
+    mode tcp
+    default_backend http-routers
+
+    <% if if_p("haproxy.ssl_pem") %>
+    bind :<%= p("haproxy.syslog_ingestor.port") %>
+    <% else %>
+    bind :<%= p("haproxy.syslog_ingestor.port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3 ciphers <%= p("haproxy.ssl_ciphers") %>
+    <% end %>
+
+    default_backend ingestors
+
+backend ingestors
+    mode tcp
+    balance roundrobin
+    <% p("haproxy.backend_servers").each_with_index do |ip, index| %>
+    server node<%= index %> <%= ip %>:<%= p("haproxy.backend_port") %> check inter 1000
+    <% end %>
