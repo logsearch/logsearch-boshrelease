@@ -59,6 +59,7 @@ case $1 in
     /var/vcap/jobs/elasticsearch/bin/undrain 2>&1 >> $LOG_DIR/undrain.log &
 
     ulimit -n 64000
+    ulimit -l unlimited
 
     exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
          -Des.config=${JOB_DIR}/config/config.yml \
