@@ -5,7 +5,7 @@ global
     group vcap
     maxconn 64000
     spread-checks 4
-    tune.ssl.default-dh-param <%= p("haproxy.default_dh_param") %>
+    tune.ssl.default-dh-param 2048
 
 defaults
     log global
@@ -20,9 +20,9 @@ frontend syslog-in
     mode tcp
 
     <% if properties.haproxy.ssl_pem %>
-    bind :<%= p("haproxy.syslog_ingestor.port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3 ciphers <%= p("haproxy.ssl_ciphers") %>
+    bind :<%= p("haproxy.inbound_port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3
     <% else %>
-    bind :<%= p("haproxy.syslog_ingestor.port") %>
+    bind :<%= p("haproxy.inbound_port") %>
     <% end %>
 
     default_backend ingestors
