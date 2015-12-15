@@ -11,6 +11,7 @@ defaults
     log global
     maxconn 64000
     option contstats
+    option tcplog
     timeout connect         <%= p("haproxy.connect_timeout").to_i    * 1000 %>ms
     timeout client          <%= p("haproxy.client_timeout").to_i     * 1000 %>ms
     timeout server          <%= p("haproxy.server_timeout").to_i     * 1000 %>ms
