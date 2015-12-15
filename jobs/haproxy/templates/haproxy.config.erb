@@ -26,10 +26,10 @@ frontend syslog-in
     mode tcp
     default_backend http-routers
 
-    <% if if_p("haproxy.ssl_pem") %>
-    bind :<%= p("haproxy.syslog_ingestor.port") %>
-    <% else %>
+    <% if properties.haproxy.ssl_pem %>
     bind :<%= p("haproxy.syslog_ingestor.port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3 ciphers <%= p("haproxy.ssl_ciphers") %>
+    <% else %>
+    bind :<%= p("haproxy.syslog_ingestor.port") %>
     <% end %>
 
     default_backend ingestors
