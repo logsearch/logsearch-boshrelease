@@ -41,15 +41,6 @@ properties:
   haproxy.server_timeout:
     description: "Timeout waiting for data from a server (in seconds)"
     default:     30
-  haproxy.websocket_timeout:
-    description: "Timeout for websocket/tunnel traffic (in seconds)"
-    default:     3600
-  haproxy.keepalive_timeout:
-    description: "Timeout waiting for new HTTP requests under http keep-alive mode (in seconds)"
-    default:     1
-  haproxy.request_timeout:
-    description: "Maximum HTTP request length (in seconds)"
-    default:     30
   haproxy.queue_timeout:
     description: "Timeout for requests queued waiting for free connection slots (in seconds)"
     default:     30
