@@ -25,10 +25,8 @@ input {
 }
 
 filter {
-	#Store host as @shipper.host
-	mutate {
-		add_field => { "[@shipper][host]" => "%{host}" }
-	}
+  #When behind haproxy, this is always the IP of the haproxy, not the IP of the actual host sending the data.
+  #Remove it to avoid confusion
 	mutate {
 		remove_field => [ "host" ]
 	}
@@ -54,7 +52,7 @@ output {
             codec => "json"
         }
 	<% end %>
-	
+
 	redis {
 		host => "<%= p("redis.host") %>"
 		port => "<%= p("redis.port") %>"

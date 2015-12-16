@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "logstash/devutils/rspec/spec_helper"
 require "logstash/filters/grok"
+require "awesome_print"
 
 describe LogStash::Filters::Grok do
 
@@ -11,11 +12,11 @@ describe LogStash::Filters::Grok do
   CONFIG
 
   describe "Accepting standard syslog message without PID specified" do
-    sample("@shipper" => { "host" => "1.2.3.4" } , "@message" => '<85>Apr 24 02:05:03 localhost sudo: bosh_h5156e598 : TTY=pts/0 ; PWD=/var/vcap/bosh_ssh/bosh_h5156e598 ; USER=root ; COMMAND=/bin/pwd') do
+    sample("@message" => '<85>Apr 24 02:05:03 localhost sudo: bosh_h5156e598 : TTY=pts/0 ; PWD=/var/vcap/bosh_ssh/bosh_h5156e598 ; USER=root ; COMMAND=/bin/pwd') do
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("#{Time.now.year}-04-24T02:05:03.000Z")
-      
-      insist { subject['@source']['host'] } == '1.2.3.4'
+
+      insist { subject['@source']['host'] } == 'localhost'
       insist { subject['syslog_hostname'] } == 'localhost'
 
       insist { subject['syslog_facility'] } == 'security/authorization'
@@ -29,11 +30,11 @@ describe LogStash::Filters::Grok do
   end
 
   describe "Accepting standard syslog message with PID specified" do
-    sample("@shipper" => { "host" => "1.2.3.4" }, "@message" => '<78>Apr 24 04:03:06 localhost crontab[32185]: (root) LIST (root)') do
+    sample("@message" => '<78>Apr 24 04:03:06 localhost crontab[32185]: (root) LIST (root)') do
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("#{Time.now.year}-04-24T04:03:06.000Z")
-      
-      insist { subject['@source']['host'] } == '1.2.3.4'
+
+      insist { subject['@source']['host'] } == 'localhost'
       insist { subject['syslog_hostname'] } == 'localhost'
 
       insist { subject['syslog_facility'] } == 'clock'
@@ -50,7 +51,7 @@ describe LogStash::Filters::Grok do
     sample("@message" => '<14>2014-04-23T23:19:01.227366+00:00 172.31.201.31 vcap.nats [job=vcap.nats index=1]  {\"timestamp\":1398295141.227022}') do
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("2014-04-23T23:19:01.227Z")
-      
+
       insist { subject['@source']['host'] } == '172.31.201.31'
       insist { subject['syslog_hostname'] } == '172.31.201.31'
 
@@ -111,7 +112,7 @@ describe LogStash::Filters::Grok do
       insist { subject['syslog_message'] } == 'Updating AppSettings for /home/vcap/app/logsearch-watcher-bot.exe.config'
     end
 
-    sample('host' => 'rspec', '@message' => '94 <11>1 2014-05-20T09:46:07+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - -') do
+    sample('@message' => '94 <11>1 2014-05-20T09:46:07+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - -') do
       insist { subject["tags"] } === [ 'syslog_standard' ]
       insist { subject["@timestamp"] } === Time.iso8601("2014-05-20T09:46:07Z")
 
@@ -135,7 +136,6 @@ describe LogStash::Filters::Grok do
   describe "syslog_sd_params rules" do
     describe "when sd_params.host exists, @shipper.host = syslog_hostname, @source.host = sd_params.host" do
       sample("@message" => '<13>1 2015-09-24T11:16:12.808763+01:00 SYSLOG-HOST - - - [NXLOG@14506 host="SDPARAMS-HOST"] IOrderService.ListOpenPositions Duration 8ms') do
-
         insist { subject["tags"] } == [ 'syslog_standard' ]
 
         insist { subject['@shipper']['host'] } == 'SYSLOG-HOST'
@@ -165,7 +165,7 @@ describe LogStash::Filters::Grok do
 
       insist { subject['syslog_sd_id'] } == 'NXLOG@14506'
 
-      sd_params = subject['syslog_sd_params'] 
+      sd_params = subject['syslog_sd_params']
       insist { sd_params['EventReceivedTime'] } == '2015-09-24 11:16:12'
       insist { sd_params['SourceModuleName'] } == 'in_file1'
       insist { sd_params['SourceModuleType'] } == 'im_file'
@@ -185,7 +185,7 @@ describe LogStash::Filters::Grok do
 
       insist { subject["tags"] } == [ 'syslog_standard' ]
       insist { subject["@timestamp"] } == Time.iso8601("2015-09-18T13:07:32.553Z")
-      
+
       insist { subject['@source']['host'] } == 'LON-WS01351X'
       insist { subject['syslog_hostname'] } == 'LON-WS01351X'
 
