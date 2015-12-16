@@ -12,10 +12,10 @@ defaults
     maxconn 64000
     option contstats
     option tcplog
-    timeout connect         <%= p("haproxy.connect_timeout").to_i    * 1000 %>ms
-    timeout client          <%= p("haproxy.client_timeout").to_i     * 1000 %>ms
-    timeout server          <%= p("haproxy.server_timeout").to_i     * 1000 %>ms
-    timeout queue           <%= p("haproxy.queue_timeout").to_i      * 1000 %>ms
+    timeout connect         <%= p("haproxy.connect_timeout") %>s
+    timeout client          <%= p("haproxy.client_timeout") %>s
+    timeout server          <%= p("haproxy.server_timeout") %>s
+    timeout queue           <%= p("haproxy.queue_timeout") %>s
 
 frontend syslog-in
     mode tcp
