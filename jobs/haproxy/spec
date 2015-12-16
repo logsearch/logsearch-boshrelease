@@ -23,7 +23,7 @@ properties:
     description: "Log level"
     default: "info"
   haproxy.ssl_pem:
-    description: "SSL certificate (PEM file).  Omit if you don't want to use SSL""
+    description: "SSL certificate (PEM file).  Omit if you don't want to use SSL"
     default: ~
 
   haproxy.connect_timeout:
