@@ -1,0 +1,5 @@
+check process nats_to_syslog
+  with pidfile /var/vcap/sys/run/nats_to_syslog.pid
+  start program "/var/vcap/jobs/nats_to_syslog/bin/nats_to_syslog_ctl start"
+  stop program "/var/vcap/jobs/nats_to_syslog/bin/nats_to_syslog_ctl stop"
+  group vcap

@@ -1,0 +1,7 @@
+---
+name: nats_to_syslog
+
+dependencies:
+
+files:
+- nats_to_syslog/**/*

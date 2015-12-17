@@ -1,33 +1,33 @@
 ---
-name: nats-to-syslog
+name: nats_to_syslog
 templates:
-  bin/nats-to-syslog_ctl: bin/nats-to-syslog_ctl
+  bin/nats_to_syslog_ctl: bin/nats_to_syslog_ctl
   helpers/utils.sh: helpers/utils.sh
 
 packages:
-- nats-to-syslog
+- nats_to_syslog
 
 properties:
-  nats-to-syslog.nats.user:
+  nats_to_syslog.nats.user:
     description: "Username for server authentication."
     default: nats
-  nats-to-syslog.nats.password:
+  nats_to_syslog.nats.password:
     description: "Password for server authentication."
-  nats-to-syslog.nats.port:
+  nats_to_syslog.nats.port:
     description: "The port of the NATS server to connect to."
     default: 4222
-  nats-to-syslog.nats.machines:
+  nats_to_syslog.nats.machines:
     description: "IP of each NATS cluster member to connect to. Only the first one is used."
-  nats-to-syslog.nats.subject:
+  nats_to_syslog.nats.subject:
     description: "NATS subject to subscribe to"
     default: ">"
 
-  nats-to-syslog.debug:
+  nats_to_syslog.debug:
     description: "Enable debug logging output."
     default: false
 
-  nats-to-syslog.syslog.host:
+  nats_to_syslog.syslog.host:
     description: "The host of the syslog endpoint"
-  nats-to-syslog.syslog.port:
+  nats_to_syslog.syslog.port:
     description: "The port of the syslog endpoint"
 

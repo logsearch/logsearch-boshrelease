@@ -2,5 +2,5 @@
 set -e
 
 mkdir -p $BOSH_INSTALL_TARGET/bin
-cp nats-to-syslog/* $BOSH_INSTALL_TARGET/bin
+cp nats_to_syslog/* $BOSH_INSTALL_TARGET/bin
 

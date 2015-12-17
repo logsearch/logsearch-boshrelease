@@ -48,7 +48,7 @@ jobs:
   - { release: logsearch, name: elasticsearch_config }
   - { release: logsearch, name: curator }
   - { release: logsearch, name: kibana }
-  - { release: logsearch, name: nats-to-syslog }
+  - { release: logsearch, name: nats_to_syslog }
   networks:
   - name: default
   properties:
@@ -72,7 +72,7 @@ jobs:
         host: 127.0.0.1
         port: 9200
       bulk_data_files: []
-    nats-to-syslog:
+    nats_to_syslog:
       nats:
         subject: ">"
         user: nats
