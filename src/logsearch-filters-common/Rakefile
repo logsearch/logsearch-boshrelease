@@ -19,7 +19,7 @@ desc "Runs unit tests against filters & dashboards"
 task :test, [:rspec_files] => :build do |t, args|
   args.with_defaults(:rspec_files => "$(find test -name *spec.rb)")
   puts "===> Testing ..."
-  sh %Q[ vendor/logstash/bin/rspec #{args[:rspec_files]} --color ]
+  sh %Q[ vendor/logstash/bin/rspec #{args[:rspec_files]} --color --format documentation ]
 end
 
 def compile_erb(source_file, dest_file)
