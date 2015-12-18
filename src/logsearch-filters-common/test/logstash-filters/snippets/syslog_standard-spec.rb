@@ -206,6 +206,9 @@ describe LogStash::Filters::Grok do
       it "extracts the timestamp" do
         expect(log['@timestamp']).to eq(Time.parse("2015-12-16T15:24:05Z"))
       end
+      it "drops the syslog_timestamp field (since it has been captured in @timestamp)" do
+        expect(log['syslog_timestamp']).to be_nil
+      end
       it "extracts the syslog_program" do
         expect(log['syslog_program']).to eq("haproxy")
       end
