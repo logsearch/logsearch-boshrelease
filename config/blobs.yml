@@ -43,22 +43,6 @@ kibana/kibana-4.3.0-linux-x64.tar.gz:
   object_id: 2f03f2cc-4314-44f2-8a18-9df356d05a1e
   sha: d64e1fc0ddeaaab85e168177de6c78ed82bb3a3b
   size: 30616137
-logstash/logstash-2.1.0.tar.gz:
-  object_id: 42fddb93-97de-4889-b923-bc4a9af8fb73
-  sha: 83b1f6afaa389b0dff1fc4bcddaf96187065512a
-  size: 73512846
-logstash/logstash-filter-alter-2.0.3.gem:
-  object_id: fd22b475-4493-4547-a058-1f1438e9f3d5
-  sha: 75ba197a10d8abf34f73adbedd51443207883527
-  size: 9216
-logstash/logstash-input-relp-2.0.3.gem:
-  object_id: 7833e5b3-46d3-44c8-845f-b038d3977dff
-  sha: d8e707c30da4c63ed5f80605c24ed09e3685c0cd
-  size: 14336
-logstash/logstash-filter-translate-2.0.2.gem:
-  object_id: 25527713-b86c-476b-994c-4c216a3b8847
-  sha: 2f74a3d290c66b5f39de945e21d9ce6497551c2c
-  size: 10752
 haproxy/haproxy-1.6.2.tar.gz:
   object_id: 48bf1c42-207b-4c26-90ca-eeca21f96787
   sha: 407bed920315cf66500ab57aea0c402bad850129
@@ -67,3 +51,7 @@ haproxy/pcre-8.38.tar.gz:
   object_id: 9538f6cf-5cd1-4551-a5c3-1263fb32edf6
   sha: 3ab418d0026c2a4e693ec783bd60660debc32b8f
   size: 2053336
+logstash/logstash-all-plugins-2.1.0.tar.gz:
+  object_id: 093ff96d-68d5-4604-9fc1-b284d29908ff
+  sha: ec9674bfa7ebaba0ab5d17f6d19de9d0608160c5
+  size: 126053307
