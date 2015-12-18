@@ -1,7 +1,5 @@
 # encoding: utf-8
-require "logstash/devutils/rspec/spec_helper"
-require "logstash/filters/grok"
-require "awesome_print"
+require 'test/filter_test_helpers'
 
 describe LogStash::Filters::Grok do
 
@@ -25,7 +23,7 @@ describe LogStash::Filters::Grok do
       insist { subject['syslog_severity_code'] } == 5
       insist { subject['syslog_program'] } == 'sudo'
       insist { subject['syslog_pid'] }.nil?
-      insist { subject['syslog_message'] } == 'bosh_h5156e598 : TTY=pts/0 ; PWD=/var/vcap/bosh_ssh/bosh_h5156e598 ; USER=root ; COMMAND=/bin/pwd'
+      insist { subject['@message'] } == 'bosh_h5156e598 : TTY=pts/0 ; PWD=/var/vcap/bosh_ssh/bosh_h5156e598 ; USER=root ; COMMAND=/bin/pwd'
     end
   end
 
@@ -43,7 +41,7 @@ describe LogStash::Filters::Grok do
       insist { subject['syslog_severity_code'] } == 6
       insist { subject['syslog_program'] } == 'crontab'
       insist { subject['syslog_pid'] } == '32185'
-      insist { subject['syslog_message'] } == '(root) LIST (root)'
+      insist { subject['@message'] } == '(root) LIST (root)'
     end
   end
 
@@ -61,7 +59,7 @@ describe LogStash::Filters::Grok do
       insist { subject['syslog_severity_code'] } == 6
       insist { subject['syslog_program'] } == 'vcap.nats'
       insist { subject['syslog_pid'] }.nil?
-      insist { subject['syslog_message'] } == '[job=vcap.nats index=1]  {\"timestamp\":1398295141.227022}'
+      insist { subject['@message'] } == '[job=vcap.nats index=1]  {\"timestamp\":1398295141.227022}'
     end
   end
 
@@ -89,7 +87,7 @@ describe LogStash::Filters::Grok do
 
       insist { subject['syslog_procid'] } == '[App/0]'
       insist { subject['syslog_msgid'] } == '-'
-      insist { subject['syslog_message'] } == '{"@timestamp":"2014-05-20T20:40:49.907Z","message":"LowRequestRate 2014-05-20T15:44:58.794Z","@source.name":"watcher-bot-ppe","logger":"logsearch_watcher_bot.Program","level":"WARN"}'
+      insist { subject['@message'] } == '{"@timestamp":"2014-05-20T20:40:49.907Z","message":"LowRequestRate 2014-05-20T15:44:58.794Z","@source.name":"watcher-bot-ppe","logger":"logsearch_watcher_bot.Program","level":"WARN"}'
     end
 
     sample('@message' => '167 <14>1 2014-05-20T09:46:16+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - - Updating AppSettings for /home/vcap/app/logsearch-watcher-bot.exe.config') do
@@ -109,7 +107,7 @@ describe LogStash::Filters::Grok do
 
       insist { subject['syslog_procid'] } == '[App/0]'
       insist { subject['syslog_msgid'] } == '-'
-      insist { subject['syslog_message'] } == 'Updating AppSettings for /home/vcap/app/logsearch-watcher-bot.exe.config'
+      insist { subject['@message'] } == 'Updating AppSettings for /home/vcap/app/logsearch-watcher-bot.exe.config'
     end
 
     sample('@message' => '94 <11>1 2014-05-20T09:46:07+00:00 loggregator d5a5e8a5-9b06-4dd3-8157-e9bd3327b9dc [App/0] - -') do
@@ -129,7 +127,7 @@ describe LogStash::Filters::Grok do
 
       insist { subject['syslog_procid'] } == '[App/0]'
       insist { subject['syslog_msgid'] } == '-'
-      insist { subject['syslog_message'] } == '-'
+      insist { subject['@message'] } == '-'
     end
   end
 
@@ -142,13 +140,13 @@ describe LogStash::Filters::Grok do
         insist { subject['@source']['host'] } == 'SDPARAMS-HOST'
       end
     end
-    describe "when sd_params.type exists, @type = sd_params.type, @message_body = syslog_message" do
+    describe "when sd_params.type exists, @type = sd_params.type, @message = @message" do
       sample("@message" => '<13>1 2015-09-24T11:16:12.808763+01:00 SYSLOG-HOST - - - [NXLOG@14506 type="SDPARAMS-TYPE"] IOrderService.ListOpenPositions Duration 8ms') do
 
         insist { subject["tags"] } == [ 'syslog_standard' ]
 
         insist { subject['@type'] } == 'SDPARAMS-TYPE'
-        insist { subject['@message_body'] } == 'IOrderService.ListOpenPositions Duration 8ms'
+        insist { subject['@message'] } == 'IOrderService.ListOpenPositions Duration 8ms'
       end
     end
   end
@@ -176,7 +174,7 @@ describe LogStash::Filters::Grok do
       insist { sd_params['environment'] } == 'PPE'
 
       insist { subject['@type'] } == 'ci_log4net'
-      insist { subject['@message_body'] } == 'INFO  2015-09-24 11:16:12,501 42 CityIndex.TradingApi.Common.Logging.MethodTimeLogger Request 4133629: Action: IOrderService.ListOpenPositions Duration 8ms'
+      insist { subject['@message'] } == 'INFO  2015-09-24 11:16:12,501 42 CityIndex.TradingApi.Common.Logging.MethodTimeLogger Request 4133629: Action: IOrderService.ListOpenPositions Duration 8ms'
     end
   end
 
@@ -192,8 +190,31 @@ describe LogStash::Filters::Grok do
       insist { subject['syslog_sd_id'] } == 'fields@0'
       insist { subject['syslog_sd_params']['environment'] } == 'PPE'
 
-      insist { subject['syslog_message'] } == 'INFO  2015-09-18 14:07:32,553 SenderThread RemoteSyslog5424AppenderDiagLogger Connection to the server lost. Re-try in 10 seconds.'
+      insist { subject['@message'] } == 'INFO  2015-09-18 14:07:32,553 SenderThread RemoteSyslog5424AppenderDiagLogger Connection to the server lost. Re-try in 10 seconds.'
     end
   end
 
+  context 'when parsing a sylog message in RFC3164 format from haproxy' do
+    when_parsing_log(
+      '@message' => "<46>Dec 16 15:24:05 haproxy[9252]: 52.62.56.30:45940 [16/Dec/2015:15:24:02.638] syslog-in~ ingestors/node1 328/-1/3332 0 SC 8/8/8/0/3 0/0",
+      '@type' => 'syslog'
+    ) do
+
+      it "adds the syslog_standard tag" do
+        expect(log['tags']).to include("syslog_standard")
+      end
+      it "extracts the timestamp" do
+        expect(log['@timestamp']).to eq(Time.parse("2015-12-16T15:24:05Z"))
+      end
+      it "extracts the syslog_program" do
+        expect(log['syslog_program']).to eq("haproxy")
+      end
+      it "extracts the syslog_pid" do
+        expect(log['syslog_pid']).to eq("9252")
+      end
+      it "extracts the syslog_message to @message" do
+        expect(log['@message']).to eq("52.62.56.30:45940 [16/Dec/2015:15:24:02.638] syslog-in~ ingestors/node1 328/-1/3332 0 SC 8/8/8/0/3 0/0")
+      end
+    end
+  end
 end
