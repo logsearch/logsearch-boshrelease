@@ -15,16 +15,13 @@ if [ -e /usr/local/logstash-$LOGSTASH_VERSION ] ; then
 elif [ ! -e vendor/logstash-$LOGSTASH_VERSION ] ; then
   echo "Downloading and installing logstash-$LOGSTASH_VERSION to vendor/logstash-$LOGSTASH_VERSION..."
   mkdir -p vendor/logstash-$LOGSTASH_VERSION
-  curl -L https://download.elastic.co/logstash/logstash/logstash-$LOGSTASH_VERSION.tar.gz | \
+  curl -L https://download.elastic.co/logstash/logstash/logstash-all-plugins-$LOGSTASH_VERSION.tar.gz| \
     tar xz -C vendor/logstash-$LOGSTASH_VERSION --strip-components 1
   (
     cd vendor/logstash-$LOGSTASH_VERSION
     bin/plugin install --development # so we can use logstash rspec
-      bin/plugin install logstash-filter-alter
-      bin/plugin install logstash-filter-translate
   )
 fi
 
-rm -f vendor/logstash
-ln -s $($getpath $SCRIPT_DIR/../vendor/logstash-$LOGSTASH_VERSION) vendor/logstash
+rm -f vendor/logstash && ln -s $($getpath $SCRIPT_DIR/../vendor/logstash-$LOGSTASH_VERSION) vendor/logstash
 echo "Done.  Using logstash $(vendor/logstash/bin/logstash --version) from $($getpath vendor/logstash)"
