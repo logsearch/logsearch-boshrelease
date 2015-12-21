@@ -3,11 +3,13 @@ require 'test/filter_test_helpers'
 
 describe "Rules for parsing haproxy messages" do
 
-  config <<-CONFIG
-    filter {
-  #{File.read("src/logstash-filters/snippets/haproxy.conf")}
-    }
-  CONFIG
+  before(:all) do
+    @config = <<-CONFIG
+      filter {
+    #{File.read("src/logstash-filters/snippets/haproxy.conf")}
+      }
+    CONFIG
+  end
 
   context 'when parsing a sylog message in RFC3164 format from haproxy' do
     context "when parsing failure messages" do

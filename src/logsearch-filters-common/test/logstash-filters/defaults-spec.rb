@@ -3,11 +3,13 @@ require "test/filter_test_helpers"
 
 describe 'Logstash filters' do
 
-  config <<-CONFIG
-      filter {
-  #{File.read('target/logstash-filters-default.conf')}
-      }
-  CONFIG
+  before(:all) do
+      @config = <<-CONFIG
+        filter {
+    #{File.read('target/logstash-filters-default.conf')}
+        }
+    CONFIG
+  end
 
   context "when parsing syslog RFC 5242 messages" do
     when_parsing_log(
