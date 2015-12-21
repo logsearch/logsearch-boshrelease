@@ -23,6 +23,33 @@ describe "Rules for parsing haproxy messages" do
           expect(log['haproxy']['message']).to include("SSL handshake failure")
         end
       end
+      when_parsing_log(
+        '@message' => 'Server ingestors/node0 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 0 active and 0 backup servers left. 52 sessions active, 0 requeued, 0 remaining in queue.',
+        'syslog_program' => "haproxy"
+      ) do
+
+        it "adds the syslog_standard tag" do
+          expect(log['tags']).to include("haproxy")
+        end
+        it "extract the message" do
+          expect(log['haproxy']['message']).to eq('Server ingestors/node0 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 0 active and 0 backup servers left. 52 sessions active, 0 requeued, 0 remaining in queue.')
+        end
+      end
+    end
+
+    context "when parsing startup messages" do
+      when_parsing_log(
+        '@message' => "Proxy ingestors started.",
+        'syslog_program' => "haproxy"
+      ) do
+
+        it "adds the syslog_standard tag" do
+          expect(log['tags']).to include("haproxy")
+        end
+        it "extract the message" do
+          expect(log['haproxy']['message']).to eq("Proxy ingestors started.")
+        end
+      end
     end
 
     context "when parsing connection details" do
