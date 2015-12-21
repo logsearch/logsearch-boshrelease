@@ -21,8 +21,8 @@ properties:
     description: Whether to use the built-in drain features to improve deployment reliability
     # disabled while we do additional testing
     default: false
-  elasticsearch.host:
-    description: The frontend elasticsearch node services should use.
+  elasticsearch.master_hosts:
+    description: The list of elasticsearch master node IPs
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
   elasticsearch.log_level:

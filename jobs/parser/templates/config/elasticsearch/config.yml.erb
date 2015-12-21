@@ -20,8 +20,6 @@ network.host: "0.0.0.0"
 
 discovery.zen.minimum_master_nodes: <%= p("elasticsearch.discovery.minimum_master_nodes") %>
 discovery.zen.ping.multicast.enabled: false
-<% if_p("elasticsearch.host") do %>
-discovery.zen.ping.unicast.hosts: "<%= p("elasticsearch.host") %>"
-<% end %>
+discovery.zen.ping.unicast.hosts: "<%= p("elasticsearch.master_hosts").join(',') %>"
 
 <% if_p('elasticsearch.config_options') do | v | %><%= v %><% end %>

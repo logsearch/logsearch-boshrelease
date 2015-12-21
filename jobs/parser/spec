@@ -67,11 +67,8 @@ properties:
     description: "Plugins to run logstash with (array[] = { plugin-name: install-source }; e.g. [ { logstash-filter-cityindex-acctlookup: 'https://s3.amazonaws.com/.../logstash-filter-cityindex-acctlookup-1.2.9.gem' } ])"
     default: []
 
-  elasticsearch.host:
-    description: IP / DNS of elasticsearch http endpoint
-  elasticsearch.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
+  elasticsearch.master_hosts:
+    description: The list of elasticsearch master node IPs
   elasticsearch.flush_size:
     description: Redis queue flush size
     default: 100

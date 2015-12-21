@@ -56,7 +56,7 @@ jobs:
       elasticsearch: 127.0.0.1:9200
       port: 5601
     elasticsearch:
-      host: 127.0.0.1
+      master_hosts: [127.0.0.1]
       cluster_name: monitor
       allow_master: true
       allow_data: true
@@ -205,7 +205,7 @@ properties:
     elasticsearch_host: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200"))
   elasticsearch:
     log_level: DEBUG
-    host: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] "," jobs.elasticsearch_data.networks.default.static_ips.[0] ))
+    master_hosts: (( grab jobs.elasticsearch_master.networks.default.static_ips ))
     cluster_name: logsearch
     exec: ~
   kibana:
