@@ -22,8 +22,6 @@ properties:
   kibana.port:
     description: "Kibana is served by a back end server. This controls which port to use."
     default: 5601
-  kibana.xsrf_token:
-    description: "The CSRF token used by the kibana server"
   kibana.request_timeout:
     description: "Time in milliseconds to wait for responses from the back end or elasticsearch.  This must be > 0"
     default: 300000

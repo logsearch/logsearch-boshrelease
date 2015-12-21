@@ -2,5 +2,5 @@
 name: elasticsearch
 dependencies: [] # no compile dependencies
 files:
-  #https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.0.0-beta2/elasticsearch-2.0.0-rc1-beta2.tar.gz
-  - elasticsearch/elasticsearch-2.1.0.tar.gz
+  #https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.1.1/elasticsearch-2.1.1.tar.gz
+  - elasticsearch/elasticsearch-2.1.1.tar.gz

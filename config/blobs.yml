@@ -35,14 +35,6 @@ curator/elasticsearch-1.7.0.tar.gz:
   object_id: 3bdcfe3c-1af6-4777-9a15-2d053d172a15
   sha: 01b76bf67b47a0bcbb69a6d7d00169449f780484
   size: 62054
-elasticsearch/elasticsearch-2.1.0.tar.gz:
-  object_id: 1b679a0b-63ce-481a-bb63-2f70af6b52cb
-  sha: b6d681b878e3a906fff8c067b3cfe855240bffbb
-  size: 28994631
-kibana/kibana-4.3.0-linux-x64.tar.gz:
-  object_id: 2f03f2cc-4314-44f2-8a18-9df356d05a1e
-  sha: d64e1fc0ddeaaab85e168177de6c78ed82bb3a3b
-  size: 30616137
 haproxy/haproxy-1.6.2.tar.gz:
   object_id: 48bf1c42-207b-4c26-90ca-eeca21f96787
   sha: 407bed920315cf66500ab57aea0c402bad850129
@@ -55,3 +47,11 @@ logstash/logstash-all-plugins-2.1.0.tar.gz:
   object_id: 093ff96d-68d5-4604-9fc1-b284d29908ff
   sha: ec9674bfa7ebaba0ab5d17f6d19de9d0608160c5
   size: 126053307
+kibana/kibana-4.3.1-linux-x64.tar.gz:
+  object_id: 1fa594b1-f398-411f-bd67-f3cd6847ff00
+  sha: 115ba22882df75eb5f07330b7ad8781a57569b00
+  size: 30408272
+elasticsearch/elasticsearch-2.1.1.tar.gz:
+  object_id: bec2b2aa-1adc-48df-b4ef-0ebb43d520cd
+  sha: 360ca8e329b8b0c34b1cd6012c452951f8d3e137
+  size: 29007342
