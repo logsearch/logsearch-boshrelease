@@ -14,6 +14,8 @@ export LOGSTASH_WORKERS=`grep -c ^processor /proc/cpuinfo`
 <% else %>
 export LOGSTASH_WORKERS=<%= p('logstash_parser.workers') %>
 <% end %>
+export TIMECOP_REJECT_GREATER_THAN_HOURS=<%= p('logstash_parser.timecop.reject_greater_than_hours') %>
+export TIMECOP_REJECT_LESS_THAN_HOURS=<%= p('logstash_parser.timecop.reject_less_than_hours') %>
 
 LOCAL_PLUGINS_DIR=/var/vcap/packages/logstash/vendor/bundle/jruby/1.9/gems
 LOCAL_PLUGINS_NAME_LIST=$( cat /var/vcap/packages/logstash/plugins-default.list | tr "\n" ' ' )
@@ -50,6 +52,9 @@ case $1 in
 
     # construct a complete config file from all the fragments
     cat ${JOB_DIR}/config/input_and_output.conf > ${JOB_DIR}/config/logstash.conf
+
+    echo "filter {" >> ${JOB_DIR}/config/logstash.conf
+
     cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/logstash.conf
     cat ${JOB_DIR}/config/logstash-filters-common.conf >> ${JOB_DIR}/config/logstash.conf
 
@@ -61,7 +66,10 @@ case $1 in
       cat ${JOB_DIR}/config/filters_override.conf >> ${JOB_DIR}/config/logstash.conf
     <% end %>
 
+    cat ${JOB_DIR}/config/timecop.conf >> ${JOB_DIR}/config/logstash.conf
     cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
+
+    echo "} #close filters" >> ${JOB_DIR}/config/logstash.conf
 
     exec chpst -u vcap /var/vcap/packages/logstash/bin/logstash agent \
          -f ${JOB_DIR}/config/logstash.conf -w ${LOGSTASH_WORKERS} \
