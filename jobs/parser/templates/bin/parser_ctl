@@ -66,8 +66,8 @@ case $1 in
       cat ${JOB_DIR}/config/filters_override.conf >> ${JOB_DIR}/config/logstash.conf
     <% end %>
 
-    cat ${JOB_DIR}/config/timecop.conf >> ${JOB_DIR}/config/logstash.conf
     cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
+    cat ${JOB_DIR}/config/timecop.conf >> ${JOB_DIR}/config/logstash.conf
 
     echo "} #close filters" >> ${JOB_DIR}/config/logstash.conf
 
