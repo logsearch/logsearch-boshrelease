@@ -76,6 +76,8 @@ properties:
 
   elasticsearch.master_hosts:
     description: The list of elasticsearch master node IPs
+  elasticsearch.data_hosts:
+    description: The list of elasticsearch data node IPs
   elasticsearch.flush_size:
     description: Redis queue flush size
     default: 100

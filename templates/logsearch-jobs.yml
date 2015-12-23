@@ -169,10 +169,6 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(4) ))
-  properties:
-   elasticsearch:
-     node:
-       allow_master: true
   update:
     serial: false
     canaries: 1
@@ -206,6 +202,7 @@ properties:
   elasticsearch:
     log_level: DEBUG
     master_hosts: (( grab jobs.elasticsearch_master.networks.default.static_ips ))
+    data_hosts: (( grab jobs.elasticsearch_data.networks.default.static_ips ))
     cluster_name: logsearch
     exec: ~
   kibana:
