@@ -79,8 +79,8 @@ properties:
   elasticsearch.data_hosts:
     description: The list of elasticsearch data node IPs
   elasticsearch.flush_size:
-    description: Redis queue flush size
-    default: 100
+    description: Controls how many logs will be buffered and sent to Elasticsearch for bulk indexing
+    default: 500
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
   elasticsearch.log_level:
