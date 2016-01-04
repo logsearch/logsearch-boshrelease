@@ -1,0 +1,12 @@
+---
+platform: linux
+
+image: docker:///canopycip/cip-cf-ci
+
+inputs:
+- name: logsearch-boshrelease
+- name: logsearch-version
+
+run:
+  path: logsearch-boshrelease/ci/tasks/build-release.sh
+

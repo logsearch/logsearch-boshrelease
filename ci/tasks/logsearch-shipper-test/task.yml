@@ -1,7 +1,0 @@
----
-platform: "linux"
-image: "docker:///dpb587/logsearch-shipper-release-utils"
-inputs:
-  - name: "src"
-run:
-  path: "src/ci/tasks/logsearch-shipper-test/run.sh"
