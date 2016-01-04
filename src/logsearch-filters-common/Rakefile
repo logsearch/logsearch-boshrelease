@@ -9,7 +9,7 @@ desc "Builds filters & dashboards"
 task :build => :clean do
   puts "===> Building ..."
   compile_erb 'src/logstash-filters/default.conf.erb', 'target/logstash-filters-default.conf'
-  create_bosh_job_template 'target/logstash-filters-default.conf', 'target/logstash-filters-default.conf.erb'
+  compile_erb 'src/logstash-filters/metric.conf.erb', 'target/logstash-filters-metric.conf'
 
   puts "===> Artifacts:"
   puts `tree target`
@@ -29,10 +29,4 @@ def compile_erb(source_file, dest_file)
   else
     cp source_file, dest_file
   end
-end
-
-def create_bosh_job_template(source_file, dest_file)
-  text = File.read(source_file)
-  new_contents = text.gsub(/<%/, "<%%")
-  File.open(dest_file, "w") {|file| file.puts new_contents }
 end
