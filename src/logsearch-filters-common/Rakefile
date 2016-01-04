@@ -12,7 +12,7 @@ task :build => :clean do
   compile_erb 'src/logstash-filters/metric.conf.erb', 'target/logstash-filters-metric.conf'
 
   puts "===> Artifacts:"
-  puts `tree target`
+  puts `find target`
 end
 
 desc "Runs unit tests against filters & dashboards"
