@@ -2,6 +2,21 @@
 
 set -e
 
+post() {
+  url=$1
+  data=$2
+
+  HTTP_CODE=$(echo "$data" | curl -s -w '%{http_code}' -o /tmp/output.txt -X PUT --data-binary @- "${url}")
+
+  if [ "$HTTP_CODE" -le "300" ]; then
+    cat /tmp/output.txt
+  else
+    cat /tmp/output.txt > /dev/stderr
+    exit $HTTP_CODE
+  fi
+}
+
+
 #
 # wait for elasticsearch availability
 #
@@ -27,11 +42,14 @@ done
   URL="http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>/_template/<%= ckey %>"
 
   <% if nil == cvalue %>
-    curl -X DELETE "${URL}"
+  curl -X DELETE "${URL}"
   <% else %>
-    cat << EOF | curl -X PUT -d@- "${URL}"
-<%= cvalue %>
+  HTTP_BODY=$(cat <<EOF
+  <%= cvalue %>
 EOF
+)
+  
+  post "$URL" "$HTTP_BODY"
   <% end %>
 <% end %>
 
@@ -43,13 +61,16 @@ EOF
 <% p('elasticsearch_config.docs').each do | plugin | ckey, cvalue = plugin.first %>
   URL="http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>/<%= ckey %>"
 
-  <% if nil == cvalue %>
-    curl -X DELETE "${URL}"
-  <% else %>
-    cat << EOF | curl -X PUT -d@- "${URL}"
-<%= cvalue %>
+ <% if nil == cvalue %>
+      curl -X DELETE "${URL}"
+ <% else %>
+      HTTP_BODY=$(cat <<EOF
+      <%= cvalue %>
 EOF
+)
+      post "$URL" "$HTTP_BODY"
   <% end %>
+
 <% end %>
 
 #
@@ -58,5 +79,6 @@ EOF
 
 URL="http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>/_bulk"
 <% p('elasticsearch_config.bulk_data_files').each do |path| %>
-  cat <%= path %> | curl -X PUT --data-binary @- "${URL}"
+  HTTP_BODY=$(cat <%= path %>)
+  post "$URL" "$HTTP_BODY"
 <% end %>
