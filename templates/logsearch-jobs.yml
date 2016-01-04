@@ -73,6 +73,12 @@ jobs:
         host: 127.0.0.1
         port: 9200
       bulk_data_files: []
+      templates:
+      - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
+    logstash_parser:
+      use_local_elasticsearch: false
+      filters: 
+      - /var/vcap/packages/logstash-filters-common/logstash-filters-metric.conf
     nats_to_syslog:
       nats:
         subject: ">"
@@ -87,8 +93,6 @@ jobs:
     logstash_ingestor:
       syslog:
         port: 514
-    logstash_parser:
-      use_local_elasticsearch: false
   update:
     serial: false
     canaries: 1

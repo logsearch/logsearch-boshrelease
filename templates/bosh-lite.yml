@@ -1,6 +1,6 @@
 ---
 name: logsearch
-director_uuid: 3606f4d1-c2f8-48bc-913d-b5a4012e81ec
+director_uuid: <%= `bosh status --uuid` %>
 
 releases:
 - name: logsearch
@@ -122,11 +122,10 @@ jobs:
       port: 5601
     elasticsearch:
       master_hosts: [127.0.0.1]
+      data_hosts: [127.0.0.1]
       cluster_name: monitor
       allow_master: true
       allow_data: true
-      #plugins:
-      #- kopf: file:///var/vcap/packages/elasticsearch-plugins/elasticsearch-kopf.zip
     redis:
       host: 127.0.0.1
     curator:
@@ -138,11 +137,12 @@ jobs:
       elasticsearch:
         host: 127.0.0.1
         port: 9200
-      bulk_data_files: []
-      #templates:
-        #- elk-for-pcf-monitor: ""
-    #logstash_parser:
-      #filters: ""
+      templates:
+      - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
+    logstash_parser:
+      use_local_elasticsearch: false
+      filters: 
+      - /var/vcap/packages/logstash-filters-common/logstash-filters-metric.conf
     nats_to_syslog:
       nats:
         subject: ">"
