@@ -213,7 +213,7 @@ describe LogStash::Filters::Grok do
         expect(log['tags']).to include("syslog_standard")
       end
       it "extracts the timestamp" do
-        expect(log['@timestamp']).to eq(Time.parse("2015-12-16T15:24:05Z"))
+        expect(log['@timestamp']).to eq Time.parse("#{Time.now.year}-12-16T15:24:05Z")
       end
       it "drops the syslog_timestamp field (since it has been captured in @timestamp)" do
         expect(log['syslog_timestamp']).to be_nil
