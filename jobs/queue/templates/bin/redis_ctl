@@ -6,18 +6,16 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/queue/helpers/ctl_setup.sh 'queue'
 
-export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
 
+NINETY_PERCENT_OF_RAM=$(($(grep MemTotal /proc/meminfo | awk '{print $2}') * 9/10))
 case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME
 
-    # v21 switched to running as vcap; remove after a couple versions
-    chown -R vcap:vcap $STORE_DIR $LOG_DIR $RUN_DIR
-
-    chpst -u vcap /var/vcap/packages/redis/bin/redis-server $JOB_DIR/config/redis.conf \
+    sed -i "s/NINETY_PERCENT_OF_RAM/$NINETY_PERCENT_OF_RAM/" $JOB_DIR/config/redis.conf
+    chpst -u vcap /var/vcap/packages/redis/bin/redis-server $JOB_DIR/config/redis.conf
 
     ;;
 
