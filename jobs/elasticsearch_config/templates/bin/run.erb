@@ -1,21 +1,49 @@
-#!/bin/bash
+#!/bin/bash -x
 
 set -e
 
-post() {
-  url=$1
-  data=$2
+<%
+# Look ma, I'm writing Chef
+def put_to_es(url_stem_base, es_config)
+  ret = []
+  es_config.each do |config|
+    if config.is_a? Hash
+      ckey, content = config.to_a.first
+    else
+      ckey = ''
+      content = config
+    end
+    url_stem = "#{url_stem_base}/#{ckey}".chomp('/')
+    ret << "URL=http://#{p('elasticsearch_config.elasticsearch.host')}:#{p('elasticsearch_config.elasticsearch.port')}/#{url_stem}"
+    if nil == content
+     ret << 'curl -X DELETE "${URL}"'
+    else
+      if content.start_with? '/var/vcap'
+        ret << "CONTENT_PATH=\"#{content}\""
+      else
+        ret << <<BASH
+CONTENT_PATH=/tmp/elasticsearch_config-http_body.txt
+cat <<EOF > $CONTENT_PATH
+#{content}
+EOF
+BASH
+      end
 
-  HTTP_CODE=$(echo "$data" | curl -s -w '%{http_code}' -o /tmp/output.txt -X PUT --data-binary @- "${url}")
+      ret << <<BASH
+HTTP_CODE=$(curl -s -w '%{http_code}' -o /tmp/elasticsearch_config-response.txt -X PUT --data-binary @$CONTENT_PATH "$URL")
 
-  if [ "$HTTP_CODE" -le "300" ]; then
-    cat /tmp/output.txt
-  else
-    cat /tmp/output.txt > /dev/stderr
-    exit $HTTP_CODE
-  fi
-}
-
+if [ "$HTTP_CODE" -le "300" ]; then
+  cat /tmp/output.txt
+else
+  cat /tmp/output.txt > /dev/stderr
+  exit $HTTP_CODE
+fi
+BASH
+    end
+  end #loop
+  ret.join("\n")
+end
+%>
 
 #
 # wait for elasticsearch availability
@@ -33,52 +61,17 @@ while [ "false" == "$READY" ] ; do
     fi
 done
 
-
 #
 # templates
 #
-
-<% p('elasticsearch_config.templates').each do | plugin | ckey, cvalue = plugin.first %>
-  URL="http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>/_template/<%= ckey %>"
-
-  <% if nil == cvalue %>
-  curl -X DELETE "${URL}"
-  <% else %>
-  HTTP_BODY=$(cat <<EOF
-  <%= cvalue %>
-EOF
-)
-  
-  post "$URL" "$HTTP_BODY"
-  <% end %>
-<% end %>
-
+<%= put_to_es('_template', p('elasticsearch_config.templates')) %>
 
 #
 # documents
 #
-
-<% p('elasticsearch_config.docs').each do | plugin | ckey, cvalue = plugin.first %>
-  URL="http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>/<%= ckey %>"
-
- <% if nil == cvalue %>
-      curl -X DELETE "${URL}"
- <% else %>
-      HTTP_BODY=$(cat <<EOF
-      <%= cvalue %>
-EOF
-)
-      post "$URL" "$HTTP_BODY"
-  <% end %>
-
-<% end %>
+<%= put_to_es('', p('elasticsearch_config.docs')) %>
 
 #
 # bulk files
 #
-
-URL="http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>/_bulk"
-<% p('elasticsearch_config.bulk_data_files').each do |path| %>
-  HTTP_BODY=$(cat <%= path %>)
-  post "$URL" "$HTTP_BODY"
-<% end %>
+<%= put_to_es('_bulk', p('elasticsearch_config.bulk_data_files')) %>
