@@ -50,7 +50,7 @@ case $1 in
     # ES2.0 deprcated -Des.config and insists on having the config file under ES_HOME/config
     cp $JOB_DIR/config/elasticsearch.yml /var/vcap/packages/elasticsearch/config
 
-    exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
+    chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
          -p ${PIDFILE} \
          --XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          <%= p("elasticsearch.exec.options", []).join(' ') %> \
