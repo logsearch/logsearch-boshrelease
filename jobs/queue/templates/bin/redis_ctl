@@ -8,7 +8,7 @@ source /var/vcap/jobs/queue/helpers/ctl_setup.sh 'queue'
 
 export LANG=en_US.UTF-8
 
-NINETY_PERCENT_OF_RAM=$(($(grep MemTotal /proc/meminfo | awk '{print $2}') * 9/10))
+NINETY_PERCENT_OF_RAM=$(($(grep MemTotal /proc/meminfo | awk '{print $2}') * 9/10 * 1024))
 case $1 in
 
   start)
