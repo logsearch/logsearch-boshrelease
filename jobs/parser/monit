@@ -12,3 +12,9 @@ check process parser
     stop program "/var/vcap/jobs/parser/bin/monit_debugger elasticsearch_ctl '/var/vcap/jobs/parser/bin/elasticsearch_ctl stop'"
     group vcap
 <% end %>
+
+check device ephemeral_disk with path /var/vcap/data
+  if SPACE usage > 80% then alert
+
+check device persistent_disk with path /var/vcap/store
+  if SPACE usage > 80% then alert
