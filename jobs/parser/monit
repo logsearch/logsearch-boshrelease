@@ -13,8 +13,8 @@ check process parser
     group vcap
 <% end %>
 
-check device ephemeral_disk with path /var/vcap/data
+check device parser-ephemeral_disk with path /var/vcap/data
   if SPACE usage > 80% then alert
 
-check device persistent_disk with path /var/vcap/store
+check device parser-persistent_disk with path /var/vcap/store
   if SPACE usage > 80% then alert
