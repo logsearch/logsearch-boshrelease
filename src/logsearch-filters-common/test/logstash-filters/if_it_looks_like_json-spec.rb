@@ -1,7 +1,7 @@
 # encoding: utf-8
 require "test/filter_test_helpers"
 
-describe 'Metric filters' do
+describe 'Log type autodetection' do
 
   before(:all) do
       @config = <<-CONFIG
