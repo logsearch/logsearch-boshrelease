@@ -6,7 +6,7 @@ describe 'Logstash filters' do
   before(:all) do
       @config = <<-CONFIG
         filter {
-    #{File.read('target/logstash-filters-default.conf')}
+          #{File.read('target/logstash-filters-default.conf')}
         }
     CONFIG
   end
