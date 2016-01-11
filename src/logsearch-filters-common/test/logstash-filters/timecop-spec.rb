@@ -24,11 +24,26 @@ describe "Rules sanitising @timestamp" do
     when_parsing_log(
       '@timestamp' => future_timestamp,
       '@raw' => "#{future_timestamp} Hello from the future!",
-      'extracted_field' => 'value'
+      "@source" => {"host" => "source"},
+      "@shipper" => {"host" => "shipper"},
+      'extracted_field' => 'value',
+      'tags' => ['sometag']
     ) do
 
       it "adds a timecop triggered tag" do
         expect(log['tags']).to include("fail/timecop")
+      end
+
+      it "retains the original tags" do
+        expect(log["tags"]).to include "sometag"
+      end
+
+      it "retains the source informaiton" do
+        expect(log["@source"]).to eq({"host" => "source"})
+      end
+
+      it "retains the shipper informaiton" do
+        expect(log["@shipper"]).to eq({"host" => "shipper"})
       end
 
       it "moves the invalid timestamp into invalid_fields.@timestamp" do
@@ -52,11 +67,26 @@ describe "Rules sanitising @timestamp" do
     when_parsing_log(
       '@timestamp' => past_timestamp,
       '@raw' => "#{past_timestamp} Hello from the past!",
-      'extracted_field' => 'value'
+      "@source" => {"host" => "source"},
+      "@shipper" => {"host" => "shipper"},
+      'extracted_field' => 'value',
+      'tags' => ['sometag']
     ) do
 
       it "adds a timecop triggered tag" do
         expect(log['tags']).to include("fail/timecop")
+      end
+
+      it "retains the original tags" do
+        expect(log["tags"]).to include "sometag"
+      end
+
+      it "retains the source informaiton" do
+        expect(log["@source"]).to eq({"host" => "source"})
+      end
+
+      it "retains the shipper informaiton" do
+        expect(log["@shipper"]).to eq({"host" => "shipper"})
       end
 
       it "moves the invalid timestamp into invalid_fields.@timestamp" do
