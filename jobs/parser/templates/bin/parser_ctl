@@ -56,7 +56,7 @@ case $1 in
     echo "filter {" >> ${JOB_DIR}/config/logstash.conf
 
     cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/logstash.conf
-    cat /var/vcap/packages/logstash-filters-common/logstash-filters-default.conf >> ${JOB_DIR}/config/logstash.conf
+    cat /var/vcap/packages/logsearch-config/logstash-filters-default.conf >> ${JOB_DIR}/config/logstash.conf
 
     <% if p('logstash_parser.filters').is_a? Array %>
       # logstash_parser.filters is an .conf file paths; which we include in order

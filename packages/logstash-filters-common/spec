@@ -1,5 +1,0 @@
----
-name: logstash-filters-common
-dependencies: []
-files:
-- logsearch-filters-common/target/*.conf

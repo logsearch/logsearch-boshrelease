@@ -99,7 +99,7 @@ jobs:
 
 - name: cluster_monitor
   release: logsearch
-  instances: 1
+  instances: 0
   templates:
     - { release: logsearch, name: queue }
     - { release: logsearch, name: parser }
@@ -141,8 +141,8 @@ jobs:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
     logstash_parser:
       use_local_elasticsearch: false
-      filters: 
-      - /var/vcap/packages/logstash-filters-common/logstash-filters-metric.conf
+      filters:
+      - /var/vcap/packages/logsearch-config/logstash-filters-metric.conf
     nats_to_syslog:
       nats:
         subject: ">"
@@ -176,7 +176,7 @@ jobs:
   templates:
   - name: parser
     release: logsearch
-  instances: 0
+  instances: 1
   resource_pool: warden
   networks:
   - name: default
@@ -186,7 +186,7 @@ jobs:
 
 - name: maintenance
   release: logsearch
-  instances: 0
+  instances: 1
   templates:
   - name: elasticsearch_config
     release: logsearch

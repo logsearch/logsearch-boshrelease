@@ -5,4 +5,4 @@ set -u # report the usage of uninitialized variables
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
-cp logsearch-filters-common/target/* $BOSH_INSTALL_TARGET
+cp logsearch-config/target/* $BOSH_INSTALL_TARGET

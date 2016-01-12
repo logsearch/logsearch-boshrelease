@@ -3,6 +3,7 @@ name: "elasticsearch_config"
 packages:
   - "elasticsearch"
   - "java8"
+  - "logsearch-config"
 templates:
   bin/run.erb: "bin/run"
   bin/job.process: "bin/job.process"

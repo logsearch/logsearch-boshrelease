@@ -2,7 +2,7 @@
 name: parser
 packages:
 - logstash
-- logstash-filters-common
+- logsearch-config
 - elasticsearch
 - java8
 templates:
