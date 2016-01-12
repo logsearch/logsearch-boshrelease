@@ -2,7 +2,7 @@
 
 version="$(cat logsearch-version/number)"
 
-cd logsearch-boshrelease/src/logsearch-filters-common
+cd logsearch-boshrelease/src/logsearch-config
 rake build
 
 cd ../..
