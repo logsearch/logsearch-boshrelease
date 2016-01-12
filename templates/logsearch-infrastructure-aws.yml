@@ -63,3 +63,9 @@ disk_pools:
   disk_size: 102400
   cloud_properties:
     type: gp2
+
+- name: cluster_monitor
+  disk_size: 102400
+  cloud_properties:
+    type: gp2
+

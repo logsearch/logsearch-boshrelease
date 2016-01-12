@@ -51,6 +51,7 @@ jobs:
   - { release: logsearch, name: nats_to_syslog }
   networks:
   - name: default
+  persistent_disk_pool: cluster_monitor
   properties:
     kibana:
       elasticsearch: 127.0.0.1:9200
@@ -77,7 +78,7 @@ jobs:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
     logstash_parser:
       use_local_elasticsearch: false
-      filters: 
+      filters:
       - /var/vcap/packages/logstash-filters-common/logstash-filters-metric.conf
     nats_to_syslog:
       nats:
