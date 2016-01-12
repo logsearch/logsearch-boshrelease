@@ -6,3 +6,4 @@ set -u # report the usage of uninitialized variables
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
 cp logsearch-config/target/* $BOSH_INSTALL_TARGET
+cp logsearch-config/mappings/* $BOSH_INSTALL_TARGET

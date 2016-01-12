@@ -139,6 +139,7 @@ jobs:
         port: 9200
       templates:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
+      - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
     logstash_parser:
       use_local_elasticsearch: false
       filters:
@@ -261,6 +262,8 @@ properties:
     elasticsearch:
       host: 10.244.2.2
       port: 9200
+    templates:
+    - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
   logstash_parser:
     debug: true
     filters: |

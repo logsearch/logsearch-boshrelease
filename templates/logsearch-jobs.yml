@@ -76,6 +76,7 @@ jobs:
       bulk_data_files: []
       templates:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
+      - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
     logstash_parser:
       use_local_elasticsearch: false
       filters:
@@ -216,4 +217,6 @@ properties:
   elasticsearch_config:
     elasticsearch:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+    templates:
+      - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
 
