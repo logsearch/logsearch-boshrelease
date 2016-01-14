@@ -12,3 +12,10 @@
             "
         }
     <% end %>
+
+    if ![@type] {
+      mutate {
+        add_field => [ "@type", "unknown" ]
+      }
+    }
+
