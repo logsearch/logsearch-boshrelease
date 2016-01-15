@@ -49,14 +49,14 @@ If you are sure you want install just Logsearch Core, read on...
 
 0. Adding new parsing rules:
 
-    logstash_parser:
-      filters: |
-         # Put your additional Logstash filter config here, eg:
+        logstash_parser:
+          filters: |
+             # Put your additional Logstash filter config here, eg:
 
-         json {
-            source => "@message"
-            remove_field => ["@message"]
-         }
+             json {
+                source => "@message"
+                remove_field => ["@message"]
+             }
 
    
 ### Release Channels
