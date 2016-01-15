@@ -137,7 +137,7 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(16, 17) ))
-  persistent_disk_pool: (( elasticsearch_data ))
+  persistent_disk_pool: elasticsearch_data
   properties:
     elasticsearch:
       node:
