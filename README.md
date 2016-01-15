@@ -30,7 +30,7 @@ If you are sure you want install just Logsearch Core, read on...
 
 0. Upload the latest logsearch release from [bosh.io](https://bosh.io)...
 
-    $ bosh upload release https://bosh.io/d/github.com/logsearch/logsearch-boshrelease
+        $ bosh upload release https://bosh.io/d/github.com/logsearch/logsearch-boshrelease
 
 0. Customise your deployment stub:
 
@@ -39,7 +39,7 @@ If you are sure you want install just Logsearch Core, read on...
 
 0. Generate a manifest
 
-    $ scripts/generate_deployment_manifest $INFRASTRUCTURE logsearch-stub.yml > logsearch.yml
+        $ scripts/generate_deployment_manifest $INFRASTRUCTURE logsearch-stub.yml > logsearch.yml
 
 0. Deploy!
 
