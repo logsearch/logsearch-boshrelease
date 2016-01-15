@@ -34,7 +34,7 @@ If you are sure you want install just Logsearch Core, read on...
 
 0. Customise your deployment stub:
 
-   * Make a copy of `templates/stub.$INFRASTRUCTURE.example.yml`
+   * Make a copy of `templates/stub.$INFRASTRUCTURE.example.yml` to `logsearch-stub.yml`
    * Edit to match your IAAS settings
 
 0. Generate a manifest

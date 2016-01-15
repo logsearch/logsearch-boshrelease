@@ -4,6 +4,7 @@ jobs:
   templates:
   - {name: elasticsearch, release: logsearch}
   - {name: api, release: logsearch}
+  resource_pool: elasticsearch_master
   update:
     serial: true
   instances: 1
@@ -49,6 +50,7 @@ jobs:
   - { release: logsearch, name: curator }
   - { release: logsearch, name: kibana }
   - { release: logsearch, name: nats_to_syslog }
+  resource_pool: cluster_monitor
   networks:
   - name: default
   persistent_disk_pool: cluster_monitor
@@ -104,6 +106,7 @@ jobs:
   release: logsearch
   templates:
   - {name: queue, release: logsearch}
+  resource_pool: queue
   instances: 1
   networks:
   - name: default
@@ -119,7 +122,7 @@ jobs:
   templates:
   - {name: kibana, release: logsearch}
   instances: 1
-  resource_pool: parser
+  resource_pool: kibana
   networks:
   - name: default
   update:
@@ -131,13 +134,14 @@ jobs:
   release: logsearch
   templates:
   - {name: elasticsearch, release: logsearch}
+  resource_pool: elasticsearch_data
   update:
     serial: true
   instances: 2
   networks:
   - name: default
     static_ips: (( static_ips(16, 17) ))
-  persistent_disk_pool: (( elasticsearch_data ))
+  persistent_disk_pool: elasticsearch_data
   properties:
     elasticsearch:
       node:
@@ -153,6 +157,7 @@ jobs:
   templates:
   - {name: ingestor_syslog, release: logsearch}
   - {name: ingestor_relp, release: logsearch}
+  resource_pool: ingestor
   instances: 1
   networks:
   - name: default
@@ -172,6 +177,7 @@ jobs:
   release: logsearch
   templates:
   - {name: parser, release: logsearch}
+  resource_pool: parser
   instances: 1
   networks:
   - name: default
@@ -187,6 +193,7 @@ jobs:
   templates:
   - {name: elasticsearch_config, release: logsearch}
   - {name: curator, release: logsearch}
+  resource_pool: maintenance
   networks:
   - name: default
   update:
@@ -219,4 +226,3 @@ properties:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
     templates:
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
-

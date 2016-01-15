@@ -1,8 +1,8 @@
 #!/bin/sh
 
-spruce="$(dirname $0)/../bin/spruce-$(uname -s)"
+spruce="$(dirname "$0")/../bin/spruce-$(uname -s)"
 
-templates=$(dirname $0)/../templates
+templates=$(dirname "$0")/../templates
 
 infrastructure=$1
 
@@ -16,7 +16,7 @@ if [ "$infrastructure" != "aws" ] && \
 fi
 
 $spruce merge --prune meta \
-  $templates/logsearch-deployment.yml \
-  $templates/logsearch-jobs.yml \
-  $templates/logsearch-infrastructure-${infrastructure}.yml \
+  "$templates/logsearch-deployment.yml" \
+  "$templates/logsearch-jobs.yml" \
+  "$templates/logsearch-infrastructure-${infrastructure}.yml" \
   "$@"
