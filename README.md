@@ -52,7 +52,6 @@ If you are sure you want install just Logsearch Core, read on...
         logstash_parser:
           filters: |
              # Put your additional Logstash filter config here, eg:
-
              json {
                 source => "@message"
                 remove_field => ["@message"]
