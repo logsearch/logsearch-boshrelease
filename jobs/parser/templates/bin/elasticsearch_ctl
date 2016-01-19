@@ -4,21 +4,51 @@ set -e # exit immediately if a simple command exits with a non-zero status
 set -u # report the usage of uninitialized variables
 
 # Setup env vars and folders for the webapp_ctl script
-source /var/vcap/jobs/parser/helpers/ctl_setup.sh 'parser' 'elasticsearch'
+source /var/vcap/jobs/parser/helpers/ctl_setup.sh 'parser'
 
 export PIDFILE=$RUN_DIR/elasticsearch.pid
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
+export ES_HEAP_SIZE=256M
+
+<% p("elasticsearch.exec.environment", {}).each do | k, v | %>
+export <%= k %>=<%= v %>
+<% end %>
+
+<% if not p('elasticsearch.exec.environment', {}).has_key? 'ES_HEAP_SIZE' then %>
+export ES_HEAP_SIZE=$((( $( cat /proc/meminfo | grep MemTotal | awk '{ print $2 }' ) * 46 ) / 100 ))K
+<% end %>
+
+PLUGIN_SCRIPTS_DIR=/var/vcap/data/elasticsearch/plugin-scripts
+PLUGIN_DIR=/var/vcap/packages/elasticsearch/plugins
+
+mkdir -p $PLUGIN_DIR
 
 case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME/elasticsearch
 
+    # lock while we update plugins
+    echo "$$" > "${PIDFILE}"
+    chown vcap:vcap "${PIDFILE}"
+
+    # v21 switched to running as vcap; remove after a couple versions
+    chown -R vcap:vcap $STORE_DIR $LOG_DIR $RUN_DIR
+
+    ulimit -n 64000
+    ulimit -l unlimited  # required to enable elasticsearch's mlockall setting
+
+    mkdir -p $PLUGIN_SCRIPTS_DIR
+    chown -R vcap: $PLUGIN_SCRIPTS_DIR
+
+    # ES2.0 deprcated -Des.config and insists on having the config file under ES_HOME/config
+    rm /var/vcap/packages/elasticsearch/config/elasticsearch.yml
+    ln -s $JOB_DIR/config/elasticsearch/elasticsearch.yml /var/vcap/packages/elasticsearch/config
+
     exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
-         -Des.config=${JOB_DIR}/config/elasticsearch/config.yml \
-         -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
-         -Des.pidfile=${PIDFILE} \
+         -p ${PIDFILE} \
+         --XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          >>$LOG_DIR/elasticsearch.stdout.log \
          2>>$LOG_DIR/elasticsearch.stderr.log
 

@@ -1,7 +1,8 @@
 ---
 name: parser
-packages: 
+packages:
 - logstash
+- logsearch-config
 - elasticsearch
 - java8
 templates:
@@ -11,12 +12,13 @@ templates:
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
-  config/elasticsearch/config.yml.erb: config/elasticsearch/config.yml
+  config/elasticsearch/config.yml.erb: config/elasticsearch/elasticsearch.yml
   config/elasticsearch/logging.yml.erb: config/elasticsearch/logging.yml
   config/input_and_output.conf.erb: config/input_and_output.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
-  config/logstash-filters-common.conf.erb: config/logstash-filters-common.conf
+  config/if_it_looks_like_json.conf: config/if_it_looks_like_json.conf
+  config/timecop.conf: config/timecop.conf
   config/filters_override.conf.erb: config/filters_override.conf
   logsearch/logs.yml: logsearch/logs.yml
 properties:
@@ -66,15 +68,20 @@ properties:
   logstash_parser.plugins:
     description: "Plugins to run logstash with (array[] = { plugin-name: install-source }; e.g. [ { logstash-filter-cityindex-acctlookup: 'https://s3.amazonaws.com/.../logstash-filter-cityindex-acctlookup-1.2.9.gem' } ])"
     default: []
+  logstash_parser.timecop.reject_greater_than_hours:
+    description: "Logs with timestamps greater than this many hours in the future won't be parsed and will get tagged with fail/timecop"
+    default: 1
+  logstash_parser.timecop.reject_less_than_hours:
+    description: "Logs with timestamps less than this many hours in the past won't be parsed and will get tagged with fail/timecop"
+    default: 24
 
-  elasticsearch.host:
-    description: IP / DNS of elasticsearch http endpoint
-  elasticsearch.port:
-    description: Port of elasticsearch http endpoint
-    default: 9200
+  elasticsearch.master_hosts:
+    description: The list of elasticsearch master node IPs
+  elasticsearch.data_hosts:
+    description: The list of elasticsearch data node IPs
   elasticsearch.flush_size:
-    description: Redis queue flush size
-    default: 100
+    description: Controls how many logs will be buffered and sent to Elasticsearch for bulk indexing
+    default: 500
   elasticsearch.cluster_name:
     description: The name of the elastic search cluster
   elasticsearch.log_level:
@@ -92,11 +99,11 @@ properties:
     description: "Additional options to append to elasticsearch's logging.yml (YAML format)."
     default: ~
 
-  redis.host: 
+  redis.host:
     description: Redis host of queue
-  redis.port: 
+  redis.port:
     description: Redis port of queue
     default: 6379
-  redis.key: 
+  redis.key:
     description: Name of queue to pull messages from
     default: logstash

@@ -3,12 +3,12 @@ input {
 <% p('logstash_parser.inputs').each do | input | %>
     <%= input['plugin'] %> {
       <% if 'redis' == input['plugin'] %>
-        <% input['options'] = { 
-           "host" => p('redis.host'), 
-           "port" => p('redis.port'), 
-           "type" => "redis-input", 
-           "data_type" => "list", 
-           "key" => p('redis.key'), 
+        <% input['options'] = {
+           "host" => p('redis.host'),
+           "port" => p('redis.port'),
+           "type" => "redis-input",
+           "data_type" => "list",
+           "key" => p('redis.key'),
            "threads" => 8
          } %>
       <% end %>
@@ -28,8 +28,7 @@ output {
     <% end %>
 
     elasticsearch {
-        host => "<%= p('logstash_parser.use_local_elasticsearch') ? '127.0.0.1' : p("elasticsearch.host") %>:<%= p("elasticsearch.port") %>"
-        protocol => "http"
+        hosts => [<%= p('logstash_parser.use_local_elasticsearch') ? '"127.0.0.1:9200"' : p("elasticsearch.data_hosts").map { |ip| "\"#{ip}:9200\"" }.join(',') %>]
         flush_size => <%= p("elasticsearch.flush_size") %>
         <% if p('logstash_parser.idle_flush_time', nil) %>
             idle_flush_time => <%= p('logstash_parser.idle_flush_time') %>
@@ -38,7 +37,7 @@ output {
             document_id => "<%= p('logstash_parser.elasticsearch_document_id') %>"
         <% end %>
         index => "<%= p('logstash_parser.elasticsearch_index') %>"
-        index_type => "<%= p('logstash_parser.elasticsearch_index_type') %>"
+        document_type => "<%= p('logstash_parser.elasticsearch_index_type') %>"
         manage_template => false
     }
 

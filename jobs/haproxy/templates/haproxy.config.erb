@@ -1,0 +1,36 @@
+global
+    log <%= p('haproxy.syslog_server') %> syslog <%= p('haproxy.log_level') %>
+    daemon
+    user vcap
+    group vcap
+    maxconn 64000
+    spread-checks 4
+    tune.ssl.default-dh-param 2048
+
+defaults
+    log global
+    maxconn 64000
+    option contstats
+    option tcplog
+    timeout connect         <%= p("haproxy.connect_timeout") %>s
+    timeout client          <%= p("haproxy.client_timeout") %>s
+    timeout server          <%= p("haproxy.server_timeout") %>s
+    timeout queue           <%= p("haproxy.queue_timeout") %>s
+
+frontend syslog-in
+    mode tcp
+
+    <% if properties.haproxy.ssl_pem %>
+    bind :<%= p("haproxy.inbound_port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3
+    <% else %>
+    bind :<%= p("haproxy.inbound_port") %>
+    <% end %>
+
+    default_backend ingestors
+
+backend ingestors
+    mode tcp
+    balance roundrobin
+    <% p("haproxy.backend_servers").each_with_index do |ip, index| %>
+    server node<%= index %> <%= ip %>:<%= p("haproxy.backend_port") %> check inter 1000
+    <% end %>

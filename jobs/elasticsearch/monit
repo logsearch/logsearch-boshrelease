@@ -3,3 +3,9 @@ check process elasticsearch
   start program "/var/vcap/jobs/elasticsearch/bin/monit_debugger elasticsearch_ctl '/var/vcap/jobs/elasticsearch/bin/elasticsearch_ctl start'"
   stop program "/var/vcap/jobs/elasticsearch/bin/monit_debugger elasticsearch_ctl '/var/vcap/jobs/elasticsearch/bin/elasticsearch_ctl stop'"
   group vcap
+
+check device elasticsearch-ephemeral_disk with path /var/vcap/data
+  if SPACE usage > 80% then alert
+
+check device elasticsearch-persistent_disk with path /var/vcap/store
+  if SPACE usage > 80% then alert

@@ -3,3 +3,13 @@ check process queue_redis
   start program "/var/vcap/jobs/queue/bin/monit_debugger queue_ctl '/var/vcap/jobs/queue/bin/redis_ctl start'"
   stop program "/var/vcap/jobs/queue/bin/monit_debugger queue_ctl '/var/vcap/jobs/queue/bin/redis_ctl stop'"
   group vcap
+
+check device queue-ephemeral_disk with path /var/vcap/data
+  if SPACE usage > 80% then alert
+
+check device queue-persistent_disk with path /var/vcap/store
+  if SPACE usage > 80% then alert
+
+check file queue-backlog with path /var/vcap/store/queue/redis-appendonly.aof
+  if size > 2 GB then alert
+

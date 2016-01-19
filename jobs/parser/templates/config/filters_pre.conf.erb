@@ -1,5 +1,3 @@
-filter {
-
     <% if 'DEBUG' == p('logstash.metadata_level') %>
         mutate {
             add_field => [ "@parser[job]", "<%= name %>/<%= index %>" ]

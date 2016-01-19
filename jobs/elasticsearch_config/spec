@@ -3,13 +3,23 @@ name: "elasticsearch_config"
 packages:
   - "elasticsearch"
   - "java8"
+  - "logsearch-config"
 templates:
   bin/run.erb: "bin/run"
   bin/job.process: "bin/job.process"
 properties:
+  elasticsearch_config.elasticsearch.host:
+    description: "The elasticsearch master node hostname"
+  elasticsearch_config.elasticsearch.port:
+    description: "the elasticsearch master node port"
+    default: 9200
   elasticsearch_config.templates:
     description: "An array with key-value hashes; keys being template name, value being template content"
     default: []
   elasticsearch_config.docs:
     description: "An array with key-value hashes; keys being doc path, value being doc source"
     default: []
+  elasticsearch_config.bulk_data_files:
+    description: "An array of file paths whose content will be uploaded as bulk data"
+    default: []
+

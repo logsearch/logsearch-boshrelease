@@ -1,42 +1,131 @@
----
 meta:
-  availability_zone: ap-northeast-1a 
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: latest
 
 releases:
 - name: logsearch
   version: latest
 
-name: logsearch-ashamalama
-director_uuid: 12345-12345-12345-12345
+name: logsearch
+director_uuid: DIRECTOR-UUID
+
+jobs:
+- name: elasticsearch_master
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(0) ))
+  resource_pool: elasticsearch_master
+  persistent_disk_pool: elasticsearch_master
+
+- name: elasticsearch_data
+  instances: 2
+  networks:
+  - name: default
+    static_ips: (( static_ips(16, 17) ))
+  resource_pool: elasticsearch_data
+  persistent_disk_pool: elasticsearch_data
+
+- name: ingestor
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(1) ))
+  - name: elastic
+    static_ips:
+    - SOME-ELASTIC-IP
+  resource_pool: ingestor
+
+- name: queue
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(3) ))
+  resource_pool: queue
+  persistent_disk_pool: queue
+
+- name: parser
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(4) ))
+  resource_pool: parser
+
+- name: kibana
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(8) ))
+  resource_pool: kibana
+
+- name: maintenance
+  instances: 1
+  networks:
+  - name: default
+  resource_pool: maintenance
 
 resource_pools:
-- name: logsearch_api
+- name: elasticsearch_master
+  network: default
   cloud_properties:
-    elbs: 
-    - logsearch-api
+    instance_type: c3.large
 
-- name: logsearch_ingestor
+- name: elasticsearch_data
+  network: default
   cloud_properties:
-    elbs:
-    - logsearch-ingestor
+    instance_type: r3.large
 
-- name: logsearch_elasticsearch
+- name: queue
+  network: default
   cloud_properties:
-    elbs:
-    - logsearch-elasticsearch
+    instance_type: r3.large
+
+- name: ingestor
+  network: default
+  cloud_properties:
+    instance_type: c4.large
+
+- name: parser
+  network: default
+  cloud_properties:
+    instance_type: c3.large
+
+- name: kibana
+  network: default
+  cloud_properties:
+    instance_type: t2.medium
+
+- name: maintenance
+  network: default
+  cloud_properties:
+    instance_type: t2.micro
+
+disk_pools:
+- name: elasticsearch_master
+  disk_size: 102400
+
+- name: elasticsearch_data
+  disk_size: 102400
+
+- name: queue
+  disk_size: 102400
 
 networks:
-- name: default 
+- name: default
   type: manual
   subnets:
-  - range: 10.10.48.0/24
-    gateway: 10.10.48.1
+  - range: 10.0.1.0/24
+    gateway: 10.0.1.1
     cloud_properties:
-       subnet: subnet-12345
-       security_groups: [logsearch]
+      subnet: SUBNET-ID
+      security_groups: [bosh]
     dns:
     - 10.10.0.2
     reserved:
-    - 10.10.48.2 - 10.10.48.9
+    - 10.0.1.2 - 10.0.1.6
     static:
-    - 10.10.48.10 - 10.10.48.55
+    - 10.0.1.10 - 10.0.1.40
+
+- name: elastic
+  type: vip

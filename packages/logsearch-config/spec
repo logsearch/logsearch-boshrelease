@@ -1,0 +1,6 @@
+---
+name: logsearch-config
+dependencies: []
+files:
+- logsearch-config/target/*.conf
+- logsearch-config/mappings/*.json

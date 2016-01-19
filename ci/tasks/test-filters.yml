@@ -1,0 +1,11 @@
+---
+platform: linux
+
+image: docker:///logsearch/logsearch-testrunner
+
+inputs:
+- name: logsearch-boshrelease
+
+run:
+  path: logsearch-boshrelease/ci/tasks/test-filters.sh
+

@@ -3,6 +3,7 @@ bootstrap.mlockall: true
 path.conf: "/var/vcap/jobs/elasticsearch/config"
 path.logs: "/var/vcap/sys/log/elasticsearch"
 path.data: "/var/vcap/store/elasticsearch"
+path.scripts: "/var/vcap/data/elasticsearch/plugin-scripts"
 
 cluster.name: "<%= p("elasticsearch.cluster_name") %>"
 
@@ -16,10 +17,10 @@ node.job_index: "<%= index %>"
 node.<%= k %>: "<%= v %>"
 <% end %>
 
+network.host: "0.0.0.0"
+
 discovery.zen.minimum_master_nodes: <%= p("elasticsearch.discovery.minimum_master_nodes") %>
 discovery.zen.ping.multicast.enabled: false
-<% if_p("elasticsearch.host") do %>
-discovery.zen.ping.unicast.hosts: "<%= p("elasticsearch.host") %>"
-<% end %>
+discovery.zen.ping.unicast.hosts: "<%= p("elasticsearch.master_hosts").join(',') %>"
 
 <% if_p('elasticsearch.config_options') do | v | %><%= v %><% end %>

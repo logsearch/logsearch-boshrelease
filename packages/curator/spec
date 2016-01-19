@@ -4,7 +4,7 @@ dependencies:
 - python3
 files: 
 - curator/click-3.3.tar.gz
-- curator/elasticsearch-curator.tar.gz
-- curator/elasticsearch-py.tar.gz
+- curator/elasticsearch-curator-3.4.0-dev1.tar.gz
+- curator/elasticsearch-1.7.0.tar.gz
 - curator/urllib3-1.8.3.tar.gz
 

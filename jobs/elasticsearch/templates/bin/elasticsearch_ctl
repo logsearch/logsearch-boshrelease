@@ -17,57 +17,45 @@ export <%= k %>=<%= v %>
 export ES_HEAP_SIZE=$((( $( cat /proc/meminfo | grep MemTotal | awk '{ print $2 }' ) * 46 ) / 100 ))K
 <% end %>
 
-GLOBAL_PLUGINS_DIR=/var/vcap/packages/elasticsearch/plugins-global
-LOCAL_PLUGINS_DIR=/var/vcap/data/elasticsearch-plugins
-LOCAL_PLUGINS_NAME_LIST=" <%= p('elasticsearch.plugins').map { | plugin | plugin.first[0] }.join(' ') %> "
+
+PLUGIN_SCRIPTS_DIR=/var/vcap/data/elasticsearch/plugin-scripts
 
 case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME
+    pid_guard $PIDFILE-init $JOB_NAME-init
 
-    # lock while we update plugins
-    echo "$$" > "${PIDFILE}"
-    chown vcap:vcap "${PIDFILE}"
+    # lock while we update plugins and run drain
+    echo "$$" > "$PIDFILE-init"
 
-    mkdir -p "${LOCAL_PLUGINS_DIR}"
+    mkdir -p /var/vcap/packages/elasticsearch/plugins
 
-    [[ -e /var/vcap/packages/elasticsearch/plugins ]] || ln -s "${LOCAL_PLUGINS_DIR}" /var/vcap/packages/elasticsearch/plugins
+    # install all plugins
+    rm -rf /var/vcap/packages/elasticsearch/plugins/*
+    find /var/vcap/packages/elasticsearch-plugins-*/ -maxdepth 1 -type f -iname '*.zip' -exec \
+      /var/vcap/packages/elasticsearch/bin/plugin install "file:///{}" \;
 
-    # install new plugins
-    <% p('elasticsearch.plugins').each do | plugin | pname, psource = plugin.first %>
-      if [[ ! -e "${LOCAL_PLUGINS_DIR}/<%= pname %>" ]] ; then
-        /var/vcap/packages/elasticsearch/bin/plugin <% if psource =~ /:\/\// %>--url "<%= psource %>" --install "<%= pname %>"<% else %>--install "<%= psource %>"<% end %>
-      fi
-    <% end %>
-
-    # remove old plugins
-    for LOCAL_PLUGIN_NAME in $( ls "${LOCAL_PLUGINS_DIR}" ) ; do
-      if ! [[ "${LOCAL_PLUGINS_NAME_LIST}" =~ (^| )$LOCAL_PLUGIN_NAME($| ) ]] ; then
-        rm -fr "${LOCAL_PLUGINS_DIR}/${LOCAL_PLUGIN_NAME}"
-      fi
-    done
-
-    # install packaged plugins
-    for GLOBAL_PLUGIN_NAME in $( ls "${GLOBAL_PLUGINS_DIR}" ) ; do
-      [[ -e "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" ]] || ln -s "${GLOBAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}" "${LOCAL_PLUGINS_DIR}/${GLOBAL_PLUGIN_NAME}"
-    done
-
-    # v21 switched to running as vcap; remove after a couple versions
-    chown -R vcap:vcap $STORE_DIR $LOG_DIR $RUN_DIR
 
     /var/vcap/jobs/elasticsearch/bin/undrain 2>&1 >> $LOG_DIR/undrain.log &
 
     ulimit -n 64000
+    ulimit -l unlimited  # required to enable elasticsearch's mlockall setting
 
-    exec chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
-         -Des.config=${JOB_DIR}/config/config.yml \
-         -XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
-         -Des.pidfile=${PIDFILE} \
+    mkdir -p $PLUGIN_SCRIPTS_DIR
+
+    # v21 switched to running as vcap; remove after a couple versions
+    chown -R vcap:vcap $STORE_DIR $LOG_DIR $RUN_DIR $PLUGIN_SCRIPTS_DIR
+
+    # ES2.0 deprcated -Des.config and insists on having the config file under ES_HOME/config
+    cp $JOB_DIR/config/elasticsearch.yml /var/vcap/packages/elasticsearch/config
+
+    chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
+         -p ${PIDFILE} \
+         --XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          <%= p("elasticsearch.exec.options", []).join(' ') %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
-
     ;;
 
   stop)

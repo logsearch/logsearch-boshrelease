@@ -1,67 +1,67 @@
-# logsearch
+# Logsearch
 
 A scalable stack of [Elasticsearch](http://www.elasticsearch.org/overview/elasticsearch/),
 [Logstash](http://www.elasticsearch.org/overview/logstash/), and
 [Kibana](http://www.elasticsearch.org/overview/kibana/) for your
 own [BOSH](http://docs.cloudfoundry.org/bosh/)-managed infrastructure.
 
- * Multiple Protocols - to receive logs via syslog (+TLS), relp, or lumberjack
- * Queue - to buffer against surges of log messages
- * Custom Parsing - to extract the fields from your own application-specific
-   log format via logstash filters
- * Search - to find, aggregate, and report on those fields via elasticsearch
- * Visualize - to create and share dashboards of your logs via kibana
- * Archive - to retain log messages compressed and offsite in long-term storage
-   via Amazon S3 or SFTP
- * Curator - to set log retention
+## BREAKING CHANGES
 
+Logsearch < v23.0.0 was based on Elasticsearch 1.x and Kibana 3.
+
+Logsearch > v200 is based on Elasticsearch 2.x and Kibana 4.
+
+There is NO upgrade path.  Sorry :(
 
 ## Getting Started
 
-Upload the latest logsearch release from [bosh.io](https://bosh.io)...
+This repo contains Logsearch Core; which deploys an ELK cluster that can recieve and parse logs via syslog
+that contain JSON.
 
-    $ bosh upload release https://bosh.io/d/github.com/logsearch/logsearch-boshrelease
+Most users will want to combine Logsearch Core with a Logsearch Addon to customise their cluster for a 
+particular type of logs.  Its likely you want to be following an Addon installation guides - see below 
+for a list of the common Addons:
 
-If you are using [bosh-lite](https://github.com/cloudfoundry/bosh-lite), you can
-get started with our sample manifest, [`bosh-lite.yml`](./templates/bosh-lite.yml)...
+  * [Logsearch for CloudFoundry](https://github.com/logsearch/logsearch-for-cloudfoundry)
 
-    $ bosh -d templates/bosh-lite.yml deploy
+If you are sure you want install just Logsearch Core, read on...
 
-For more details, review the [`docs/`](http://www.logsearch.io/docs/boshrelease/)
-or raise an issue if you run into a bug.
+## Installing Logsearch Core
 
+0. Upload the latest logsearch release from [bosh.io](https://bosh.io)...
 
-## Testing
+        $ bosh upload release https://bosh.io/d/github.com/logsearch/logsearch-boshrelease
 
-To run a sanity test which ships some sample logs, parses, and then queries them,
-use the pre-configured `test_e2e_errand` errand from `templates/bosh-lite.yml`...
+0. Customise your deployment stub:
 
-    $ bosh -d templates/bosh-lite.yml run errand test_e2e_errand
-    ...snip...
-    ==> Validating results...
-    SUCCESS
+   * Make a copy of `templates/stub.$INFRASTRUCTURE.example.yml` to `logsearch-stub.yml`
+   * Edit to match your IAAS settings
 
-To run tests for [logsearch-shipper](https://github.com/logsearch/logsearch-shipper-boshrelease)
-integration, run the included script...
+0. Generate a manifest
 
-    $ ./bin/logsearch-shipper-config-buildtest
-    ...snip...
-    SUCCESS
+        $ scripts/generate_deployment_manifest $INFRASTRUCTURE logsearch-stub.yml > logsearch.yml
 
+0. Deploy!
 
+    $ bosh -d logsearch.yml deploy 
+
+## Common customisations:
+
+0. Adding new parsing rules:
+
+        logstash_parser:
+          filters: |
+             # Put your additional Logstash filter config here, eg:
+             json {
+                source => "@message"
+                remove_field => ["@message"]
+             }
+
+   
 ### Release Channels
 
-We currently maintain two release channels...
-
- * **final** - our latest stable, final release (also available on [bosh.io](http://bosh.io/releases/github.com/logsearch/logsearch-boshrelease))
- * **develop** - the latest build from our `develop` branch which has passed all our tests
-
-You can find the artifacts with the following URI templates...
-
- * Latest Version: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/version`
- * Release Tarball: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/release/logsearch-{version}.tgz`
- * Source Tarball: `https://logsearch-boshrelease.s3.amazonaws.com/{channel}/src/logsearch-src-{version}.tgz`
-
+ * The latest stable, final release is available on [bosh.io](http://bosh.io/releases/github.com/logsearch/logsearch-boshrelease)
+ * **develop** - The develop branch in this repo is deployed to our test environments.  It is occasionally broken - use with care!
 
 ## License
 
