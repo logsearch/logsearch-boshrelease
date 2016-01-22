@@ -19,6 +19,7 @@ case $1 in
     <% end %>
 
     
+    rm -rf /var/vcap/packages/kibana/installedPlugins/*
     <% p("kibana.plugins").each do |plugin| %>
     /var/vcap/packages/kibana/bin/kibana plugin --install "<%= plugin.keys[0] %>" --url "file://<%= plugin.values[0] %>"
     <% end %>
