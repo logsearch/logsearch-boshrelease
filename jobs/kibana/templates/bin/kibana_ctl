@@ -18,6 +18,11 @@ case $1 in
     export <%= env.keys[0] %>="<%= env.values[0] %>"
     <% end %>
 
+    
+    <% p("kibana.plugins").each do |plugin| %>
+    /var/vcap/packages/kibana/bin/kibana plugin --install "<%= plugin.keys[0] %>" --url "file://<%= plugin.values[0] %>"
+    <% end %>
+
     exec /var/vcap/packages/kibana/bin/kibana \
          -c $JOB_DIR/config/kibana.conf \
          >>$LOG_DIR/kibana.stdout.log \
