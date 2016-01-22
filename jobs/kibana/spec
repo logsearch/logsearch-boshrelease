@@ -28,3 +28,6 @@ properties:
   kibana.shard_timeout:
     description: "Time in milliseconds for Elasticsearch to wait for responses from shards. Set to 0 to disable"
     default: 30000
+  kibana.env:
+    description: "a list of arbitrary key-value pairs to be passed on as process environment variables. eg: FOO: 123"
+    default: []
