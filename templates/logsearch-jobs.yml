@@ -81,7 +81,6 @@ jobs:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
     logstash_parser:
-      use_local_elasticsearch: false
       filters:
       - /var/vcap/packages/logstash-filters-common/logstash-filters-metric.conf
     nats_to_syslog:
@@ -186,6 +185,7 @@ jobs:
     static_ips: (( static_ips(4) ))
   properties:
     elasticsearch:
+      data_hosts: [127.0.0.1]
       node:
         allow_master: false
         allow_data: false
@@ -213,7 +213,6 @@ properties:
     elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
   logstash_parser:
     debug: false
-    use_local_elasticsearch: true
   logstash_ingestor:
     debug: false
   redis:
@@ -223,7 +222,6 @@ properties:
   elasticsearch:
     log_level: DEBUG
     master_hosts: (( grab jobs.elasticsearch_master.networks.default.static_ips ))
-    data_hosts: (( grab jobs.elasticsearch_data.networks.default.static_ips ))
     cluster_name: logsearch
     exec: ~
   kibana:
