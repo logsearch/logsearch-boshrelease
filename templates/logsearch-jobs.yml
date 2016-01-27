@@ -185,8 +185,9 @@ jobs:
     static_ips: (( static_ips(4) ))
   properties:
     elasticsearch:
-      allow_master: false
-      allow_data: false
+      node:
+        allow_master: false
+        allow_data: false
   update:
     serial: false
     canaries: 1
