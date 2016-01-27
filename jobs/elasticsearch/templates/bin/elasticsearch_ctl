@@ -48,7 +48,7 @@ case $1 in
     chown -R vcap:vcap $STORE_DIR $LOG_DIR $RUN_DIR $PLUGIN_SCRIPTS_DIR
 
     # ES2.0 deprcated -Des.config and insists on having the config file under ES_HOME/config
-    cp $JOB_DIR/config/elasticsearch.yml /var/vcap/packages/elasticsearch/config
+    cp --remove-destination $JOB_DIR/config/elasticsearch.yml /var/vcap/packages/elasticsearch/config
 
     chpst -u vcap:vcap /var/vcap/packages/elasticsearch/bin/elasticsearch \
          -p ${PIDFILE} \
