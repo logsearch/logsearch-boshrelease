@@ -30,10 +30,10 @@ properties:
     default: INFO
   elasticsearch.node.allow_master:
     description: Allow node to become master? (true / false)
-    default: true
+    default: false
   elasticsearch.node.allow_data:
     description: Allow node to store data? (true / false)
-    default: true
+    default: false
   elasticsearch.node.tags:
     description: A hash of additional tags for the node
   elasticsearch.exec.environment:
