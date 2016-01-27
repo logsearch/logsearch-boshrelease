@@ -62,8 +62,9 @@ jobs:
       master_hosts: [127.0.0.1]
       data_hosts: [127.0.0.1]
       cluster_name: monitor
-      allow_master: true
-      allow_data: true
+      node:
+        allow_master: true
+        allow_data: true
     redis:
       host: 127.0.0.1
     curator:
