@@ -68,29 +68,11 @@ properties:
     description: "Logs with timestamps less than this many hours in the past won't be parsed and will get tagged with fail/timecop"
     default: 24
 
-  elasticsearch.master_hosts:
-    description: The list of elasticsearch master node IPs
-  elasticsearch.data_hosts:
+  logstash.output.elasticsearch.data_hosts:
     description: The list of elasticsearch data node IPs
-  elasticsearch.flush_size:
+  logstash.output.elasticsearch.flush_size:
     description: Controls how many logs will be buffered and sent to Elasticsearch for bulk indexing
     default: 500
-  elasticsearch.cluster_name:
-    description: The name of the elastic search cluster
-  elasticsearch.log_level:
-    description: The default logging level (e.g. WARN, DEBUG, INFO)
-    default: INFO
-  elasticsearch.node.tags:
-    description: A hash of additional tags for the node
-  elasticsearch.discovery.minimum_master_nodes:
-    description: The minimum number of master eligible nodes a node should "see" in order to operate within the cluster. Recommended to set it to a higher value than 1 when running more than 2 nodes in the cluster.
-    default: 1
-  elasticsearch.config_options:
-    description: "Additional options to append to elasticsearch's config.yml (YAML format)."
-    default: ~
-  elasticsearch.logging_options:
-    description: "Additional options to append to elasticsearch's logging.yml (YAML format)."
-    default: ~
 
   redis.host:
     description: Redis host of queue
