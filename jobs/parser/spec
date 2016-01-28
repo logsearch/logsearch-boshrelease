@@ -70,6 +70,7 @@ properties:
 
   logstash.output.elasticsearch.data_hosts:
     description: The list of elasticsearch data node IPs
+    default: [127.0.0.1]
   logstash.output.elasticsearch.flush_size:
     description: Controls how many logs will be buffered and sent to Elasticsearch for bulk indexing
     default: 500

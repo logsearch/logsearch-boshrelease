@@ -60,7 +60,6 @@ jobs:
       port: 5601
     elasticsearch:
       master_hosts: [127.0.0.1]
-      data_hosts: [127.0.0.1]
       cluster_name: monitor
       node:
         allow_master: true
@@ -183,12 +182,6 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(4) ))
-  properties:
-    elasticsearch:
-      data_hosts: [127.0.0.1]
-      node:
-        allow_master: false
-        allow_data: false
   update:
     serial: false
     canaries: 1
