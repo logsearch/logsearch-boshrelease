@@ -58,9 +58,6 @@ properties:
   logstash_parser.elasticsearch_index_type:
     description: "The specific, dynamic index type name to write events to."
     default: "%{@type}"
-  logstash_parser.plugins:
-    description: "Plugins to run logstash with (array[] = { plugin-name: install-source }; e.g. [ { logstash-filter-cityindex-acctlookup: 'https://s3.amazonaws.com/.../logstash-filter-cityindex-acctlookup-1.2.9.gem' } ])"
-    default: []
   logstash_parser.timecop.reject_greater_than_hours:
     description: "Logs with timestamps greater than this many hours in the future won't be parsed and will get tagged with fail/timecop"
     default: 1
