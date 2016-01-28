@@ -3,7 +3,6 @@ jobs:
   release: logsearch
   templates:
   - {name: elasticsearch, release: logsearch}
-  - {name: api, release: logsearch}
   resource_pool: elasticsearch_master
   update:
     serial: true
@@ -210,8 +209,6 @@ properties:
     debug: false
   redis:
     host: (( grab jobs.queue.networks.default.static_ips.[0] ))
-  api:
-    elasticsearch_host: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200"))
   elasticsearch:
     log_level: DEBUG
     master_hosts: (( grab jobs.elasticsearch_master.networks.default.static_ips ))

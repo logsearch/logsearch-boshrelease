@@ -35,8 +35,6 @@ jobs:
   templates:
   - name: elasticsearch
     release: logsearch
-  - name: api
-    release: logsearch
   - name: kibana
     release: logsearch
   update:
@@ -240,8 +238,6 @@ jobs:
 #      key: "logstash-restorer"
 
 properties:
-  api:
-    port: 80
   kibana:
     elasticsearch: 10.244.2.2:9200
     port: 5601

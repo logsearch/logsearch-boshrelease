@@ -1,8 +1,0 @@
----
-files:
-  "api/nginx.access.log":
-    fields:
-      type: "logsearch-api-access-v2"
-  "api/nginx.error.log":
-    fields:
-      type: "logsearch-api-error-v1"
