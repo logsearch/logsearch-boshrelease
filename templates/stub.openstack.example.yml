@@ -1,0 +1,96 @@
+meta:
+  availability_zone: nova
+  instance_type:
+    compilation: m1.medium
+    elasticsearch: m1.medium
+    queue: m1.small
+    ingestor: m1.small
+    parser: m1.small
+    kibana: m1.small
+    maintenance: m1.small
+    monitor: m1.small
+    haproxy: m1.small
+  stemcell:
+    name: bosh-openstack-kvm-ubuntu-trusty-go_agent
+    version: latest
+
+releases:
+- name: logsearch
+  version: latest
+
+name: logsearch
+director_uuid: DIRECTOR-UUID
+
+jobs:
+- name: elasticsearch_master
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(0) ))
+  resource_pool: elasticsearch_master
+  persistent_disk_pool: elasticsearch_master
+
+- name: elasticsearch_data
+  instances: 2
+  networks:
+  - name: default
+    static_ips: (( static_ips(16, 17) ))
+  resource_pool: elasticsearch_data
+  persistent_disk_pool: elasticsearch_data
+
+- name: ingestor
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(1) ))
+  - name: elastic
+    static_ips:
+    - SOME-ELASTIC-IP
+  resource_pool: ingestor
+
+- name: queue
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(3) ))
+  resource_pool: queue
+  persistent_disk_pool: queue
+
+- name: parser
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(4) ))
+  resource_pool: parser
+
+- name: kibana
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(8) ))
+  resource_pool: kibana
+
+- name: maintenance
+  instances: 1
+  networks:
+  - name: default
+  resource_pool: maintenance
+
+networks:
+- name: default
+  type: manual
+  subnets:
+  - range: 10.0.1.0/24
+    gateway: 10.0.1.1
+    cloud_properties:
+      net_id: NET-ID
+      security_groups: [bosh]
+    dns:
+    - 8.8.8.8
+    reserved:
+    - 10.0.1.2 - 10.0.1.6
+    static:
+    - 10.0.1.10 - 10.0.1.40
+
+- name: elastic
+  type: vip
