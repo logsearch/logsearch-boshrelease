@@ -1,52 +1,52 @@
 compilation:
   cloud_properties:
-    instance_type: (( grab meta.instance_type.compilation ))
+    instance_type: (( grab meta.instance_type.compilation || "m1.small" ))
 
 resource_pools:
 - name: elasticsearch_master
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.elasticsearch ))
+    instance_type: (( grab meta.instance_type.elasticsearch || "m1.medium" ))
 
 - name: elasticsearch_data
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.elasticsearch ))
+    instance_type: (( grab meta.instance_type.elasticsearch || "m1.medium" ))
 
 - name: queue
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.queue ))
+    instance_type: (( grab meta.instance_type.queue || "m1.small" ))
 
 - name: ingestor
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.ingestor ))
+    instance_type: (( grab meta.instance_type.ingestor || "m1.small" ))
 
 - name: parser
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.parser ))
+    instance_type: (( grab meta.instance_type.parser || "m1.small" ))
 
 - name: kibana
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.kibana ))
+    instance_type: (( grab meta.instance_type.kibana || "m1.small" ))
 
 - name: maintenance
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.maintenance ))
+    instance_type: (( grab meta.instance_type.maintenance || "m1.small" ))
 
 - name: cluster_monitor
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.monitor ))
+    instance_type: (( grab meta.instance_type.monitor || "m1.small" ))
 
 - name: haproxy
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.haproxy ))
+    instance_type: (( grab meta.instance_type.haproxy || "m1.small" ))
 
 disk_pools:
 - name: elasticsearch_master
