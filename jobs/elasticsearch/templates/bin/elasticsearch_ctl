@@ -39,7 +39,7 @@ case $1 in
 
     # install user defined plugins
     <% p("elasticsearch.plugins").each do |plugin| _, path = plugin.first %>
-      <% if path.start_with '/var/vcap' %>
+      <% if path.start_with? '/var/vcap' %>
         /var/vcap/packages/elasticsearch/bin/plugin install "file://<%= path %>"
       <% else %>
         /var/vcap/packages/elasticsearch/bin/plugin install "<%= path %>"
