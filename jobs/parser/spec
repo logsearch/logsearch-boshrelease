@@ -13,8 +13,6 @@ templates:
   config/input_and_output.conf.erb: config/input_and_output.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
-  config/if_it_looks_like_json.conf: config/if_it_looks_like_json.conf
-  config/timecop.conf: config/timecop.conf
   config/filters_override.conf.erb: config/filters_override.conf
   logsearch/logs.yml: logsearch/logs.yml
 properties:
