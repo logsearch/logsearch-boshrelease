@@ -4,5 +4,5 @@ dependencies: []
 files:
 - logsearch-config/target/*.conf
 - logsearch-config/mappings/*.json
-- logsearch-config/src/logsearch-config/src/logstash-filters/if_it_looks_like_json.conf
-- logsearch-config/src/logsearch-config/src/logstash-filters/timecop.conf
+- logsearch-config/src/logstash-filters/if_it_looks_like_json.conf
+- logsearch-config/src/logstash-filters/timecop.conf
