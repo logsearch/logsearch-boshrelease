@@ -3,17 +3,13 @@ name: parser
 packages:
 - logstash
 - logsearch-config
-- elasticsearch
 - java8
 templates:
   bin/parser_ctl: bin/parser_ctl
-  bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   data/properties.sh.erb: data/properties.sh
   helpers/ctl_setup.sh: helpers/ctl_setup.sh
   helpers/ctl_utils.sh: helpers/ctl_utils.sh
-  config/elasticsearch/config.yml.erb: config/elasticsearch/elasticsearch.yml
-  config/elasticsearch/logging.yml.erb: config/elasticsearch/logging.yml
   config/input_and_output.conf.erb: config/input_and_output.conf
   config/filters_pre.conf.erb: config/filters_pre.conf
   config/filters_post.conf.erb: config/filters_post.conf
@@ -62,12 +58,6 @@ properties:
   logstash_parser.elasticsearch_index_type:
     description: "The specific, dynamic index type name to write events to."
     default: "%{@type}"
-  logstash_parser.use_local_elasticsearch:
-    description: "Run a local elasticsearch client node"
-    default: true
-  logstash_parser.plugins:
-    description: "Plugins to run logstash with (array[] = { plugin-name: install-source }; e.g. [ { logstash-filter-cityindex-acctlookup: 'https://s3.amazonaws.com/.../logstash-filter-cityindex-acctlookup-1.2.9.gem' } ])"
-    default: []
   logstash_parser.timecop.reject_greater_than_hours:
     description: "Logs with timestamps greater than this many hours in the future won't be parsed and will get tagged with fail/timecop"
     default: 1
@@ -75,29 +65,12 @@ properties:
     description: "Logs with timestamps less than this many hours in the past won't be parsed and will get tagged with fail/timecop"
     default: 24
 
-  elasticsearch.master_hosts:
-    description: The list of elasticsearch master node IPs
-  elasticsearch.data_hosts:
+  logstash.output.elasticsearch.data_hosts:
     description: The list of elasticsearch data node IPs
-  elasticsearch.flush_size:
+    default: [127.0.0.1]
+  logstash.output.elasticsearch.flush_size:
     description: Controls how many logs will be buffered and sent to Elasticsearch for bulk indexing
     default: 500
-  elasticsearch.cluster_name:
-    description: The name of the elastic search cluster
-  elasticsearch.log_level:
-    description: The default logging level (e.g. WARN, DEBUG, INFO)
-    default: INFO
-  elasticsearch.node.tags:
-    description: A hash of additional tags for the node
-  elasticsearch.discovery.minimum_master_nodes:
-    description: The minimum number of master eligible nodes a node should "see" in order to operate within the cluster. Recommended to set it to a higher value than 1 when running more than 2 nodes in the cluster.
-    default: 1
-  elasticsearch.config_options:
-    description: "Additional options to append to elasticsearch's config.yml (YAML format)."
-    default: ~
-  elasticsearch.logging_options:
-    description: "Additional options to append to elasticsearch's logging.yml (YAML format)."
-    default: ~
 
   redis.host:
     description: Redis host of queue

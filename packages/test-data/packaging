@@ -1,4 +1,0 @@
-set -e
-set -u
-
-cp -r sample-logs "${BOSH_INSTALL_TARGET}/sample-logs"

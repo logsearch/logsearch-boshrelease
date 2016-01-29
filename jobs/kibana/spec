@@ -11,8 +11,8 @@ templates:
   helpers/ctl_utils.sh: "helpers/ctl_utils.sh"
 properties:
   kibana.elasticsearch:
-    description: "IP address and port of api host to send elasticsearch requests to (eg, 127.0.0.1:80)"
-    default: "127.0.0.1:80"
+    description: "IP address and port of elasticsearch master to send elasticsearch requests to (eg, 127.0.0.1:9200)"
+    default: "127.0.0.1:9200"
   kibana.default_app_id:
     description: "The default application to load."
     default: "discover"
@@ -28,3 +28,9 @@ properties:
   kibana.shard_timeout:
     description: "Time in milliseconds for Elasticsearch to wait for responses from shards. Set to 0 to disable"
     default: 30000
+  kibana.env:
+    description: "a list of arbitrary key-value pairs to be passed on as process environment variables. eg: FOO: 123"
+    default: []
+  kibana.plugins:
+    description: "a list of key-value pairs of plugins. e.b. Kibana-auth: /var/vcap/packagaes/kibana/kibana-auth"
+    default: []

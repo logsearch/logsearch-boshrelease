@@ -14,6 +14,16 @@ case $1 in
 
     echo $$ > $PIDFILE
 
+    <% p("kibana.env").each do |env| %>
+    export <%= env.keys[0] %>="<%= env.values[0] %>"
+    <% end %>
+
+    
+    rm -rf /var/vcap/packages/kibana/installedPlugins/*
+    <% p("kibana.plugins").each do |plugin| %>
+    /var/vcap/packages/kibana/bin/kibana plugin --install "<%= plugin.keys[0] %>" --url "file://<%= plugin.values[0] %>"
+    <% end %>
+
     exec /var/vcap/packages/kibana/bin/kibana \
          -c $JOB_DIR/config/kibana.conf \
          >>$LOG_DIR/kibana.stdout.log \

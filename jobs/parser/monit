@@ -3,15 +3,6 @@ check process parser
   start program "/var/vcap/jobs/parser/bin/monit_debugger parser_ctl '/var/vcap/jobs/parser/bin/parser_ctl start'"
   stop program "/var/vcap/jobs/parser/bin/monit_debugger parser_ctl '/var/vcap/jobs/parser/bin/parser_ctl stop'"
   group vcap
-<% if p('logstash_parser.use_local_elasticsearch') %>
-  depends on parser-elasticsearch
-
-  check process parser-elasticsearch
-    with pidfile /var/vcap/sys/run/parser/elasticsearch.pid
-    start program "/var/vcap/jobs/parser/bin/monit_debugger elasticsearch_ctl '/var/vcap/jobs/parser/bin/elasticsearch_ctl start'"
-    stop program "/var/vcap/jobs/parser/bin/monit_debugger elasticsearch_ctl '/var/vcap/jobs/parser/bin/elasticsearch_ctl stop'"
-    group vcap
-<% end %>
 
 check device parser-ephemeral_disk with path /var/vcap/data
   if SPACE usage > 80% then alert
