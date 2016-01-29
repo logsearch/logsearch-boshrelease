@@ -35,7 +35,7 @@ case $1 in
     rm -rf /var/vcap/packages/elasticsearch/plugins/*
 
     # install kopf as it is always packaged with the elasticsearch job
-    /var/vcap/packages/elasticsearch/bin/plugin install /var/vcap/packages/elasticsearch-plugins-kopf/elasticsearch-kopf.zip
+    /var/vcap/packages/elasticsearch/bin/plugin install file:///var/vcap/packages/elasticsearch-plugins-kopf/elasticsearch-kopf.zip
 
     # install user defined plugins
     <% p("elasticsearch.plugins").each do |plugin| _, path = plugin.first %>
