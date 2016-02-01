@@ -34,12 +34,11 @@ case $1 in
     cat /var/vcap/packages/logsearch-config/logstash-filters-default.conf >> ${JOB_DIR}/config/logstash.conf
 
     <% if p('logstash_parser.filters').is_a? Array %>
-      # logstash_parser.filters is an .conf file paths; which we include in order
-      <% p('logstash_parser.filters').each do | logstash_parser_conf_file| %>
-      find <%= logstash_parser_conf_file %> -maxdepth 1 -type f -exec \
-        cat "{}" >> ${JOB_DIR}/config/logstash.conf \;
+      # logstash_parser.filters is a list of filter rules
+      <% p('logstash_parser.filters').each do |filter| name, path = filter.first %>
+        cat "<%= path %>" >> ${JOB_DIR}/config/logstash.conf
       <% end %>
-    <% elsif '' != p('logstash_parser.filters') %>
+    <% elsif p('logstash_parser.filters') != '' %>
       # logstash_parser.filters is a block of text, which we treat as logstash filter config
       cat ${JOB_DIR}/config/filters_override.conf >> ${JOB_DIR}/config/logstash.conf
     <% end %>

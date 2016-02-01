@@ -27,7 +27,7 @@ properties:
     description: "Maximum log message length.  Anything larger is truncated (TODO: move this to ingestor?)"
     default: 1048576
   logstash_parser.filters:
-    description: "The configuration to embed into the logstash filters section"
+    description: "The configuration to embed into the logstash filters section. Can either be a set of parsing rules as a string or a list of hashes in the form of [{name: path_to_parsing_rules.conf}]
     default: ''
   logstash_parser.inputs:
     description: |
