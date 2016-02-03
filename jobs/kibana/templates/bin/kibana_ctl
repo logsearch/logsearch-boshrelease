@@ -18,10 +18,14 @@ case $1 in
     export <%= env.keys[0] %>="<%= env.values[0] %>"
     <% end %>
 
-    
+
     rm -rf /var/vcap/packages/kibana/installedPlugins/*
-    <% p("kibana.plugins").each do |plugin| %>
-    /var/vcap/packages/kibana/bin/kibana plugin --install "<%= plugin.keys[0] %>" --url "file://<%= plugin.values[0] %>"
+    <% p("kibana.plugins").each do |plugin| name, path = plugin.first %>
+      <% if path.start_with? '/var/vcap' %>
+        /var/vcap/packages/kibana/bin/kibana plugin --install <%= name %> --url "file://<%= path %>"
+      <% else %>
+        /var/vcap/packages/kibana/bin/kibana plugin --install "<%= path %>"
+      <% end %>
     <% end %>
 
     exec /var/vcap/packages/kibana/bin/kibana \
