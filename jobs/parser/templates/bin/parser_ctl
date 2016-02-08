@@ -17,10 +17,6 @@ export LOGSTASH_WORKERS=<%= p('logstash_parser.workers') %>
 export TIMECOP_REJECT_GREATER_THAN_HOURS=<%= p('logstash_parser.timecop.reject_greater_than_hours') %>
 export TIMECOP_REJECT_LESS_THAN_HOURS=<%= p('logstash_parser.timecop.reject_less_than_hours') %>
 
-LOCAL_PLUGINS_DIR=/var/vcap/packages/logstash/vendor/bundle/jruby/1.9/gems
-LOCAL_PLUGINS_NAME_LIST=$( cat /var/vcap/packages/logstash/plugins-default.list | tr "\n" ' ' )
-LOCAL_PLUGINS_NAME_LIST=" ${LOCAL_PLUGINS_NAME_LIST} <%= p('logstash_parser.plugins').map { | plugin | plugin.first[0] }.join(' ') %> "
-
 case $1 in
 
   start)
@@ -28,27 +24,6 @@ case $1 in
 
     # store this processes pid in $PIDFILE, since the exec below doesn't daemonize
     echo $$ > $PIDFILE
-
-    # install new plugins
-    <% p('logstash_parser.plugins').each do | plugin | pname, psource = plugin.first %>
-      if ! ls ${LOCAL_PLUGINS_DIR}/<%= pname %>-* 1> /dev/null 2>&1 ; then
-        <% if psource =~ /:\/\// %>
-          wget -O '<%= psource %>.gem' '<% psource %>'
-          /var/vcap/packages/logstash/bin/plugin install '<%= psource %>.gem'
-          rm '<%= psource %>.gem'
-        <% else %>
-          /var/vcap/packages/logstash/bin/plugin install '<%= pname %>'
-        <% end %>
-      fi
-    <% end %>
-
-    # remove old plugins
-
-    for LOCAL_PLUGIN_NAME in $( /var/vcap/packages/logstash/bin/plugin list ) ; do
-      if ! [[ "${LOCAL_PLUGINS_NAME_LIST}" =~ (^| )$LOCAL_PLUGIN_NAME($| ) ]] ; then
-        /var/vcap/packages/logstash/bin/plugin uninstall "${LOCAL_PLUGIN_NAME}"
-      fi
-    done
 
     # construct a complete config file from all the fragments
     cat ${JOB_DIR}/config/input_and_output.conf > ${JOB_DIR}/config/logstash.conf
@@ -59,19 +34,18 @@ case $1 in
     cat /var/vcap/packages/logsearch-config/logstash-filters-default.conf >> ${JOB_DIR}/config/logstash.conf
 
     <% if p('logstash_parser.filters').is_a? Array %>
-      # logstash_parser.filters is an .conf file paths; which we include in order
-      <% p('logstash_parser.filters').each do | logstash_parser_conf_file| %>
-      find <%= logstash_parser_conf_file %> -maxdepth 1 -type f -exec \
-        cat "{}" >> ${JOB_DIR}/config/logstash.conf \; || true
+      # logstash_parser.filters is a list of filter rules
+      <% p('logstash_parser.filters').each do |filter| name, path = filter.first %>
+        cat "<%= path %>" >> ${JOB_DIR}/config/logstash.conf
       <% end %>
-    <% elsif '' != p('logstash_parser.filters') %>
+    <% elsif p('logstash_parser.filters') != '' %>
       # logstash_parser.filters is a block of text, which we treat as logstash filter config
       cat ${JOB_DIR}/config/filters_override.conf >> ${JOB_DIR}/config/logstash.conf
     <% end %>
 
     cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
-    cat ${JOB_DIR}/config/if_it_looks_like_json.conf >> ${JOB_DIR}/config/logstash.conf
-    cat ${JOB_DIR}/config/timecop.conf >> ${JOB_DIR}/config/logstash.conf
+    cat /var/vcap/packages/logsearch-config/if_it_looks_like_json.conf >> ${JOB_DIR}/config/logstash.conf
+    cat /var/vcap/packages/logsearch-config/timecop.conf >> ${JOB_DIR}/config/logstash.conf
 
     echo "} #close filters" >> ${JOB_DIR}/config/logstash.conf
 

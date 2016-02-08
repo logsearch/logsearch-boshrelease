@@ -1,12 +1,4 @@
 ---
-nginx/nginx-1.4.7.tar.gz:
-  object_id: a3a064ab-84ea-4d3c-8bcf-28ba5be5c285
-  sha: e13b5b23f9be908b69652b0c394a95e9029687e3
-  size: 769153
-nginx/pcre-8.33.tar.gz:
-  object_id: 1be6421e-16f5-42fc-8ad6-2eb756cde679
-  sha: bceafb53553219dad2593bb8af06da4d07fd3828
-  size: 1889401
 redis/redis-2.8.4.tar.gz:
   object_id: 191a0100-c082-4f96-9bb4-73abe803e649
   sha: 79b156cc9d8bff5a022fdc6d28d5c42999ddcb4f

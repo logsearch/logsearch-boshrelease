@@ -17,3 +17,7 @@ find $BOSH_INSTALL_TARGET
 
 $BOSH_INSTALL_TARGET/bin/plugin list \
   > $BOSH_INSTALL_TARGET/plugins-default.list
+
+# TEMP fix for RabbitMQ plugin issue
+# https://github.com/elastic/logstash/issues/4343
+$BOSH_INSTALL_TARGET/bin/plugin update logstash-input-rabbitmq

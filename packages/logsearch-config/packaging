@@ -7,3 +7,4 @@ set -u # report the usage of uninitialized variables
 
 cp logsearch-config/target/* $BOSH_INSTALL_TARGET
 cp logsearch-config/mappings/* $BOSH_INSTALL_TARGET
+cp logsearch-config/src/logstash-filters/* $BOSH_INSTALL_TARGET

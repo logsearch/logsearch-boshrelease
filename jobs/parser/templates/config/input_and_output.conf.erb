@@ -28,8 +28,8 @@ output {
     <% end %>
 
     elasticsearch {
-        hosts => [<%= p('logstash_parser.use_local_elasticsearch') ? '"127.0.0.1:9200"' : p("elasticsearch.data_hosts").map { |ip| "\"#{ip}:9200\"" }.join(',') %>]
-        flush_size => <%= p("elasticsearch.flush_size") %>
+        hosts => [<%= p("logstash.output.elasticsearch.data_hosts").map { |ip| "\"#{ip}:9200\"" }.join(',') %>]
+        flush_size => <%= p("logstash.output.elasticsearch.flush_size") %>
         <% if p('logstash_parser.idle_flush_time', nil) %>
             idle_flush_time => <%= p('logstash_parser.idle_flush_time') %>
         <% end %>
