@@ -97,7 +97,7 @@ echo "true" > "${STATE_DRAINED}"
 # disable allocations while our node's shards go offline
 curl -s \
     -X PUT \
-    -d '{"transient":{"cluster.routing.allocation.enable":"primaries"}}' \
+    -d '{"transient":{"cluster.routing.allocation.enable":"none"}}' \
     'localhost:9200/_cluster/settings' \
     > /dev/null
 
