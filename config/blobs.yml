@@ -35,15 +35,15 @@ haproxy/pcre-8.38.tar.gz:
   object_id: 9538f6cf-5cd1-4551-a5c3-1263fb32edf6
   sha: 3ab418d0026c2a4e693ec783bd60660debc32b8f
   size: 2053336
-logstash/logstash-all-plugins-2.1.0.tar.gz:
-  object_id: 093ff96d-68d5-4604-9fc1-b284d29908ff
-  sha: ec9674bfa7ebaba0ab5d17f6d19de9d0608160c5
-  size: 126053307
-kibana/kibana-4.3.1-linux-x64.tar.gz:
-  object_id: 1fa594b1-f398-411f-bd67-f3cd6847ff00
-  sha: 115ba22882df75eb5f07330b7ad8781a57569b00
-  size: 30408272
 elasticsearch/elasticsearch-2.2.0.tar.gz:
   object_id: 4bd686ed-b9e0-47d1-8437-78dac6fdc27c
   sha: 4bd3ef681e70faefe3a66c6eb3419b5d4a0e2714
   size: 29419005
+kibana/kibana-4.4.0-linux-x64.tar.gz:
+  object_id: 87e63448-e145-4844-b01a-9ede4d5c5389
+  sha: 82fa06e11942e13bba518655c1d34752ca259bab
+  size: 30878925
+logstash/logstash-all-plugins-2.2.0.tar.gz:
+  object_id: 5e7ecb2d-bca6-423c-b0f2-a197c3c1ceed
+  sha: 1cb658c6e79332e5b2e96d6b5d89b5d7207fc6e2
+  size: 129473672
