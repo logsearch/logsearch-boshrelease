@@ -1,8 +1,8 @@
-# Troubleshooting ElasticSearch
+# Troubleshooting Elasticsearch
 
 ## Notes
 
-* Elasticsearch has no notion of a missing node. A node is either among the known nodes or it isn't. This makes detecing why a cluster is in a bad state difficult.
+* Elasticsearch has no notion of a missing node. A node is either among the known nodes or it isn't. This makes detecting why a cluster is in a bad state difficult.
 * As long as at least 1 copy of each shard is intact the cluster keeps working. For example, if the number of replicas is set to 1 then losing 1 node won't cause any immediate problems. The cluster will automatically recreate the missing shards and will go back to green, after which the fact that a data node is missing might go unnoticed.
 
 ## Cluster states
@@ -37,7 +37,7 @@ The plugin [kopf](https://github.com/lmenezes/elasticsearch-kopf) gives a nice o
 
 ![missing_shard](./resources/corrupted_index.png)
 
-Here we can see that `logs-unparsed-2016.02.06` and `logs-unparsed-2016.02.07` are missing 2 copies of shard 3. Since the current index configuration is 1 replica set, we are missing all copies of these shards. We can either try to find out what happened to the missing data (missing nodes) or delete the index effectively losing data.
+Here we can see that `logs-unparsed-2016.02.06` and `logs-unparsed-2016.02.07` (the last 2 columns on the right) are missing 2 copies of shard 3. Since the current index configuration is 1 replica set, we are missing all copies of these shards. We can either try to find out what happened to the missing data (missing nodes) or delete the index effectively losing data.
 
 **The cluster won't start storing new documents in the red indices until the error is fixed one way or the other.**
 
@@ -51,7 +51,7 @@ yellow open   logs-unparsed-2016.02.10   5   1   64769069            0       31g
 red    open   logs-unparsed-2016.02.08   5   1   32372451            0     19.9gb          9.9gb
 ```
 
-### Listing ongoing opeartions
+### Listing ongoing operations
 
 When the cluster is doing something to shards (initialise,relocate,etc) it can come in handy to get an idea what's going on in the cluster. Currently ongoing shard operations can be listed using the cat API.
 
