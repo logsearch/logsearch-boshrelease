@@ -4,7 +4,7 @@
 
 It is advised not to update more VM's at a time than the number of replicas. However, not all indices may have the same replication configuration.
 
-The elasticsearch job in the BOSH release comes with a drain script that toggles replica relocation between node updates which saves lots of time when upgrading a cluster with huge indices and may help to avoid losing shards temporarily. Turning the feature on in the deployment manifest is highly recommended.
+The elasticsearch job in the BOSH release comes with a drain script that toggles replica relocation off and on during node updates.  This saves lots of time when upgrading a cluster with huge indices and may help to avoid losing shards temporarily, because it prevents Elasticsearch attempting to recover shards to other nodes which will re-appear once the node being upgraded restarts anyway). Turning the feature on in the deployment manifest is highly recommended.
 
 ```yaml
 jobs:
