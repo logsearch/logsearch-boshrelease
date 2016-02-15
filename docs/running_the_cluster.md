@@ -41,7 +41,7 @@ Evacuate data from data nodes that are to be taken offline by rerouting shards o
 ```
 curl -XPUT MASTER_NODE:9200/_cluster/settings -d '{
   "transient" : {
-      "cluster.routing.allocation.exclude._ip" : "DATA_NODE_IP"
+      "cluster.routing.allocation.exclude._ip" : "DATA_NODE_IP,DATA_NODE2_IP"
   }
 }'
 ```
@@ -49,3 +49,14 @@ curl -XPUT MASTER_NODE:9200/_cluster/settings -d '{
 Wait until the node is empty then remove the IP from the deployment manifest.
 
 NOTE: BOSH can not remove jobs from the middle of the list without reshuffling the rest of the VM IP's so the best way is to remove nodes starting from the end.
+
+After finished with scaling lift the routing exclusion:
+
+```
+curl -XPUT MASTER_NODE:9200/_cluster/settings -d '{
+  "transient" : {
+      "cluster.routing.allocation.exclude._ip" : ""
+  }
+}'
+```
+
