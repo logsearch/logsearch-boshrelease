@@ -51,7 +51,43 @@ yellow open   logs-unparsed-2016.02.10   5   1   64769069            0       31g
 red    open   logs-unparsed-2016.02.08   5   1   32372451            0     19.9gb          9.9gb
 ```
 
-### Listing ongoing operations
+### Manually fixing broken shards
+
+#### CheckIndex
+
+In case a shard gets corrupted in a way that ElasticSearch can't replicate the data some manual intervention is required. Lucene comes with a utility that is not fully integrated into the ElasticSearch runtime. The CheckIndex method needs to be invoked on all nodes that have a copy of the corrupted shard.
+
+**WARNING:** Running this utility will cause corrupted shard segments to be deleted. That means losing documents.
+
+```sh
+$ java -cp /var/vcap/packages/elasticsearch/lib/lucene-core-*.jar -ea:org.apache.lucene... org.apache.lucene.index.CheckIndex /var/vcap/store/elasticsearch/<CLUSTER_NAME>/nodes/<NODE_NUM>/indices/<INDEX_NAME>/<SHARD_NUM>/index/
+```
+
+Consult the output and rerun the command with the `-fix` flag to fix the index by losing data.
+
+NOTE: Since the nodes need to be stopped for this operation, depending on how bad the corruption is and how severely downtime affects the service it may be easier to just delete the index.
+
+#### Deleting translog
+
+If the transaction log of a shard gets corrupted after a crash it needs to be removed manually on all nodes.
+
+```sh
+$ rm -rf /var/vcap/store/elasticsearch/<CLUSTER_NAME>/nodes/<NODE_NUM>/indices/<INDEX_NAME>/<SHARD_NUM>/translog/
+```
+
+Look for these errors in the log:
+
+```
+failed to start shard
+failed to recover shard
+[...]
+Caused by: org.elasticsearch.ElasticsearchException: failed to read
+    at org.elasticsearch.index.translog.Translog$Index.readFrom(Translog.java:511)
+    at org.elasticsearch.index.translog.TranslogStreams.readTranslogOperation(TranslogStreams.java:52)
+    at org.elasticsearch.index.gateway.local.LocalIndexShardGateway.recover(LocalIndexShardGateway.java:241)
+```
+
+### Listing ongoing opeartions
 
 When the cluster is doing something to shards (initialise,relocate,etc) it can come in handy to get an idea what's going on in the cluster. Currently ongoing shard operations can be listed using the cat API.
 
