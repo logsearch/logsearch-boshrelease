@@ -22,6 +22,9 @@ properties:
   kibana.port:
     description: "Kibana is served by a back end server. This controls which port to use."
     default: 5601
+  kibana.host:
+    description: "This setting specifies the IP address of the back end server."
+    default: "0.0.0.0"
   kibana.request_timeout:
     description: "Time in milliseconds to wait for responses from the back end or elasticsearch.  This must be > 0"
     default: 300000
