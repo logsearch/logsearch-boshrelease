@@ -18,8 +18,9 @@ properties:
     description: Name of queue to pull messages from
     default: logstash
   redis.maxmemory:
-    description: Maximum amount of memory in bytes to be used by Redis.
+    description: Maximum amount of memory to be used by Redis. The default value NINETY_PERCENT_OF_RAM is an environment variable initialized in redis_ctl. Typically you would specify an exact value in bytes.
+    example: 8523874304
     default: NINETY_PERCENT_OF_RAM
   redis.maxmemory-policy:
-    description: How Redis will select what to remove when maxmemory is reached.
-    default: volatile-lru 
+    description: How Redis will select what to remove when maxmemory is reached. Possible values are volatile-lru, allkeys-lru, volatile-random, allkeys-random, volatile-ttl, and noeviction.
+    default: volatile-lru
