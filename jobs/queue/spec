@@ -1,6 +1,6 @@
 ---
 name: queue
-packages: 
+packages:
 - redis
 templates:
   bin/redis_ctl: bin/redis_ctl
@@ -11,9 +11,15 @@ templates:
   config/redis.conf.erb: config/redis.conf
   logsearch/metric-collector/redis/collector: logsearch/metric-collector/redis/collector
 properties:
-  redis.port: 
+  redis.port:
     description: Redis port of queue
     default: 6379
   redis.key:
     description: Name of queue to pull messages from
     default: logstash
+  redis.maxmemory:
+    description: Maximum amount of memory in bytes to be used by Redis.
+    default: NINETY_PERCENT_OF_RAM
+  redis.maxmemory-policy:
+    description: How Redis will select what to remove when maxmemory is reached.
+    default: volatile-lru 
