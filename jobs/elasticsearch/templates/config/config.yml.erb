@@ -18,6 +18,7 @@ node.<%= k %>: "<%= v %>"
 <% end %>
 
 network.host: "0.0.0.0"
+http.host: <%= p("elasticsearch.http_host") %>
 
 discovery.zen.minimum_master_nodes: <%= p("elasticsearch.discovery.minimum_master_nodes") %>
 discovery.zen.ping.multicast.enabled: false
