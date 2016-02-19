@@ -53,3 +53,6 @@ properties:
   elasticsearch.plugins:
     description: "Plugins to run elasticsearch with (array[] = { plugin-name: install-source }; e.g. [ { kopf: 'lmenezes/elasticsearch-kopf' } ])"
     default: []
+  elasticsearch.http_host:
+    description: "The host address to bind the elasticsearch HTTP service to and to publish for HTTP clients to connect to"
+    default: 0.0.0.0
