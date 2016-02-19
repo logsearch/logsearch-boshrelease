@@ -2,7 +2,7 @@
 server.port: <%= p('kibana.port') %>
 
 # The host to bind the server to.
-# server.host: "0.0.0.0"
+server.host: <%= p('kibana.host') %>
 
 # If you are running kibana behind a proxy, and want to mount it at a path,
 # specify that path here. The basePath can't end in a slash.
@@ -79,4 +79,3 @@ elasticsearch.shardTimeout: <%= p('kibana.shard_timeout') %>
 
 # Set this to true to log all events, including system usage information and all requests.
 # logging.verbose: false
-
