@@ -1,6 +1,6 @@
 ---
 name: queue
-packages: 
+packages:
 - redis
 templates:
   bin/redis_ctl: bin/redis_ctl
@@ -11,9 +11,16 @@ templates:
   config/redis.conf.erb: config/redis.conf
   logsearch/metric-collector/redis/collector: logsearch/metric-collector/redis/collector
 properties:
-  redis.port: 
+  redis.port:
     description: Redis port of queue
     default: 6379
   redis.key:
     description: Name of queue to pull messages from
     default: logstash
+  redis.maxmemory:
+    description: Maximum amount of memory to be used by Redis. The default value NINETY_PERCENT_OF_RAM is an environment variable initialized in redis_ctl. Typically you would specify an exact value in bytes.
+    example: 8523874304
+    default: NINETY_PERCENT_OF_RAM
+  redis.maxmemory-policy:
+    description: How Redis will select what to remove when maxmemory is reached. Possible values are volatile-lru, allkeys-lru, volatile-random, allkeys-random, volatile-ttl, and noeviction.
+    default: volatile-lru
