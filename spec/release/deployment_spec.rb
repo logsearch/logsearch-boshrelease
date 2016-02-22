@@ -12,7 +12,7 @@ require 'time'
 describe "LogSearch deployment" do
   it "ingests logs" do
     bosh_target = URI.parse(ENV["BOSH_TARGET"]).hostname
-    bosh_username = ENV["BOSH_USERNAME"]
+    bosh_username = "vcap"
     ssh_key = ENV["BOSH_INSTANCE_SSH_KEY"]
 
     deployment = YAML.load_file(ENV["BOSH_MANIFEST"])
