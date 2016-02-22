@@ -20,7 +20,7 @@ describe "LogSearch deployment" do
   it "ingests logs" do
     gateway.execute_on(deployment.ingestor_ip, "echo '#{log.line}' | nc localhost 5514")
 
-    sleep 5
+    sleep 10
 
     index = "logstash-#{log.time.day}"
     uri = URI("http://localhost:9200/#{index}/_search?q=#{log.data}")
