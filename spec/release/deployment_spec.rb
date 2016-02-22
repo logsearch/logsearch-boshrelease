@@ -40,11 +40,17 @@ class Deployment
   end
 
   def ingestor_ip
-    @deployment["jobs"].find { |job| job["name"] == "ingestor" }["networks"].first["static_ips"].first
+    find_job("ingestor")["networks"].first["static_ips"].first
   end
 
   def master_ip
-    @deployment["jobs"].find { |job| job["name"] == "elasticsearch_master" }["networks"].first["static_ips"].first
+    find_job("elasticsearch_master")["networks"].first["static_ips"].first
+  end
+
+  private
+
+  def find_job(job_name)
+    @deployment["jobs"].find { |job| job["name"] == job_name }
   end
 
   def self.load_file(path)
