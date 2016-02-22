@@ -11,7 +11,7 @@ require 'time'
 
 describe "LogSearch deployment" do
   it "ingests logs" do
-    bosh_target = ENV["BOSH_TARGET"]
+    bosh_target = URI.parse(ENV["BOSH_TARGET"]).hostname
     bosh_username = ENV["BOSH_USERNAME"]
     ssh_key = ENV["BOSH_INSTANCE_SSH_KEY"]
 
