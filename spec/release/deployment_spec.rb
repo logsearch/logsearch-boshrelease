@@ -18,7 +18,9 @@ describe "LogSearch deployment" do
     deployment = YAML.load_file(ENV["BOSH_MANIFEST"])
     ingestor_ip = deployment["jobs"].find { |job| job["name"] == "ingestor" }["networks"].first["static_ips"].first
     master_ip = deployment["jobs"].find { |job| job["name"] == "elasticsearch_master" }["networks"].first["static_ips"].first
+    puts ENV.inspect
     puts master_ip
+    puts ingestor_ip
 
     Thread.new do
       Net::SSH.start(bosh_target, bosh_username, keys: [ssh_key]) do |ssh|
@@ -30,7 +32,7 @@ describe "LogSearch deployment" do
       end
     end
 
-    sleep 2
+    sleep 5
 
     logger = TCPSocket.new("localhost", 5514)
     testvalue = SecureRandom.uuid
@@ -40,11 +42,12 @@ describe "LogSearch deployment" do
     sleep 5
 
     today = now.strftime("%Y.%m.%d")
-    index = "logstash-syslog-#{today}"
+    index = "logstash-#{today}"
     uri = URI("http://localhost:9200/#{index}/_search?q=#{testvalue}")
     puts uri
 
     response = JSON.parse(Net::HTTP.get(uri))
+    puts response
     expect(response["hits"]["hits"].first["_source"]["a4baede3_cb2a_4e1d_b6d4_8e34e4633149"]["testvalue"]).to eq testvalue
   end
 end
