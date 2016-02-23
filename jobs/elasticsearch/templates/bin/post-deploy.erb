@@ -1,0 +1,10 @@
+#!/bin/bash
+
+<% if p('elasticsearch.node.allow_data') %>
+curl -s \
+    -X PUT \
+    -d '{"transient":{"cluster.routing.allocation.enable":"all"}}' \
+    'localhost:9200/_cluster/settings' \
+    > /dev/null
+
+exit 0

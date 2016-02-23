@@ -6,7 +6,7 @@ packages:
 - java8
 templates:
   bin/drain.erb: bin/drain
-  bin/undrain.erb: bin/undrain
+  bin/post-deploy.erb: bin/post-deploy
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   config/config.yml.erb: config/elasticsearch.yml
@@ -17,10 +17,6 @@ templates:
   logsearch/metric-collector/elasticsearch/collector: logsearch/metric-collector/elasticsearch/collector
   logsearch/logs.yml: logsearch/logs.yml
 properties:
-  elasticsearch.drain:
-    description: Whether to use the built-in drain features to improve deployment reliability
-    # disabled while we do additional testing
-    default: false
   elasticsearch.master_hosts:
     description: The list of elasticsearch master node IPs
   elasticsearch.cluster_name:

@@ -17,90 +17,13 @@
 set -e
 set -u
 
-JOB_STATUS=$1
-
-<% if !p('elasticsearch.drain') %>
-#
-# The `elasticsearch.drain` property is disabled in the deployment.
-#
-
-echo "0"
-exit 0
-
-<% elsif !p('elasticsearch.node.allow_data') %>
-#
-# This node does not contain data, so we can skip all these tasks.
-#
-
-echo "0"
-exit 0
-
-<% end %>
-
-#
-# some state files we'll use
-#
-
-STATE_DRAINED=/var/vcap/store/elasticsearch/drained.bosh
-
-
-#
-# some utility functions
-#
-
-function exit_cleanly {
-    #
-    # it's safe for us to shutdown
-    #
-
-    echo "0"
-    exit 0
-}
-
-function exit_tryagain {
-    #
-    # bosh needs to check back later
-    #
-
-    echo "-10"
-    exit 0
-}
-
-
-#
-# ready, set, go...
-#
-
-if ! nc -zw 8 localhost 9300 2>&1 > /dev/null ; then
-    #
-    # elasticsearch transport is offline
-    #
-
-    # since we're not already online, it should be safe to stop elasticsearch
-    exit_cleanly
-elif [ "green" != $(curl -s 'localhost:9200/_cat/health?h=status' | tr -d '[:space:]') ] ; then
-    #
-    # the cluster is not yet stable
-    #
-
-    # we need to wait before we try to run our drain tasks
-    exit_tryagain
-fi
-
-#
-# cluster is green
-#
-
-# set a flag so we know to reverse the setting when we start up again
-echo "true" > "${STATE_DRAINED}"
-
-# disable allocations while our node's shards go offline
+# disable allocations before bringing down data nodes
+<% if p('elasticsearch.node.allow_data') %>
 curl -s \
     -X PUT \
     -d '{"transient":{"cluster.routing.allocation.enable":"none"}}' \
     'localhost:9200/_cluster/settings' \
     > /dev/null
+<% end %>
 
-
-# nothing more is stopping us from shutting down
-exit_cleanly
+exit 0
