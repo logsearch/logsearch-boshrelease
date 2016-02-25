@@ -141,7 +141,7 @@ jobs:
     logstash_parser:
       use_local_elasticsearch: false
       filters:
-      - /var/vcap/packages/logsearch-config/logstash-filters-metric.conf
+        metrics: /var/vcap/packages/logsearch-config/logstash-filters-metric.conf
     nats_to_syslog:
       nats:
         subject: ">"
