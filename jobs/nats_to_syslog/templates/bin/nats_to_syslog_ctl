@@ -18,7 +18,7 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    wait_for_service_on_port 127.0.0.1 514
+    wait_for_service_on_port <%= p("nats_to_syslog.syslog.host") %> <%= p("nats_to_syslog.syslog.port") %>
 
     exec chpst -u vcap:vcap /var/vcap/packages/nats_to_syslog/bin/nats_to_syslog \
       -nats-uri nats://<%= p("nats_to_syslog.nats.user") %>:<%= p("nats_to_syslog.nats.password") %>@<%= p("nats_to_syslog.nats.machines").first %>:<%= p("nats_to_syslog.nats.port") %> \
