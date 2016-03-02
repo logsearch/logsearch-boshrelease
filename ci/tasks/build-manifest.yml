@@ -1,0 +1,13 @@
+---
+platform: linux
+
+image: docker:///canopycip/cip-cf-ci
+
+inputs:
+- name: logsearch-boshrelease
+
+params:
+  STUB: ci/logsearch-test-example.yml
+
+run:
+  path: logsearch-boshrelease/ci/tasks/build-manifest.sh

@@ -1,0 +1,218 @@
+meta:
+  stemcell:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+    version: '3197'
+
+releases:
+- name: logsearch
+  version: latest
+
+name: chai-logsearch
+director_uuid: 32ed8994-5be6-4e2f-83a7-eccc87c68aaf
+
+jobs:
+- name: elasticsearch_master
+  instances: 1
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.53.10
+  resource_pool: elasticsearch_master
+  persistent_disk_pool: elasticsearch_master
+
+- name: elasticsearch_data
+  instances: 10
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.53.40
+    - 10.0.53.41
+    - 10.0.53.42
+    - 10.0.53.43
+    - 10.0.53.44
+    - 10.0.53.45
+    - 10.0.53.46
+    - 10.0.53.47
+    - 10.0.53.48
+    - 10.0.53.49
+  resource_pool: elasticsearch_data
+  persistent_disk_pool: elasticsearch_data
+  update:
+    max_in_flight: 1
+  properties:
+    elasticsearch:
+      node:
+        tags:
+          sometag: somevalue
+
+- name: ingestor
+  templates:
+  - (( merge ))
+  - { release: logsearch, name: nats_to_syslog }
+  instances: 1
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.53.12
+    default:
+    - gateway
+    - dns
+  resource_pool: ingestor
+  properties:
+    nats_to_syslog:
+      nats:
+        subject: ">"
+        user: nats
+        password:
+        port: 4222
+        machines: [10.0.10.10]
+      debug: true
+      syslog:
+        host: 127.0.0.1
+        port: 5514
+
+- name: queue
+  instances: 1
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.53.13
+  resource_pool: queue
+  persistent_disk_pool: queue
+
+- name: parser
+  instances: 5
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.53.30
+    - 10.0.53.31
+    - 10.0.53.32
+    - 10.0.53.33
+    - 10.0.53.34
+  resource_pool: parser
+  update:
+    max_in_flight: 5
+
+- name: kibana
+  instances: 1
+  networks:
+  - name: default
+    static_ips:
+    - 10.0.53.18
+  resource_pool: kibana
+
+- name: maintenance
+  instances: 1
+  networks:
+  - name: default
+  resource_pool: maintenance
+
+- name: cluster_monitor
+  release: logsearch
+  instances: 1
+  resource_pool: cluster_monitor
+  persistent_disk_pool: elasticsearch_master
+  networks:
+  - name: default
+    default:
+    - dns
+    - gateway
+    static_ips:
+    - 10.0.53.15
+  properties:
+    nats_to_syslog:
+      nats:
+        machines: [10.0.0.6]
+        password:
+
+- name: haproxy
+  instances: 1
+  networks:
+  - name: default
+  resource_pool: haproxy
+  properties:
+    haproxy:
+      kibana:
+        auth:
+          username: admin
+          password:
+
+resource_pools:
+- name: elasticsearch_master
+  network: default
+  cloud_properties:
+    instance_type: c4.large
+
+- name: elasticsearch_data
+  network: default
+  cloud_properties:
+    instance_type: c4.large
+
+- name: queue
+  network: default
+  cloud_properties:
+    instance_type: c4.large
+
+- name: haproxy
+  network: default
+  cloud_properties:
+    instance_type: t2.micro
+
+- name: ingestor
+  network: default
+  cloud_properties:
+    instance_type: c4.large
+
+- name: parser
+  network: default
+  cloud_properties:
+    instance_type: c4.large
+
+- name: kibana
+  network: default
+  cloud_properties:
+    instance_type: t2.small
+
+- name: cluster_monitor
+  network: default
+  cloud_properties:
+    instance_type: m4.xlarge
+    ephemeral_disk:
+      size: 20480
+      type: gp2
+
+- name: maintenance
+  network: default
+  cloud_properties:
+    instance_type: t2.micro
+
+disk_pools:
+- name: elasticsearch_master
+  disk_size: 51200
+
+- name: elasticsearch_data
+  disk_size: 102400
+
+- name: queue
+  disk_size: 51200
+
+- name: cluster_monitor
+  disk_size: 51200
+
+networks:
+- name: default
+  type: manual
+  subnets:
+  - range: 10.0.53.0/24
+    gateway: 10.0.53.1
+    cloud_properties:
+      subnet: subnet-
+      security_groups: [london-services]
+    dns:
+    - 10.0.0.2
+    reserved:
+    - 10.0.53.2 - 10.0.53.6
+    static:
+    - 10.0.53.10 - 10.0.53.80
+

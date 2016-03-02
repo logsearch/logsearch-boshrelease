@@ -1,0 +1,43 @@
+resources:
+- name: logsearch-boshrelease
+  type: git
+  source:
+    uri: git@github.com:logsearch/logsearch-boshrelease.git
+    branch: develop
+    private_key: {{logsearch-boshrelease-access-key}}
+
+- name: aws-stemcell
+  type: bosh-io-stemcell
+  check_every: 10080m # 1week
+  source:
+    name: bosh-aws-xen-hvm-ubuntu-trusty-go_agent
+
+- name: deployment
+  type: bosh-deployment
+  source:
+    target: {{bosh-target}}
+    username: admin
+    password: {{bosh-admin-password}}
+    deployment: logsearch
+
+- name: logsearch-tarball
+  type: s3
+  source:
+    regexp: logsearch-(.*).tgz
+    access_key_id: {{aws-access-key-id}}
+    secret_access_key: {{aws-secret-access-key}}
+    bucket: logsearch-development-artefacts
+    region_name: eu-west-1
+    private: true
+
+- name: logsearch-version
+  type: semver
+  source:
+    initial_version: 201.0.0
+    driver: s3
+    bucket: logsearch-development-artefacts
+    key: logsearch-version
+    access_key_id: {{aws-access-key-id}}
+    secret_access_key: {{aws-secret-access-key}}
+    region_name: eu-west-1
+

@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+#fly -t cf-services login
+fly -t concourse set-pipeline --pipeline logsearch --config <(cat jobs.yml resources.yml) --load-vars-from credentials.yml

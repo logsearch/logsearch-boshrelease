@@ -1,0 +1,38 @@
+jobs:
+- name: logsearch-boshrelease
+  plan:
+    - aggregate:
+      - get: logsearch-boshrelease
+        trigger: true
+      - get: logsearch-version
+        params:
+          bump: patch
+    - task: test
+      file: logsearch-boshrelease/ci/tasks/test-filters.yml
+    - task: build-release
+      file: logsearch-boshrelease/ci/tasks/build-release.yml
+    - put: logsearch-version
+      params:
+        file: logsearch-version/number
+    - put: logsearch-tarball
+      params:
+        from: build-release/logsearch-boshrelease/dev_releases/logsearch/logsearch-(.*).tgz
+
+- name: chai-deployment
+  plan:
+    - aggregate:
+      - get: logsearch-tarball
+        trigger: true
+        passed: [logsearch-boshrelease]
+      - get: logsearch-boshrelease
+        trigger: true
+        passed: [logsearch-boshrelease]
+      - get: aws-stemcell
+    - task: build-manifest
+      file: logsearch-boshrelease/ci/tasks/build-manifest.yml
+    - put: chai-deployment
+      params:
+        manifest: build-manifest/logsearch-boshrelease/logsearch.yml
+        stemcells: [aws-stemcell/*.tgz]
+        releases: [logsearch-tarball/*.tgz]
+
