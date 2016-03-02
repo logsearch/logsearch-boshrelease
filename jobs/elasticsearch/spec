@@ -6,7 +6,6 @@ packages:
 - java8
 templates:
   bin/drain.erb: bin/drain
-  bin/undrain.erb: bin/undrain
   bin/elasticsearch_ctl: bin/elasticsearch_ctl
   bin/monit_debugger: bin/monit_debugger
   config/config.yml.erb: config/elasticsearch.yml
