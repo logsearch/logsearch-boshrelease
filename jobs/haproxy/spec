@@ -39,15 +39,29 @@ properties:
     description: "Timeout for requests queued waiting for free connection slots (in seconds)"
     default:     30
 
-  haproxy.inbound_port:
-    description: "The port the proxy server is listening on"
+  haproxy.ingestor.inbound_port:
+    description: "The public port of the ingestor service"
+    default: 5514
+  haproxy.ingestor.backend_servers:
+    description: "Array of the ingestor backend IPs"
+    default: []
+  haproxy.ingestor.backend_port:
+    description: "The port number the ingestor backends are listening on"
     default: 5514
 
-  haproxy.backend_servers:
-    description: "Array of the ingestor IPs"
-    default: []
-  haproxy.backend_port:
-    description: "The port number the ingestors are listening on"
-    default: 5514
+  haproxy.kibana.inbound_port:
+    description: "The public port of the kibana service"
+    default: 5601
+  haproxy.kibana.backend_servers:
+    description: "The list of kibana servers"
+  haproxy.kibana.backend_port:
+    description: "The port of the kibana backend server(s)"
+    default: 5601
+  haproxy.kibana.auth.username:
+    description: "Basic auth username for kibana. Optional"
+    default: ""
+  haproxy.kibana.auth.password:
+    description: "Basic auth password for kibana. Optional"
+    default: ""
 
 

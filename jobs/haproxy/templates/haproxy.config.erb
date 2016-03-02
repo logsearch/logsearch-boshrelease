@@ -21,9 +21,9 @@ frontend syslog-in
     mode tcp
 
     <% if properties.haproxy.ssl_pem %>
-    bind :<%= p("haproxy.inbound_port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3
+    bind :<%= p("haproxy.ingestor.inbound_port") %> ssl crt /var/vcap/jobs/haproxy.ingestor/config/cert.pem no-sslv3
     <% else %>
-    bind :<%= p("haproxy.inbound_port") %>
+    bind :<%= p("haproxy.ingestor.inbound_port") %>
     <% end %>
 
     default_backend ingestors
@@ -31,6 +31,35 @@ frontend syslog-in
 backend ingestors
     mode tcp
     balance roundrobin
-    <% p("haproxy.backend_servers").each_with_index do |ip, index| %>
-    server node<%= index %> <%= ip %>:<%= p("haproxy.backend_port") %> check inter 1000
+    <% p("haproxy.ingestor.backend_servers").each_with_index do |ip, index| %>
+    server ingestor<%= index %> <%= ip %>:<%= p("haproxy.ingestor.backend_port") %> check inter 1000
     <% end %>
+
+frontend kibana-in
+    mode http
+
+    <% if properties.haproxy.ssl_pem %>
+    bind :<%= p("haproxy.kibana.inbound_port") %> ssl crt /var/vcap/jobs/haproxy.ingestor/config/cert.pem no-sslv3
+    <% else %>
+    bind :<%= p("haproxy.kibana.inbound_port") %>
+    <% end %>
+
+    <% if p('haproxy.kibana.auth.username') != "" %>
+    acl logged_in http_auth(kibana-user)
+    http-request auth realm "Logs UI" if !logged_in
+    <% end %>
+
+    default_backend kibana
+
+backend kibana
+    mode http
+    balance roundrobin
+    <% p("haproxy.kibana.backend_servers").each_with_index do |ip, index| %>
+    server kibana<%= index %> <%= ip %>:<%= p("haproxy.kibana.backend_port") %> check inter 1000
+    <% end %>
+
+<% if p('haproxy.kibana.auth.username') != "" %>
+userlist kibana-user
+    user <%= p('haproxy.kibana.auth.username') %> insecure-password <%= p('haproxy.kibana.auth.password') %>
+<% end %>
+

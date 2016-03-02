@@ -35,7 +35,10 @@ jobs:
     max_in_flight: 1
   properties:
     haproxy:
-      backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
+      ingestor:
+        backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
+      kibana:
+        backend_servers: (( grab jobs.kibana.networks.[0].static_ips ))
 
 - name: cluster_monitor
   instances: 0
