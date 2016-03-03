@@ -4,10 +4,10 @@ require "test/filter_test_helpers"
 describe 'Logstash filters' do
 
   before(:all) do
-      @config = <<-CONFIG
-        filter {
-          #{File.read('target/logstash-filters-default.conf')}
-        }
+    load_filters <<-CONFIG
+      filter {
+        #{File.read('target/logstash-filters-default.conf')}
+      }
     CONFIG
   end
 
@@ -17,7 +17,7 @@ describe 'Logstash filters' do
       "@message" => '<13>1 2014-06-23T10:54:42.275897+01:00 SHIPPER-HOSTNAME - - - [NXLOG@14506 EventReceivedTime="2014-06-23 09:54:42" SourceModuleName="in1" SourceModuleType="im_file" path="\\\\SOURCE-HOSTNAME\\Logs\\my-json-log.log" host="SOURCE-HOSTNAME" service="MyService" type="json"] {"level":"WARN","timestamp":"2014-02-04T23:45:12.000Z","logger":"I.am.a.JSON.logger","method":"testMe","message":"plain message accepted here."}') do
 
         it "applies the syslog parsers successfully" do
-          expect(log['tags']).to eq [ 'syslog_standard' ]
+          expect(subject['tags']).to eq [ 'syslog_standard' ]
         end
       end
   end
@@ -29,7 +29,7 @@ describe 'Logstash filters' do
     ) do
 
       it "applies the haproxy parsers successfully" do
-        expect(log['tags']).to include("haproxy")
+        expect(subject['tags']).to include("haproxy")
       end
     end
 

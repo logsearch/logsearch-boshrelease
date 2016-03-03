@@ -4,7 +4,7 @@ require "test/filter_test_helpers"
 describe 'Log type autodetection' do
 
   before(:all) do
-      @config = <<-CONFIG
+      load_filters <<-CONFIG
         filter {
           #{File.read('target/logstash-filters-default.conf')}
           #{File.read('src/logstash-filters/if_it_looks_like_json.conf')}
@@ -19,10 +19,10 @@ describe 'Log type autodetection' do
     ) do
 
       it "it gets parsed as JSON" do
-        expect(log['tags']).to include("json/auto_detect")
+        expect(subject['tags']).to include("json/auto_detect")
       end
       it "it parses the JSON into a key named syslog_program" do
-        expect(log['a4baede3_cb2a_4e1d_b6d4_8e34e4633149']).to eq( {
+        expect(subject['a4baede3_cb2a_4e1d_b6d4_8e34e4633149']).to eq( {
             "timestamp" => "2016-01-08T15:52:56Z",
         "response_time" => "0.110",
              "tls_time" => "0.011",
@@ -40,8 +40,8 @@ describe 'Log type autodetection' do
       ) do
 
         it "it does not get parsed as JSON" do
-          expect(log['tags']).to_not include("json/auto_detect")
-          expect(log['tags']).to_not include("_jsonparsefailure")
+          expect(subject['tags']).to_not include("json/auto_detect")
+          expect(subject['tags']).to_not include("_jsonparsefailure")
         end
       end
     end
@@ -53,8 +53,8 @@ describe 'Log type autodetection' do
       ) do
 
         it "it does not get parsed as JSON" do
-          expect(log['tags']).to_not include("json/auto_detect")
-          expect(log['tags']).to_not include("_jsonparsefailure")
+          expect(subject['tags']).to_not include("json/auto_detect")
+          expect(subject['tags']).to_not include("_jsonparsefailure")
         end
       end
     end

@@ -11,7 +11,7 @@ end
 describe "Rules sanitising @timestamp" do
 
   before(:all) do
-    @config = <<-CONFIG
+    load_filters <<-CONFIG
       filter {
         #{File.read('src/logstash-filters/timecop.conf')}
       }
@@ -31,32 +31,32 @@ describe "Rules sanitising @timestamp" do
     ) do
 
       it "adds a timecop triggered tag" do
-        expect(log['tags']).to include("fail/timecop")
+        expect(subject['tags']).to include("fail/timecop")
       end
 
       it "retains the original tags" do
-        expect(log["tags"]).to include "sometag"
+        expect(subject["tags"]).to include "sometag"
       end
 
       it "retains the source informaiton" do
-        expect(log["@source"]).to eq({"host" => "source"})
+        expect(subject["@source"]).to eq({"host" => "source"})
       end
 
       it "retains the shipper informaiton" do
-        expect(log["@shipper"]).to eq({"host" => "shipper"})
+        expect(subject["@shipper"]).to eq({"host" => "shipper"})
       end
 
       it "moves the invalid timestamp into invalid_fields.@timestamp" do
-        expect(log['invalid_fields']['@timestamp']).to eq future_timestamp
+        expect(subject['invalid_fields']['@timestamp']).to eq future_timestamp
       end
 
       it "resets the @timestamp to the current time" do
-        expect(log['@timestamp']).to be_within(60).of Time.now
+        expect(subject['@timestamp']).to be_within(60).of Time.now
       end
 
       it "removes all the extracted fields leaving just @raw" do
-        expect(log['@raw']).to eq("#{future_timestamp} Hello from the future!")
-        expect(log['extracted_field']).to be_nil
+        expect(subject['@raw']).to eq("#{future_timestamp} Hello from the future!")
+        expect(subject['extracted_field']).to be_nil
       end
 
     end
@@ -74,32 +74,32 @@ describe "Rules sanitising @timestamp" do
     ) do
 
       it "adds a timecop triggered tag" do
-        expect(log['tags']).to include("fail/timecop")
+        expect(subject['tags']).to include("fail/timecop")
       end
 
       it "retains the original tags" do
-        expect(log["tags"]).to include "sometag"
+        expect(subject["tags"]).to include "sometag"
       end
 
       it "retains the source informaiton" do
-        expect(log["@source"]).to eq({"host" => "source"})
+        expect(subject["@source"]).to eq({"host" => "source"})
       end
 
       it "retains the shipper informaiton" do
-        expect(log["@shipper"]).to eq({"host" => "shipper"})
+        expect(subject["@shipper"]).to eq({"host" => "shipper"})
       end
 
       it "moves the invalid timestamp into invalid_fields.@timestamp" do
-        expect(log['invalid_fields']['@timestamp']).to eq past_timestamp
+        expect(subject['invalid_fields']['@timestamp']).to eq past_timestamp
       end
 
       it "resets the @timestamp to the current time" do
-        expect(log['@timestamp']).to be_within(60).of Time.now
+        expect(subject['@timestamp']).to be_within(60).of Time.now
       end
 
       it "removes all the extracted fields leaving just @raw" do
-        expect(log['@raw']).to eq("#{past_timestamp} Hello from the past!")
-        expect(log['extracted_field']).to be_nil
+        expect(subject['@raw']).to eq("#{past_timestamp} Hello from the past!")
+        expect(subject['extracted_field']).to be_nil
       end
 
     end
