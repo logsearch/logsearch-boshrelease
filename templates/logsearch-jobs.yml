@@ -203,6 +203,20 @@ jobs:
     canaries: 1
     max_in_flight: 1
 
+- name: enable_shard_allocation
+  instances: 1
+  release: logsearch
+  templates:
+  - {name: enable_shard_allocation, release: logsearch}
+  resource_pool: errand
+  networks:
+  - name: default
+  lifecycle: errand
+  properties:
+    enable_shard_allocation:
+      elasticsearch:
+        master_node: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+
 properties:
   curator:
     elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))

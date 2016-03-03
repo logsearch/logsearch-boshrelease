@@ -1,0 +1,12 @@
+---
+name: enable_shard_allocation
+templates:
+  bin/run.erb: "bin/run"
+
+packages:
+
+properties:
+  enable_shard_allocation.elasticsearch.master_node:
+    description: "The internal address of an elasticsearch master node"
+
+

@@ -48,6 +48,11 @@ resource_pools:
     availability_zone: eu-west-1a
     instance_type: t2.micro
 
+- name: errand
+  cloud_properties:
+    availabtily_zone: eu-west-1a
+    instance_type: t2.micro
+
 disk_pools:
 - name: elasticsearch_master
   disk_size: 102400

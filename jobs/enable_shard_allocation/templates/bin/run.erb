@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+
+curl -s \
+    -X PUT \
+    -d '{"transient":{"cluster.routing.allocation.enable":"all"}}' \
+    '<%= p('enable_shard_allocation.elasticsearch.master_node') %>:9200/_cluster/settings' \
+    > /dev/null
