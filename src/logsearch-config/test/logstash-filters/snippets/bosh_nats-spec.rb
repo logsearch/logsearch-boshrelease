@@ -1,145 +1,145 @@
 # encoding: utf-8
-require "logstash/devutils/rspec/spec_helper"
-require "logstash/filters/grok"
-require "awesome_print"
+require 'test/filter_test_helpers'
 
-describe LogStash::Filters::Grok do
+describe "BOSH NATS healthcheck log parsing rules" do
 
-  config <<-CONFIG
-    filter {
-      #{File.read("target/logstash-filters-default.conf")}
-    }
-  CONFIG
+  before(:all) do
+    load_filters <<-CONFIG
+      filter {
+        #{File.read("src/logstash-filters/snippets/bosh_nats.conf")}
+      }
+    CONFIG
+  end
 
-  describe "Parse BOSH nats messages" do
+  describe "hm_agent_heartbeat logs" do
+    when_parsing_log(
+      '@type' => 'syslog',
+		  'syslog_program' => 'nats-to-syslog',
+      '@message' => '{"Data":"{\"job\":\"router-partition-7c53ed3ae2e7f5543b91\",\"index\":0,\"job_state\":\"running\",\"vitals\":{\"cpu\":{\"sys\":\"0.0\",\"user\":\"0.1\",\"wait\":\"0.1\"},\"disk\":{\"ephemeral\":{\"inode_percent\":\"2.0\",\"percent\":\"5.0\"},\"persistent\":{\"inode_percent\":\"44.0\",\"percent\":\"54.0\"}, \"system\":{\"inode_percent\":\"37.0\",\"percent\":\"46.0\"}},\"load\":[\"0.00\",\"0.02\",\"0.05\"],\"mem\":{\"kb\":\"81812.0\",\"percent\":\"8.0\"},\"swap\":{\"kb\":\"0.0\",\"percent\":\"0.0\"}},\"node_id\":\"\"}","Reply":"","Subject":"hm.agent.heartbeat.192dc853-4f1a-4198-8844-d0ab8d7c2c8e"}'
+    ) do
 
-    describe "hm_agent_heartbeat" do
-
-      sample("@type" => "syslog", "@message" => '<6>2015-11-25T12:28:10Z a9ffd17a-ec13-48e9-6091-38664ceee810 nats-to-syslog[20322]: {"Data":"{\"job\":\"router-partition-7c53ed3ae2e7f5543b91\",\"index\":0,\"job_state\":\"running\",\"vitals\":{\"cpu\":{\"sys\":\"0.0\",\"user\":\"0.1\",\"wait\":\"0.1\"},\"disk\":{\"ephemeral\":{\"inode_percent\":\"2.0\",\"percent\":\"5.0\"},\"system\":{\"inode_percent\":\"37.0\",\"percent\":\"46.0\"}},\"load\":[\"0.00\",\"0.02\",\"0.05\"],\"mem\":{\"kb\":\"81812.0\",\"percent\":\"8.0\"},\"swap\":{\"kb\":\"0.0\",\"percent\":\"0.0\"}},\"node_id\":\"\"}","Reply":"","Subject":"hm.agent.heartbeat.192dc853-4f1a-4198-8844-d0ab8d7c2c8e"}') do
-
-        insist { subject["tags"] } == ["syslog_standard", "NATS", "hm_agent_heartbeat"]
-        insist { subject["@level"] } == "INFO"
-
-        insist { subject["@source"]["deployment"] } == "CF"
-        insist { subject["@source"]["name"] } == "router-partition-7c53ed3ae2e7f5543b91/0"
-        insist { subject["@source"]["component"] } == "router-partition-7c53ed3ae2e7f5543b91"
-        insist { subject["@source"]["instance"] } == 0
-
-        insist { subject["NATS"]["Subject"] } == "hm.agent.heartbeat.192dc853-4f1a-4198-8844-d0ab8d7c2c8e"
-        insist { subject["NATS"]["Reply"] } == ""
-
-        insist { subject["NATS"]["Data"]["job_state"] } == "running"
-
-        insist { subject["NATS"]["Data"]["vitals"] } == {
-          "cpu" => {
-                "sys" => 0.0,
-                "user" => 0.1,
-                "wait" => 0.1
-          },
-          "disk" => {
-              "ephemeral" => {
-              "inode_percent" => 2.0,
-                    "percent" => 5.0
-            },
-              "system" => {
-              "inode_percent" => 37.0,
-              "percent" => 46.0
-              }
-          },
-          "load" => {
-              "avg01" => 0.0,
-              "avg05" => 0.02,
-              "avg15" => 0.05
-          },
-          "mem" => {
-             "kb" => 81812.0,
-              "percent" => 8.0
-          },
-          "swap" => {
-             "kb" => 0.0,
-              "percent" => 0.0
-          }
-        }
-
+      it "adds bosh nats tag" do
+          expect(subject["tags"]).to include "NATS"
       end
 
-      describe "should correctly extract persistent disk vitals" do
-         sample("@type" => "syslog", "@message" => '<6>2015-11-25T12:28:10Z a9ffd17a-ec13-48e9-6091-38664ceee810 nats-to-syslog[20322]: {"Data":"{\"job\":\"router-partition-7c53ed3ae2e7f5543b91\",\"index\":0,\"job_state\":\"running\",\"vitals\":{\"cpu\":{\"sys\":\"0.0\",\"user\":\"0.1\",\"wait\":\"0.1\"},\"disk\":{\"ephemeral\":{\"inode_percent\":\"2.0\",\"percent\":\"5.0\"},\"persistent\":{\"inode_percent\":\"44.0\",\"percent\":\"54.0\"}, \"system\":{\"inode_percent\":\"37.0\",\"percent\":\"46.0\"}},\"load\":[\"0.00\",\"0.02\",\"0.05\"],\"mem\":{\"kb\":\"81812.0\",\"percent\":\"8.0\"},\"swap\":{\"kb\":\"0.0\",\"percent\":\"0.0\"}},\"node_id\":\"\"}","Reply":"","Subject":"hm.agent.heartbeat.192dc853-4f1a-4198-8844-d0ab8d7c2c8e"}') do
+      it "adds the HM heartbeat tag" do
+        expect(subject["tags"]).to include "hm_agent_heartbeat"
+      end
 
+      it "adds INFO log level" do
+        expect(subject["@level"]).to eq "INFO"
+      end
 
-           insist { subject["NATS"]["Data"]["vitals"] } == {
-             "cpu" => {
-                   "sys" => 0.0,
-                   "user" => 0.1,
-                   "wait" => 0.1
-             },
-             "disk" => {
-               "ephemeral" => {
-                 "inode_percent" => 2.0,
-                       "percent" => 5.0
-               },
-               "persistent" => {
-                 "inode_percent" => 44.0,
-                 "percent" => 54.0
-                },
-                "system" => {
-                   "inode_percent" => 37.0,
-                   "percent" => 46.0
-                }
-             },
-             "load" => {
-                 "avg01" => 0.0,
-                 "avg05" => 0.02,
-                 "avg15" => 0.05
-             },
-             "mem" => {
-                "kb" => 81812.0,
-                 "percent" => 8.0
-             },
-             "swap" => {
-                "kb" => 0.0,
-                 "percent" => 0.0
-             }
-           }
+      it "sets @source.name" do
+        expect(subject["@source"]["name"]).to eq "router-partition-7c53ed3ae2e7f5543b91/0"
+      end
 
-           end
-        end # should correctly extract persistent disk vitals
+      it "sets @source.component" do
+        expect(subject["@source"]["component"]).to eq "router-partition-7c53ed3ae2e7f5543b91"
+      end
 
-        describe "@source.deployment should identify ELK instances" do
+      it "sets @source.index" do
+        expect(subject["@source"]["instance"]).to eq 0
+      end
 
-         sample("@type" => "syslog", "@message" => '<6>2015-11-25T12:28:10Z a9ffd17a-ec13-48e9-6091-38664ceee810 nats-to-syslog[20322]: {"Data":"{\"job\":\"elasticsearch_data-partition-6f559905a5a2abd801de\",\"index\":0,\"job_state\":\"running\",\"vitals\":{\"cpu\":{\"sys\":\"0.0\",\"user\":\"0.1\",\"wait\":\"0.1\"},\"disk\":{\"ephemeral\":{\"inode_percent\":\"2.0\",\"percent\":\"5.0\"},\"persistent\":{\"inode_percent\":\"44.0\",\"percent\":\"54.0\"}, \"system\":{\"inode_percent\":\"37.0\",\"percent\":\"46.0\"}},\"load\":[\"0.00\",\"0.02\",\"0.05\"],\"mem\":{\"kb\":\"81812.0\",\"percent\":\"8.0\"},\"swap\":{\"kb\":\"0.0\",\"percent\":\"0.0\"}},\"node_id\":\"\"}","Reply":"","Subject":"hm.agent.heartbeat.192dc853-4f1a-4198-8844-d0ab8d7c2c8e"}') do
+      it "parses NATS.Subject" do
+        expect(subject["NATS"]["Subject"]).to eq "hm.agent.heartbeat.192dc853-4f1a-4198-8844-d0ab8d7c2c8e"
+      end
 
+      it "parses NATS.Reply" do
+        expect(subject["NATS"]["Reply"]).to eq ""
+      end
 
-            insist { subject["@source"]["deployment"] } == "ELK"
-          end
+      it "parses NATS.Data" do
+        expect(subject["NATS"]["Data"]["job_state"]).to eq "running"
+      end
 
-        end # describe "@source.deployment should identify ELK instances
+      it "parses CPU stats" do
+        expect(subject["NATS"]["Data"]["vitals"]["cpu"]).to eq(
+          {
+            "sys" => 0.0,
+            "user" => 0.1,
+            "wait" => 0.1
+          }
+        )
+      end
 
-    end # describe "hm_agent_heartbeat"
+      it "parses disk usage stats" do
+        expect(subject["NATS"]["Data"]["vitals"]["disk"]).to eq(
+          {
+            "ephemeral" => {
+              "inode_percent" => 2.0,
+              "percent" => 5.0
+            },
+            "system" => {
+              "inode_percent" => 37.0,
+              "percent" => 46.0
+            },
+            "persistent" => {
+              "inode_percent" => 44.0,
+              "percent" => 54.0
+            }
+          }
+        )
+      end
 
-#    describe "hm_alerts" do
-#
-#      sample("@type" => "NATS",
-#    "subject" => "hm.director.alert", "reply" => nil,
-#    "@message" => '{"id":"24fb3036-b183-41cf-7954-29aa20692601","severity":4,"title":"SSH Login","summary":"Accepted publickey for bosh_qmp1eh1q5 from 10.0.0.250 port 40317 ssh2: RSA 7c:87:b0:d2:7b:83:c1:b2:2c:b6:e5:d9:40:82:42:62","created_at":1444314808}') do
-#
-#           puts subject.to_hash.awesome_inspect
-#
-#        insist { subject["tags"] } == [ "NATS", "hm_alert" ]
-#        insist { subject["@metadata"]["type"] } == "NATS"
-#    insist { subject["@timestamp"] } == Time.iso8601("2015-10-08T14:33:28.000Z")
-#    insist { subject["@level"] } == "WARN"
-#
-#    insist { subject["NATS"]["subject"] } == "hm.director.alert"
-#    insist { subject["NATS"]["reply"] }.nil?
-#
-#    insist { subject["NATS"]["title"] } == "SSH Login"
-#    insist { subject["NATS"]["summary"] } == "Accepted publickey for bosh_qmp1eh1q5 from 10.0.0.250 port 40317 ssh2: RSA 7c:87:b0:d2:7b:83:c1:b2:2c:b6:e5:d9:40:82:42:62"
-#
-#      end
-#
-#   end # describe hm_alerts
-  end # describe "Parse BOSH nats messages"
+      it "parses os load" do
+        expect(subject["NATS"]["Data"]["vitals"]["load"]).to eq(
+          {
+            "avg01" => 0.0,
+            "avg05" => 0.02,
+            "avg15" => 0.05
+          }
+        )
+      end
 
-end # describe LogStash::Filters::Grok do
+      it "parses memory usage stats" do
+        expect(subject["NATS"]["Data"]["vitals"]["mem"]).to eq(
+          {
+            "kb" => 81812.0,
+            "percent" => 8.0
+          }
+        )
+      end
+
+      it "parses swap usage stats" do
+        expect(subject["NATS"]["Data"]["vitals"]["swap"]).to eq(
+          {
+            "kb" => 0.0,
+            "percent" => 0.0
+          }
+        )
+      end
+    end
+  end
+
+  describe "hm_alerts" do
+    when_parsing_log(
+      '@type' => 'syslog',
+      'syslog_program' => 'nats-to-syslog',
+      "@message" => '{"Data":"{\"id\":\"a053e70a-3689-48f4-79a9-0341a6e2f071\",\"severity\":4,\"title\":\"SSH Login\",\"summary\":\"Accepted publickey for vcap from 10.0.0.6 port 60528 ssh2: RSA df:e1:f7:e0:23:59:86:da:ef:a6:7f:5d:ac:68:49:83\",\"created_at\":1457022703}","Reply":"","Subject":"hm.agent.alert.bb2e7409-8fec-4715-b2d7-bad5a08efe88"}'
+    ) do
+
+      it "adds bosh nats tag" do
+          expect(subject["tags"]).to include "NATS"
+      end
+
+      it "adds the HM alert" do
+        expect(subject["tags"]).to include "hm_alert"
+      end
+
+      it "sets @level" do
+        expect(subject["@level"]).to eq "WARN"
+      end
+
+      it "pares alert title" do
+        expect(subject["NATS"]["Data"]["title"]).to eq "SSH Login"
+      end
+
+      it "parses alert summary" do
+        expect(subject["NATS"]["Data"]["summary"]).to eq "Accepted publickey for vcap from 10.0.0.6 port 60528 ssh2: RSA df:e1:f7:e0:23:59:86:da:ef:a6:7f:5d:ac:68:49:83"
+      end
+    end
+  end # describe hm_alerts
+end
 
