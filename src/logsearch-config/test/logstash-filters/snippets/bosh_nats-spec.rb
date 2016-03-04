@@ -110,6 +110,10 @@ describe "BOSH NATS healthcheck log parsing rules" do
           }
         )
       end
+
+      it "removes @message" do
+        expect(subject["@message"]).to be_nil
+      end
     end
   end
 
@@ -138,6 +142,10 @@ describe "BOSH NATS healthcheck log parsing rules" do
 
       it "parses alert summary" do
         expect(subject["NATS"]["Data"]["summary"]).to eq "Accepted publickey for vcap from 10.0.0.6 port 60528 ssh2: RSA df:e1:f7:e0:23:59:86:da:ef:a6:7f:5d:ac:68:49:83"
+      end
+
+      it "removes @message" do
+        expect(subject["@message"]).to be_nil
       end
     end
   end # describe hm_alerts
