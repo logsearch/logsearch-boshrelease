@@ -3,7 +3,7 @@ name: enable_shard_allocation
 templates:
   bin/run.erb: "bin/run"
 
-packages:
+packages: []
 
 properties:
   enable_shard_allocation.elasticsearch.master_node:
