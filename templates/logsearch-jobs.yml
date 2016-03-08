@@ -58,8 +58,10 @@ jobs:
   persistent_disk_pool: cluster_monitor
   properties:
     kibana:
-      elasticsearch: 127.0.0.1:9200
       port: 5601
+      elasticsearch:
+        host: 127.0.0.1
+        port: 9200
     elasticsearch:
       master_hosts: [127.0.0.1]
       cluster_name: monitor
@@ -232,7 +234,9 @@ properties:
     cluster_name: logsearch
     exec: ~
   kibana:
-    elasticsearch: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ":9200" ))
+    elasticsearch:
+      host: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      port: 9200
   elasticsearch_config:
     elasticsearch:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))

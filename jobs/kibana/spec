@@ -10,9 +10,12 @@ templates:
   helpers/ctl_setup.sh: "helpers/ctl_setup.sh"
   helpers/ctl_utils.sh: "helpers/ctl_utils.sh"
 properties:
-  kibana.elasticsearch:
-    description: "IP address and port of elasticsearch master to send elasticsearch requests to (eg, 127.0.0.1:9200)"
-    default: "127.0.0.1:9200"
+  kibana.elasticsearch.host:
+    description: "IP address of elasticsearch master to send elasticsearch requests to"
+    default: "127.0.0.1"
+  kibana.elasticsearch.port:
+    description: "Port of elasticsearch master to send elasticsearch requests to"
+    default: "9200"
   kibana.default_app_id:
     description: "The default application to load."
     default: "discover"

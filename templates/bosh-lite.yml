@@ -116,8 +116,10 @@ jobs:
   persistent_disk: 0
   properties:
     kibana:
-      elasticsearch: 127.0.0.1:9200
       port: 5601
+      elasticsearch:
+        host: 127.0.0.1
+        port: 9200
     elasticsearch:
       master_hosts: [127.0.0.1]
       data_hosts: [127.0.0.1]
@@ -223,7 +225,9 @@ jobs:
 
 properties:
   kibana:
-    elasticsearch: 10.244.2.2:9200
+    elasticsearch:
+      host: 10.244.2.2
+      port: 9200
     port: 5601
   curator:
     elasticsearch_host: 10.244.2.2
