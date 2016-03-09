@@ -3,8 +3,8 @@
 set -e
 set -u
 
-ELASTICSEARCH_HOST=<%= p('curator.elasticsearch_host') %>
-ELASTICSEARCH_PORT=<%= p('curator.elasticsearch_port') %>
+ELASTICSEARCH_HOST=<%= p('curator.elasticsearch.host') %>
+ELASTICSEARCH_PORT=<%= p('curator.elasticsearch.port') %>
 DAYS_RETENTION=<%= p('curator.purge_logs.retention_period') %>
 
 export LC_ALL=en_US.UTF-8
@@ -17,4 +17,4 @@ curator \
   --host $ELASTICSEARCH_HOST \
   --port $ELASTICSEARCH_PORT  \
   delete indices --older-than $DAYS_RETENTION --time-unit days \
-  --timestring '%Y.%m.%d' 
+  --timestring '%Y.%m.%d'
