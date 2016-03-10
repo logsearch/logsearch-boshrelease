@@ -20,7 +20,7 @@ case $1 in
 
 
     rm -rf /var/vcap/packages/kibana/installedPlugins/*
-    <% p("kibana.plugins").each do |plugin| name, path = plugin.first %>
+    <% p("kibana.plugins").each do |plugin| name, path = plugin %>
       <% if path.start_with? '/var/vcap' %>
         /var/vcap/packages/kibana/bin/kibana plugin --install "<%= name %>" --url "file://<%= path %>"
       <% elsif path.start_with? 'http' %>
