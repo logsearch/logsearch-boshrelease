@@ -235,7 +235,7 @@ properties:
     exec: ~
   kibana:
     elasticsearch:
-      host: (( concat jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
       port: 9200
   elasticsearch_config:
     elasticsearch:
