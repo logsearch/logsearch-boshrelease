@@ -14,8 +14,8 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    <% p("kibana.env").each do |env| %>
-    export <%= env.keys[0] %>="<%= env.values[0] %>"
+    <% p("kibana.env").each do |env| key, value = env %>
+    export <%= key %>="<%= value %>"
     <% end %>
 
 
