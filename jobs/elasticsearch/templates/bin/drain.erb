@@ -17,14 +17,23 @@
 set -e
 set -u
 
+<% if !p('elasticsearch.drain') %>
+#
+# The `elasticsearch.drain` property is disabled in the deployment.
+#
+
+echo 0
+exit 0
+
+<% elsif p('elasticsearch.node.allow_data') %>
 # disable allocations before bringing down data nodes
-<% if p('elasticsearch.node.allow_data') %>
 curl -s \
     -X PUT \
     -d '{"transient":{"cluster.routing.allocation.enable":"none"}}' \
     'localhost:9200/_cluster/settings' \
     > /dev/null
-<% end %>
 
 echo 0
 exit 0
+
+<% end %>
