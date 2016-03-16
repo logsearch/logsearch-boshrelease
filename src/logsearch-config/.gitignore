@@ -1,2 +1,3 @@
 vendor/logstash
 vendor/logstash*
+target/parsing_rules.html
