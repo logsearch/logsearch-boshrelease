@@ -56,4 +56,6 @@ builds:
     version: 201.0.3
   6e7b7d2d-6437-422b-89d8-38d6b94f4df8:
     version: 201.0.4
+  ebe96339-59bf-49d2-8479-dfd34d571e6d:
+    version: 201.0.5
 format-version: '2'
