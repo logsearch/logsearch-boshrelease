@@ -51,7 +51,7 @@ properties:
 
   haproxy.kibana.inbound_port:
     description: "The public port of the kibana service"
-    default: 5601
+    default: 80
   haproxy.kibana.backend_servers:
     description: "The list of kibana servers"
   haproxy.kibana.backend_port:
