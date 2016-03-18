@@ -64,4 +64,13 @@ properties:
     description: "Basic auth password for kibana. Optional"
     default: ""
 
+  haproxy.cluster_monitor.inbound_port:
+    description: "The public port of the cluster monitor UI"
+    default: 8080
+  haproxy.cluster_monitor.backend_servers:
+    description: "Array of the cluster monitor backend IPs"
+    default: []
+  haproxy.cluster_monitor.backend_port:
+    description: "The port number the cluster monitor backends are listening on"
+    default: 5601
 
