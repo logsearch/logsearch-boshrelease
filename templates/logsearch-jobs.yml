@@ -39,6 +39,8 @@ jobs:
         backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
       kibana:
         backend_servers: (( grab jobs.kibana.networks.[0].static_ips ))
+      cluster_monitor:
+        backend_servers: (( grab jobs.cluster_monitor.networks.[0].static_ips ))
 
 - name: cluster_monitor
   instances: 0
