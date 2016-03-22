@@ -33,6 +33,28 @@ describe 'Log type autodetection' do
       end
     end
 
+    context "when parsing messages with @source.program set" do
+      when_parsing_log(
+        '@source' => { 'program' => 'program_name' },
+        '@message' => '{ "timestamp":"2016-01-08T15:52:56Z", "response_time":"0.110", "tls_time":"0.011", "tcp_time":"0.005", "url":"https://test-api.platform.cloudcredo.io/status", "app":"ccp-response-times" }'
+      ) do
+
+        it "it gets parsed as JSON" do
+          expect(subject['tags']).to include("json/auto_detect")
+        end
+        it "it parses the JSON into a key named @source.program" do
+          expect(subject['program_name']).to eq( {
+              "timestamp" => "2016-01-08T15:52:56Z",
+          "response_time" => "0.110",
+               "tls_time" => "0.011",
+               "tcp_time" => "0.005",
+                    "url" => "https://test-api.platform.cloudcredo.io/status",
+                    "app" => "ccp-response-times"
+          })
+        end
+      end
+    end
+
     context "when it looks like JSON but isn't" do
       when_parsing_log(
         '@type' => "syslog",
