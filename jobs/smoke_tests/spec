@@ -1,0 +1,18 @@
+---
+name: smoke-tests
+
+packages: []
+templates:
+  run.sh: bin/run
+
+properties:
+  smoke_tests.syslog_ingestor.host:
+    description: 'IP of the syslog ingestor'
+  smoke_tests.syslog_ingestor.port:
+    description: 'Port of the syslog ingestor'
+    default: 5514
+  smoke_tests.elasticsearch_master.host:
+    description: 'IP of the elasticsearch master node'
+  smoke_tests.elasticsearch_master.port:
+    description: 'Port of the elasticsearch master node'
+    default: 9200

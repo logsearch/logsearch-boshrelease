@@ -221,6 +221,22 @@ jobs:
       elasticsearch:
         master_node: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 
+- name: smoke-tests
+  instances: 1
+  release: logsearch
+  templates:
+  - {name: smoke-tests, release: logsearch}
+  resource_pool: errand
+  networks:
+  - name: default
+  lifecycle: errand
+  properties:
+    smoke_tests:
+      syslog_ingestor:
+        host: (( grab jobs.haproxy.networks.default.static_ips.[0] ))
+      elasticsearch_master:
+        host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+
 properties:
   curator:
     elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
