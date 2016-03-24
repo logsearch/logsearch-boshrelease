@@ -60,4 +60,6 @@ builds:
     version: 201.0.9
   439eebd9-9ee9-4169-9826-0d80ba6e0ab8:
     version: 201.0.10
+  82d3ade0-a2a8-432a-95a1-a92c8873667f:
+    version: 201.0.11
 format-version: '2'
