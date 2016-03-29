@@ -26,7 +26,7 @@ describe "LogSearch deployment" do
     uri = URI("http://localhost:9200/#{index}/_search?q=#{log.data}")
     output = gateway.execute_on(deployment.master_ip, "curl -s #{uri}")
     response = JSON.parse(output)
-    expect(response["hits"]["hits"].first["_source"]["a4baede3_cb2a_4e1d_b6d4_8e34e4633149"]["testvalue"]).to eq log.data
+    expect(JSON.parse(response["hits"]["hits"].first["@message"])["testvalue"]).to eq log.data
   end
 end
 
