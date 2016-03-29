@@ -62,6 +62,9 @@ properties:
   logstash_parser.timecop.reject_less_than_hours:
     description: "Logs with timestamps less than this many hours in the past won't be parsed and will get tagged with fail/timecop"
     default: 24
+  logstash_parser.enable_json_filter
+    description: "Toggles the if_it_looks_like_json.conf filter rule"
+    default: false
 
   logstash.output.elasticsearch.data_hosts:
     description: The list of elasticsearch data node IPs

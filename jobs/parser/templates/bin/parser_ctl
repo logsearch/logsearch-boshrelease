@@ -44,7 +44,9 @@ case $1 in
     <% end %>
 
     cat ${JOB_DIR}/config/filters_post.conf >> ${JOB_DIR}/config/logstash.conf
-    cat /var/vcap/packages/logsearch-config/if_it_looks_like_json.conf >> ${JOB_DIR}/config/logstash.conf
+    <% if p('logstash_parser.enable_json_filter') %>
+      cat /var/vcap/packages/logsearch-config/if_it_looks_like_json.conf >> ${JOB_DIR}/config/logstash.conf
+    <% end %>
     cat /var/vcap/packages/logsearch-config/timecop.conf >> ${JOB_DIR}/config/logstash.conf
 
     echo "} #close filters" >> ${JOB_DIR}/config/logstash.conf
