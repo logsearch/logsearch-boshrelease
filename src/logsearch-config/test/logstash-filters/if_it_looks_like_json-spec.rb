@@ -71,7 +71,7 @@ describe 'Log type autodetection' do
           expect(subject['@timestamp']).to eq Time.parse('2016-03-22T14:03:07.327Z')
         end
         it "it extracts the nanoseconds into @timestamp_ns" do
-          expect(subject['@timestamp_ns']).to eq 14586553873279622
+          expect(subject['@timestamp_ns']).to eq 962112
         end
 
       end
