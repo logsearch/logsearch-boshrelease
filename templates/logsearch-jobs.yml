@@ -233,7 +233,7 @@ jobs:
   properties:
     smoke_tests:
       syslog_ingestor:
-        host: (( grab jobs.haproxy.networks.default.static_ips.[0] ))
+        host: (( grab jobs.haproxy.networks.[0].static_ips.[0] ))
       elasticsearch_master:
         host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 
