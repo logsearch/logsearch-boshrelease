@@ -21,7 +21,7 @@ frontend syslog-in
     mode tcp
 
     <% if properties.haproxy.ssl_pem %>
-    bind :<%= p("haproxy.ingestor.inbound_port") %> ssl crt /var/vcap/jobs/haproxy.ingestor/config/cert.pem no-sslv3
+    bind :<%= p("haproxy.ingestor.inbound_port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3
     <% else %>
     bind :<%= p("haproxy.ingestor.inbound_port") %>
     <% end %>
@@ -39,7 +39,7 @@ frontend kibana-in
     mode http
 
     <% if properties.haproxy.ssl_pem %>
-    bind :<%= p("haproxy.kibana.inbound_port") %> ssl crt /var/vcap/jobs/haproxy.ingestor/config/cert.pem no-sslv3
+    bind :<%= p("haproxy.kibana.inbound_port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3
     <% else %>
     bind :<%= p("haproxy.kibana.inbound_port") %>
     <% end %>
@@ -62,7 +62,7 @@ frontend cluster_monitor-in
     mode http
 
     <% if properties.haproxy.ssl_pem %>
-    bind :<%= p("haproxy.cluster_monitor.inbound_port") %> ssl crt /var/vcap/jobs/haproxy.ingestor/config/cert.pem no-sslv3
+    bind :<%= p("haproxy.cluster_monitor.inbound_port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3
     <% else %>
     bind :<%= p("haproxy.cluster_monitor.inbound_port") %>
     <% end %>
