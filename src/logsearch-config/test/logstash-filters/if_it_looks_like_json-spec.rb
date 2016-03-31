@@ -56,24 +56,45 @@ describe 'Log type autodetection' do
     end
 
     describe "Extracting UnixNano timestamp fields" do
-      when_parsing_log(
-        '@source' => { 'program' => 'program_name' },
-        '@message' => '{"timestamp":1458655387.3279622,"message":"Completed 200 vcap-request-id: e3d06207-b178-4dd4-7ac8-99eb89dbeae4::bb4989dc-d0c3-4680-84a0-e9515db0ccb8","log_level":"info","source":"cc.api","data":{},"thread_id":47073419309700,"fiber_id":47073422165060,"process_id":3255,"file":"/var/vcap/packages/cloud_controller_ng/cloud_controller_ng/middleware/request_logs.rb","lineno":23,"method":"call"}'
-      ) do
+      context "when timestamp is a number" do
+        when_parsing_log(
+          '@source' => { 'program' => 'program_name' },
+          '@message' => '{"timestamp":1458655387.3279622,"message":"Completed 200 vcap-request-id: e3d06207-b178-4dd4-7ac8-99eb89dbeae4::bb4989dc-d0c3-4680-84a0-e9515db0ccb8","log_level":"info","source":"cc.api","data":{},"thread_id":47073419309700,"fiber_id":47073422165060,"process_id":3255,"file":"/var/vcap/packages/cloud_controller_ng/cloud_controller_ng/middleware/request_logs.rb","lineno":23,"method":"call"}'
+        ) do
 
-        it "it gets parsed as JSON" do
-          expect(subject['tags']).to include("json/auto_detect")
+          it "it gets parsed as JSON" do
+            expect(subject['tags']).to include("json/auto_detect")
+          end
+          it "it extracts the timestamp" do
+            expect(subject['tags']).to include("json/hoist_@timestamp")
+          end
+          it "it extracts the millisecond portion of the timestamp into @timestamp" do
+            expect(subject['@timestamp']).to eq Time.parse('2016-03-22T14:03:07.327Z')
+          end
+          it "it extracts the nanoseconds into @timestamp_ns" do
+            expect(subject['@timestamp_ns']).to eq 9622
+          end
         end
-        it "it extracts the timestamp" do
-          expect(subject['tags']).to include("json/hoist_@timestamp")
-        end
-        it "it extracts the millisecond portion of the timestamp into @timestamp" do
-          expect(subject['@timestamp']).to eq Time.parse('2016-03-22T14:03:07.327Z')
-        end
-        it "it extracts the nanoseconds into @timestamp_ns" do
-          expect(subject['@timestamp_ns']).to eq 962112
-        end
+      end
+      context "when timestamp is a string" do
+        when_parsing_log(
+          '@source' => { 'program' => 'program_name' },
+          '@message' => '{"timestamp":"1458655387.3279622","message":"Completed 200 vcap-request-id: e3d06207-b178-4dd4-7ac8-99eb89dbeae4::bb4989dc-d0c3-4680-84a0-e9515db0ccb8","log_level":"info","source":"cc.api","data":{},"thread_id":47073419309700,"fiber_id":47073422165060,"process_id":3255,"file":"/var/vcap/packages/cloud_controller_ng/cloud_controller_ng/middleware/request_logs.rb","lineno":23,"method":"call"}'
+        ) do
 
+          it "it gets parsed as JSON" do
+            expect(subject['tags']).to include("json/auto_detect")
+          end
+          it "it extracts the timestamp" do
+            expect(subject['tags']).to include("json/hoist_@timestamp")
+          end
+          it "it extracts the millisecond portion of the timestamp into @timestamp" do
+            expect(subject['@timestamp']).to eq Time.parse('2016-03-22T14:03:07.327Z')
+          end
+          it "it extracts the nanoseconds into @timestamp_ns" do
+            expect(subject['@timestamp_ns']).to eq 9622
+          end
+        end
       end
     end
 
