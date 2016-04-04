@@ -14,13 +14,13 @@ case $1 in
 
     echo $$ > $PIDFILE
 
-    <% p("kibana.env").each do |env| %>
-    export <%= env.keys[0] %>="<%= env.values[0] %>"
+    <% p("kibana.env").each do |env| key, value = env %>
+    export <%= key %>="<%= value %>"
     <% end %>
 
 
     rm -rf /var/vcap/packages/kibana/installedPlugins/*
-    <% p("kibana.plugins").each do |plugin| name, path = plugin.first %>
+    <% p("kibana.plugins").each do |plugin| name, path = plugin %>
       <% if path.start_with? '/var/vcap' %>
         /var/vcap/packages/kibana/bin/kibana plugin --install "<%= name %>" --url "file://<%= path %>"
       <% elsif path.start_with? 'http' %>
