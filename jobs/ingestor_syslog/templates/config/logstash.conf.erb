@@ -25,6 +25,11 @@ input {
 }
 
 filter {
+  # drop empty logs (eg: monit connection healthcheck)
+  ruby {
+    code => 'event.cancel if event["message"] == "\u0000"'
+  }
+
   #When behind haproxy, this is always the IP of the haproxy, not the IP of the actual host sending the data.
   #Remove it to avoid confusion
 	mutate {
@@ -52,7 +57,7 @@ output {
             codec => "json"
         }
 	<% end %>
-	
+
 	<% if_p("logstash_ingestor.outputs") do |ingestor_outputs| %>
 	  <% ingestor_outputs.each do | output | %>
 	    <%= output['plugin'] %> {
@@ -65,7 +70,7 @@ output {
                   "batch" => true,
                   "batch_events" => 50
                 } %>
-              <% end %> 
+              <% end %>
 	      <% output['options'].each do | k, v | %>
 	        <%= k %> => <%= v.inspect %>
 	      <% end %>
