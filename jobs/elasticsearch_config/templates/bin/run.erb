@@ -32,6 +32,11 @@ BASH
       ret << <<BASH
 HTTP_CODE=$(curl -s -w '%{http_code}' -o /tmp/elasticsearch_config-response.txt -X PUT --data-binary @$CONTENT_PATH "$URL")
 
+if grep --quiet "\"errors\":true" /tmp/elasticsearch_config-response.txt ; then
+  cat /tmp/elasticsearch_config-response.txt > /dev/stderr
+  exit $HTTP_CODE
+fi
+
 if [ "$HTTP_CODE" -le "300" ]; then
   cat /tmp/elasticsearch_config-response.txt
 else
