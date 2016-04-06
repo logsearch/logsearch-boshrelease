@@ -1,0 +1,8 @@
+# abort script on any command that exits with a non zero value
+set -e
+
+# Available variables
+# $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
+# $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
+
+cp bulk_request*/* $BOSH_INSTALL_TARGET
