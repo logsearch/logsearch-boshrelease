@@ -1,0 +1,17 @@
+---
+name: bulk_request
+templates:
+  bin/run.erb: "bin/run"
+
+packages: []
+
+properties:
+  elasticsearch_config.elasticsearch.host:
+    description: "The elasticsearch master node hostname"
+  elasticsearch_config.elasticsearch.port:
+    description: "the elasticsearch master node port"
+    default: 9200
+  elasticsearch_config.bulk_data_files:
+    description: "An array of file paths whose content will be uploaded as bulk data"
+    default: []
+
