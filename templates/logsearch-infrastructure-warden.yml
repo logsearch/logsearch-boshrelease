@@ -1,7 +1,5 @@
 ---
 meta:
-  environment: (( merge ))
-
   stemcell:
     name: bosh-warden-boshlite-ubuntu-trusty-go_agent
     version: latest
@@ -19,70 +17,7 @@ properties:
       environment:
         ES_HEAP_SIZE: 500000K
 
-jobs:
-  - name: api
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(0) ))
-
-  - name: ingestor
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(1) ))
-
-  - name: queue
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(2) ))
-
-  - name: parser
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(3) ))
-
-  - name: elasticsearch_persistent
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(4) ))
-
-  - name: elasticsearch_autoscale
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(5) ))
-
-compilation:
-  cloud_properties:
-    name: random
-
-resource_pools:
-- name: logsearch_api
-  cloud_properties:
-    name: random
-
-- name: logsearch_ingestor
-  cloud_properties:
-    name: random
-
-- name: logsearch_elasticsearch
-  cloud_properties:
-    name: random
-
-- name: logsearch_queue
-  cloud_properties:
-    name: random
-
-- name: logsearch_parser
-  cloud_properties:
-    name: random
-
-networks: (( merge || networks_default ))
-networks_default:
+networks:
 - name: default
   subnets:
   - cloud_properties:

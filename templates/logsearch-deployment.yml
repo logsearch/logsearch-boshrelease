@@ -14,61 +14,88 @@ compilation:
   workers: 4
   network: default
   reuse_compilation_vms: true
-  cloud_properties: ~
+  cloud_properties: {}
 
 resource_pools:
 - name: elasticsearch_master
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: elasticsearch_data
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: ingestor
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: queue
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: parser
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: kibana
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: maintenance
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: cluster_monitor
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: haproxy
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
 
 - name: errand
   network: default
   stemcell: (( grab meta.stemcell ))
   env: (( grab meta.default_env ))
+  cloud_properties: {}
+
+disk_pools:
+- name: elasticsearch_master
+  disk_size: 102400
+  cloud_properties: {}
+
+- name: elasticsearch_data
+  disk_size: 102400
+  cloud_properties: {}
+
+- name: queue
+  disk_size: 102400
+  cloud_properties: {}
+
+- name: cluster_monitor
+  disk_size: 102400
+  cloud_properties: {}
 
 update:
-  serial: true
+  serial: false
   canaries: 1
   canary_watch_time: 30000-600000
   update_watch_time: 5000-600000

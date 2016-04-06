@@ -1,6 +1,35 @@
 ---
-meta:
-  environment: (( name ))
-
 name: logsearch
-director_uuid: 12345-678910
+director_uuid: <%= `bosh status --uuid` %>
+
+jobs:
+- name: elasticsearch_master
+  instances: 1
+
+- name: elasticsearch_data
+  instances: 2
+
+- name: ingestor
+  instances: 1
+
+- name: queue
+  instances: 1
+
+- name: parser
+  instances: 1
+
+- name: kibana
+  instances: 1
+
+- name: maintenance
+  instances: 1
+
+- name: cluster_monitor
+  instances: 1
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.254.50.4]

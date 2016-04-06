@@ -1,50 +1,30 @@
+releases:
+- name: logsearch
+  version: latest
+
 jobs:
+###################################################################
+#First deploy group - elasticsearch_master, cluster_monitor, queue
+###################################################################
 - name: elasticsearch_master
-  release: logsearch
+  instances: 1
   templates:
   - {name: elasticsearch, release: logsearch}
   resource_pool: elasticsearch_master
-  update:
-    serial: true
-  instances: 1
+  persistent_disk_pool: elasticsearch_master
   networks:
   - name: default
     static_ips: (( static_ips(0) ))
-  persistent_disk_pool: elasticsearch_master
   properties:
     elasticsearch:
       node:
         allow_master: true
         allow_data: false
   update:
-    serial: false
-    canaries: 1
-    max_in_flight: 1
-
-- name: haproxy
-  instances: 0
-  release: logsearch
-  templates:
-  - { name: haproxy, release: logsearch }
-  resource_pool: haproxy
-  networks:
-  - name: default
-  update:
-    serial: false
-    canaries: 1
-    max_in_flight: 1
-  properties:
-    haproxy:
-      ingestor:
-        backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
-      kibana:
-        backend_servers: (( grab jobs.kibana.networks.[0].static_ips ))
-      cluster_monitor:
-        backend_servers: (( grab jobs.cluster_monitor.networks.[0].static_ips ))
+    max_in_flight: 1 # Should never update more than one ES master node at a time or cluster will go down
 
 - name: cluster_monitor
-  instances: 0
-  release: logsearch
+  instances: 1
   templates:
   - { release: logsearch, name: queue }
   - { release: logsearch, name: parser }
@@ -57,6 +37,7 @@ jobs:
   resource_pool: cluster_monitor
   networks:
   - name: default
+    static_ips: (( static_ips(2) ))
   persistent_disk_pool: cluster_monitor
   properties:
     kibana:
@@ -94,7 +75,7 @@ jobs:
         user: nats
         password: nats-password
         port: 4222
-        machines: [10.0.0.6]
+        machines: []
       debug: true
       syslog:
         host: 127.0.0.1
@@ -102,131 +83,140 @@ jobs:
     logstash_ingestor:
       syslog:
         port: 514
-  update:
-    serial: false
-    canaries: 1
-    max_in_flight: 1
 
 - name: queue
-  release: logsearch
+  instances: 1
   templates:
   - {name: queue, release: logsearch}
   resource_pool: queue
-  instances: 1
+  persistent_disk_pool: queue
   networks:
   - name: default
     static_ips: (( static_ips(3) ))
-  persistent_disk_pool: queue
   update:
-    serial: true
-    canaries: 1
-    max_in_flight: 1
+    serial: true # Block on this job to create deploy group 1 
 
-- name: kibana
-  release: logsearch
-  templates:
-  - {name: kibana, release: logsearch}
-  instances: 1
-  resource_pool: kibana
-  networks:
-  - name: default
-  update:
-    serial: false
-    canaries: 1
-    max_in_flight: 1
+###################################################################
+#2nd deploy group - elasticsearch_data, kibana, ingestors, parsers 
+###################################################################
 
 - name: elasticsearch_data
-  release: logsearch
+  instances: 2
   templates:
   - {name: elasticsearch, release: logsearch}
   resource_pool: elasticsearch_data
-  update:
-    serial: true
-  instances: 2
+  persistent_disk_pool: elasticsearch_data
   networks:
   - name: default
     static_ips: (( static_ips(16, 17) ))
-  persistent_disk_pool: elasticsearch_data
   properties:
     elasticsearch:
       node:
         allow_master: false
         allow_data: true
   update:
-    serial: false
-    canaries: 1
-    max_in_flight: 1
+    max_in_flight: 1 # Only update 1 ES data node at a time or risk downtime
+
+- name: kibana
+  instances: 1
+  templates:
+  - {name: kibana, release: logsearch}
+  resource_pool: kibana
+  networks:
+  - name: default
+    static_ips: (( static_ips(5) ))
 
 - name: ingestor
-  release: logsearch
+  instances: 1
   templates:
   - {name: ingestor_syslog, release: logsearch}
   - {name: ingestor_relp, release: logsearch}
   resource_pool: ingestor
-  instances: 1
   networks:
   - name: default
-    default: [gateway, dns]
     static_ips: (( static_ips(1) ))
   properties:
     logstash_ingestor:
       debug: false
       relp:
         port: ~
-  update:
-    serial: false
-    canaries: 1
-    max_in_flight: 1
 
 - name: parser
-  release: logsearch
+  instances: 2
   templates:
   - {name: parser, release: logsearch}
   - {name: elasticsearch, release: logsearch}
   resource_pool: parser
-  instances: 1
   networks:
   - name: default
-    static_ips: (( static_ips(4) ))
+    static_ips: (( static_ips(4, 7) ))
   update:
-    serial: false
-    canaries: 1
-    max_in_flight: 4
+    serial: false # Block to create deploy group 2 
+    max_in_flight: 4  # Its ok to update multiple parsers at a time  
+
+###################################################################
+#3nd deploy group - maintenance, haproxy, and errands
+###################################################################
 
 - name: maintenance
   instances: 1
-  release: logsearch
   templates:
   - {name: elasticsearch_config, release: logsearch}
   - {name: curator, release: logsearch}
   resource_pool: maintenance
   networks:
   - name: default
-  update:
-    serial: false
-    canaries: 1
-    max_in_flight: 1
+
+- name: haproxy
+  instances: 1
+  templates:
+  - { name: haproxy, release: logsearch }
+  resource_pool: haproxy
+  networks:
+  - name: default
+    default: [gateway, dns]
+    static_ips: (( static_ips(6) ))
+  properties:
+    haproxy:
+      ingestor:
+        backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
+      kibana:
+        backend_servers: (( grab jobs.kibana.networks.[0].static_ips ))
+      cluster_monitor:
+        backend_servers: (( grab jobs.cluster_monitor.networks.[0].static_ips ))
 
 - name: enable_shard_allocation
   instances: 1
-  release: logsearch
+  lifecycle: errand
   templates:
   - {name: enable_shard_allocation, release: logsearch}
   resource_pool: errand
   networks:
   - name: default
-  lifecycle: errand
   properties:
     enable_shard_allocation:
       elasticsearch:
         master_node: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 
+- name: bulk_request
+  instances: 1
+  lifecycle: errand
+  templates:
+  - {name: bulk_request, release: logsearch}
+  resource_pool: errand
+  networks:
+  - name: default
+  properties:
+    bulk_request:
+      elasticsearch:
+        host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+
 - name: smoke-tests
   instances: 1
+  resource_pool: errand
   release: logsearch
   templates:
   - {name: smoke-tests, release: logsearch}
-  resource_pool: errand
   networks:
   - name: default
   lifecycle: errand
@@ -237,6 +227,7 @@ jobs:
       elasticsearch_master:
         host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 
+# Global properties
 properties:
   curator:
     elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))

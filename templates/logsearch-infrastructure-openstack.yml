@@ -42,6 +42,13 @@ resource_pools:
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
     instance_type: (( grab meta.instance_type.monitor || "m1.small" ))
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.0.0.6]
 
 - name: haproxy
   cloud_properties:

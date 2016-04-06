@@ -55,22 +55,18 @@ resource_pools:
 
 disk_pools:
 - name: elasticsearch_master
-  disk_size: 102400
   cloud_properties:
     type: gp2
 
 - name: elasticsearch_data
-  disk_size: 102400
   cloud_properties:
     type: gp2
 
 - name: queue
-  disk_size: 102400
   cloud_properties:
     type: gp2
 
 - name: cluster_monitor
-  disk_size: 102400
   cloud_properties:
     type: gp2
 
