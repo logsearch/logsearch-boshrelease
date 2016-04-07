@@ -41,5 +41,5 @@ properties:
     description: "a list of key-value pairs of plugins. e.b. Kibana-auth: /var/vcap/packagaes/kibana/kibana-auth"
     default: []
   kibana.memory_limit:
-    description: "Configure the GC in nodejs to treat this number as the available memory for this process. The value is in the form of % of VM memory.
+    description: "Configure the GC in nodejs to treat this number as the available memory for this process. The value is in the form of % of VM memory."
     default: 75
