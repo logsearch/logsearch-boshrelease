@@ -55,6 +55,11 @@ resource_pools:
     availability_zone: (( grab meta.availability_zone ))
     instance_type: (( grab meta.instance_type.haproxy || "m1.small" ))
 
+- name: errand
+  cloud_properties:
+    availability_zone: (( grab meta.availability_zone ))
+    instance_type: (( grab meta.instance_type.parser || "m1.small" ))
+
 disk_pools:
 - name: elasticsearch_master
   disk_size: 102400
@@ -67,4 +72,3 @@ disk_pools:
 
 - name: cluster_monitor
   disk_size: 102400
-
