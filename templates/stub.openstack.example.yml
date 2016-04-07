@@ -10,6 +10,7 @@ meta:
     maintenance: m1.small
     monitor: m1.small
     haproxy: m1.small
+    errand: m1.small
   stemcell:
     name: bosh-openstack-kvm-ubuntu-trusty-go_agent
     version: latest
@@ -37,6 +38,13 @@ jobs:
   - name: default
     static_ips: (( static_ips(2) ))
   resource_pool: cluster_monitor
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.0.0.6]
 
 - name: queue
   instances: 1

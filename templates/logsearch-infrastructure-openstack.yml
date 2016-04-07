@@ -42,13 +42,6 @@ resource_pools:
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
     instance_type: (( grab meta.instance_type.monitor || "m1.small" ))
-  properties:
-    nats_to_syslog:
-      nats:
-        user: nats
-        password: nats-password
-        port: 4222
-        machines: [10.0.0.6]
 
 - name: haproxy
   cloud_properties:
@@ -58,7 +51,7 @@ resource_pools:
 - name: errand
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.parser || "m1.small" ))
+    instance_type: (( grab meta.instance_type.errand || "m1.small" ))
 
 disk_pools:
 - name: elasticsearch_master
