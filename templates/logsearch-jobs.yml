@@ -45,6 +45,7 @@ jobs:
       elasticsearch:
         host: 127.0.0.1
         port: 9200
+      memory_limit: 30
     elasticsearch:
       master_hosts: [127.0.0.1]
       cluster_name: monitor
