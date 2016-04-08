@@ -19,7 +19,7 @@ describe "BOSH NATS healthcheck log parsing rules" do
     ) do
 
       it "adds bosh nats tag" do
-          expect(subject["tags"]).to include "NATS"
+        expect(subject["tags"]).to include "NATS"
       end
 
       it "adds the HM heartbeat tag" do
@@ -30,17 +30,18 @@ describe "BOSH NATS healthcheck log parsing rules" do
         expect(subject["@level"]).to eq "INFO"
       end
 
-      it "sets @source.name" do
-        expect(subject["@source"]["name"]).to eq "router-partition-7c53ed3ae2e7f5543b91/0"
-      end
-
-      it "sets @source.component" do
-        expect(subject["@source"]["component"]).to eq "router-partition-7c53ed3ae2e7f5543b91"
+      it "sets @source.job" do
+        expect(subject["@source"]["job"]).to eq "router-partition-7c53ed3ae2e7f5543b91"
       end
 
       it "sets @source.index" do
-        expect(subject["@source"]["instance"]).to eq 0
+        expect(subject["@source"]["index"]).to eq 0
       end
+
+      it "sets @source.vm" do
+        expect(subject["@source"]["vm"]).to eq "router-partition-7c53ed3ae2e7f5543b91/0"
+      end
+
 
       it "parses NATS.Subject" do
         expect(subject["NATS"]["Subject"]).to eq "hm.agent.heartbeat.192dc853-4f1a-4198-8844-d0ab8d7c2c8e"
