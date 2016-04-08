@@ -8,7 +8,16 @@ end
 desc "Builds filters & dashboards"
 task :build => :clean do
   puts "===> Building ..."
-  compile_erb 'src/logstash-filters/default.conf.erb', 'target/logstash-filters-default.conf'
+
+  compile_erb 'src/logstash-filters/syslog_standard.conf.erb', 'target/logstash-filters-syslog-standard.conf'
+  compile_erb 'src/logstash-filters/haproxy.conf.erb', 'target/logstash-filters-haproxy.conf'
+
+  ENV["DICTIONARY_FILE"] = "./src/logstash-filters/snippets/default_deployment_dictionary.conf"
+  compile_erb 'src/logstash-filters/bosh_nats.conf.erb', 'target/logstash-filters-bosh-nats.conf'
+
+  ENV["DICTIONARY_FILE"] = "./src/logstash-filters/snippets/monitor_deployment_dictionary.conf"
+  compile_erb 'src/logstash-filters/bosh_nats.conf.erb', 'target/logstash-filters-bosh-nats-monitor.conf'
+
   compile_erb 'src/logstash-filters/metric.conf.erb', 'target/logstash-filters-metric.conf'
 
   puts "===> Artifacts:"

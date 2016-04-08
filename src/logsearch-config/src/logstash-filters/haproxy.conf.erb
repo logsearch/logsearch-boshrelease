@@ -1,0 +1,3 @@
+if [syslog_program] == "haproxy" {
+  <%= File.read('src/logstash-filters/snippets/haproxy.conf').gsub(/^/, '  ') %>
+}
