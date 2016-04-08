@@ -31,7 +31,16 @@ case $1 in
     echo "filter {" >> ${JOB_DIR}/config/logstash.conf
 
     cat ${JOB_DIR}/config/filters_pre.conf >> ${JOB_DIR}/config/logstash.conf
-    cat /var/vcap/packages/logsearch-config/logstash-filters-default.conf >> ${JOB_DIR}/config/logstash.conf
+
+    cat /var/vcap/packages/logsearch-config/logstash-filters-syslog-standard.conf >> ${JOB_DIR}/config/logstash.conf
+
+    <% if p('logstash_parser.monitor') %>
+      cat /var/vcap/packages/logsearch-config/logstash-filters-bosh-nats-monitor.conf >> ${JOB_DIR}/config/logstash.conf
+    <% else %>
+      cat /var/vcap/packages/logsearch-config/logstash-filters-bosh-nats.conf >> ${JOB_DIR}/config/logstash.conf
+    <% end %>
+
+    cat /var/vcap/packages/logsearch-config/logstash-filters-haproxy.conf >> ${JOB_DIR}/config/logstash.conf
 
     <% if p('logstash_parser.filters').is_a? Array %>
       # logstash_parser.filters is a list of filter rules

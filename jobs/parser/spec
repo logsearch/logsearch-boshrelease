@@ -65,6 +65,9 @@ properties:
   logstash_parser.enable_json_filter:
     description: "Toggles the if_it_looks_like_json.conf filter rule"
     default: false
+  logstash_parser.monitor:
+    description: "Set to true if running logstash parser on the cluster monitor"
+    default: false
 
   logstash.output.elasticsearch.data_hosts:
     description: The list of elasticsearch data node IPs

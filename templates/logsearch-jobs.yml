@@ -68,6 +68,7 @@ jobs:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
     logstash_parser:
+      monitor: true
       filters:
       - metrics: /var/vcap/packages/logsearch-config/logstash-filters-metric.conf
     nats_to_syslog:
