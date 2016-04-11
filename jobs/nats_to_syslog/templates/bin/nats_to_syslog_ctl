@@ -25,7 +25,6 @@ case $1 in
       -nats-subject "<%= p("nats_to_syslog.nats.subject") %>" \
       -syslog-endpoint <%= p("nats_to_syslog.syslog.host") %>:<%= p("nats_to_syslog.syslog.port" ) %> \
       -debug <%= p("nats_to_syslog.debug") %> \
-
       >>$LOG_DIR/nats_to_syslog.stdout.log \
       2>>$LOG_DIR/nats_to_syslog.stderr.log
     ;;
