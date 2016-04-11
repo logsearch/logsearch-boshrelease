@@ -49,7 +49,7 @@ def when_parsing_log(sample_event, &block)
 			# flush makes sure to empty any buffered events in the filter
 			LogStashPipeline.instance.flush_filters(:final => true) { |flushed_event| results << flushed_event }
 
-			@parsed_results = results.select { |e| !e.cancelled? }
+			@parsed_results = results
 		end
 
 		subject(:parsed_results) { @parsed_results.first }
