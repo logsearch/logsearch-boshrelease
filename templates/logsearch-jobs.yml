@@ -95,10 +95,10 @@ jobs:
   - name: default
     static_ips: (( static_ips(3) ))
   update:
-    serial: true # Block on this job to create deploy group 1 
+    serial: true # Block on this job to create deploy group 1
 
 ###################################################################
-#2nd deploy group - elasticsearch_data, kibana, ingestors, parsers 
+#2nd deploy group - elasticsearch_data, kibana, ingestors, parsers
 ###################################################################
 
 - name: elasticsearch_data
@@ -152,8 +152,8 @@ jobs:
   - name: default
     static_ips: (( static_ips(4, 7) ))
   update:
-    serial: false # Block to create deploy group 2 
-    max_in_flight: 4  # Its ok to update multiple parsers at a time  
+    serial: false # Block to create deploy group 2
+    max_in_flight: 4  # Its ok to update multiple parsers at a time
 
 ###################################################################
 #3nd deploy group - maintenance, haproxy, and errands
