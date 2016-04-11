@@ -69,7 +69,7 @@ jobs:
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
     logstash_parser:
       filters:
-      - metrics: /var/vcap/packages/logsearch-config/logstash-filters-metric.conf
+      - monitor: /var/vcap/packages/logsearch-config/logstash-filters-monitor.conf
     nats_to_syslog:
       nats:
         subject: ">"
