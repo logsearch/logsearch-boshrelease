@@ -67,8 +67,8 @@ frontend cluster_monitor-in
     bind :<%= p("haproxy.cluster_monitor.inbound_port") %>
     <% end %>
 
-    <% if p('haproxy.kibana.auth.username') != "" %>
-    acl logged_in http_auth(kibana-user)
+    <% if p('haproxy.cluster_monitor.auth.username') != "" %>
+    acl logged_in http_auth(cluster-monitor-user)
     http-request auth realm "Cluster Health UI" if !logged_in
     <% end %>
 
@@ -84,5 +84,10 @@ backend cluster_monitor
 <% if p('haproxy.kibana.auth.username') != "" %>
 userlist kibana-user
     user <%= p('haproxy.kibana.auth.username') %> insecure-password <%= p('haproxy.kibana.auth.password') %>
+<% end %>
+
+<% if p('haproxy.cluster_monitor.auth.username') != "" %>
+userlist cluster-monitor-user
+    user <%= p('haproxy.cluster_monitor.auth.username') %> insecure-password <%= p('haproxy.cluster_monitor.auth.password') %>
 <% end %>
 
