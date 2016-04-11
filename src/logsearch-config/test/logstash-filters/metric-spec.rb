@@ -6,10 +6,8 @@ describe 'Metric filters' do
   before(:all) do
     load_filters <<-CONFIG
       filter {
-        #{File.read('target/logstash-filters-syslog-standard.conf')}
-        #{File.read('target/logstash-filters-bosh-nats.conf')}
-        #{File.read('target/logstash-filters-haproxy.conf')}
-				#{File.read('target/logstash-filters-metric.conf')}
+    #{File.read('target/logstash-filters-default.conf')}
+    #{File.read('target/logstash-filters-metric.conf')}
       }
     CONFIG
   end
