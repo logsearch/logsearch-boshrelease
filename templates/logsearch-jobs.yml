@@ -199,18 +199,18 @@ jobs:
       elasticsearch:
         master_node: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 
-- name: bulk_request
-  instances: 1
-  lifecycle: errand
-  templates:
-  - {name: bulk_request, release: logsearch}
-  resource_pool: errand
-  networks:
-  - name: default
-  properties:
-    bulk_request:
-      elasticsearch:
-        host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+#- name: bulk_request
+  #instances: 1
+  #lifecycle: errand
+  #templates:
+  #- {name: bulk_request, release: logsearch}
+  #resource_pool: errand
+  #networks:
+  #- name: default
+  #properties:
+    #bulk_request:
+      #elasticsearch:
+        #host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 
 - name: smoke-tests
   instances: 1
