@@ -32,6 +32,21 @@ describe 'Logstash filters' do
         expect(subject['tags']).to include("haproxy")
       end
     end
+  end
 
+  context "when parsing a logsearch cluster log message" do
+    when_parsing_log(
+      '@type' => "syslog",
+      '@message' => '<6>2016-04-12T13:04:56Z b5841bbc-ee95-48a9-8b42-0e60f52d1c5e nats-to-syslog[22919]: {"Data":"{\"deployment\":\"cf-a1-jarvice\",\"job\":\"ingestor\",\"index\":0,\"job_state\":\"running\",\"vitals\":{\"cpu\":{\"sys\":\"0.1\",\"user\":\"0.4\",\"wait\":\"0.2\"},\"disk\":{\"ephemeral\":{\"inode_percent\":\"0\",\"percent\":\"2\"},\"system\":{\"inode_percent\":\"31\",\"percent\":\"39\"}},\"load\":[\"0.00\",\"0.01\",\"0.05\"],\"mem\":{\"kb\":\"77300\",\"percent\":\"2\"},\"swap\":{\"kb\":\"0\",\"percent\":\"0\"}},\"node_id\":\"\"}","Reply":"","Subject":"hm.agent.heartbeat.1a03d017-68f3-4333-b05d-53ab95a6f3a4"}',
+    ) do
+
+      it "applies the haproxy parsers successfully" do
+        expect(subject['tags']).to include "auto_deployment"
+      end
+
+      it "sets @source.deployment" do
+        expect(subject['@source']["deployment"]).to eq "logsearch"
+      end
+    end
   end
 end

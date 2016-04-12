@@ -21,10 +21,16 @@ class LogStashPipeline
 end
 
 def load_filters(filters)
+   filters = replace_lookup_dictionary(filters)
    pipeline = LogStash::Pipeline.new(filters)
    pipeline.instance_eval { @filters.each(&:register) }
 
    LogStashPipeline.instance = pipeline
+
+end
+
+def replace_lookup_dictionary(filters)
+  filters.gsub(/\/var\/vcap\/.*(?=")/, "#{Dir.pwd}/target/deployment_lookup.yml")
 end
 
 def when_parsing_log(sample_event, &block)

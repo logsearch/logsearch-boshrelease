@@ -29,6 +29,9 @@ properties:
   logstash_parser.filters:
     description: "The configuration to embed into the logstash filters section. Can either be a set of parsing rules as a string or a list of hashes in the form of [{name: path_to_parsing_rules.conf}]"
     default: ''
+  logstash_parser.deployment_dictionary:
+    description: "A file that contains a hash of job name-deployment name keypairs for @source.deployment lookup"
+    default: "/var/vcap/packages/logsearch-config/deployment_lookup.yml"
   logstash_parser.inputs:
     description: |
       A list of input plugins, with a hash of options for each of them. Please refer to example below.

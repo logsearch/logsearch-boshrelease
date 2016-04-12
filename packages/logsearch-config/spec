@@ -3,6 +3,7 @@ name: logsearch-config
 dependencies: []
 files:
 - logsearch-config/target/*.conf
+- logsearch-config/target/deployment_lookup.yml
 - logsearch-config/mappings/*.json
 - logsearch-config/src/logstash-filters/if_it_looks_like_json.conf
 - logsearch-config/src/logstash-filters/timecop.conf
