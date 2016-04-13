@@ -59,10 +59,12 @@ READY=false
 while [ "false" == "$READY" ] ; do
     STATUS=$(curl -s http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p("elasticsearch_config.elasticsearch.port") %>'/_cat/health?h=status' | tr -d '[:space:]')
 
-    if [ "green" == "$STATUS" ] || [ "yellow" == "$STATUS" ] ; then
+    if [ "green" == "$STATUS" ] ; then
         READY=true
+        echo "Cluster is green!!!"
     else
         sleep 1
+        echo "Waiting for cluster to be green"
     fi
 done
 
