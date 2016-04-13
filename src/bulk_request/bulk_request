@@ -1,4 +1,0 @@
-{ "create" : { "_index" : "test", "_type" : "type1", "_id" : "1" } }
-{ "create" : { "_index" : "test", "_type" : "type2", "_id" : "2" } }
-{ "create" : { "_index" : "test", "_type" : "type3", "_id" : "3" } }
-{ "delete" : { "_index" : "test", "_type" : "type1", "_id" : "3" } }

@@ -1,7 +1,0 @@
----
-name: bulk_request
-
-dependencies: [] # no compile dependencies
-
-files:
-  - bulk_request/**/* 
