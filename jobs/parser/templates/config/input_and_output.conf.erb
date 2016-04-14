@@ -39,6 +39,9 @@ output {
         index => "<%= p('logstash_parser.elasticsearch_index') %>"
         document_type => "<%= p('logstash_parser.elasticsearch_index_type') %>"
         manage_template => false
+        <% if p('logstash_parser.elasticsearch_routing', nil) %>
+            routing =>  "<%= p('logstash_parser.elasticsearch_routing') %>"
+        <% end %>
     }
 
     <%= p('logstash_parser.outputs', '')  %>

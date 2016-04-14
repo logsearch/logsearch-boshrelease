@@ -59,6 +59,8 @@ properties:
   logstash_parser.elasticsearch_index_type:
     description: "The specific, dynamic index type name to write events to."
     default: "%{@type}"
+  logstash_parser.elasticsearch_routing:
+    description: "The routing to be used when indexing a document."
   logstash_parser.timecop.reject_greater_than_hours:
     description: "Logs with timestamps greater than this many hours in the future won't be parsed and will get tagged with fail/timecop"
     default: 1
