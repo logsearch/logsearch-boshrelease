@@ -107,6 +107,7 @@ describe 'Log type autodetection' do
         it "it does not get parsed as JSON" do
           expect(subject['tags']).to_not include("json/auto_detect")
           expect(subject['tags']).to_not include("_jsonparsefailure")
+          expect(subject['tags']).to_not include("_grokparsefailure")
         end
       end
     end
