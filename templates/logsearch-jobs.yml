@@ -64,7 +64,6 @@ jobs:
       elasticsearch:
         host: 127.0.0.1
         port: 9200
-      bulk_data_files: []
       templates:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 1, \"number_of_replicas\" : 0 } }"
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json

@@ -19,7 +19,4 @@ properties:
   elasticsearch_config.docs:
     description: "An array with key-value hashes; keys being doc path, value being doc source"
     default: []
-  elasticsearch_config.bulk_data_files:
-    description: "An array of file paths whose content contains request to the ES bulk api"
-    default: []
 
