@@ -68,6 +68,9 @@ properties:
   logstash_parser.enable_json_filter:
     description: "Toggles the if_it_looks_like_json.conf filter rule"
     default: false
+  logstash_parser.wait_for_templates:
+    description: "A list of index templates that need to be present in ElasticSearch before the process starts"
+    default: ["index_template"]
 
   logstash.output.elasticsearch.data_hosts:
     description: The list of elasticsearch data node IPs

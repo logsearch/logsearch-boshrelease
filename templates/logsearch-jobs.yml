@@ -3,9 +3,9 @@ releases:
   version: latest
 
 jobs:
-###################################################################
-#First deploy group - elasticsearch_master, cluster_monitor, queue
-###################################################################
+###############################################################################
+#First deploy group - elasticsearch_master, cluster_monitor, queue, maintenance
+###############################################################################
 - name: elasticsearch_master
   instances: 1
   templates:
@@ -46,6 +46,7 @@ jobs:
         host: 127.0.0.1
         port: 9200
       memory_limit: 30
+      wait_for_templates: [shards-and-replicas]
     elasticsearch:
       master_hosts: [127.0.0.1]
       cluster_name: monitor
@@ -94,12 +95,21 @@ jobs:
   networks:
   - name: default
     static_ips: (( static_ips(3) ))
+
+- name: maintenance
+  instances: 1
+  templates:
+  - {name: elasticsearch_config, release: logsearch}
+  - {name: curator, release: logsearch}
+  resource_pool: maintenance
+  networks:
+  - name: default
   update:
     serial: true # Block on this job to create deploy group 1
 
-###################################################################
+##################################################################
 #2nd deploy group - elasticsearch_data, kibana, ingestors, parsers
-###################################################################
+##################################################################
 
 - name: elasticsearch_data
   instances: 2
@@ -155,18 +165,9 @@ jobs:
     serial: false # Block to create deploy group 2
     max_in_flight: 4  # Its ok to update multiple parsers at a time
 
-###################################################################
-#3nd deploy group - maintenance, haproxy, and errands
-###################################################################
-
-- name: maintenance
-  instances: 1
-  templates:
-  - {name: elasticsearch_config, release: logsearch}
-  - {name: curator, release: logsearch}
-  resource_pool: maintenance
-  networks:
-  - name: default
+########################################
+#3nd deploy group - haproxy, and errands
+########################################
 
 - name: haproxy
   instances: 1
