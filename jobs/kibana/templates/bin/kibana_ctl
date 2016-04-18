@@ -7,6 +7,20 @@ set -u # report the usage of uninitialized variables
 source /var/vcap/jobs/kibana/helpers/ctl_setup.sh 'kibana'
 export PIDFILE=/var/vcap/sys/run/kibana/kibana.pid
 
+function wait_for_template {
+  local template_name="$1"
+  local ready=0
+  local MASTER_URL=<%= p("kibana.elasticsearch.host") %>:<%= p("kibana.elasticsearch.port") %>
+
+  while [ -n $ready ]; do
+    echo "Waiting for $template_name"
+    ready=$(curl -XHEAD -i "$MASTER_URL"/_template/$template_name | grep --quiet "200 OK")
+    sleep 1
+  done
+  echo "Found $template_name"
+}
+
+
 case $1 in
 
   start)
@@ -21,6 +35,10 @@ case $1 in
     export <%= env.keys[0] %>="<%= env.values[0] %>"
     <% end %>
 
+
+    <% if spec.job =~ /monitor/ %>
+    wait_for_template "shards-and-replicas"
+    <% end %>
 
     rm -rf /var/vcap/packages/kibana/installedPlugins/*
     <% p("kibana.plugins").each do |plugin| name, path = plugin.first %>
