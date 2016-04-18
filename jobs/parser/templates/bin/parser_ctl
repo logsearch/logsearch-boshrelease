@@ -6,6 +6,21 @@ set -u # report the usage of uninitialized variables
 # Setup env vars and folders for the webapp_ctl script
 source /var/vcap/jobs/parser/helpers/ctl_setup.sh 'parser'
 
+function wait_for_template {
+  local template_name="$1"
+  local MASTER_URL="<%= p("logstash.output.elasticsearch.data_hosts").first %>:9200"
+
+  set +e
+  while true;  do
+    echo "Waiting for index template to be uploaded: $template_name"
+    curl -X HEAD -f -i "$MASTER_URL"/_template/$template_name > /dev/null 2>&1
+    [ $? ] && break
+    sleep 5
+  done
+  set -e
+  echo "Found $template_name"
+}
+
 export PORT=${PORT:-5000}
 export LANG=en_US.UTF-8
 <% if 'auto' == p('logstash_parser.workers') %>
@@ -21,6 +36,10 @@ case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME
+
+    <% p("logstash_parser.wait_for_templates").each do |template| %>
+    wait_for_template "<%= template %>"
+    <% end %>
 
     # store this processes pid in $PIDFILE, since the exec below doesn't daemonize
     echo $$ > $PIDFILE
