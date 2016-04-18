@@ -5,11 +5,13 @@ The bulk api allows multiple actions to be sent to ES in 1 request. The full doc
 To use your own bulk requests with this release, take the following steps:
 
   * Fork the [logsearch-addons](https://github.com/logsearch/example-logsearch-addon-boshrelease) bosh release
-  * Modify the request file in `logsearch-addons/src/create_bulk_request/request`
-  * Colocate the create_bulk_request job template from the logsearch-addons onto the logsearch-boshrelease maintenance vm
+  * Modify the request file in `logsearch-addons/src/bulk_request/request`
+  * N.B. You can add as many bulk request files as you like in the
+  * `logsearch-addons/src/bulk-request` directory
+  * Colocate the bulk_request job template from the logsearch-addons as an errand into the logsearch-boshrelease
   * Include the logsearch-addons under the releases section of your manifest
-  * Include the path to the bulk request files under elasticsearch_config.bulk_data_files (this supports multiple files, which are configurable in the [logsearch-addons](https://github.com/logsearch/example-logsearch-addon-boshrelease) bosh release)
   * Upload the addons release and deploy.
+  * Run the errand `bosh run errand bulk_request`
 
 Your manifest should look something like:
 
@@ -24,20 +26,22 @@ releases:
 
 ...
 
+jobs:
 - instances: 1
-  name: maintenance
+  lifecycle: errand
+  name: bulk_request
   networks:
   - name: default
-  resource_pool: maintenance
+  resource_pool: errand
   templates:
-  - name: create_bulk_request
+  - name: bulk_request
     release: logsearch-addons
-  - name: elasticsearch_config
-    release: logsearch
-  - name: curator
-    release: logsearch
-	properties:
-    elasticsearch_config:
-      bulk_data_files: [/var/vcap/packages/create_bulk_request/request]
-
+  properties:
+    bulk_request:
+      elasticsearch:
+	host: <your_elasticsearch_master_ip>
+  resource_pool: errand
+  templates:
+  - name: bulk_request
+  release: logsearch-addons
 ```
