@@ -10,6 +10,7 @@ meta:
     maintenance: m1.small
     monitor: m1.small
     haproxy: m1.small
+    errand: m1.small
   stemcell:
     name: bosh-openstack-kvm-ubuntu-trusty-go_agent
     version: latest
@@ -22,6 +23,7 @@ name: logsearch
 director_uuid: DIRECTOR-UUID
 
 jobs:
+# Deploy group 1
 - name: elasticsearch_master
   instances: 1
   networks:
@@ -30,23 +32,19 @@ jobs:
   resource_pool: elasticsearch_master
   persistent_disk_pool: elasticsearch_master
 
-- name: elasticsearch_data
-  instances: 2
-  networks:
-  - name: default
-    static_ips: (( static_ips(16, 17) ))
-  resource_pool: elasticsearch_data
-  persistent_disk_pool: elasticsearch_data
-
-- name: ingestor
+- name: cluster_monitor
   instances: 1
   networks:
   - name: default
-    static_ips: (( static_ips(1) ))
-  - name: elastic
-    static_ips:
-    - SOME-ELASTIC-IP
-  resource_pool: ingestor
+    static_ips: (( static_ips(2) ))
+  resource_pool: cluster_monitor
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.0.0.6]
 
 - name: queue
   instances: 1
@@ -56,12 +54,14 @@ jobs:
   resource_pool: queue
   persistent_disk_pool: queue
 
-- name: parser
-  instances: 1
+# Deploy group 2
+- name: elasticsearch_data
+  instances: 2
   networks:
   - name: default
-    static_ips: (( static_ips(4) ))
-  resource_pool: parser
+    static_ips: (( static_ips(16, 17) ))
+  resource_pool: elasticsearch_data
+  persistent_disk_pool: elasticsearch_data
 
 - name: kibana
   instances: 1
@@ -70,11 +70,37 @@ jobs:
     static_ips: (( static_ips(8) ))
   resource_pool: kibana
 
+- name: ingestor
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(1) ))
+  resource_pool: ingestor
+
+- name: parser
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(4) ))
+  resource_pool: parser
+
+# Deploy group 3
 - name: maintenance
   instances: 1
   networks:
   - name: default
+    static_ips: (( static_ips(6) ))
   resource_pool: maintenance
+
+- name: haproxy
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(5) ))
+  - name: elastic
+    static_ips:
+    - SOME-ELASTIC-IP
+  resource_pool: haproxy
 
 networks:
 - name: default
