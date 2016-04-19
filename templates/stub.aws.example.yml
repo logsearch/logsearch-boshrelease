@@ -28,6 +28,9 @@ jobs:
 - name: queue
   instances: 1
 
+- name: maintenance
+  instances: 1
+
 # Deploy group 2
 - name: elasticsearch_data
   instances: 2
@@ -42,9 +45,6 @@ jobs:
   instances: 2
 
 # Deploy group 3
-- name: maintenance
-  instances: 1
-
 - name: haproxy
   instances: 1
   networks:
