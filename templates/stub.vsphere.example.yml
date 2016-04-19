@@ -1,6 +1,3 @@
----
-meta:
-
 releases:
 - name: logsearch
   version: latest
@@ -9,8 +6,47 @@ name: logsearch-ashamalama
 director_uuid: 12345-12345-12345-12345
 
 
+jobs:
+# Deploy group 1
+- name: elasticsearch_master
+  instances: 1
+
+- name: cluster_monitor
+  instances: 1
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.0.0.6]
+
+- name: queue
+  instances: 1
+
+- name: maintenance
+  instances: 1
+
+# Deploy group 2
+- name: elasticsearch_data
+  instances: 2
+
+- name: kibana
+  instances: 1
+
+- name: ingestor
+  instances: 1
+
+- name: parser
+  instances: 2
+
+# Deploy group 3
+- name: haproxy
+  instances: 1
+
 networks:
 - name: default
+  type: manual
   subnets:
   - range: 10.10.48.0/24
     gateway: 10.10.48.1

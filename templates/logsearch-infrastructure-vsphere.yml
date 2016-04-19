@@ -1,80 +1,72 @@
----
-meta:
-  <<: (( merge ))
-  stemcell:
-    name: bosh-vsphere-esxi-ubuntu-trusty-go_agent
-    version: latest
-
-jobs:
-  - name: api
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(0) ))
-
-  - name: ingestor
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(1) ))
-
-  - name: queue
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(2) ))
-
-  - name: parser
-    instances: 1
-    networks:
-      - name: default
-  - name: elasticsearch_persistent
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(3) ))
-
-  - name: elasticsearch_autoscale
-    instances: 1
-    networks:
-      - name: default
-        static_ips: (( static_ips(4) ))
-
 compilation:
   cloud_properties:
     ram: 4096
     disk: 30000
     cpu: 2
 
+meta:
+  stemcell:
+    name: bosh-vsphere-esxi-ubuntu-trusty-go_agent
+    version: latest
+
 resource_pools:
-- name: logsearch_api
+- name: elasticsearch_master
   cloud_properties:
     ram: 4096
     disk: 30000
     cpu: 2
 
-- name: logsearch_ingestor
+- name: elasticsearch_data
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: queue
   cloud_properties:
     ram: 2048
     disk: 4096
     cpu: 2
 
-- name: logsearch_elasticsearch
+- name: ingestor
   cloud_properties:
     ram: 4096
     disk: 30000
     cpu: 2
 
-- name: logsearch_queue
+- name: parser
   cloud_properties:
     ram: 4096
     disk: 30000
     cpu: 2
 
-- name: logsearch_parser
+- name: maintenance
   cloud_properties:
     ram: 4096
     disk: 30000
     cpu: 2
 
-networks: (( merge ))
+- name: kibana
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: cluster_monitor
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: haproxy
+  cloud_properties:
+    ram: 4096
+    disk: 30000
+    cpu: 2
+
+- name: errand
+  cloud_properties:
+    ram: 1024
+    disk: 30000
+    cpu: 2
+
