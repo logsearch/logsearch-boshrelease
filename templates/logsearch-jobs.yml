@@ -164,11 +164,11 @@ jobs:
     serial: false # Block to create deploy group 2
     max_in_flight: 4  # Its ok to update multiple parsers at a time
 
-########################################
-#3nd deploy group - haproxy, and errands
-########################################
+####################################################
+#3nd deploy group - ls-router (haproxy), and errands
+####################################################
 
-- name: haproxy
+- name: ls-router
   instances: 1
   templates:
   - { name: haproxy, release: logsearch }
@@ -176,7 +176,7 @@ jobs:
   networks:
   - name: default
     default: [gateway, dns]
-    static_ips: (( static_ips(6) ))
+    static_ips: (( static_ips(9) ))
   properties:
     haproxy:
       ingestor:
@@ -211,7 +211,7 @@ jobs:
   properties:
     smoke_tests:
       syslog_ingestor:
-        host: (( grab jobs.haproxy.networks.[0].static_ips.[0] ))
+        host: (( grab jobs.ls-router.networks.[0].static_ips.[0] ))
       elasticsearch_master:
         host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 

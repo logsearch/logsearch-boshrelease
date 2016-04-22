@@ -92,7 +92,7 @@ jobs:
     static_ips: (( static_ips(6) ))
   resource_pool: maintenance
 
-- name: haproxy
+- name: ls-router
   instances: 1
   networks:
   - name: default

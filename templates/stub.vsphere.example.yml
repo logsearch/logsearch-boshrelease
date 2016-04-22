@@ -41,7 +41,7 @@ jobs:
   instances: 2
 
 # Deploy group 3
-- name: haproxy
+- name: ls-router
   instances: 1
 
 networks:
