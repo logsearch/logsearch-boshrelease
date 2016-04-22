@@ -8,10 +8,10 @@ director_uuid: 12345-12345-12345-12345
 
 jobs:
 # Deploy group 1
-- name: elasticsearch_master
+- name: ls-elasticsearch_master
   instances: 1
 
-- name: cluster_monitor
+- name: ls-cluster_monitor
   instances: 1
   properties:
     nats_to_syslog:
@@ -21,27 +21,27 @@ jobs:
         port: 4222
         machines: [10.0.0.6]
 
-- name: queue
+- name: ls-queue
   instances: 1
 
-- name: maintenance
+- name: ls-maintenance
   instances: 1
 
 # Deploy group 2
-- name: elasticsearch_data
+- name: ls-elasticsearch_data
   instances: 2
 
-- name: kibana
+- name: ls-kibana
   instances: 1
 
-- name: ingestor
+- name: ls-ingestor
   instances: 1
 
-- name: parser
+- name: ls-parser
   instances: 2
 
 # Deploy group 3
-- name: haproxy
+- name: ls-router
   instances: 1
 
 networks:

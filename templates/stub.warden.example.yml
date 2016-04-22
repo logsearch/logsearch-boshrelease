@@ -3,28 +3,28 @@ name: logsearch
 director_uuid: <%= `bosh status --uuid` %>
 
 jobs:
-- name: elasticsearch_master
+- name: ls-elasticsearch_master
   instances: 1
 
-- name: elasticsearch_data
+- name: ls-elasticsearch_data
   instances: 2
 
-- name: ingestor
+- name: ls-ingestor
   instances: 1
 
-- name: queue
+- name: ls-queue
   instances: 1
 
-- name: parser
+- name: ls-parser
   instances: 1
 
-- name: kibana
+- name: ls-kibana
   instances: 1
 
-- name: maintenance
+- name: ls-maintenance
   instances: 1
 
-- name: cluster_monitor
+- name: ls-cluster_monitor
   instances: 1
   properties:
     nats_to_syslog:

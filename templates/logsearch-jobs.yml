@@ -6,7 +6,7 @@ jobs:
 ###############################################################################
 #First deploy group - elasticsearch_master, cluster_monitor, queue, maintenance
 ###############################################################################
-- name: elasticsearch_master
+- name: ls-elasticsearch_master
   instances: 1
   templates:
   - {name: elasticsearch, release: logsearch}
@@ -23,7 +23,7 @@ jobs:
   update:
     max_in_flight: 1 # Should never update more than one ES master node at a time or cluster will go down
 
-- name: cluster_monitor
+- name: ls-cluster_monitor
   instances: 1
   templates:
   - { release: logsearch, name: queue }
@@ -85,7 +85,7 @@ jobs:
       syslog:
         port: 514
 
-- name: queue
+- name: ls-queue
   instances: 1
   templates:
   - {name: queue, release: logsearch}
@@ -95,7 +95,7 @@ jobs:
   - name: default
     static_ips: (( static_ips(3) ))
 
-- name: maintenance
+- name: ls-maintenance
   instances: 1
   templates:
   - {name: elasticsearch_config, release: logsearch}
@@ -110,7 +110,7 @@ jobs:
 #2nd deploy group - elasticsearch_data, kibana, ingestors, parsers
 ##################################################################
 
-- name: elasticsearch_data
+- name: ls-elasticsearch_data
   instances: 2
   templates:
   - {name: elasticsearch, release: logsearch}
@@ -127,7 +127,7 @@ jobs:
   update:
     max_in_flight: 1 # Only update 1 ES data node at a time or risk downtime
 
-- name: kibana
+- name: ls-kibana
   instances: 1
   templates:
   - {name: kibana, release: logsearch}
@@ -136,7 +136,7 @@ jobs:
   - name: default
     static_ips: (( static_ips(5) ))
 
-- name: ingestor
+- name: ls-ingestor
   instances: 1
   templates:
   - {name: ingestor_syslog, release: logsearch}
@@ -151,7 +151,7 @@ jobs:
       relp:
         port: ~
 
-- name: parser
+- name: ls-parser
   instances: 2
   templates:
   - {name: parser, release: logsearch}
@@ -165,10 +165,10 @@ jobs:
     max_in_flight: 4  # Its ok to update multiple parsers at a time
 
 ########################################
-#3nd deploy group - haproxy, and errands
+#3nd deploy group - router, and errands
 ########################################
 
-- name: haproxy
+- name: ls-router
   instances: 1
   templates:
   - { name: haproxy, release: logsearch }
@@ -180,11 +180,11 @@ jobs:
   properties:
     haproxy:
       ingestor:
-        backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
+        backend_servers: (( grab jobs.ls-ingestor.networks.[0].static_ips ))
       kibana:
-        backend_servers: (( grab jobs.kibana.networks.[0].static_ips ))
+        backend_servers: (( grab jobs.ls-kibana.networks.[0].static_ips ))
       cluster_monitor:
-        backend_servers: (( grab jobs.cluster_monitor.networks.[0].static_ips ))
+        backend_servers: (( grab jobs.ls-cluster_monitor.networks.[0].static_ips ))
 
 - name: enable_shard_allocation
   instances: 1
@@ -197,7 +197,7 @@ jobs:
   properties:
     enable_shard_allocation:
       elasticsearch:
-        master_node: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+        master_node: (( grab jobs.ls-elasticsearch_master.networks.default.static_ips.[0] ))
 
 - name: smoke-tests
   instances: 1
@@ -211,31 +211,31 @@ jobs:
   properties:
     smoke_tests:
       syslog_ingestor:
-        host: (( grab jobs.haproxy.networks.[0].static_ips.[0] ))
+        host: (( grab jobs.ls-router.networks.[0].static_ips.[0] ))
       elasticsearch_master:
-        host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+        host: (( grab jobs.ls-elasticsearch_master.networks.default.static_ips.[0] ))
 
 # Global properties
 properties:
   curator:
-    elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+    elasticsearch_host: (( grab jobs.ls-elasticsearch_master.networks.default.static_ips.[0] ))
   logstash_parser:
     debug: false
   logstash_ingestor:
     debug: false
   redis:
-    host: (( grab jobs.queue.networks.default.static_ips.[0] ))
+    host: (( grab jobs.ls-queue.networks.default.static_ips.[0] ))
   elasticsearch:
     log_level: DEBUG
-    master_hosts: (( grab jobs.elasticsearch_master.networks.default.static_ips ))
+    master_hosts: (( grab jobs.ls-elasticsearch_master.networks.default.static_ips ))
     cluster_name: logsearch
     exec: ~
   kibana:
     elasticsearch:
-      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      host: (( grab jobs.ls-elasticsearch_master.networks.default.static_ips.[0] ))
       port: 9200
   elasticsearch_config:
     elasticsearch:
-      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      host: (( grab jobs.ls-elasticsearch_master.networks.default.static_ips.[0] ))
     templates:
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json

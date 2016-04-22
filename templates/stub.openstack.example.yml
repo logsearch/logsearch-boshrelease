@@ -24,7 +24,7 @@ director_uuid: DIRECTOR-UUID
 
 jobs:
 # Deploy group 1
-- name: elasticsearch_master
+- name: ls-elasticsearch_master
   instances: 1
   networks:
   - name: default
@@ -32,7 +32,7 @@ jobs:
   resource_pool: elasticsearch_master
   persistent_disk_pool: elasticsearch_master
 
-- name: cluster_monitor
+- name: ls-cluster_monitor
   instances: 1
   networks:
   - name: default
@@ -46,7 +46,7 @@ jobs:
         port: 4222
         machines: [10.0.0.6]
 
-- name: queue
+- name: ls-queue
   instances: 1
   networks:
   - name: default
@@ -55,7 +55,7 @@ jobs:
   persistent_disk_pool: queue
 
 # Deploy group 2
-- name: elasticsearch_data
+- name: ls-elasticsearch_data
   instances: 2
   networks:
   - name: default
@@ -63,21 +63,21 @@ jobs:
   resource_pool: elasticsearch_data
   persistent_disk_pool: elasticsearch_data
 
-- name: kibana
+- name: ls-kibana
   instances: 1
   networks:
   - name: default
     static_ips: (( static_ips(8) ))
   resource_pool: kibana
 
-- name: ingestor
+- name: ls-ingestor
   instances: 1
   networks:
   - name: default
     static_ips: (( static_ips(1) ))
   resource_pool: ingestor
 
-- name: parser
+- name: ls-parser
   instances: 1
   networks:
   - name: default
@@ -85,14 +85,14 @@ jobs:
   resource_pool: parser
 
 # Deploy group 3
-- name: maintenance
+- name: ls-maintenance
   instances: 1
   networks:
   - name: default
     static_ips: (( static_ips(6) ))
   resource_pool: maintenance
 
-- name: haproxy
+- name: ls-haproxy
   instances: 1
   networks:
   - name: default
