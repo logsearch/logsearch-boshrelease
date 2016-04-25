@@ -59,4 +59,16 @@ describe 'Metric filters' do
       expect(subject['tags']).to include 'fail/metric'
     end
   end
+
+  context "when parsing messages from the router" do
+    when_parsing_log(
+      '@type' => "syslog",
+      '@message' => "<46>Dec 16 15:24:05 ls-router[9252]: 52.62.56.30:45940 [16/Dec/2015:15:24:02.638] syslog-in~ ingestors/node1 328/-1/3332 0 SC 8/8/8/0/3 0/0",
+    ) do
+
+      it "applies the haproxy parsers successfully" do
+        expect(subject['tags']).to include("haproxy")
+      end
+    end
+  end
 end

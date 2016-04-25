@@ -15,26 +15,37 @@ describe "Rules for parsing haproxy messages" do
     context "when parsing failure messages" do
       when_parsing_log(
         '@message' => "94.199.134.2:58725 [17/Dec/2015:11:45:37.547] syslog-in/1: SSL handshake failure",
-        'syslog_program' => "haproxy"
+        'syslog_program' => "ls-router"
       ) do
 
         it "adds the syslog_standard tag" do
           expect(subject['tags']).to include("haproxy")
         end
+
         it "extract the message" do
           expect(subject['haproxy']['message']).to include("SSL handshake failure")
         end
+
+        it "adds @source.job" do
+          expect(subject["@source"]["job"]).to eq "router"
+        end
       end
+
       when_parsing_log(
         '@message' => 'Server ingestors/node0 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 0 active and 0 backup servers left. 52 sessions active, 0 requeued, 0 remaining in queue.',
-        'syslog_program' => "haproxy"
+        'syslog_program' => "ls-router"
       ) do
 
         it "adds the syslog_standard tag" do
           expect(subject['tags']).to include("haproxy")
         end
+
         it "extract the message" do
           expect(subject['haproxy']['message']).to eq('Server ingestors/node0 is DOWN, reason: Layer4 connection problem, info: "Connection refused", check duration: 0ms. 0 active and 0 backup servers left. 52 sessions active, 0 requeued, 0 remaining in queue.')
+        end
+
+        it "adds @source.job" do
+          expect(subject["@source"]["job"]).to eq "router"
         end
       end
     end
@@ -42,7 +53,7 @@ describe "Rules for parsing haproxy messages" do
     context "when parsing startup messages" do
       when_parsing_log(
         '@message' => "Proxy ingestors started.",
-        'syslog_program' => "haproxy"
+        'syslog_program' => "ls-router"
       ) do
 
         it "adds the syslog_standard tag" do
@@ -57,7 +68,7 @@ describe "Rules for parsing haproxy messages" do
     context "when parsing connection details" do
       when_parsing_log(
         '@message' => "52.62.56.30:45940 [16/Dec/2015:15:24:02.638] syslog-in~ ingestors/node1 328/-1/3332 0 SC 8/8/8/0/3 0/0",
-        'syslog_program' => "haproxy"
+        'syslog_program' => "ls-router"
       ) do
 
         it "adds the syslog_standard tag" do
@@ -149,7 +160,7 @@ describe "Rules for parsing haproxy messages" do
       context "when the client aborts the connection" do
         when_parsing_log(
           '@message' => "52.62.56.30:45940 [16/Dec/2015:15:24:02.638] syslog-in~ ingestors/node1 328/-1/3332 0 CD 8/8/8/0/3 0/0",
-          'syslog_program' => "haproxy"
+          'syslog_program' => "ls-router"
         ) do
 
           it "populates the termination description" do
@@ -161,7 +172,7 @@ describe "Rules for parsing haproxy messages" do
       context "when the client sends no data" do
         when_parsing_log(
           '@message' => "52.62.56.30:45940 [16/Dec/2015:15:24:02.638] syslog-in~ ingestors/node1 328/-1/3332 0 cD 8/8/8/0/3 0/0",
-          'syslog_program' => "haproxy"
+          'syslog_program' => "ls-router"
         ) do
 
           it "populates the termination description" do
@@ -173,7 +184,7 @@ describe "Rules for parsing haproxy messages" do
       context "when the backend sends no data" do
         when_parsing_log(
           '@message' => "52.62.56.30:45940 [16/Dec/2015:15:24:02.638] syslog-in~ ingestors/node1 328/-1/3332 0 sD 8/8/8/0/3 0/0",
-          'syslog_program' => "haproxy"
+          'syslog_program' => "ls-router"
         ) do
 
           it "populates the termination description" do

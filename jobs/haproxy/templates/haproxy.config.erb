@@ -1,5 +1,6 @@
 global
     log <%= p('haproxy.syslog_server') %> syslog <%= p('haproxy.log_level') %>
+    log-tag ls-router
     daemon
     user vcap
     group vcap
