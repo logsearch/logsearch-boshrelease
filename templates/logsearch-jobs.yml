@@ -179,6 +179,7 @@ jobs:
     static_ips: (( static_ips(9) ))
   properties:
     haproxy:
+      syslog_server: (( grab jobs.cluster_monitor.networks.[0].static_ips ))
       ingestor:
         backend_servers: (( grab jobs.ingestor.networks.[0].static_ips ))
       kibana:
