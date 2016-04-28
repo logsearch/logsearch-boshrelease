@@ -227,7 +227,6 @@ properties:
   redis:
     host: (( grab jobs.queue.networks.default.static_ips.[0] ))
   elasticsearch:
-    log_level: DEBUG
     master_hosts: (( grab jobs.elasticsearch_master.networks.default.static_ips ))
     cluster_name: logsearch
     exec: ~
