@@ -8,13 +8,13 @@ source /var/vcap/jobs/queue/helpers/ctl_setup.sh 'queue'
 
 export LANG=en_US.UTF-8
 
-NINETY_PERCENT_OF_RAM=$(($(grep MemTotal /proc/meminfo | awk '{print $2}') * 9/10 * 1024))
 case $1 in
 
   start)
     pid_guard $PIDFILE $JOB_NAME
 
-    sed -i "s/NINETY_PERCENT_OF_RAM/$NINETY_PERCENT_OF_RAM/" $JOB_DIR/config/redis.conf
+    MEMORY_LIMIT=$(($(grep MemTotal /proc/meminfo | awk '{print $2}') * <%= p('redis.maxmemory') %>/100 * 1024))
+    sed -i "s/^maxmemory.*/maxmemory $MEMORY_LIMIT/" $JOB_DIR/config/redis.conf
     chpst -u vcap /var/vcap/packages/redis/bin/redis-server $JOB_DIR/config/redis.conf
 
     ;;

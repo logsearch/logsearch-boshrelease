@@ -55,6 +55,7 @@ jobs:
         allow_data: true
     redis:
       host: 127.0.0.1
+      maxmemory: 10
     curator:
       elasticsearch_host: 127.0.0.1
       elasticsearch_port: 9200
