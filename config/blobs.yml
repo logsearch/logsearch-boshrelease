@@ -43,7 +43,7 @@ kibana/kibana-4.4.0-linux-x64.tar.gz:
   object_id: 87e63448-e145-4844-b01a-9ede4d5c5389
   sha: 82fa06e11942e13bba518655c1d34752ca259bab
   size: 30878925
-logstash/logstash-all-plugins-2.2.3-manual-from-github-tag-v2.2.3.tar.gz:
-  object_id: 7997b80e-d704-4a1e-9589-039456154070
-  sha: 4258d696708c6888b92a1ebfd90a83efc5fb3561
-  size: 131826149
+logstash/logstash-all-plugins-2.3.1.tar.gz:
+  object_id: 46435264-83f9-498d-8c2e-6137ca7aabd0
+  sha: f9a8c9fee8252a6435fbf1093aa9abba1c3d82eb
+  size: 130666101

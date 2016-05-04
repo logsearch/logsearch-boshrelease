@@ -3,7 +3,5 @@ name: logstash
 dependencies:
   - java8
 files:
-  # git clone https://github.com/elastic/logstash.git --recursive
-  # git checkout v2.2.3
-  # rake artifact:tar-all-plugins
+  # https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.3.1.tar.gz
   - logstash/logstash-all-plugins-*.tar.gz
