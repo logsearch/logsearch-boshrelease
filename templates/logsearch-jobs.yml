@@ -160,7 +160,6 @@ jobs:
   resource_pool: parser
   networks:
   - name: default
-    static_ips: (( static_ips(4, 7) ))
   update:
     serial: false # Block to create deploy group 2
     max_in_flight: 4  # Its ok to update multiple parsers at a time
