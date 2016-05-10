@@ -219,7 +219,9 @@ jobs:
 # Global properties
 properties:
   curator:
-    elasticsearch_host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+    elasticsearch:
+      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      port: 9200
   logstash_parser:
     debug: false
   logstash_ingestor:
