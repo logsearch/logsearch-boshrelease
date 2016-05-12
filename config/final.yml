@@ -2,5 +2,7 @@
 blobstore:
   provider: s3
   options:
-    bucket_name: logsearch-boshrelease
+    bucket_name: logsearch-bosh-release-blobs
+    region: eu-west-1
+    endpoint: https://s3-eu-west-1.amazonaws.com
 final_name: logsearch
