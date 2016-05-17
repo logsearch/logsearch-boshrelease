@@ -1,17 +1,20 @@
 # abort script on any command that exit with a non zero value
 set -e
 
+# Detect # of CPUs so make jobs can be parallelized
+CPUS=`grep -c ^processor /proc/cpuinfo`
+
 echo "Extracting pcre..."
 tar xzf haproxy/pcre-8.38.tar.gz
 cd pcre-8.38
 ./configure
-make
+make -j${CPUS}
 make install
 cd ..
 
 tar xzf haproxy/haproxy-1.6.2.tar.gz
 cd haproxy-1.6.2
-make TARGET=linux2628 USE_OPENSSL=1 USE_STATIC_PCRE=1 USE_ZLIB=1
+make TARGET=linux2628 USE_OPENSSL=1 USE_STATIC_PCRE=1 USE_ZLIB=1 -j${CPUS}
 mkdir ${BOSH_INSTALL_TARGET}/bin
 cp haproxy ${BOSH_INSTALL_TARGET}/bin/
 chmod 755 ${BOSH_INSTALL_TARGET}/bin/haproxy
