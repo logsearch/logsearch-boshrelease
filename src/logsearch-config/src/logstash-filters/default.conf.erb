@@ -5,5 +5,3 @@ if [@type] in ["syslog", "relp"] {
 if [syslog_program] == "nats-to-syslog" {
   <%= File.read('src/logstash-filters/snippets/bosh_nats.conf').gsub(/^/, '  ') %>
 }
-
-<%= File.read('src/logstash-filters/snippets/deployment.conf').gsub(/^/, '  ') %>

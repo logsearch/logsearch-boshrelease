@@ -7,6 +7,7 @@ describe 'Logstash filters' do
     load_filters <<-CONFIG
       filter {
         #{File.read('target/logstash-filters-default.conf')}
+        #{File.read('src/logstash-filters/deployment.conf')}
       }
     CONFIG
   end

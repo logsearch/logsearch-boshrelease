@@ -7,7 +7,7 @@ describe "@source.deployment lookup" do
     # change path of the source.deployment translation table so it works in test
     load_filters <<-CONFIG
       filter {
-        #{File.read("src/logstash-filters/snippets/deployment.conf")}
+        #{File.read("src/logstash-filters/deployment.conf")}
       }
     CONFIG
   end

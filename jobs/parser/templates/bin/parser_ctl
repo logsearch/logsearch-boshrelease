@@ -69,6 +69,7 @@ case $1 in
       cat /var/vcap/packages/logsearch-config/if_it_looks_like_json.conf >> ${JOB_DIR}/config/logstash.conf
     <% end %>
     cat /var/vcap/packages/logsearch-config/timecop.conf >> ${JOB_DIR}/config/logstash.conf
+    cat /var/vcap/packages/logsearch-config/deployment.conf >> ${JOB_DIR}/config/logstash.conf
 
     echo "} #close filters" >> ${JOB_DIR}/config/logstash.conf
 
