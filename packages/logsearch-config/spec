@@ -7,3 +7,4 @@ files:
 - logsearch-config/mappings/*.json
 - logsearch-config/src/logstash-filters/if_it_looks_like_json.conf
 - logsearch-config/src/logstash-filters/timecop.conf
+- logsearch-config/src/logstash-filters/deployment.conf
