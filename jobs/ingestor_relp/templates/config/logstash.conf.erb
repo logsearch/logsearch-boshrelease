@@ -1,6 +1,6 @@
 input {
 	relp {
-		add_field => { "_logstash_input" => "relp" }
+		add_field => [ "_logstash_input", "relp" ]
 		host => "0.0.0.0"
 		port => "<%= p("logstash_ingestor.relp.port") %>"
 	}
