@@ -65,7 +65,13 @@
     #
 
     ruby {
-        code => "(event['@message'] = event['@message'][0,<%= p("logstash_parser.message_max_size") %>] and (event['tags'] ||= []) << '_groktrimmed') if event['@message'] and event['@message'].length > <%= p("logstash_parser.message_max_size") %>"
+        code => '
+            max_line_length = <%= p("logstash_parser.message_max_size") %>
+            if event["@message"] && event["@message"].length > max_line_length
+                event["@message"] = event["@message"][0, max_line_length]
+                event["tags"] ||= [] << "_groktrimmed"
+            end
+        '
     }
 
     #
