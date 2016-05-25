@@ -3,5 +3,3 @@ check process ingestor_syslog
   start program "/var/vcap/jobs/ingestor_syslog/bin/monit_debugger ingestor_syslog_ctl '/var/vcap/jobs/ingestor_syslog/bin/ingestor_syslog_ctl start'"
   stop program "/var/vcap/jobs/ingestor_syslog/bin/monit_debugger ingestor_syslog_ctl '/var/vcap/jobs/ingestor_syslog/bin/ingestor_syslog_ctl stop'"
   group vcap
-  if failed port <%= p("logstash_ingestor.syslog.port") %> type udp 5 times within 10 cycles then restart
-  if failed port <%= p("logstash_ingestor.syslog.port") %> type tcp 5 times within 10 cycles then restart
