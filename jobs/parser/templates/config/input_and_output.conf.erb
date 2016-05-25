@@ -44,5 +44,10 @@ output {
         <% end %>
     }
 
+    file {
+        path => "/var/vcap/store/parser/archive/<%= Time.now.strftime '%Y-%m-%d-%H' %>-<%= rand(36**20).to_s(36) %>.log.gz"
+        gzip => true
+    }
+
     <%= p('logstash_parser.outputs', '')  %>
 }
