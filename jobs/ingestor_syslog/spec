@@ -55,6 +55,12 @@ properties:
   redis.key: 
     description: Name of queue to pull messages from
     default: logstash
+  redis.congestion_interval:
+    description: How often to check for queue length. Default is one second. Zero means to check on every message
+    default: 10
+  redis.congestion_threshold:
+    description: Max number of messages to allow in the queue.  Will stop (and drop) ingesting new messages when this is reached
+    default: 1000000
 
   archiver.enabled:
     default: false
