@@ -68,7 +68,9 @@ output {
                   "data_type" => "list",
                   "key" => p('redis.key'),
                   "batch" => true,
-                  "batch_events" => 50
+                  "batch_events" => 50,
+                  "congestion_interval" => p('redis.congestion_interval'),
+                  "congestion_threshold" => p('redis.congestion_threshold')
                 } %>
               <% end %>
 	      <% output['options'].each do | k, v | %>
