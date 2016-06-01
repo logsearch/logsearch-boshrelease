@@ -15,6 +15,8 @@ templates:
   config/filters_post.conf.erb: config/filters_post.conf
   config/filters_override.conf.erb: config/filters_override.conf
   logsearch/logs.yml: logsearch/logs.yml
+  config/rsyslog_archiver.conf: config/rsyslog_archiver.conf
+  bin/pre-start: bin/pre-start
 properties:
   logstash.metadata_level:
     description: "Whether to include additional metadata throughout the event lifecycle. NONE = disabled, DEBUG = fully enabled"
@@ -89,3 +91,13 @@ properties:
   redis.key:
     description: Name of queue to pull messages from
     default: logstash
+
+  syslog_forwarder.logfiles:
+    description: List of local log files to be sent to a remote syslog server
+    default: []
+  syslog_forwarder.hostname:
+    description: Hostname of the remote syslog server
+    default: ""
+  syslog_forwarder.port:
+    description: Port of the remote syslog server
+    default: 514
