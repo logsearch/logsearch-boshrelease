@@ -32,7 +32,7 @@ describe "it parses logs from the archiver" do
         end
 
         it "sets upload_status to SUCCESS" do
-          expect(subject["upload_status"]).to eq "SUCCESS"
+          expect(subject["archiver"]["upload_status"]).to eq "SUCCESS"
         end
       end
     end
@@ -48,7 +48,7 @@ describe "it parses logs from the archiver" do
         end
 
         it "sets upload_status to FAILURE" do
-          expect(subject["upload_status"]).to eq "FAILURE"
+          expect(subject["archiver"]["upload_status"]).to eq "FAILURE"
         end
       end
     end
@@ -66,7 +66,7 @@ describe "it parses logs from the archiver" do
       end
 
       it "doesn't set upload_status" do
-        expect(subject["upload_status"]).to be_nil
+        expect(subject["archiver"]).to be_nil
       end
     end
   end
