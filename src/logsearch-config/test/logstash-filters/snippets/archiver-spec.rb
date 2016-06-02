@@ -16,10 +16,9 @@ describe "it parses logs from the archiver" do
       when_parsing_log(
         "syslog_program" => "archiver",
         "syslog_sd_params" => {"job" => "parser", "index" => "0"},
-        "@message" => '{"timestamp":"1464366960.747321367","source":"ServiceBackup","message":"ServiceBackup.Upload backup completed without error","log_level":1,"data":{}}'
+        "@message" => '{"timestamp":"1464366960.747321367","source":"ServiceBackup","message":"ServiceBackup.Upload backup completed without error","duration_in_seconds":15,"size_in_bytes":1000,"log_level":1,"data":{}}'
       ) do
-
-        it "adds the a archiver tag" do
+        it "adds the archiver tag" do
           expect(subject["tags"]).to include "archiver"
         end
 
@@ -33,6 +32,10 @@ describe "it parses logs from the archiver" do
 
         it "sets upload_status to SUCCESS" do
           expect(subject["archiver"]["upload_status"]).to eq "SUCCESS"
+        end
+
+        it "extracts the archiving duration" do
+          expect(subject["archiver"]["duration"]).to eq 15
         end
       end
     end
