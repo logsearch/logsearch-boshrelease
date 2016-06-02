@@ -1,3 +1,5 @@
+<%= File.read('src/logstash-filters/snippets/redact_passwords.conf') %>
+
 if [@type] in ["syslog", "relp"] {
   <%= File.read('src/logstash-filters/snippets/syslog_standard.conf').gsub(/^/, '  ') %>
 }
