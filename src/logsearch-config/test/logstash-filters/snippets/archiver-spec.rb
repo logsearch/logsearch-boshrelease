@@ -28,7 +28,7 @@ describe "it parses logs from the archiver" do
         end
 
         it "sets @source.index" do
-          expect(subject["@source"]["index"]).to eq "0"
+          expect(subject["@source"]["index"]).to eq 0
         end
 
         it "sets upload_status to SUCCESS" do
