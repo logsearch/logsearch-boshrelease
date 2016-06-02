@@ -37,6 +37,10 @@ describe "it parses logs from the archiver" do
         it "extracts the archiving duration" do
           expect(subject["archiver"]["duration"]).to eq 15
         end
+
+        it "extracts the archive size" do
+          expect(subject["archiver"]["size"]).to eq 1000
+        end
       end
     end
     context "when the upload fails" do
