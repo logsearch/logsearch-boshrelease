@@ -16,7 +16,7 @@ resource_pools:
 - name: elasticsearch_data
   cloud_properties:
     availability_zone: eu-west-1a
-    instance_type: t2.micro
+    instance_type: m3.medium
 
 - name: queue
   cloud_properties:
@@ -31,7 +31,7 @@ resource_pools:
 - name: parser
   cloud_properties:
     availability_zone: eu-west-1a
-    instance_type: t2.micro
+    instance_type: m3.medium
 
 - name: kibana
   cloud_properties:
