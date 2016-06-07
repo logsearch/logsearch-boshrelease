@@ -152,6 +152,28 @@ jobs:
       relp:
         port: ~
 
+- name: ingestor-bosh-nats
+  instances: 0
+  templates:
+  - { name: ingestor_syslog, release: logsearch }
+  - { name: nats_to_syslog, release: logsearch }
+  resource_pool: ingestor
+  networks:
+  - name: default
+    static_ips: (( static_ips(4) ))
+  properties:
+    logstash_ingestor:
+      syslog:
+        port: 514
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        machines: [10.0.16.5]
+      syslog:
+        host: 127.0.0.1
+        port: 514
+
 - name: parser
   instances: 2
   templates:

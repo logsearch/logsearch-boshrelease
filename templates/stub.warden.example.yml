@@ -12,6 +12,16 @@ jobs:
 - name: ingestor
   instances: 1
 
+- name: ingestor-bosh-nats
+  instances: 1
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.254.50.4]
+
 - name: queue
   instances: 1
 

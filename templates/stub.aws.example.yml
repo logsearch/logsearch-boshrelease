@@ -41,6 +41,9 @@ jobs:
 - name: ingestor
   instances: 1
 
+- name: ingestor-bosh-nats
+  instances: 1
+
 - name: parser
   instances: 2
 

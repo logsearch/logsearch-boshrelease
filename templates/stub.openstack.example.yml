@@ -77,6 +77,13 @@ jobs:
     static_ips: (( static_ips(1) ))
   resource_pool: ingestor
 
+- name: ingestor-bosh-nats
+  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(4) ))
+  resource_pool: ingestor
+
 - name: parser
   instances: 1
   networks:
