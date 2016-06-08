@@ -5,8 +5,10 @@ set -u # report the usage of uninitialized variables
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
+OPENJDK_VERSION="1.8.0_91"
+
 if [[ `uname -a` =~ "x86_64" ]] ; then
-  archive="java8/openjdk-1.8.0_40.tar.gz"
+  archive="java8/openjdk-${OPENJDK_VERSION}.tar.gz"
 else
   echo "Only 64-bit architectures are supported."
   exit 1

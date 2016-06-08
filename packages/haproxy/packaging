@@ -4,6 +4,8 @@ set -e
 # Detect # of CPUs so make jobs can be parallelized
 CPUS=`grep -c ^processor /proc/cpuinfo`
 
+HAPROXY_VERSION=1.6.5
+
 echo "Extracting pcre..."
 tar xzf haproxy/pcre-8.38.tar.gz
 cd pcre-8.38
@@ -12,8 +14,8 @@ make -j${CPUS}
 make install
 cd ..
 
-tar xzf haproxy/haproxy-1.6.2.tar.gz
-cd haproxy-1.6.2
+tar xzf haproxy/haproxy-${HAPROXY_VERSION}.tar.gz
+cd haproxy-${HAPROXY_VERSION}
 make TARGET=linux2628 USE_OPENSSL=1 USE_STATIC_PCRE=1 USE_ZLIB=1 -j${CPUS}
 mkdir ${BOSH_INSTALL_TARGET}/bin
 cp haproxy ${BOSH_INSTALL_TARGET}/bin/

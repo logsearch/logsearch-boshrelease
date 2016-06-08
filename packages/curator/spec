@@ -1,8 +1,8 @@
 ---
 name: curator
-dependencies: 
+dependencies:
 - python3
-files: 
+files:
 - curator/click-3.3.tar.gz
 - curator/elasticsearch-curator-3.4.0-dev1.tar.gz
 - curator/elasticsearch-1.7.0.tar.gz
