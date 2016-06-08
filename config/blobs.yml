@@ -47,3 +47,27 @@ logstash/logstash-all-plugins-2.3.1.tar.gz:
   object_id: 46435264-83f9-498d-8c2e-6137ca7aabd0
   sha: f9a8c9fee8252a6435fbf1093aa9abba1c3d82eb
   size: 130666101
+elasticsearch/elasticsearch-2.3.3.tar.gz:
+  object_id: 3847b3e6-86a6-4d6c-b40e-f2574abb835d
+  sha: 59ad28b5d21801c67216ea1ee0c8ddf36a133456
+  size: 27542289
+haproxy/haproxy-1.6.5.tar.gz:
+  object_id: 5d847e37-7216-49b7-8acf-51ee3101e842
+  sha: d9f5b6cade54d958ada2f67c6c7b97c9c8ef14ac
+  size: 1563272
+java8/openjdk-1.8.0_91.tar.gz:
+  object_id: 96f03608-3a60-4a84-bb67-18d92065c371
+  sha: 63ff487f3004729d33796e87919c183fa8a4e752
+  size: 45736783
+kibana/kibana-4.5.1-linux-x64.tar.gz:
+  object_id: 7a5267ba-0ef6-429b-8eeb-d15e2f778167
+  sha: 355c631b77c529d3dea304d7f084e658f5cc3123
+  size: 33045518
+logstash/logstash-all-plugins-2.3.1-patched.tar.gz:
+  object_id: f9a57299-cc73-4791-9d2c-cb921cd2e6d8
+  sha: 27e1870a30766da87e33210e72718218c27fd1d0
+  size: 131572426
+redis/redis-3.2.0.tar.gz:
+  object_id: 4ecad71b-9684-446e-8b1d-5ffd89f300f2
+  sha: 0c1820931094369c8cc19fc1be62f598bc5961ca
+  size: 1525900
