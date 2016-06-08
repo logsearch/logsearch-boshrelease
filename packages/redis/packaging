@@ -7,7 +7,9 @@ CPUS=`grep -c ^processor /proc/cpuinfo`
 # $BOSH_COMPILE_TARGET - where this package & spec'd source files are available
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
-tar xzf redis/redis-2.8.4.tar.gz
-cd redis-2.8.4
+REDIS_VERSION=3.2.0
+
+tar xzf redis/redis-${REDIS_VERSION}.tar.gz
+cd redis-${REDIS_VERSION}
 make -j${CPUS} PREFIX=${BOSH_INSTALL_TARGET} install
 

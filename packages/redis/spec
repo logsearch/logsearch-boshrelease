@@ -2,4 +2,4 @@
 name: redis
 dependencies: []
 files:
-  - redis/redis-2.8.4.tar.gz
+  - redis/redis-3.2.0.tar.gz
