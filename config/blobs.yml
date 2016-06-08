@@ -1,8 +1,4 @@
 ---
-redis/redis-2.8.4.tar.gz:
-  object_id: 191a0100-c082-4f96-9bb4-73abe803e649
-  sha: 79b156cc9d8bff5a022fdc6d28d5c42999ddcb4f
-  size: 1048914
 java8/openjdk-1.8.0_40.tar.gz:
   object_id: c1386f34-7585-4f92-b41e-6d9dbbb940ab
   sha: 590be5c6337753b28acc81d4843e98e6245b5261
@@ -27,26 +23,10 @@ curator/elasticsearch-1.7.0.tar.gz:
   object_id: 3bdcfe3c-1af6-4777-9a15-2d053d172a15
   sha: 01b76bf67b47a0bcbb69a6d7d00169449f780484
   size: 62054
-haproxy/haproxy-1.6.2.tar.gz:
-  object_id: 48bf1c42-207b-4c26-90ca-eeca21f96787
-  sha: 407bed920315cf66500ab57aea0c402bad850129
-  size: 1538976
 haproxy/pcre-8.38.tar.gz:
   object_id: 9538f6cf-5cd1-4551-a5c3-1263fb32edf6
   sha: 3ab418d0026c2a4e693ec783bd60660debc32b8f
   size: 2053336
-elasticsearch/elasticsearch-2.2.0.tar.gz:
-  object_id: 4bd686ed-b9e0-47d1-8437-78dac6fdc27c
-  sha: 4bd3ef681e70faefe3a66c6eb3419b5d4a0e2714
-  size: 29419005
-kibana/kibana-4.4.0-linux-x64.tar.gz:
-  object_id: 87e63448-e145-4844-b01a-9ede4d5c5389
-  sha: 82fa06e11942e13bba518655c1d34752ca259bab
-  size: 30878925
-logstash/logstash-all-plugins-2.3.1.tar.gz:
-  object_id: 46435264-83f9-498d-8c2e-6137ca7aabd0
-  sha: f9a8c9fee8252a6435fbf1093aa9abba1c3d82eb
-  size: 130666101
 elasticsearch/elasticsearch-2.3.3.tar.gz:
   object_id: 3847b3e6-86a6-4d6c-b40e-f2574abb835d
   sha: 59ad28b5d21801c67216ea1ee0c8ddf36a133456
