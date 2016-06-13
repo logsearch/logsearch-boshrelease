@@ -24,9 +24,26 @@ When more than one, or all of the data nodes start to get full, it is recommende
 
 The kopf UI provides resource information about each node including disk usage.
 
-## Customising number of shards and replicas
+## Scaling the cluster up
 
-To change the default number of shards (5) and replicas (1), update the maintenance job in your stub with:
+Scaling Elasticsearch is a rather involved process with no "right" answers.  Start by reading through the [official Elastic documentation on the topic](https://www.elastic.co/guide/en/elasticsearch/guide/current/scale.html)
+
+With that background, here is how you make some common scaling changes with Logsearch.
+
+### Increasing the Elasticsearch data nodes
+
+Increment the number of `elasticsearch_data` node instances in your stub
+```yaml
+- name: elasticsearch_data
+  instances: 10
+```
+followed by `bosh deploy`.  Once the new nodes have been provisioned Elasticsearch will automatically begin balancing shards between them (this can take *many hours*; but your cluster will remain functional throughout)
+
+### Customising number of shards and replicas
+
+As a rough rule of thumb you will probably want to change the number of shards and replicas in your cluster so that `NUMBER_OF_SHARDS` * `NUMBER_OF_REPLICAS` == `number of elasticsearch_data` nodes
+
+To change the default number of shards (`NUMBER_OF_SHARDS`) and replicas (`NUMBER_OF_REPLICAS`), update the maintenance job in your stub with:
 
 ```yaml
 - name: maintenance
@@ -37,9 +54,7 @@ To change the default number of shards (5) and replicas (1), update the maintena
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : NUMBER_OF_SHARDS, \"number_of_replicas\" : NUMBER_OF_REPLICAS } }"
 ```
 
-## Scaling the cluster up
-
-Just add more data nodes.
+**NB** This changes the default shard and replica settings; which will only be applied to **new** indexes.  It isn't possible to change the number of shards for existing indexes.
 
 ## Scaling the cluster down
 
