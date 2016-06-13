@@ -26,7 +26,7 @@ The kopf UI provides resource information about each node including disk usage.
 
 ## Customising number of shards and replicas
 
-To change the default number of shards (5) and replicas (1), update the maintenance job in your stub to:
+To change the default number of shards (5) and replicas (1), update the maintenance job in your stub with:
 
 ```yaml
 - name: maintenance
