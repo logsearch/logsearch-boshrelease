@@ -24,6 +24,19 @@ When more than one, or all of the data nodes start to get full, it is recommende
 
 The kopf UI provides resource information about each node including disk usage.
 
+## Customising number of shards and replicas
+
+To change the default number of shards (5) and replicas (1), update the maintenance job in your stub to:
+
+```yaml
+- name: maintenance
+  instances: 1
+  properties:
+    elasticsearch_config:
+      templates:
+      - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : NUMBER_OF_SHARDS, \"number_of_replicas\" : NUMBER_OF_REPLICAS } }"
+```
+
 ## Scaling the cluster up
 
 Just add more data nodes.

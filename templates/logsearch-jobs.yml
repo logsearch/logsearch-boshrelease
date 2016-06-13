@@ -106,6 +106,10 @@ jobs:
   - name: default
   update:
     serial: true # Block on this job to create deploy group 1
+  properties:
+    elasticsearch_config:
+      templates:
+      - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 5, \"number_of_replicas\" : 1 } }"
 
 ##################################################################
 #2nd deploy group - elasticsearch_data, kibana, ingestors, parsers
