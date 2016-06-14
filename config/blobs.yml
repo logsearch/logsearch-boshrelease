@@ -44,9 +44,9 @@ kibana/kibana-4.5.1-linux-x64.tar.gz:
   sha: 355c631b77c529d3dea304d7f084e658f5cc3123
   size: 33045518
 logstash/logstash-all-plugins-2.3.1-patched.tar.gz:
-  object_id: f9a57299-cc73-4791-9d2c-cb921cd2e6d8
-  sha: 27e1870a30766da87e33210e72718218c27fd1d0
-  size: 131572426
+  object_id: 7b5042db-e56b-4f61-ae5d-b448ef10b7c7
+  sha: c3db11cce9bf88661d99597bb8ab5c78dfefd78f
+  size: 132283060
 redis/redis-3.2.0.tar.gz:
   object_id: 4ecad71b-9684-446e-8b1d-5ffd89f300f2
   sha: 0c1820931094369c8cc19fc1be62f598bc5961ca
