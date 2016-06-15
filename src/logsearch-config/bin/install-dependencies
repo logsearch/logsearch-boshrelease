@@ -7,7 +7,7 @@ elif [ "$(uname -s)" == "Darwin" ]; then
   getpath="greadlink -f"  #Install using: brew install coreutils
 fi
 
-LOGSTASH_VERSION=2.2.0
+LOGSTASH_VERSION=2.3.1
 
 rm -f vendor/logstash
 if [ -e /usr/local/logstash-$LOGSTASH_VERSION ] ; then
