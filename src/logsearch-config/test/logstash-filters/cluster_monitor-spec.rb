@@ -71,13 +71,4 @@ describe 'Metric filters' do
       end
     end
   end
-
-  context "when parsing logs from the archiver" do
-    when_parsing_log('<133>1 2016-05-31T11:29:00.846424+00:00 10.0.32.140 archiver - - [- job=parser index=0] {"timestamp":"1464694140.846367836","source":"ServiceBackup","message":"ServiceBackup.Cleanup completed without error","log_level":1,"data":{}}') do
-      it "adds the archiver tag" do
-        expect(subject["tags"]).to include "archiver"
-      end
-    end
-  end
-
 end

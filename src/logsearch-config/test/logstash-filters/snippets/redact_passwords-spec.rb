@@ -25,7 +25,7 @@ describe "Redact passwords filter" do
       end
 
       it "redacts the secret access key" do
-	expect(subject["@message"]).to match /AWS_SECRET_ACCESS_KEY=Aiv\*{6}/
+	expect(subject["@message"]).to match /AWS_SECRET_ACCESS_KEY=wJa\*{6}/
 	expect(subject["@message"]).to_not match "AWS_ACCESS_KEY_ID=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
       end
     end
