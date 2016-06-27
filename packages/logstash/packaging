@@ -7,6 +7,3 @@ set -u # report the usage of uninitialized variables
 
 mkdir $BOSH_INSTALL_TARGET/logstash
 tar -xzf logstash/logstash-all-plugins-*.tar.gz -C $BOSH_INSTALL_TARGET --strip-components 1
-
-# temporary fix for https://github.com/logstash-plugins/logstash-output-redis/issues/26
-sed -i '236 s/next/return/' $BOSH_INSTALL_TARGET/vendor/bundle/jruby/1.9/gems/logstash-output-redis-2.0.4/lib/logstash/outputs/redis.rb

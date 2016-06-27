@@ -3,5 +3,5 @@ name: logstash
 dependencies:
   - java8
 files:
-  # https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.3.1.tar.gz
-  - logstash/logstash-all-plugins-2.3.1-patched.tar.gz
+  # https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.3.3.tar.gz
+  - logstash/logstash-all-plugins-2.3.3-patched.tar.gz
