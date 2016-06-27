@@ -47,7 +47,7 @@ redis/redis-3.2.0.tar.gz:
   object_id: 4ecad71b-9684-446e-8b1d-5ffd89f300f2
   sha: 0c1820931094369c8cc19fc1be62f598bc5961ca
   size: 1525900
-logstash/logstash-2.3.3-patched.tar.gz:
-  object_id: 185ce1a2-8f5a-4dfb-b9f0-8b669ab21739
+logstash/logstash-all-plugins-2.3.3-patched.tar.gz:
+  object_id: aba03b54-3bc6-4ca5-930b-4da13dff9ed1
   sha: 36197ab8b8245497ec69bb60ffd19a770b6ac695
   size: 135763406
