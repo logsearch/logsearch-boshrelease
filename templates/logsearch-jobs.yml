@@ -10,6 +10,7 @@ jobs:
   instances: 1
   templates:
   - {name: elasticsearch, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: elasticsearch_master
   persistent_disk_pool: elasticsearch_master
   networks:
@@ -20,6 +21,10 @@ jobs:
       node:
         allow_master: true
         allow_data: false
+    syslog_forwarder:
+      config:
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stdout.log}
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stderr.log}
   update:
     max_in_flight: 1 # Should never update more than one ES master node at a time or cluster will go down
 
@@ -90,17 +95,23 @@ jobs:
   instances: 1
   templates:
   - {name: queue, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: queue
   persistent_disk_pool: queue
   networks:
   - name: default
     static_ips: (( static_ips(3) ))
+  properties:
+    syslog_forwarder:
+      config:
+      - {service: queue_redis, file: /var/vcap/sys/log/queue/queue.log}
 
 - name: maintenance
   instances: 1
   templates:
   - {name: elasticsearch_config, release: logsearch}
   - {name: curator, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: maintenance
   networks:
   - name: default
@@ -110,6 +121,10 @@ jobs:
     elasticsearch_config:
       templates:
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 5, \"number_of_replicas\" : 1 } }"
+    syslog_forwarder:
+      config:
+      - {service: curator, file: /var/vcap/sys/log/curator/curator.log}
+      - {service: elasticsearch_config, file: /var/vcap/sys/log/elasticsearch_config/job.control.log}
 
 ##################################################################
 #2nd deploy group - elasticsearch_data, kibana, ingestors, parsers
@@ -119,6 +134,7 @@ jobs:
   instances: 2
   templates:
   - {name: elasticsearch, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: elasticsearch_data
   persistent_disk_pool: elasticsearch_data
   networks:
@@ -128,6 +144,10 @@ jobs:
       node:
         allow_master: false
         allow_data: true
+    syslog_forwarder:
+      config:
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stdout.log}
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stderr.log}
   update:
     max_in_flight: 1 # Only update 1 ES data node at a time or risk downtime
 
@@ -135,16 +155,23 @@ jobs:
   instances: 1
   templates:
   - {name: kibana, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: kibana
   networks:
   - name: default
     static_ips: (( static_ips(5) ))
+  properties:
+    syslog_forwarder:
+      config:
+      - {service: kibana, file: /var/vcap/sys/log/kibana/kibana.stdout.log}
+      - {service: kibana, file: /var/vcap/sys/log/kibana/kibana.stderr.log}
 
 - name: ingestor
   instances: 1
   templates:
   - {name: ingestor_syslog, release: logsearch}
   - {name: ingestor_relp, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: ingestor
   networks:
   - name: default
@@ -154,12 +181,17 @@ jobs:
       debug: false
       relp:
         port: ~
+    syslog_forwarder:
+      config:
+      - {service: ingestor_syslog, file: /var/vcap/sys/log/ingestor_syslog/ingestor_syslog.stdout.log}
+      - {service: ingestor_syslog, file: /var/vcap/sys/log/ingestor_syslog/ingestor_syslog.stderr.log}
 
 - name: ingestor-bosh-nats
   instances: 0
   templates:
   - { name: ingestor_syslog, release: logsearch }
   - { name: nats_to_syslog, release: logsearch }
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: ingestor
   networks:
   - name: default
@@ -176,18 +208,30 @@ jobs:
       syslog:
         host: 127.0.0.1
         port: 514
+    syslog_forwarder:
+      config:
+      - {service: nats_to_syslog, file: /var/vcap/sys/log/nats_to_syslog/nats_to_syslog.stdout.log}
+      - {service: nats_to_syslog, file: /var/vcap/sys/log/nats_to_syslog/nats_to_syslog.stderr.log}
 
 - name: parser
   instances: 2
   templates:
   - {name: parser, release: logsearch}
   - {name: elasticsearch, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
   resource_pool: parser
   networks:
   - name: default
   update:
     serial: false # Block to create deploy group 2
     max_in_flight: 4  # Its ok to update multiple parsers at a time
+  properties:
+    syslog_forwarder:
+      config:
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stdout.log}
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stderr.log}
+      - {service: parser, file: /var/vcap/sys/log/parser/parser.stdout.log}
+      - {service: parser, file: /var/vcap/sys/log/parser/parser.stderr.log}
 
 ####################################################
 #3nd deploy group - ls-router (haproxy), and errands
@@ -266,3 +310,6 @@ properties:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
     templates:
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
+  syslog_forwarder:
+    host: (( grab jobs.cluster_monitor.networks.default.static_ips.[0] ))
+    port: (( grab jobs.cluster_monitor.properties.logstash_ingestor.syslog.port ))

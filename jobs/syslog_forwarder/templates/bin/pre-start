@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+mkdir -p /var/vcap/sys/run/rsyslogd
+chown syslog /var/vcap/sys/run/rsyslogd/
+
+<% p("syslog_forwarder.config").each do |config| %>
+mkdir -p $(dirname "<%= config["file"] %>")
+<% end %>
+
+cp /var/vcap/jobs/syslog_forwarder/config/rsyslog_file_forwarder.conf /etc/rsyslog.d/
+service rsyslog restart

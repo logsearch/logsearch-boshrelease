@@ -1,0 +1,26 @@
+---
+name: syslog_forwarder
+
+templates:
+  config/rsyslog_file_forwarder.conf: config/rsyslog_file_forwarder.conf
+  bin/pre-start: bin/pre-start
+
+packages: []
+
+properties:
+  syslog_forwarder.config:
+    description: |
+      List of service name and logfile definitions.
+      Service is the syslog_program in the final log message.
+      File is the path to the log file rsyslogd should stream to the remote syslog server
+    default: []
+    example: |
+      - { service: elasticsearch, file: /var/vcap/sys/log/elasticsearch.stdout.log }
+      - { service: elasticsearch, file: /var/vcap/sys/log/elasticsearch.stderr.log }
+      - { service: kibana, file: /var/vcap/sys/log/kibana/kibana.stdout.log }
+  syslog_forwarder.host:
+    description: Hostname of the remote syslog server
+    default: ""
+  syslog_forwarder.port:
+    description: Port of the remote syslog server
+    default: 514
