@@ -16,3 +16,6 @@ properties:
   smoke_tests.elasticsearch_master.port:
     description: 'Port of the elasticsearch master node'
     default: 9200
+  smoke_tests.use_tls:
+    description: Set it to true if the ingestor or the ls-router expects TCP-TLS traffic
+    default: false
