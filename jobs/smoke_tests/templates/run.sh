@@ -8,13 +8,13 @@ SMOKE_ID=$(LC_ALL=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -
 LOG="<13>$(date -u +"%Y-%m-%dT%H:%M:%SZ") 0.0.0.0 smoke-test-errand [job=smoke_tests index=0]  {\"smoke-id\":\"$SMOKE_ID\"}"
 
 <% if p('smoke_tests.use_tls') %>
-INGEST="openssl s_client -connect $INGESTOR_HOST:$INGESTOR_PORT > /dev/null"
+INGEST="openssl s_client -connect $INGESTOR_HOST:$INGESTOR_PORT"
 <% else %>
 INGEST="nc $INGESTOR_HOST $INGESTOR_PORT"
 <% end %>
 
 echo "SENDING $LOG"
-echo "$LOG" | $INGEST
+echo "$LOG" | $INGEST > /dev/null
 
 TRIES=${1:-600}
 SLEEP=5
