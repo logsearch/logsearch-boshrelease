@@ -282,7 +282,7 @@ jobs:
     smoke_tests:
       syslog_ingestor:
         host: (( grab jobs.ls-router.networks.[0].static_ips.[0] ))
-        port: (( grab jobs.ls-router.properties.haproxy.ingestor.inbound_port || properties.haproxy.ingestor.inbound_port ))
+        port: (( grab jobs.ls-router.properties.haproxy.ingestor.inbound_port || properties.haproxy.ingestor.inbound_port || 5514 ))
       elasticsearch_master:
         host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
 
