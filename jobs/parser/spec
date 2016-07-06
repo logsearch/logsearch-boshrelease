@@ -42,7 +42,6 @@ properties:
             host: 192.168.1.1
             user: logsearch
             password: c1oudbunny
-    default: [ { plugin: "redis", options : {} } ]
   logstash_parser.outputs:
     description: "The configuration to embed into the logstash outputs section"
   logstash_parser.workers:
@@ -81,8 +80,8 @@ properties:
     description: Controls how many logs will be buffered and sent to Elasticsearch for bulk indexing
     default: 500
 
-  redis.host:
-    description: Redis host of queue
+  redis.hosts:
+    description: A list of Redis hosts of queue
   redis.port:
     description: Redis port of queue
     default: 6379

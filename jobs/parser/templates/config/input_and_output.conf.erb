@@ -1,21 +1,24 @@
 input {
 
-<% p('logstash_parser.inputs').each do | input | %>
+<% if p('logstash_parser.inputs', nil) %>
+  <% p('logstash_parser.inputs').each do |input| %>
     <%= input['plugin'] %> {
-      <% if 'redis' == input['plugin'] %>
-        <% input['options'] = {
-           "host" => p('redis.host'),
-           "port" => p('redis.port'),
-           "type" => "redis-input",
-           "data_type" => "list",
-           "key" => p('redis.key'),
-           "threads" => 8
-         } %>
-      <% end %>
-      <% input['options'].each do | k, v | %>
-        <%= k %> => <%= v.inspect %>
-      <% end %>
+    <% input['options'].each do |k, v| %>
+      <%= k %> => <%= v.inspect %>
+    <% end %>
     }
+  <% end %>
+<% else # no custom input defined, default to redis %>
+  <% p('redis.hosts').each do |host| %>
+    redis {
+      host => "<%= host %>"
+      port => <%= p('redis.port') %>
+      type => "redis-input"
+      data_type => "list"
+      key => "<%= p('redis.key') %>"
+      threads => 8
+    }
+  <% end %>
 <% end %>
 
 }

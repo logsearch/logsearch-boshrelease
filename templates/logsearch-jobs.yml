@@ -59,7 +59,7 @@ jobs:
         allow_master: true
         allow_data: true
     redis:
-      host: 127.0.0.1
+      hosts: [127.0.0.1]
       maxmemory: 10
     curator:
       elasticsearch_host: 127.0.0.1
@@ -98,13 +98,12 @@ jobs:
   - {name: syslog_forwarder, release: logsearch}
   resource_pool: queue
   persistent_disk_pool: queue
-  networks:
-  - name: default
-    static_ips: (( static_ips(3) ))
   properties:
     syslog_forwarder:
       config:
       - {service: queue_redis, file: /var/vcap/sys/log/queue/queue.log}
+  update:
+    max_in_flight: 1
 
 - name: maintenance
   instances: 1
@@ -297,7 +296,7 @@ properties:
   logstash_ingestor:
     debug: false
   redis:
-    host: (( grab jobs.queue.networks.default.static_ips.[0] ))
+    hosts: (( grab jobs.queue.networks.default.static_ips ))
   elasticsearch:
     master_hosts: (( grab jobs.elasticsearch_master.networks.default.static_ips ))
     cluster_name: logsearch

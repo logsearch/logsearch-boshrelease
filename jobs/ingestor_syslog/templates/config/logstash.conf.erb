@@ -63,7 +63,7 @@ output {
 	    <%= output['plugin'] %> {
               <% if 'redis' == output['plugin'] %>
                 <% output['options'] = {
-                  "host" => p('redis.host'),
+                  "host" => p('redis.hosts'),
                   "port" => p('redis.port'),
                   "data_type" => "list",
                   "key" => p('redis.key'),

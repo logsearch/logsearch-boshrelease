@@ -38,8 +38,8 @@ properties:
     description: Port to listen for RELP messages
     default: 2514
 
-  redis.host: 
-    description: Redis host of queue
+  redis.hosts: 
+    description: A list of Redis hosts
   redis.port: 
     description: Redis port of queue
     default: 6379

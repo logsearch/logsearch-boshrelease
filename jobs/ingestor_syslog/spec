@@ -47,8 +47,8 @@ properties:
   logstash_ingestor.syslog_tls.ssl_key:
     description: Syslog-TLS SSL key (file contents, not a path) - required if logstash_ingestor.syslog_tls.port set
 
-  redis.host: 
-    description: Redis host of queue
+  redis.hosts: 
+    description: A list of Redis hosts
   redis.port: 
     description: Redis port of queue
     default: 6379

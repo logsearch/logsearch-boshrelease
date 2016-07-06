@@ -23,6 +23,9 @@ jobs:
 
 - name: queue
   instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(3) ))
 
 - name: maintenance
   instances: 1
