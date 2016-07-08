@@ -118,9 +118,6 @@ jobs:
   update:
     serial: true # Block on this job to create deploy group 1
   properties:
-    elasticsearch_config:
-      templates:
-      - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 5, \"number_of_replicas\" : 1 } }"
     syslog_forwarder:
       config:
       - {service: curator, file: /var/vcap/sys/log/curator/curator.log}
@@ -311,6 +308,7 @@ properties:
       host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
     templates:
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
+      - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 5, \"number_of_replicas\" : 1 } }"
   syslog_forwarder:
     host: (( grab jobs.cluster_monitor.networks.default.static_ips.[0] ))
     port: (( grab jobs.cluster_monitor.properties.logstash_ingestor.syslog.port ))
