@@ -62,7 +62,7 @@ jobs:
       host: 127.0.0.1
       maxmemory: 10
     curator:
-      elasticsearch: 127.0.0.1
+      elasticsearch:
         host: 127.0.0.1
         port: 9200
       purge_logs:
