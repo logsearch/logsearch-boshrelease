@@ -64,6 +64,18 @@ properties:
     description: "Basic auth password for kibana. Optional"
     default: ""
 
+  haproxy.elastic.inbound_port:
+    description: "The public port for Elasticsearch interface. IMPORTANT: Do not set this value unless you understand what are you doing! External access to Elasticsearch allows to do everything with it, including index deletion. Once enabled this feature, it is strictly recommended to set the password below."
+  haproxy.elastic.backend_servers:
+    description: "Lish of Elasticsearch nodes"
+    default: []
+  haproxy.elastic.auth.username:
+    description: "Basic auth username for Elasticsearch. Optional"
+    default: ""
+  haproxy.elastic.auth.password:
+    description: "Basic auth password for Elasticsearch. Optional"
+    default: ""
+
   haproxy.cluster_monitor.inbound_port:
     description: "The public port of the cluster monitor UI"
     default: 8080
