@@ -39,10 +39,6 @@ java8/openjdk-1.8.0_91.tar.gz:
   object_id: 96f03608-3a60-4a84-bb67-18d92065c371
   sha: 63ff487f3004729d33796e87919c183fa8a4e752
   size: 45736783
-kibana/kibana-4.5.1-linux-x64.tar.gz:
-  object_id: 7a5267ba-0ef6-429b-8eeb-d15e2f778167
-  sha: 355c631b77c529d3dea304d7f084e658f5cc3123
-  size: 33045518
 redis/redis-3.2.0.tar.gz:
   object_id: 4ecad71b-9684-446e-8b1d-5ffd89f300f2
   sha: 0c1820931094369c8cc19fc1be62f598bc5961ca
@@ -51,3 +47,7 @@ logstash/logstash-all-plugins-2.3.3-patched.tar.gz:
   object_id: aba03b54-3bc6-4ca5-930b-4da13dff9ed1
   sha: 36197ab8b8245497ec69bb60ffd19a770b6ac695
   size: 135763406
+kibana/kibana-4.5.3-linux-x64.tar.gz:
+  object_id: 39a13fde-71ac-43b7-8e72-9ab7d66e3924
+  sha: 09ee044b8d8518859254793db741e6241dc3f2bb
+  size: 33414498
