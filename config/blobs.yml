@@ -27,10 +27,6 @@ haproxy/pcre-8.38.tar.gz:
   object_id: 9538f6cf-5cd1-4551-a5c3-1263fb32edf6
   sha: 3ab418d0026c2a4e693ec783bd60660debc32b8f
   size: 2053336
-elasticsearch/elasticsearch-2.3.3.tar.gz:
-  object_id: 3847b3e6-86a6-4d6c-b40e-f2574abb835d
-  sha: 59ad28b5d21801c67216ea1ee0c8ddf36a133456
-  size: 27542289
 haproxy/haproxy-1.6.5.tar.gz:
   object_id: 5d847e37-7216-49b7-8acf-51ee3101e842
   sha: d9f5b6cade54d958ada2f67c6c7b97c9c8ef14ac
@@ -51,3 +47,7 @@ kibana/kibana-4.5.3-linux-x64.tar.gz:
   object_id: 39a13fde-71ac-43b7-8e72-9ab7d66e3924
   sha: 09ee044b8d8518859254793db741e6241dc3f2bb
   size: 33414498
+elasticsearch/elasticsearch-2.3.4.tar.gz:
+  object_id: 240b56cf-f515-4c25-9cca-1778fc950045
+  sha: 56deae0d84ec51e611cea5ade73c58328262220e
+  size: 27547169
