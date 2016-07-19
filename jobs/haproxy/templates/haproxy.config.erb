@@ -82,6 +82,37 @@ backend cluster_monitor
     server kibana<%= index %> <%= ip %>:<%= p("haproxy.cluster_monitor.backend_port") %> check inter 1000
     <% end %>
 
+<% if p('properties.haproxy.elastic.inbound_port') %>
+frontend elastic-in
+    mode http
+
+    <% if p('properties.haproxy.ssl_pem') %>
+    bind :<%= p("haproxy.elastic.inbound_port") %> ssl crt /var/vcap/jobs/haproxy/config/cert.pem no-sslv3
+    <% else %>
+    bind :<%= p("haproxy.elastic.inbound_port") %>
+    <% end %>
+
+    <% if p('haproxy.elastic.auth.username') != "" %>
+    acl logged_in http_auth(elastic-user)
+    http-request auth realm "Elasticsearch" if !logged_in
+    <% end %>
+
+    default_backend elastic
+
+backend elastic
+    mode http
+    balance roundrobin
+    <% p("haproxy.elastic.backend_servers").each_with_index do |ip, index| %>
+    server elastic<%= index %> <%= ip %>:9200 check inter 1000
+    <% end %>
+
+<% if p('haproxy.elastic.auth.username') != "" %>
+userlist elastic-user
+    user <%= p('haproxy.elastic.auth.username') %> insecure-password <%= p('haproxy.elastic.auth.password') %>
+<% end %>
+
+<% end %>
+
 <% if p('haproxy.kibana.auth.username') != "" %>
 userlist kibana-user
     user <%= p('haproxy.kibana.auth.username') %> insecure-password <%= p('haproxy.kibana.auth.password') %>
