@@ -2,7 +2,8 @@ meta:
   availability_zone: nova
   instance_type:
     compilation: m1.medium
-    elasticsearch: m1.medium
+    elasticsearch_master: m1.small
+    elasticsearch_data: m1.medium
     queue: m1.small
     ingestor: m1.small
     parser: m1.small
