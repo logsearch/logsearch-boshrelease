@@ -19,4 +19,6 @@ properties:
   elasticsearch_config.docs:
     description: "An array with key-value hashes; keys being doc path, value being doc source"
     default: []
+  elasticsearch_config.license:
+    description: The ElasticSearch License string
 

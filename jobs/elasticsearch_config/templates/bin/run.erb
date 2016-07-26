@@ -6,6 +6,7 @@ set -e
 # Look ma, I'm writing Chef
 def put_to_es(url_stem_base, es_config)
   ret = []
+  es_config = Array(es_config)
   es_config.each do |config|
     if config.is_a? Hash
       ckey, content = config.to_a.first
@@ -78,3 +79,9 @@ done
 #
 <%= put_to_es('', p('elasticsearch_config.docs')) %>
 
+#
+# license
+#
+<% if_p("elasticsearch_config.license") do |license| %>
+  <%= put_to_es('_license', license) %>
+<% end %>
