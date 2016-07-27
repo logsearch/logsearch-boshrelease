@@ -4,7 +4,9 @@ set -e
 
 <%
 # Look ma, I'm writing Chef
-def put_to_es(url_stem_base, es_config)
+require 'uri'
+
+def put_to_es(url_stem_base, es_config, request_params = {})
   ret = []
   es_config = Array(es_config)
   es_config.each do |config|
@@ -15,6 +17,12 @@ def put_to_es(url_stem_base, es_config)
       content = config
     end
     url_stem = "#{url_stem_base}/#{ckey}".chomp('/')
+
+    if request_params.keys.any?
+      params = URI.encode_www_form(request_params)
+      url_stem << "?#{params}"
+    end
+
     ret << "URL=http://#{p('elasticsearch_config.elasticsearch.host')}:#{p('elasticsearch_config.elasticsearch.port')}/#{url_stem}"
     if nil == content
      ret << 'curl -X DELETE "${URL}"'
@@ -71,5 +79,5 @@ until curl -f 'http://<%= p("elasticsearch_config.elasticsearch.host") %>:<%= p(
 # license
 #
 <% if_p("elasticsearch_config.license") do |license| %>
-  <%= put_to_es('_license', license) %>
+  <%= put_to_es('_license', license, acknowledge: true) %>
 <% end %>
