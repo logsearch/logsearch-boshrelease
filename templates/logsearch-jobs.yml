@@ -28,6 +28,25 @@ jobs:
   update:
     max_in_flight: 1 # Should never update more than one ES master node at a time or cluster will go down
 
+- name: elasticsearch_client
+  instances: 1
+  templates:
+  - {name: elasticsearch, release: logsearch}
+  - {name: syslog_forwarder, release: logsearch}
+  resource_pool: elasticsearch_master
+  networks:
+  - name: default
+    static_ips: (( static_ips(11) ))
+  properties:
+    elasticsearch:
+      node:
+        allow_master: false
+        allow_data: false
+    syslog_forwarder:
+      config:
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stdout.log}
+      - {service: elasticsearch, file: /var/vcap/sys/log/elasticsearch/elasticsearch.stderr.log}
+
 - name: cluster_monitor
   instances: 1
   templates:
@@ -265,7 +284,7 @@ jobs:
   properties:
     enable_shard_allocation:
       elasticsearch:
-        master_node: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+        master_node: (( grab jobs.elasticsearch_client.networks.default.static_ips.[0] ))
 
 - name: smoke-tests
   instances: 1
@@ -282,13 +301,13 @@ jobs:
         host: (( grab jobs.ls-router.networks.[0].static_ips.[0] ))
         port: (( grab jobs.ls-router.properties.haproxy.ingestor.inbound_port || properties.haproxy.ingestor.inbound_port || 5514 ))
       elasticsearch_master:
-        host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+        host: (( grab jobs.elasticsearch_client.networks.default.static_ips.[0] ))
 
 # Global properties
 properties:
   curator:
     elasticsearch:
-      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      host: (( grab jobs.elasticsearch_client.networks.default.static_ips.[0] ))
       port: 9200
   logstash_parser:
     debug: false
@@ -302,11 +321,11 @@ properties:
     exec: ~
   kibana:
     elasticsearch:
-      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      host: (( grab jobs.elasticsearch_client.networks.default.static_ips.[0] ))
       port: 9200
   elasticsearch_config:
     elasticsearch:
-      host: (( grab jobs.elasticsearch_master.networks.default.static_ips.[0] ))
+      host: (( grab jobs.elasticsearch_client.networks.default.static_ips.[0] ))
     templates:
       - index_template: /var/vcap/packages/logsearch-config/default-mappings.json
       - shards-and-replicas: "{ \"template\" : \"*\", \"order\" : 99, \"settings\" : { \"number_of_shards\" : 5, \"number_of_replicas\" : 1 } }"

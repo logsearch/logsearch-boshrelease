@@ -4,7 +4,10 @@ director_uuid: <%= `bosh status --uuid` %>
 
 jobs:
 - name: elasticsearch_master
-  instances: 1
+  networks:
+  - name: default
+    static_ips: (( static_ips(0, 20, 21) ))
+  instances: 3
 
 - name: elasticsearch_data
   instances: 2
@@ -43,3 +46,8 @@ jobs:
         password: nats-password
         port: 4222
         machines: [10.254.50.4]
+
+properties:
+  elasticsearch:
+    discovery:
+      minimum_master_nodes: 2

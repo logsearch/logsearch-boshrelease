@@ -15,6 +15,9 @@ jobs:
 - name: elasticsearch_master
   instances: 1
 
+- name: elasticsearch_client
+  instances: 1
+
 - name: cluster_monitor
   instances: 1
   properties:
