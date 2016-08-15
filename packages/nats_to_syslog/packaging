@@ -6,7 +6,4 @@ set -u # report the usage of uninitialized variables
 # $BOSH_INSTALL_TARGET - where you copy/install files to be included in package
 
 tar -xzf nats_to_syslog/nats_to_syslog*.tar.gz
-
-mkdir -p $BOSH_INSTALL_TARGET/bin
-cp -R nats_to_syslog*/* $BOSH_INSTALL_TARGET/bin
-
+cp -R nats_to_syslog $BOSH_INSTALL_TARGET/
