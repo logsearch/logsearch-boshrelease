@@ -43,11 +43,11 @@ logstash/logstash-all-plugins-2.3.3-patched.tar.gz:
   object_id: aba03b54-3bc6-4ca5-930b-4da13dff9ed1
   sha: 36197ab8b8245497ec69bb60ffd19a770b6ac695
   size: 135763406
-elasticsearch/elasticsearch-2.3.4.tar.gz:
-  object_id: 240b56cf-f515-4c25-9cca-1778fc950045
-  sha: 56deae0d84ec51e611cea5ade73c58328262220e
-  size: 27547169
 kibana/kibana-4.5.4-linux-x64.tar.gz:
   object_id: 34afb45a-7887-44f0-be0e-cc57b8fba161
   sha: dba409384fe36f1b5ad20e7dd7e6efacdc09ed11
   size: 33265835
+elasticsearch/elasticsearch-2.3.5.tar.gz:
+  object_id: cd0654d1-c0fd-49c9-8155-045146f5a17a
+  sha: ba8842e4ff35370b9ae6a1a12b7f1d12aa9b5c66
+  size: 27547995
