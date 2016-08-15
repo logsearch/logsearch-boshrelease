@@ -51,7 +51,7 @@ elasticsearch/elasticsearch-2.3.5.tar.gz:
   object_id: cd0654d1-c0fd-49c9-8155-045146f5a17a
   sha: ba8842e4ff35370b9ae6a1a12b7f1d12aa9b5c66
   size: 27547995
-nats_to_syslog/nats_to_syslog_linux_amd64.tar:
-  object_id: 54528b63-c1d1-48dc-aa74-6c987b256a28
-  sha: 6c37c2801d97a657a90ef2ef7c62bc20f77c59da
-  size: 7054848
+nats_to_syslog/nats_to_syslog_linux_amd64.tar.gz:
+  object_id: 392ed4cf-c48b-43a0-be94-46a3ec298dac
+  sha: 919781c5c89bece3704587833cf850efc7eb4560
+  size: 2094661
