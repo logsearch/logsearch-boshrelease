@@ -74,6 +74,4 @@ builds:
     version: 202.0.0
   13ce0a48-544c-411d-840d-c400a801fce6:
     version: 203.0.0
-  064c7094-321b-4174-869e-beb2efe335f5:
-    version: 204.0.0
 format-version: '2'
