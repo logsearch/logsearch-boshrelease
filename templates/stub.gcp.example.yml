@@ -1,0 +1,132 @@
+meta:
+  stemcell:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    version: latest
+
+releases:
+- name: logsearch
+  version: latest
+
+name: logsearch
+director_uuid: <%= `bosh status --uuid`%>
+
+compilation:
+  cloud_properties:
+    zone: europe-west1-d
+
+resource_pools:
+- name: elasticsearch_master
+  cloud_properties:
+    zone: europe-west1-d
+- name: elasticsearch_data
+  cloud_properties:
+    zone: europe-west1-d
+- name: queue
+  cloud_properties:
+    zone: europe-west1-d
+- name: ingestor
+  cloud_properties:
+    zone: europe-west1-d
+- name: parser
+  cloud_properties:
+    zone: europe-west1-d
+- name: kibana
+  cloud_properties:
+    zone: europe-west1-d
+- name: maintenance
+  cloud_properties:
+    zone: europe-west1-d
+- name: cluster_monitor
+  cloud_properties:
+    zone: europe-west1-d
+- name: haproxy
+  cloud_properties:
+    zone: europe-west1-d
+- name: errand
+  cloud_properties:
+    zone: europe-west1-d
+
+jobs:
+# Deploy group 1
+- name: elasticsearch_master
+  instances: 1
+
+- name: cluster_monitor
+  instances: 1
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.0.0.6]
+
+
+- name: queue
+  instances: 1
+
+- name: maintenance
+  instances: 1
+
+# Deploy group 2
+- name: elasticsearch_data
+  instances: 2
+
+- name: kibana
+  instances: 1
+
+- name: ingestor
+  instances: 1
+
+- name: ingestor-bosh-nats
+  instances: 1
+  properties:
+    nats_to_syslog:
+      nats:
+        user: nats
+        password: nats-password
+        port: 4222
+        machines: [10.0.0.6]
+
+- name: parser
+  instances: 2
+
+# Deploy group 3
+- name: ls-router
+  instances: 1
+  cloud_properties:
+    tags:
+    - logsearch-router
+  #networks:
+  #- (( merge ))
+  #- name: elastic
+  #  static_ips:
+  #  - SOME-ELASTIC-IP
+
+disk_pools:
+- name: elasticsearch_master
+  disk_size: 51200
+- name: elasticsearch_data
+  disk_size: 256000
+- name: queue
+  disk_size: 51200
+- name: cluster_monitor
+  disk_size: 51200
+
+networks:
+- name: default
+  type: manual
+  subnets:
+  - range: 10.201.0.0/16
+    gateway: 10.201.0.1 
+    cloud_properties:
+  #    zone: europe-west1-d
+      network_name: cf
+      subnetwork_name: logsearch 
+      tags:
+      - bosh-internal
+      - logsearch-internal
+    static:
+    - 10.201.0.2 - 10.201.0.253
+- name: elastic
+  type: vip

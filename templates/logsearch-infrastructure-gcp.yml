@@ -1,0 +1,90 @@
+meta:
+  stemcell:
+    name: bosh-google-kvm-ubuntu-trusty-go_agent
+    version: latest
+
+compilation:
+  cloud_properties:
+    machine_type: n1-standard-8
+    root_disk_size_gb: 100
+    root_disk_type: pd-ssd
+    preemptible: true
+
+resource_pools:
+- name: elasticsearch_master
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: elasticsearch_data
+  cloud_properties:
+    machine_type: n1-standard-2
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: queue
+  cloud_properties:
+    machine_type: n1-highmem-2
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: ingestor
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: parser
+  cloud_properties:
+    machine_type: n1-highcpu-4
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: kibana
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: maintenance
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: cluster_monitor
+  cloud_properties:
+    machine_type: n1-standard-2
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: haproxy
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+- name: errand
+  cloud_properties:
+    machine_type: n1-standard-1
+    root_disk_size_gb: 8
+    root_disk_type: pd-standard
+
+disk_pools:
+- name: elasticsearch_master
+  cloud_properties:
+    type: pd-ssd
+
+- name: elasticsearch_data
+  cloud_properties:
+    type: pd-ssd
+
+- name: queue
+  cloud_properties:
+    type: pd-ssd
+
+- name: cluster_monitor
+  cloud_properties:
+    type: pd-ssd
+
