@@ -8,7 +8,7 @@ releases:
   version: latest
 
 name: logsearch
-director_uuid: DIRECTOR-UUID
+director_uuid: <%= `bosh status --uuid`%>
 
 jobs:
 # Deploy group 1
