@@ -15,61 +15,61 @@ resource_pools:
   cloud_properties:
     machine_type: n1-standard-1
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: elasticsearch_data
   cloud_properties:
     machine_type: n1-standard-2
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: queue
   cloud_properties:
     machine_type: n1-highmem-2
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: ingestor
   cloud_properties:
     machine_type: n1-standard-1
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: parser
   cloud_properties:
     machine_type: n1-highcpu-4
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: kibana
   cloud_properties:
     machine_type: n1-standard-1
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: maintenance
   cloud_properties:
     machine_type: n1-standard-1
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: cluster_monitor
   cloud_properties:
     machine_type: n1-standard-2
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: haproxy
   cloud_properties:
     machine_type: n1-standard-1
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 - name: errand
   cloud_properties:
     machine_type: n1-standard-1
     root_disk_size_gb: 8
-    root_disk_type: pd-standard
+    root_disk_type: pd-ssd
 
 disk_pools:
 - name: elasticsearch_master
