@@ -1,1 +1,5 @@
+<% if p('curator.log_to_syslog') -%>
+*/59 * * * * /bin/bash -c '/var/vcap/jobs/curator/bin/run > >(tee -a /var/vcap/sys/log/curator/curator.log | logger -t vcap.curator.stdout) 2> >(tee -a  /var/vcap/sys/log/curator/curator.log | logger -t vcap.curator.stderr)'
+<% else -%>
 */59 * * * * /var/vcap/jobs/curator/bin/run >>/var/vcap/sys/log/curator/curator.log 2>&1
+<% end -%>
