@@ -27,6 +27,9 @@ properties:
   elasticsearch.log_level:
     description: The default logging level (e.g. WARN, DEBUG, INFO)
     default: INFO
+  elasticsearch.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False
   elasticsearch.node.allow_master:
     description: Allow node to become master? (true / false)
     default: false
