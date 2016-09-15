@@ -75,8 +75,13 @@ case $1 in
 
     exec chpst -u vcap /var/vcap/packages/logstash/bin/logstash agent \
          -f ${JOB_DIR}/config/logstash.conf -w ${LOGSTASH_WORKERS} \
+<% if p('logstash_parser.log_to_syslog') %> \
+         > >(tee -a >$LOG_DIR/$JOB_NAME.stdout.log | logger -t vcap.$JOB_NAME.stdout) \
+         2> >(tee -a >$LOG_DIR/$JOB_NAME.stderr.log | logger -t vcap.$JOB_NAME.stderr)
+<% else %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
+<% end %>
 
     ;;
 

@@ -48,6 +48,9 @@ properties:
   logstash_parser.workers:
     description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
     default: auto
+  logstash_parser.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False
   logstash_parser.idle_flush_time:
     description: "How frequently to flush events if the output queue is not full."
   logstash_parser.elasticsearch_document_id:
