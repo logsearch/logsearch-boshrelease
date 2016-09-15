@@ -38,6 +38,10 @@ properties:
     description: Port to listen for RELP messages
     default: 2514
 
+  logstash_ingestor.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False
+
   redis.host: 
     description: Redis host of queue
   redis.port: 
