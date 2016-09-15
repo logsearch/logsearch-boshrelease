@@ -12,7 +12,11 @@ chown vcap:vcap `dirname "$PIDFILE"`
 mkdir -p "$LOGDIR"
 chown vcap:vcap "$LOGDIR"
 
+<% if p('elasticsearch_config.log_to_syslog') %>
+exec > >(tee -a /var/vcap/sys/log/elasticsearch_config/job.control.log | logger -t vcap.elasticsearch_config)
+<% else %>
 exec >> /var/vcap/sys/log/elasticsearch_config/job.control.log
+<% end %>
 exec 2>&1
 
 case $1 in

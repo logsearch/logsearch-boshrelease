@@ -21,4 +21,6 @@ properties:
     default: []
   elasticsearch_config.license:
     description: The ElasticSearch License string
-
+  elasticsearch_config.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False
