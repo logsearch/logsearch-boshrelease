@@ -41,8 +41,13 @@ case $1 in
         agent \
         --config /var/vcap/jobs/archiver/config/logstash.conf \
         -w ${LOGSTASH_WORKERS} \
+<% if p('archiver.log_to_syslog') %> \
+        > >(tee -a \"$LOGDIR/logstash.stdout.log\" | logger -t vcap.archiver.stdout) \
+        2> >(tee -a \"$LOGDIR/logstash.stderr.log\" | logger -t vcap.archiver.stderr) \
+<% else %> \
         >> \"$LOGDIR/logstash.stdout.log\" \
         2>> \"$LOGDIR/logstash.stderr.log\" \
+<% end %> \
       "
 
     <% if 's3' == p('archiver.method') %>

@@ -65,3 +65,6 @@ properties:
   archiver.workers:
     default: "auto"
     description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
+  archiver.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False
