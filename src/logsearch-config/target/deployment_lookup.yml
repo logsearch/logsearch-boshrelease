@@ -6,6 +6,5 @@ kibana.*: logsearch
 maintenance.*: logsearch
 parser.*: logsearch
 queue.*: logsearch
-router.*: logsearch
 monitor.*: logsearch
 ls-router.*: logsearch
