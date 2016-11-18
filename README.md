@@ -1,8 +1,10 @@
 # Logsearch
 
-## Not mainteined anymore
+## No longer maintained.
 
-This repository is not developing. We will keep it for reference, but all future development goes to [cloudfoundry-community](https://github.com/cloudfoundry-community/logsearch-boshrelease).
+All future development goes to [cloudfoundry-community/logsearch-boshrelease](https://github.com/cloudfoundry-community/logsearch-boshrelease).
+
+This repository is only for reference.
 
 ## License
 
