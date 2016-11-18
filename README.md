@@ -1,3 +1,5 @@
+# Out of Maintenance: This repository is no longer maintained. Please go to https://github.com/cloudfoundry-community/logsearch-boshrelease instead.
+
 # Logsearch
 
 ## No longer maintained.
