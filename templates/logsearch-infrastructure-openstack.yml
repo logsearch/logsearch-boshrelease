@@ -6,12 +6,12 @@ resource_pools:
 - name: elasticsearch_master
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.elasticsearch || "m1.medium" ))
+    instance_type: (( grab meta.instance_type.elasticsearch_master || "m1.small" ))
 
 - name: elasticsearch_data
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
-    instance_type: (( grab meta.instance_type.elasticsearch || "m1.medium" ))
+    instance_type: (( grab meta.instance_type.elasticsearch_data || "m1.medium" ))
 
 - name: queue
   cloud_properties:
