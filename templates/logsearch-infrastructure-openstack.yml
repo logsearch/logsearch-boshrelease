@@ -1,3 +1,8 @@
+meta:
+  stemcell:
+    name: bosh-openstack-kvm-ubuntu-trusty-go_agent
+    version: latest
+
 compilation:
   cloud_properties:
     instance_type: (( grab meta.instance_type.compilation || "m1.small" ))
