@@ -15,10 +15,6 @@ meta:
     name: bosh-openstack-kvm-ubuntu-trusty-go_agent
     version: latest
 
-releases:
-- name: logsearch
-  version: latest
-
 name: logsearch
 director_uuid: <%= `bosh status --uuid`%>
 
