@@ -79,3 +79,5 @@ elasticsearch.shardTimeout: <%= p('kibana.shard_timeout') %>
 
 # Set this to true to log all events, including system usage information and all requests.
 # logging.verbose: false
+
+<% if_p('kibana.config_options') do | v | %><%= v %><% end %>
