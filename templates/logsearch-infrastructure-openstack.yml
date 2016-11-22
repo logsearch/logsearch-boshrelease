@@ -52,16 +52,3 @@ resource_pools:
   cloud_properties:
     availability_zone: (( grab meta.availability_zone ))
     instance_type: (( grab meta.instance_type.errand || "m1.small" ))
-
-disk_pools:
-- name: elasticsearch_master
-  disk_size: 102400
-
-- name: elasticsearch_data
-  disk_size: 102400
-
-- name: queue
-  disk_size: 102400
-
-- name: cluster_monitor
-  disk_size: 102400
