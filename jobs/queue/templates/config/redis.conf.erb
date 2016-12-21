@@ -131,6 +131,11 @@ logfile "/var/vcap/sys/log/queue/queue.log"
 # Specify the syslog facility. Must be USER or between LOCAL0-LOCAL7.
 # syslog-facility local0
 
+<% if p('logstash_queue_redis.log_to_syslog') %>
+syslog-enabled yes
+syslog-ident vcap.queue_redis
+<% end %>
+
 # Set the number of databases. The default database is DB 0, you can select
 # a different one on a per-connection basis using SELECT <dbid> where
 # dbid is a number between 0 and 'databases'-1

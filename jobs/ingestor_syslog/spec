@@ -23,6 +23,9 @@ properties:
   logstash_ingestor.debug:
     description: Debug level logging
     default: false
+  logstash_ingestor.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False
   logstash_ingestor.outputs:
     description: |
       A list of output plugins, with a hash of options for each of them. Please refer to example below.

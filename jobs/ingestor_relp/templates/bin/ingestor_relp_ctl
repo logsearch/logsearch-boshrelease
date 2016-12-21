@@ -21,8 +21,13 @@ case $1 in
 
     exec /var/vcap/packages/logstash/bin/logstash agent \
          -f ${JOB_DIR}/config/logstash.conf -w ${LOGSTASH_WORKERS} \
+ <% if p('logstash_ingestor.log_to_syslog') %> \
+         > >(tee -a \"$LOGDIR/$JOB_NAME.stdout.log\" | logger -t vcap.$JOB_NAME.stdout) \
+         2> >(tee -a \"$LOGDIR/$JOB_NAME.stderr.log\" | logger -t vcap.$JOB_NAME.stderr)
+ <% else %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
+ <% end %>
 
     ;;
 

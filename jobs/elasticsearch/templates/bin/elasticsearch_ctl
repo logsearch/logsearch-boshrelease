@@ -62,8 +62,13 @@ case $1 in
          -p ${PIDFILE} \
          --XX:HeapDumpPath=${TMPDIR}/heap-dump/ \
          <%= p("elasticsearch.exec.options", []).join(' ') %> \
+<% if p('elasticsearch.log_to_syslog') %> \
+         > >(tee -a >$LOG_DIR/$JOB_NAME.stdout.log | logger -t vcap.$JOB_NAME.stdout) \
+         2> >(tee -a >$LOG_DIR/$JOB_NAME.stderr.log | logger -t vcap.$JOB_NAME.stderr)
+<% else %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
+<% end %>
     ;;
 
   stop)

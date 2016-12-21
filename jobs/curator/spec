@@ -20,3 +20,6 @@ properties:
   curator.purge_logs.retention_period:
     description: Days that logs will be retained
     default: 30
+  curator.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False

@@ -24,3 +24,6 @@ properties:
   redis.maxmemory-policy:
     description: How Redis will select what to remove when maxmemory is reached. Possible values are volatile-lru, allkeys-lru, volatile-random, allkeys-random, volatile-ttl, and noeviction.
     default: volatile-lru
+  logstash_queue_redis.log_to_syslog:
+    description: Set this to True to enable logging to syslog.
+    default: False
