@@ -64,6 +64,17 @@ case $1 in
          <%= p("elasticsearch.exec.options", []).join(' ') %> \
          >>$LOG_DIR/$JOB_NAME.stdout.log \
          2>>$LOG_DIR/$JOB_NAME.stderr.log
+
+    # Ensure ES is receiving connections before exiting ctl script
+    count=0
+    curl 'http://localhost:9200'
+    while [[ $count -le 3600  && $? -ne 0 ]]
+    do
+        sleep 1
+        (( count++ ))
+        curl 'http://localhost:9200'
+    done
+
     ;;
 
   stop)
