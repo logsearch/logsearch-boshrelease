@@ -45,6 +45,8 @@ properties:
     default: [ { plugin: "redis", options : {} } ]
   logstash_parser.outputs:
     description: "The configuration to embed into the logstash outputs section"
+  logstash_parser.output_override:
+    description: "The configuration to override the logstash outputs section"
   logstash_parser.workers:
     description: "The number of worker threads that logstash should use (default: auto = one per CPU)"
     default: auto

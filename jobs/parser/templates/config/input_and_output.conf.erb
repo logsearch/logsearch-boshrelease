@@ -21,6 +21,10 @@ input {
 }
 
 output {
+  <% if p("logstash_parser.output_override", nil) %>
+    <%= p('logstash_parser.output_override')  %>
+  <% else %>
+
     <% if p("logstash_parser.debug") %>
         stdout {
             codec => "json"
@@ -45,4 +49,6 @@ output {
     }
 
     <%= p('logstash_parser.outputs', '')  %>
+
+  <% end %>
 }
