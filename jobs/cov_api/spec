@@ -1,0 +1,37 @@
+---
+name: cov_api
+packages:
+- nginx
+templates:
+  bin/nginx_ctl: bin/nginx_ctl
+  config/nginx.conf.erb: config/nginx.conf
+  config/htpasswd.erb: config/htpasswd
+  config/mime.types: config/mime.types
+  bin/monit_debugger: bin/monit_debugger
+  data/properties.sh.erb: data/properties.sh
+  helpers/ctl_setup.sh: helpers/ctl_setup.sh
+  helpers/ctl_utils.sh: helpers/ctl_utils.sh
+  logsearch/metric-collector/lag/collector: logsearch/metric-collector/lag/collector
+  logsearch/logs.yml: logsearch/logs.yml
+properties:
+  cov_api.elasticsearch_host:
+    description: IP address and port of elasticsearch host to proxy requests for (eg, 127.0.0.1:9200)
+    default: "127.0.0.1:9200"
+  cov_api.port:
+    description: "The port the api should listen on (eg, 80)"
+    default: 80
+  cov_api.kibana.port:
+    description: "The port the kibana proxy should listen on (can be the same as api.port if api.kibana.host_header is set)"
+    default: 80
+  cov_api.kibana.host_header:
+    description: The host header used for the kibana virtual host
+    default: "kibana"
+  cov_api.kibana.host:
+    description: IP address and port of kibana host proxy kibana requests for (eg, 127.0.0.1:5601).
+    default: "127.0.0.1:5601"
+  cov_api.enable_auth_basic:
+    description: Enables validation of user name and password using the “HTTP Basic Authentication” protocol. http://nginx.org/en/docs/http/ngx_http_auth_basic_module.html
+    default: false
+  cov_api.basic_auth_credentials:
+    description: User names and encrypted passwords using "openssl passwd" command
+    default: ''

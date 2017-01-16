@@ -1,0 +1,8 @@
+---
+files:
+  "cov_api/nginx.access.log":
+    fields:
+      type: "logsearch-nginx-access-v2"
+  "cov_api/nginx.error.log":
+    fields:
+      type: "logsearch-nginx-error-v1"

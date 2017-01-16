@@ -1,0 +1,5 @@
+check process cov_log_parser
+  with pidfile /var/vcap/sys/run/cov_log_parser/cov_log_parser.pid
+  start program "/var/vcap/jobs/cov_log_parser/bin/monit_debugger cov_log_parser_ctl '/var/vcap/jobs/cov_log_parser/bin/cov_log_parser_ctl start'"
+  stop program "/var/vcap/jobs/cov_log_parser/bin/monit_debugger cov_log_parser_ctl '/var/vcap/jobs/cov_log_parser/bin/cov_log_parser_ctl stop'"
+  group vcap

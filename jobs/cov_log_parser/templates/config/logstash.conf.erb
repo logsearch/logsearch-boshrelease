@@ -1,0 +1,27 @@
+input {
+
+    redis {
+        host => "<%= p("redis.host") %>"
+        port => "<%= p("redis.port") %>"
+        type => "redis-input"
+        data_type => "list"
+        key => "<%= p("redis.key") %>"
+        threads => 8
+    }
+}
+
+filter {
+
+    <%= p('cov_log_parser.filters', '')  %>
+
+}
+
+output {
+    <% if p("cov_log_parser.debug") %>
+        stdout {
+            codec => "json"
+        }
+    <% end %>
+
+    <%= p('cov_log_parser.outputs', '')  %>
+}
